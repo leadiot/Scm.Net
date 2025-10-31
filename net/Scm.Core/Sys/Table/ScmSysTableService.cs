@@ -66,15 +66,12 @@ namespace Com.Scm.Sys.Table
         /// <returns></returns>
         public async Task<bool> PostSaveAsync(SaveRequest request)
         {
-            var token = _contextHolder.GetToken();
-
             var dao = await _headerRepository.AsQueryable()
                 .Where(a => a.codec == request.codec)
                 .FirstAsync();
             if (dao == null)
             {
                 dao = request.Adapt<SysTableHeaderDao>();
-                dao.user_id = token.user_id;
                 await _headerRepository.InsertAsync(dao);
             }
             //else

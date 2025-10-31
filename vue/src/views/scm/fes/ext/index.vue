@@ -90,8 +90,8 @@ export default {
 			apiObj: this.$API.scmfesext.page,
 			list: [],
 			param: {
-				org_id: '0',
-				app_id: '0',
+				org_id: this.$SCM.ID_ALL,
+				app_id: this.$SCM.ID_ALL,
 				row_status: 1,
 				create_time: '',
 				key: ''
@@ -99,12 +99,11 @@ export default {
 			selection: [],
 			column: [
 				{ label: "id", prop: "id", hide: true },
-				{ prop: 'types', label: '文件类型', width: 100 },
-				{ prop: 'ext', label: '后缀名称', width: 100 },
-				{ prop: 'sign', label: '文件签名', width: 100 },
-				{ prop: 'org_id', label: '组织ID', width: 100 },
-				{ prop: 'app_id', label: '', width: 100 },
-				{ prop: 'remark', label: '备注', width: 100 },
+				{ prop: 'types_names', label: '文件类型', width: 80 },
+				{ prop: 'codec', label: '后缀代码', width: 80, align: 'left' },
+				{ prop: 'namec', label: '后缀名称', minWidth: 100, align: 'left' },
+				{ prop: 'org_names', label: '所属组织', width: 100, align: 'left' },
+				{ prop: 'app_names', label: '所属应用', width: 100, align: 'left' },
 				{ prop: "row_status", label: "数据状态", width: 80, },
 				{ prop: "update_names", label: "更新人员", width: 100, },
 				{ prop: "update_time", label: "更新时间", width: 160, formatter: this.$TOOL.dateTimeFormat },
@@ -163,7 +162,7 @@ export default {
 			}
 		},
 		changeOrg() {
-			this.$SCM.list_option(this.app_list, this.$API.scmfesapp.option, {}, true);
+			this.$SCM.list_option(this.app_list, this.$API.scmfesapp.option, { 'org_id': this.formData.org_id }, true);
 		}
 	},
 };

@@ -70,7 +70,7 @@ export default {
         async loadHighlight() {
             try {
                 // 动态加载highlight.js
-                const modual = await import('https://cdn.bootcdn.net/ajax/libs/highlight.js/11.11.1/es/highlight.min.js');
+                const modual = await import('highlight.js/lib/core');
                 console.log(modual);
 
                 this.hljs = modual.default;

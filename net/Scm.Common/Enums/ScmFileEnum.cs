@@ -9,6 +9,11 @@ namespace Com.Scm.Enums
         [Description("字节文件")]
         Byte = 10,
 
+        [Description("执行程序")]
+        Exe = 11,
+        [Description("类库文件")]
+        Dll = 12,
+
         [Description("字符文件")]
         Text = 20,
         [Description("日志文件")]

@@ -1,11 +1,15 @@
 <template>
-	<sc-dialog v-model="visible" show-fullscreen destroy-on-close :title="titleMap[mode]" width="750px" @close="close">
+	<sc-dialog v-model="visible" show-fullscreen destroy-on-close :title="titleMap[mode]" width="450px" @close="close">
 		<el-form ref="formRef" label-width="100px" :model="formData" :rules="rules">
 			<el-form-item label="文件类型" prop="types">
 				<sc-select v-model="formData.types" placeholder="请选择文件类型" :data="types_list"></sc-select>
 			</el-form-item>
-			<el-form-item label="后缀名称" prop="ext">
-				<el-input v-model="formData.ext" placeholder="请输入后缀名称" :maxlength="32" show-word-limit
+			<el-form-item label="后缀代码" prop="codec">
+				<el-input v-model="formData.codec" placeholder="请输入后缀代码" :maxlength="32" show-word-limit
+					clearable></el-input>
+			</el-form-item>
+			<el-form-item label="后缀名称" prop="namec">
+				<el-input v-model="formData.namec" placeholder="请输入后缀名称" :maxlength="64" show-word-limit
 					clearable></el-input>
 			</el-form-item>
 			<el-form-item label="文件签名" prop="sign">
@@ -19,10 +23,9 @@
 				<sc-select v-model="formData.app_id" placeholder="请选择所属应用" :data="app_list"></sc-select>
 			</el-form-item>
 			<el-form-item label="备注" prop="remark">
-				<el-input v-model="formData.remark" placeholder="请输入备注" :maxlength="256" show-word-limit
-					clearable></el-input>
+				<el-input v-model="formData.remark" placeholder="请输入备注" :maxlength="256" show-word-limit clearable
+					type="textarea" :rows="5"></el-input>
 			</el-form-item>
-
 		</el-form>
 
 		<template #footer>
@@ -43,14 +46,12 @@ export default {
 			isSaveing: false,
 			formData: this.def_data(),
 			rules: {
+				types: [
+					{ required: true, trigger: "change", message: "请选择文件类型", pattern: this.$SCM.REGEX_INT },
+				],
 				codec: [
 					{ required: true, trigger: "blur", message: "编码不能为空" },
-					{ required: true, trigger: "blur", message: "编码应4至32个字符", pattern: this.$SCM.REGEX_CODEC },
-				],
-				namec: [
-					{ required: true, trigger: "blur", message: "名称不能为空" },
-					{ required: true, trigger: "blur", message: "名称应4至64个字符", pattern: this.$SCM.REGEX_NAMEC },
-				],
+				]
 			},
 			types_list: [this.$SCM.OPTION_ALL],
 			org_list: [this.$SCM.OPTION_ALL],
@@ -58,18 +59,18 @@ export default {
 		};
 	},
 	mounted() {
-		this.$SCM.list_dic(this.types_list, {}, false);
+		this.$SCM.list_dic(this.types_list, 'file_type', false);
 		this.$SCM.list_option(this.org_list, this.$API.scmfesorg.option, {}, true);
 	},
 	methods: {
 		def_data() {
 			return {
 				id: '0',
-				types: '',
-				ext: '',
+				types: this.$SCM.ID_ONE_INT,
+				codec: '',
 				sign: '',
-				org_id: '',
-				app_id: '',
+				org_id: this.$SCM.ID_ALL,
+				app_id: this.$SCM.ID_ALL,
 				remark: '',
 			}
 		},
@@ -113,7 +114,7 @@ export default {
 			this.visible = false;
 		},
 		changeOrg() {
-			this.$SCM.list_option(this.app_list, this.$API.scmfesapp.option, {}, true);
+			this.$SCM.list_option(this.app_list, this.$API.scmfesapp.option, { 'org_id': this.formData.org_id }, true);
 		}
 	},
 };

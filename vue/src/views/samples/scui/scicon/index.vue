@@ -68,7 +68,7 @@ export default {
 	data() {
 		return {
 			param: {
-				set_id: this.$API.DEF_INT,
+				set_id: this.$API.ID_ONE_INT,
 				cat_id: '',
 				type: '',
 				key: ''

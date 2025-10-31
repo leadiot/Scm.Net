@@ -95,7 +95,7 @@ export default {
 			selection: [],
 			column: [
 				{ label: "id", prop: "id", hide: true },
-				{ prop: 'org_names', label: '所属组织', width: 100, align: 'left' },
+				{ prop: 'org_name', label: '所属组织', width: 100, align: 'left' },
 				{ prop: 'codec', label: '应用代码', width: 100, align: 'left' },
 				{ prop: 'namec', label: '应用名称', minWidth: 140, align: 'left' },
 				{ prop: "row_status", label: "数据状态", width: 80, },

@@ -62,5 +62,20 @@ namespace Com.Scm.Service
             }
             return headerDao;
         }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="key"></param>
+        /// <returns></returns>
+        public DicHeaderDao GetDic(string key)
+        {
+            var headerDao = _headerRepository.GetFirst(a => a.codec == key && a.row_status == Enums.ScmRowStatusEnum.Enabled);
+            if (headerDao != null)
+            {
+                headerDao.details = _detailRepository.GetList(a => a.dic_header_id == headerDao.id && a.row_status == Enums.ScmRowStatusEnum.Enabled, a => a.od, Enums.OrderByEnum.Asc);
+            }
+            return headerDao;
+        }
     }
 }

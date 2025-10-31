@@ -1,0 +1,231 @@
+using Com.Scm.Dsa;
+using Com.Scm.Dvo;
+using Com.Scm.Exceptions;
+using Com.Scm.Fes.FesExt.Dvo;
+using Com.Scm.Service;
+using Com.Scm.Utils;
+using Microsoft.AspNetCore.Mvc;
+
+namespace Com.Scm.Fes.FesExt
+{
+    /// <summary>
+    /// 服务接口
+    /// </summary>
+    [ApiExplorerSettings(GroupName = "Scm")]
+    public class ScmFesExtService : ApiService
+    {
+        private readonly SugarRepository<ScmFesExtDao> _thisRepository;
+        private readonly IDicService _dicService;
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="thisRepository"></param>
+        public ScmFesExtService(SugarRepository<ScmFesExtDao> thisRepository, IUserService userService, IDicService dicService)
+        {
+            _thisRepository = thisRepository;
+            _UserService = userService;
+            _dicService = dicService;
+        }
+
+        /// <summary>
+        /// 查询分页
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        public async Task<ScmSearchPageResponse<ScmFesExtDvo>> GetPagesAsync(SearchRequest request)
+        {
+            var result = await _thisRepository.AsQueryable()
+                .WhereIF(!request.IsAllStatus(), a => a.row_status == request.row_status)
+                .WhereIF(IsNormalId(request.org_id), a => a.org_id == request.org_id)
+                .WhereIF(IsNormalId(request.app_id), a => a.app_id == request.app_id)
+                .WhereIF(!string.IsNullOrEmpty(request.key), a => a.codec.Contains(request.key))
+                .OrderBy(m => m.id)
+                .Select<ScmFesExtDvo>()
+                .ToPageAsync(request.page, request.limit);
+
+            Prepare(result.Items);
+            return result;
+        }
+
+        /// <summary>
+        /// 查询所有
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        public async Task<List<ScmFesExtDvo>> GetListAsync(SearchRequest request)
+        {
+            var result = await _thisRepository.AsQueryable()
+                .Where(a => a.row_status == Enums.ScmRowStatusEnum.Enabled)
+                .WhereIF(IsNormalId(request.org_id), a => a.org_id == request.org_id)
+                .WhereIF(IsNormalId(request.app_id), a => a.app_id == request.app_id)
+                .WhereIF(!string.IsNullOrEmpty(request.key), a => a.codec.Contains(request.key))
+                .OrderBy(m => m.id)
+                .Select<ScmFesExtDvo>()
+                .ToListAsync();
+
+            Prepare(result);
+            return result;
+        }
+
+        private void Prepare(List<ScmFesExtDvo> list)
+        {
+            var dicDao = _dicService.GetDic("file_type");
+            var orgRepository = _thisRepository.Change<ScmFesOrgDao>();
+            var orgDict = new Dictionary<long, ScmFesOrgDao>();
+            var appRepository = _thisRepository.Change<ScmFesAppDao>();
+            var appDict = new Dictionary<long, ScmFesAppDao>();
+            foreach (var item in list)
+            {
+                Prepare(item);
+
+                item.types_name = dicDao.GetDetail((int)item.types)?.namec;
+
+                ScmFesOrgDao orgDao = null;
+                if (orgDict.ContainsKey(item.org_id))
+                {
+                    orgDao = orgDict[item.org_id];
+                }
+                else
+                {
+                    orgDao = orgRepository.GetById(item.org_id);
+                    orgDict[item.org_id] = orgDao;
+                }
+                item.org_name = orgDao?.names;
+
+                ScmFesAppDao appDao = null;
+                if (appDict.ContainsKey(item.app_id))
+                {
+                    appDao = appDict[item.app_id];
+                }
+                else
+                {
+                    appDao = appRepository.GetById(item.app_id);
+                    appDict[item.app_id] = appDao;
+                }
+                item.app_name = appDao?.names;
+            }
+        }
+
+        /// <summary>
+        /// 下拉列表
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        public async Task<List<ResOptionDvo>> GetOptionAsync(SearchRequest request)
+        {
+            var result = await _thisRepository.AsQueryable()
+                .Where(a => a.row_status == Enums.ScmRowStatusEnum.Enabled)
+                .WhereIF(IsNormalId(request.org_id), a => a.org_id == request.org_id)
+                .WhereIF(IsNormalId(request.app_id), a => a.app_id == request.app_id)
+                .OrderBy(a => a.id)
+                .Select(a => new ResOptionDvo { id = a.id, label = a.namec, value = a.id })
+                .ToListAsync();
+
+            return result;
+        }
+
+        /// <summary>
+        /// 根据主键查询
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        [HttpGet("{id}")]
+        public async Task<ScmFesExtDto> GetAsync(long id)
+        {
+            return await _thisRepository
+                .AsQueryable()
+                .Select<ScmFesExtDto>()
+                .FirstAsync(m => m.id == id);
+        }
+
+        /// <summary>
+        /// 编辑读取
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        [HttpGet("{id}")]
+        public async Task<ScmFesExtDto> GetEditAsync(long id)
+        {
+            return await _thisRepository
+                .AsQueryable()
+                .Select<ScmFesExtDto>()
+                .FirstAsync(m => m.id == id);
+        }
+
+        /// <summary>
+        /// 查看读取
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        [HttpGet("{id}")]
+        public async Task<ScmFesExtDvo> GetViewAsync(long id)
+        {
+            return await _thisRepository
+                .AsQueryable()
+                .Select<ScmFesExtDvo>()
+                .FirstAsync(m => m.id == id);
+        }
+
+        /// <summary>
+        /// 添加
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
+        public async Task<bool> AddAsync(ScmFesExtDto model)
+        {
+            var dao = await _thisRepository.GetFirstAsync(a => a.codec == model.codec);
+            if (dao != null)
+            {
+                throw new BusinessException("已存在相同编码的后缀！");
+            }
+
+            dao = model.Adapt<ScmFesExtDao>();
+            return await _thisRepository.InsertAsync(dao);
+        }
+
+        /// <summary>
+        /// 更新
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
+        public async Task<bool> UpdateAsync(ScmFesExtDto model)
+        {
+            var dao = await _thisRepository.GetFirstAsync(a => a.codec == model.codec && a.id != model.id);
+            if (dao != null)
+            {
+                throw new BusinessException("已存在相同编码的后缀！");
+            }
+
+            dao = await _thisRepository.GetByIdAsync(model.id);
+            if (dao == null)
+            {
+                throw new BusinessException("无效的后缀！");
+            }
+
+            dao = model.Adapt(dao);
+            return await _thisRepository.UpdateAsync(dao);
+        }
+
+        /// <summary>
+        /// 批量更新状态
+        /// </summary>
+        /// <param name="param">逗号分隔</param>
+        /// <returns></returns>
+        public async Task<int> StatusAsync(ScmChangeStatusRequest param)
+        {
+            return await UpdateStatus(_thisRepository, param.ids, param.status);
+        }
+
+        /// <summary>
+        /// 批量删除记录
+        /// </summary>
+        /// <param name="ids">逗号分隔</param>
+        /// <returns></returns>
+        [HttpDelete]
+        public async Task<int> DeleteAsync(string ids)
+        {
+            return await DeleteRecord(_thisRepository, ids.ToListLong());
+        }
+    }
+}

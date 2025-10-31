@@ -91,9 +91,9 @@ export default {
 			selection: [],
 			column: [
 				{ label: "id", prop: "id", hide: true },
-				{ prop: 'codec', label: '组织代码', width: 100 },
-				{ prop: 'names', label: '组织简称', width: 100 },
-				{ prop: 'namec', label: '组织全称', width: 100 },
+				{ prop: 'codec', label: '组织代码', width: 100, align: 'left' },
+				{ prop: 'names', label: '组织简称', width: 100, align: 'left' },
+				{ prop: 'namec', label: '组织全称', minWidth: 140, align: 'left' },
 				{ prop: "row_status", label: "数据状态", width: 80, },
 				{ prop: "update_names", label: "更新人员", width: 100, },
 				{ prop: "update_time", label: "更新时间", width: 160, formatter: this.$TOOL.dateTimeFormat },

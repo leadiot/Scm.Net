@@ -4,9 +4,20 @@ import tool from "@/utils/tool";
 
 const scm = {};
 
-scm.DEF_INT = 0;
+/**默认ID */
 scm.DEF_ID = "0";
+/**系统ID */
 scm.SYS_ID = "1000000000000000001";
+/**单选ID */
+scm.ID_ONE = "0";
+/**单选ID整数 */
+scm.ID_ONE_INT = 0;
+/**所有ID */
+scm.ID_ALL = "1000000000000000001";
+/**所有ID整数 */
+scm.ID_ALL_INT = 0;
+
+/**默认头像 */
 scm.DEF_AVATAR = "0.png";
 
 scm.REGEX_ID = /^[1-9]\d{15,18}$/;
@@ -16,10 +27,14 @@ scm.REGEX_NAMEC = /^\S{4,64}$/;
 scm.REGEX_NAMEF = /^\S{4,128}$/;
 scm.REGEX_NUMBER = /^\d+$/;
 
-scm.OPTION_ALL = { label: "所有", id: scm.DEF_ID, value: scm.DEF_ID };
-scm.OPTION_ONE = { label: "请选择", id: scm.DEF_ID, value: scm.DEF_ID };
-scm.OPTION_ALL_INT = { label: "所有", id: scm.DEF_ID, value: scm.DEF_INT };
-scm.OPTION_ONE_INT = { label: "请选择", id: scm.DEF_ID, value: scm.DEF_INT };
+/**所有选项 */
+scm.OPTION_ALL = { label: "所有", id: scm.ID_ALL, value: scm.ID_ALL };
+/**请选择选项 */
+scm.OPTION_ONE = { label: "请选择", id: scm.ID_ONE, value: scm.ID_ONE };
+/**所有选项（整数） */
+scm.OPTION_ALL_INT = { label: "所有", id: scm.ID_ALL, value: scm.ID_ALL_INT };
+/**请选择选项（整数） */
+scm.OPTION_ONE_INT = { label: "请选择", id: scm.ID_ONE, value: scm.ID_ONE_INT };
 
 scm.cache = [];
 
@@ -118,7 +133,7 @@ scm.status_list = function (dom, http, list, status) {
 				dom.$alert(res.message, "提示", { type: "error" });
 			}
 		})
-		.catch(() => { });
+		.catch(() => {});
 };
 
 scm.delete_item = async function (dom, http, data) {
@@ -157,7 +172,7 @@ scm.delete_list = function (dom, http, list) {
 				dom.$alert(res.message, "提示", { type: "error" });
 			}
 		})
-		.catch(() => { });
+		.catch(() => {});
 };
 
 /**
@@ -262,7 +277,9 @@ scm.list_cfg = async function (key, def, useCatch) {
 
 	var data = useCatch ? scm.cache[key] : null;
 	if (data == null) {
-		var res = await http.get(`${config.API_URL}/scmsysconfig/config/` + key);
+		var res = await http.get(
+			`${config.API_URL}/scmsysconfig/config/` + key
+		);
 		if (!res || res.code != 200) {
 			return;
 		}
@@ -279,7 +296,6 @@ scm.list_cfg = async function (key, def, useCatch) {
 
 	return data ?? def;
 };
-
 
 /**
  * 获取数据状态列表
@@ -519,7 +535,7 @@ scm.get_avatar = function (avatar) {
 	if (!avatar) {
 		avatar = scm.DEF_AVATAR;
 	}
-	return config.SERVER_URL + '/data/avatar/' + avatar;
+	return config.SERVER_URL + "/data/avatar/" + avatar;
 };
 
 scm.get_user_avatar = function (user) {
@@ -531,7 +547,7 @@ scm.get_user_avatar = function (user) {
 
 scm.recursive_menu = function (menuList, pid) {
 	if (!pid) {
-		pid = '0';
+		pid = "0";
 	}
 
 	return scm.recursive_menu2(menuList, pid);
@@ -555,13 +571,12 @@ scm.get_sub_menu = function (menuList, pid) {
 		}
 		if (idx > -1) {
 			list.splice(idx, 0, menu);
-		}
-		else {
+		} else {
 			list.push(menu);
 		}
 	}
 	return list;
-}
+};
 
 scm.recursive_menu2 = function (menuList, pid) {
 	if (!pid) {
@@ -574,33 +589,33 @@ scm.recursive_menu2 = function (menuList, pid) {
 	}
 
 	var list = [];
-	var types = ['', 'menu', 'iframe', 'link', 'button', 'input'];
+	var types = ["", "menu", "iframe", "link", "button", "input"];
 	for (var i = 0; i < subList.length; i += 1) {
 		var menu = subList[i];
 
 		var children = scm.recursive_menu2(menuList, menu.id);
 
 		var item = {
-			'id': menu.id,
-			'path': menu.uri,
-			'name': menu.codec,
-			'component': menu.view,
-			'meta': {
-				'id': menu.id,
-				'title': menu.namec,
-				'icon': menu.icon,
-				'type': types[menu.types],
-				'hidden': !menu.visible,
-				'fullpage': !!menu.fullpage,
-				'keepAlive': menu.keepAlive,
-				'affix': menu.codec == 'dashboard'
+			id: menu.id,
+			path: menu.uri,
+			name: menu.codec,
+			component: menu.view,
+			meta: {
+				id: menu.id,
+				title: menu.namec,
+				icon: menu.icon,
+				type: types[menu.types],
+				hidden: !menu.visible,
+				fullpage: !!menu.fullpage,
+				keepAlive: menu.keepAlive,
+				affix: menu.codec == "dashboard",
 			},
-			'children': children
+			children: children,
 		};
 		list.push(item);
 	}
 
 	return list;
-}
+};
 
 export default scm;

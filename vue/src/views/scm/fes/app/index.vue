@@ -87,7 +87,7 @@ export default {
 			apiObj: this.$API.scmfesapp.page,
 			list: [],
 			param: {
-				org_id: '0',
+				org_id: this.$SCM.ID_ALL,
 				row_status: 1,
 				create_time: '',
 				key: ''
@@ -95,10 +95,9 @@ export default {
 			selection: [],
 			column: [
 				{ label: "id", prop: "id", hide: true },
-				{ prop: 'org_id', label: '组织ID', width: 100 },
-				{ prop: 'codec', label: '应用代码', width: 100 },
-				{ prop: 'namec', label: '应用名称', width: 100 },
-				{ prop: 'remark', label: '应用说明', width: 100 },
+				{ prop: 'org_names', label: '所属组织', width: 100, align: 'left' },
+				{ prop: 'codec', label: '应用代码', width: 100, align: 'left' },
+				{ prop: 'namec', label: '应用名称', minWidth: 140, align: 'left' },
 				{ prop: "row_status", label: "数据状态", width: 80, },
 				{ prop: "update_names", label: "更新人员", width: 100, },
 				{ prop: "update_time", label: "更新时间", width: 160, formatter: this.$TOOL.dateTimeFormat },

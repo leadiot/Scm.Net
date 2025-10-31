@@ -1,7 +1,7 @@
 <template>
 	<sc-dialog v-model="visible" show-fullscreen destroy-on-close :title="titleMap[mode]" width="750px" @close="close">
 		<el-form ref="formRef" label-width="100px" :model="formData" :rules="rules">
-			<el-form-item label="组织ID" prop="org_id">
+			<el-form-item label="所属组织" prop="org_id">
 				<sc-select v-model="formData.org_id" placeholder="请选择所属组织" :data="org_list"></sc-select>
 			</el-form-item>
 			<el-form-item label="应用代码" prop="codec">
@@ -52,13 +52,13 @@ export default {
 		};
 	},
 	mounted() {
-		this.$SCM.list_option(this.org_list, this.$API.scmfesorg.option, {}, true);
+		this.$SCM.list_option(this.org_list, this.$API.scmfesorg.option, {}, false);
 	},
 	methods: {
 		def_data() {
 			return {
 				id: '0',
-				org_id: '',
+				org_id: this.$SCM.ID_ONE,
 				codec: '',
 				namec: '',
 				remark: '',

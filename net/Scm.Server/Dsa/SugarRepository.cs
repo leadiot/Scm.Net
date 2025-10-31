@@ -1,4 +1,5 @@
 using Com.Scm.Dao;
+using Com.Scm.Dao.Unit;
 using Com.Scm.Dao.User;
 using Com.Scm.Enums;
 using Com.Scm.Jwt;
@@ -11,6 +12,7 @@ namespace Com.Scm.Dsa
 {
     public class SugarRepository<T> : SimpleClient<T> where T : class, new()
     {
+        private static Type _UnitType = typeof(IUnitDao);
         private static Type _UserType = typeof(IUserDao);
         private static Type _CreateType = typeof(ICreateDao);
         private static Type _DeleteType = typeof(IDeleteDao);
@@ -36,6 +38,8 @@ namespace Com.Scm.Dsa
             //if (Context.SugarActionType == SugarActionType.Query)
             //{
             var subType = typeof(T);
+            // 机构数据
+            GenUnitLimitFilter(token, subType);
             // 用户数据
             GenUserLimitFilter(token, subType);
             // 删除数据
@@ -63,7 +67,7 @@ namespace Com.Scm.Dsa
                     if (entityInfo.EntityValue is ScmDao)
                     {
                         var newValue = (ScmDao)entityInfo.EntityValue;
-                        newValue.PrepareCreate(token.user_id);
+                        newValue.PrepareCreate(token.user_id, token.unit_id);
                     }
 
                     return;
@@ -75,7 +79,7 @@ namespace Com.Scm.Dsa
                     if (entityInfo.EntityValue is ScmDao)
                     {
                         var newValue = (ScmDao)entityInfo.EntityValue;
-                        newValue.PrepareUpdate(token.user_id);
+                        newValue.PrepareUpdate(token.user_id, token.unit_id);
                     }
 
                     return;
@@ -93,6 +97,71 @@ namespace Com.Scm.Dsa
             //    }
             //    LogUtils.Debug("Sql脚本：" + sql, "db");
             //};
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="token"></param>
+        /// <param name="subType"></param>
+        private void GenUnitLimitFilter(JwtToken token, Type subType)
+        {
+            if (token.data == ScmUserDataEnum.All)
+            {
+                return;
+            }
+
+            if (!CommonUtils.HasImplementedRawGeneric(subType, _UnitType))
+            {
+                return;
+            }
+
+            var sql = "it." + nameof(IUnitDao.unit_id);
+            if (token.data == ScmUserDataEnum.CurrentUnit)
+            {
+                GenLimitFilter(token, subType, sql + "=" + token.unit_id);
+                return;
+            }
+
+            var sub = $"(select suud.data_id from scm_ur_user_data suud where suud.user_id = {token.user_id} and suud.types = {ScmUserDataTypesEnum.Unit} and suud.row_status = {ScmRowStatusEnum.Enabled})";
+            if (token.data == ScmUserDataEnum.SpecifiedUser)
+            {
+                GenLimitFilter(token, subType, sql + " in " + sub);
+                return;
+            }
+
+            if (token.data == ScmUserDataEnum.ExcludeUser)
+            {
+                GenLimitFilter(token, subType, sql + " not in " + sub);
+                return;
+            }
+
+            if (!CommonUtils.HasImplementedRawGeneric(subType, _CreateType))
+            {
+                return;
+            }
+
+            sql = "it." + nameof(ICreateDao.create_user);
+            if (token.data == ScmUserDataEnum.CurrentUser)
+            {
+                GenLimitFilter(token, subType, sql + "=" + token.user_id);
+                return;
+            }
+
+            sub = $"(select suud.data_id from scm_ur_user_data suud where suud.user_id = {token.user_id} and suud.types = {ScmUserDataTypesEnum.User} and suud.row_status = {ScmRowStatusEnum.Enabled})";
+            if (token.data == ScmUserDataEnum.SpecifiedUser)
+            {
+                GenLimitFilter(token, subType, sql + " in " + sub);
+                return;
+            }
+
+            if (token.data == ScmUserDataEnum.ExcludeUser)
+            {
+                GenLimitFilter(token, subType, sql + " not in " + sub);
+                return;
+            }
+
+            GenLimitFilter(token, subType, sql + "=0");
         }
 
         /// <summary>
@@ -218,6 +287,21 @@ namespace Com.Scm.Dsa
                 .Where(where)
                 .OrderBy(order, orderEnum == OrderByEnum.Desc ? OrderByType.Desc : OrderByType.Asc)
                 .FirstAsync() ?? new T();
+        }
+
+        /// <summary>
+        /// 根据条件查询列表
+        /// </summary>
+        /// <param name="where">拉姆达条件</param>
+        /// <param name="order">拉姆达排序</param>
+        /// <param name="orderEnum">枚举，1=desc 2=asc</param>
+        /// <returns></returns>
+        public List<T> GetList(Expression<Func<T, bool>> where, Expression<Func<T, object>> order, OrderByEnum orderEnum = OrderByEnum.Desc)
+        {
+            var query = Context.Queryable<T>()
+                .Where(where)
+                .OrderBy(order, orderEnum == OrderByEnum.Desc ? OrderByType.Desc : OrderByType.Asc);
+            return query.ToList();
         }
 
         /// <summary>

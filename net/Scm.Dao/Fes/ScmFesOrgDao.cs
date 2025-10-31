@@ -28,9 +28,9 @@ namespace Com.Scm.Fes
         [StringLength(128)]
         public string namec { get; set; }
 
-        public override void PrepareCreate(long userId, long unitId = 0)
+        public override void PrepareCreate(long userId)
         {
-            base.PrepareCreate(userId, unitId);
+            base.PrepareCreate(userId);
 
             if (string.IsNullOrWhiteSpace(names))
             {

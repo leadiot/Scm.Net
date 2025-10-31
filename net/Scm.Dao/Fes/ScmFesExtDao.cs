@@ -49,9 +49,9 @@ namespace Com.Scm.Fes
         [StringLength(256)]
         public string remark { get; set; }
 
-        public override void PrepareCreate(long userId, long unitId = 0)
+        public override void PrepareCreate(long userId)
         {
-            base.PrepareCreate(userId, unitId);
+            base.PrepareCreate(userId);
 
             if (string.IsNullOrWhiteSpace(namec))
             {

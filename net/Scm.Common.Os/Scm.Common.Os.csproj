@@ -10,9 +10,4 @@
     <PackageReference Include="System.Management" Version="9.0.9" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="OS\Linux\" />
-    <Folder Include="OS\OSX\" />
-  </ItemGroup>
-
 </Project>

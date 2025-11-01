@@ -23,7 +23,7 @@
 </template>
 
 <script>
-import NavMenu from './navMenu0.vue';
+import NavMenu from './navMenu.vue';
 
 export default {
 	components: {

@@ -44,7 +44,7 @@
 				</div>
 			</el-header>
 			<el-main class="nopadding">
-				<scTable :tableName="tableName" ref="table" :api-obj="apiObj" :column="column" row-key="id"
+				<scTable :table-name="tableName" ref="table" :api-obj="apiObj" :column="column" row-key="id"
 					:menu-default="['add']" @menu-handle="menuHandle" @selection-change="selectionChange">
 					<el-table-column fixed type="selection" width="60" />
 					<el-table-column label="#" type="index" width="50"></el-table-column>

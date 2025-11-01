@@ -18,7 +18,7 @@
 			</div>
 		</el-header>
 		<el-main class="nopadding">
-			<scTable ref="table" :tableName="tableName" :api-obj="apiObj" :column="column" :menu-column="menuColumn" row-key="id"
+			<scTable ref="table" :table-name="tableName" :api-obj="apiObj" :column="column" :menu-column="menuColumn" row-key="id"
 				@selection-change="selectionChange" @menu-handle="menuHandle">
 				<!-- 固定列-选择列 -->
 				<el-table-column fixed type="selection" width="60" />

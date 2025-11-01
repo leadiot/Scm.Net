@@ -53,7 +53,7 @@
 				</div>
 			</el-header>
 			<el-main class="nopadding">
-				<scTable ref="table" :tableName="tableName" :api-obj="apiObj" :column="column" :params="defaultParam"
+				<scTable ref="table" :table-name="tableName" :api-obj="apiObj" :column="column" :params="defaultParam"
 					row-key="id" @menu-handle="menuHandle" @selection-change="selectionChange">
 					<!-- 固定列-选择列 -->
 					<el-table-column fixed type="selection" width="60" align="center" />

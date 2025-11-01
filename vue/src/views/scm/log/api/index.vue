@@ -25,7 +25,7 @@
 						<scEcharts height="100%" :option="logsChartOption"></scEcharts>
 					</el-header>
 					<el-main class="nopadding">
-						<scTable ref="table" :tableName="tableName" :apiObj="apiObj" stripe :column="column"
+						<scTable ref="table" :table-name="tableName" :apiObj="apiObj" stripe :column="column"
 							highlightCurrentRow :hide-context-menu="false" @selection-change="selectionChange"
 							@row-click="rowClick">
 							<el-table-column fixed type="selection" width="60" />

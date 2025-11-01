@@ -34,10 +34,10 @@ export default {
                     { required: true, trigger: "change", message: "请输入转换数量", pattern: this.$SCM.REGEX_INT },
                 ],
             },
-            types_list: [this.$SCM.OPTION_ONE],
-            modes_list: [this.$SCM.OPTION_ONE],
-            kinds_list: [this.$SCM.OPTION_ONE],
-            lang_list: [this.$SCM.OPTION_ONE],
+            types_list: [this.$SCM.OPTION_ONE_INT],
+            modes_list: [this.$SCM.OPTION_ONE_INT],
+            kinds_list: [this.$SCM.OPTION_ONE_INT],
+            lang_list: [this.$SCM.OPTION_ONE_INT],
             refer_list: [this.$SCM.OPTION_ONE],
         };
     },
@@ -51,7 +51,7 @@ export default {
         def_data() {
             return {
                 id: '0',
-                refer_id: '0',
+                refer_id: this.$SCM.ID_ONE,
                 refer_qty: 0,
             }
         },

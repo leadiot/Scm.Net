@@ -53,9 +53,9 @@ export default {
 					{ required: true, trigger: "blur", message: "编码不能为空" },
 				]
 			},
-			types_list: [this.$SCM.OPTION_ALL],
-			org_list: [this.$SCM.OPTION_ALL],
-			app_list: [this.$SCM.OPTION_ALL],
+			types_list: [this.$SCM.OPTION_ONE_INT],
+			org_list: [this.$SCM.OPTION_ONE],
+			app_list: [this.$SCM.OPTION_ONE],
 		};
 	},
 	mounted() {

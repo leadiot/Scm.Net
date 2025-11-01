@@ -96,7 +96,7 @@ export default {
 			list: [],
 			param: {
 				option_id: 0,
-				row_status: 1,
+				row_status: this.$SCM.DEF_STATUS,
 				create_time: '',
 				key: ''
 			},
@@ -117,12 +117,12 @@ export default {
 				{ prop: 'create_names', label: '创建人员', width: 100 },
 				{ prop: 'create_time', label: '创建时间', width: 160, formatter: this.$TOOL.dateTimeFormat },
 			],
-			row_status_list: [],
+			row_status_list: [this.$SCM.OPTION_ALL_INT],
 			option_list: [],
 		};
 	},
 	mounted() {
-		this.$SCM.list_status(this.row_status_list);
+		this.$SCM.list_status(this.row_status_list, true);
 	},
 	methods: {
 		complete() {

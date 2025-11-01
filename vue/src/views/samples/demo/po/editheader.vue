@@ -40,7 +40,7 @@ export default {
 					{ required: true, trigger: "blur", message: "采购编码应4至32个字符", pattern: this.$SCM.REGEX_CODEC },
 				]
 			},
-			types_list: [this.$SCM.OPTION_ONE]
+			types_list: [this.$SCM.OPTION_ONE_INT]
 		};
 	},
 	mounted() {
@@ -51,7 +51,7 @@ export default {
 		def_data() {
 			return {
 				id: '0',
-				types: 0,
+				types: this.$SCM.ID_ONE_INT,
 				codec: '',
 				remark: ''
 			}

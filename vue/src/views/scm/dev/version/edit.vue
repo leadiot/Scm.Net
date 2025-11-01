@@ -90,7 +90,6 @@ export default {
             titleMap: { add: "新增", edit: "编辑" },
             visible: false,
             isSaveing: false,
-            client_list: [],
             formData: this.def_data(),
             rules: {
                 app_id: [
@@ -115,7 +114,8 @@ export default {
                     { required: true, trigger: "blur", message: "请输入版本信息", },
                 ],
             },
-            app_list: []
+            app_list: [this.$SCM.OPTION_ONE],
+            client_list: [this.$SCM.OPTION_ONE_INT],
         };
     },
     mounted() {
@@ -124,8 +124,8 @@ export default {
         def_data() {
             return {
                 id: '0',
-                client: 0,
-                app_id: '0',
+                client: this.$SCM.ID_ONE_INT,
+                app_id: this.$SCM.ID_ONE,
                 date: '',
                 build: '',
                 ver: '',

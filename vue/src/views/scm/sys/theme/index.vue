@@ -1,24 +1,24 @@
 <template>
 	<sc-search ref="search" @search="search">
-			<template #search>
-				<el-form ref="formRef" label-width="80px" :model="param">
-					<el-form-item label="数据状态" prop="row_status">
-						<sc-select v-model="param.row_status" placeholder="请选择" :data="row_status_list" />
-					</el-form-item>
-					<el-form-item label="创建时间" prop="create_time">
-						<el-date-picker v-model="param.create_time" type="datetimerange" range-separator="至"
-							start-placeholder="开始日期" end-placeholder="结束日期" />
-					</el-form-item>
-					<el-form-item label="搜索内容">
-						<el-input v-model="param.key" clearable placeholder="关键字" />
-					</el-form-item>
-					<el-form-item>
-						<el-button type="primary" @click="search">
-							<sc-icon name="sc-search" />查询
-						</el-button>
-					</el-form-item>
-				</el-form>
-			</template>
+		<template #search>
+			<el-form ref="formRef" label-width="80px" :model="param">
+				<el-form-item label="数据状态" prop="row_status">
+					<sc-select v-model="param.row_status" placeholder="请选择" :data="row_status_list" />
+				</el-form-item>
+				<el-form-item label="创建时间" prop="create_time">
+					<el-date-picker v-model="param.create_time" type="datetimerange" range-separator="至"
+						start-placeholder="开始日期" end-placeholder="结束日期" />
+				</el-form-item>
+				<el-form-item label="搜索内容">
+					<el-input v-model="param.key" clearable placeholder="关键字" />
+				</el-form-item>
+				<el-form-item>
+					<el-button type="primary" @click="search">
+						<sc-icon name="sc-search" />查询
+					</el-button>
+				</el-form-item>
+			</el-form>
+		</template>
 	</sc-search>
 	<el-container>
 		<el-header>
@@ -82,7 +82,7 @@ export default {
 			apiObj: this.$API.scmsystheme.page,
 			list: [],
 			param: {
-				row_status: 1,
+				row_status: this.$SCM.DEF_STATUS,
 				create_time: '',
 				key: ''
 			},
@@ -96,11 +96,11 @@ export default {
 				{ prop: "create_names", label: "创建人员", width: "100", },
 				{ prop: "create_time", label: "创建时间", width: "160", formatter: this.$TOOL.dateTimeFormat },
 			],
-			row_status_list: [],
+			row_status_list: [this.$SCM.OPTION_ALL_INT],
 		};
 	},
 	mounted() {
-		this.$SCM.list_status(this.row_status_list);
+		this.$SCM.list_status(this.row_status_list, true);
 	},
 	methods: {
 		complete() {

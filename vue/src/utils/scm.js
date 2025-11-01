@@ -14,10 +14,12 @@ scm.REGEX_NAMEC = /^\S{4,64}$/;
 scm.REGEX_NAMEF = /^\S{4,128}$/;
 scm.REGEX_NUMBER = /^\d+$/;
 
-/**默认ID */
-scm.DEF_ID = "0";
 /**系统ID */
 scm.SYS_ID = "1000000000000000001";
+/**默认ID */
+scm.DEF_ID = "0";
+/**默认状态 */
+scm.DEF_STATUS = 1;
 
 /**单选ID */
 scm.ID_ONE = "0";
@@ -134,7 +136,7 @@ scm.status_list = function (dom, http, list, status) {
 				dom.$alert(res.message, "提示", { type: "error" });
 			}
 		})
-		.catch(() => {});
+		.catch(() => { });
 };
 
 scm.delete_item = async function (dom, http, data) {
@@ -173,7 +175,7 @@ scm.delete_list = function (dom, http, list) {
 				dom.$alert(res.message, "提示", { type: "error" });
 			}
 		})
-		.catch(() => {});
+		.catch(() => { });
 };
 
 /**

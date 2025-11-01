@@ -47,7 +47,6 @@ export default {
 			visible: false,
 			isSaveing: false,
 			formData: this.def_data(),
-			types_list: [],
 			rules: {
 				types: [
 					{ required: true, trigger: "change", pattern: this.$SCM.REGEX_INT, message: "请选择应用", },
@@ -65,6 +64,7 @@ export default {
 					{ required: true, trigger: "blur", message: "请输入内容模板！", },
 				],
 			},
+			types_list: [this.$SCM.OPTION_ONE_INT],
 		};
 	},
 	mounted() {
@@ -74,7 +74,7 @@ export default {
 		def_data() {
 			return {
 				id: '0',
-				types: '',
+				types: this.$SCM.ID_ALL_INT,
 				codec: '',
 				namec: '',
 				head: '',

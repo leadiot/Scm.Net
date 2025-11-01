@@ -52,8 +52,8 @@ export default {
 			list: [],
 			param: {
 				unit_id: '0',
-				types: 0,
-				row_status: 1,
+				types: this.$SCM.ID_ALL_INT,
+				row_status: this.$SCM.DEF_STATUS,
 				create_time: '',
 				key: ''
 			},
@@ -71,12 +71,12 @@ export default {
 				{ prop: 'create_time', label: '创建时间', width: 160, formatter: this.$TOOL.dateTimeFormat },
 				{ prop: 'create_names', label: '创建人员', width: 100 },
 			],
-			row_status_list: [],
-			types_list: [],
+			row_status_list: [this.$SCM.OPTION_ALL_INT],
+			types_list: [this.$SCM.OPTION_ALL_INT],
 		};
 	},
 	mounted() {
-		this.$SCM.list_status(this.row_status_list);
+		this.$SCM.list_status(this.row_status_list, true);
 		this.$SCM.list_dic(this.types_list, 'feedback_type', true);
 	},
 	methods: {

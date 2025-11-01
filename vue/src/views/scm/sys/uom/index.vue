@@ -98,10 +98,10 @@ export default {
 			apiObj: this.$API.scmsysuom.page,
 			list: [],
 			param: {
-				types: 0,
-				modes: 0,
-				kinds: 0,
-				row_status: 1,
+				types: this.$SCM.ID_ALL_INT,
+				modes: this.$SCM.ID_ALL_INT,
+				kinds: this.$SCM.ID_ALL_INT,
+				row_status: this.$SCM.DEF_STATUS,
 				create_time: '',
 				key: ''
 			},
@@ -124,11 +124,11 @@ export default {
 				{ prop: "create_names", label: "创建人员", width: 100, },
 				{ prop: "create_time", label: "创建时间", width: 160, formatter: this.$TOOL.dateTimeFormat },
 			],
-			row_status_list: [this.$SCM.OPTION_ALL],
-			types_list: [this.$SCM.OPTION_ALL],
-			modes_list: [this.$SCM.OPTION_ALL],
-			kinds_list: [this.$SCM.OPTION_ALL],
-			lang_list: [this.$SCM.OPTION_ALL],
+			row_status_list: [this.$SCM.OPTION_ALL_INT],
+			types_list: [this.$SCM.OPTION_ALL_INT],
+			modes_list: [this.$SCM.OPTION_ALL_INT],
+			kinds_list: [this.$SCM.OPTION_ALL_INT],
+			lang_list: [this.$SCM.OPTION_ALL_INT],
 		};
 	},
 	mounted() {

@@ -40,7 +40,7 @@ export default {
             visible: false,
             isSaveing: false,
             param: {
-                row_status: 1,
+                row_status: this.$SCM.DEF_STATUS,
                 key: ''
             },
             selection: [],

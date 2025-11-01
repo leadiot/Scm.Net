@@ -89,7 +89,7 @@ export default {
 			list: [],
 			param: {
 				hid: '',
-				row_status: 1,
+				row_status: this.$SCM.DEF_STATUS,
 				create_time: '',
 				key: ''
 			},
@@ -107,12 +107,12 @@ export default {
 				{ prop: 'create_time', label: '创建时间', width: 100, formatter: this.$TOOL.dateTimeFormat },
 				{ prop: 'create_names', label: '创建人员', width: 100 },
 			],
-			row_status_list: [],
+			row_status_list: [this.$SCM.OPTION_ALL_INT],
 		};
 	},
 	mounted() {
 		this.init();
-		this.$SCM.list_status(this.row_status_list);
+		this.$SCM.list_status(this.row_status_list, true);
 	},
 	methods: {
 		async init() {

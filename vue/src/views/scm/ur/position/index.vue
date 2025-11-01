@@ -89,9 +89,9 @@ export default {
 		return {
 			apiObj: this.$API.scmurposition.page,
 			tableName: 'scm_ur_position',
-			row_status_list: [this.$SCM.OPTION_ALL],
+			row_status_list: [this.$SCM.OPTION_ALL_INT],
 			param: {
-				row_status: 1,
+				row_status: this.$SCM.DEF_STATUS,
 				create_time: '',
 				key: ""
 			},

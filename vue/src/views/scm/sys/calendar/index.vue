@@ -147,12 +147,12 @@ export default {
 			},
 			param: {
 				user_id: '0',
-				types: '0',
-				level: '0',
+				types: this.$SCM.ID_ALL_INT,
+				level: this.$SCM.ID_ALL_INT,
 				toDay: null,
 			},
-			types_list: [],
-			level_list: [],
+			types_list: [this.$SCM.OPTION_ALL_INT],
+			level_list: [this.$SCM.OPTION_ALL_INT],
 			toDay: this.demoDay(),
 			data: {},
 		};

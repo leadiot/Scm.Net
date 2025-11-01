@@ -128,8 +128,6 @@ export default {
 	data() {
 		return {
 			form: this.def_data(),
-			client_list: [this.$SCM.OPTION_ONE],
-			lang_list: [this.$SCM.OPTION_ONE],
 			rules: {
 				client: [
 					{ required: true, trigger: "change", message: "请选择显示语言", pattern: this.$SCM.REGEX_INT },
@@ -158,6 +156,8 @@ export default {
 			},
 			methodType: ["GET", "POST", "PUT", "DELETE"],
 			loading: false,
+			client_list: [this.$SCM.OPTION_ONE_INT],
+			lang_list: [this.$SCM.OPTION_ONE],
 		};
 	},
 	mounted() {
@@ -168,8 +168,8 @@ export default {
 		def_data() {
 			return {
 				id: "0",
-				client: "0",
-				lang: "",
+				client: this.$SCM.ID_ONE_INT,
+				lang: this.$SCM.ID_ONE,
 				types: 1,
 				namec: "",
 				codec: "",

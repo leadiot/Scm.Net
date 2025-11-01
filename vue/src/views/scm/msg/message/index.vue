@@ -90,7 +90,6 @@ export default {
 		return {
 			tableName: 'scm_msg_message',
 			apiObj: this.$API.scmmsgmessage.page,
-			types_list: [],
 			list: [],
 			param: {
 				cat: 'msg10',
@@ -152,6 +151,7 @@ export default {
 			],
 			selectedItem: null,
 			viewVisible: false,
+			types_list: [this.$SCM.OPTION_ALL_INT],
 		};
 	},
 	mounted() {

@@ -91,7 +91,7 @@ export default {
 			list: [],
 			param: {
 				option_id: '',
-				row_status: 1,
+				row_status: this.$SCM.DEF_STATUS,
 				create_time: '',
 				key: ''
 			},
@@ -107,7 +107,7 @@ export default {
 				{ prop: 'p', label: '后置掩码', width: 80, align: 'left' },
 				{ prop: 't', label: '访问时间', width: 160, formatter: this.$TOOL.dateTimeFormat },
 			],
-			row_status_list: [],
+			row_status_list: [this.$SCM.OPTION_ALL_INT],
 			option_list: [],
 		};
 	},

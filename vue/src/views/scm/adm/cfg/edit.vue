@@ -38,8 +38,8 @@ export default {
 			isSaveing: false,
 			visible: false,
 			formData: this.def_data(),
-			client_list: [],
-			data_list: [],
+			client_list: [this.$SCM.OPTION_ONE_INT],
+			data_list: [this.$SCM.OPTION_ONE_INT],
 			rules: {
 				client: [
 					{ required: true, trigger: "blur", message: "请选择终端类型" },
@@ -63,8 +63,8 @@ export default {
 				id: '0',
 				cat_id: '0',
 				user_id: '0',
-				client: 0,
-				data: 0,
+				client: this.$SCM.INT_ONE_INT,
+				data: this.$SCM.INT_ONE_INT,
 				key: undefined,
 				value: undefined,
 				remark: undefined,

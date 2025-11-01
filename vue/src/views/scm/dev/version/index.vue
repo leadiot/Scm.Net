@@ -101,13 +101,13 @@ export default {
 			apiObj: this.$API.scmdevversion.page,
 			list: [],
 			param: {
-				client: 0,
-				row_status: 1,
+				client: this.$SCM.ID_ALL_INT,
+				row_status: this.$SCM.DEF_STATUS,
 				create_time: '',
 				key: ''
 			},
-			client_list: [],
-			row_status_list: [],
+			client_list: [this.$SCM.OPTION_ALL_INT],
+			row_status_list: [this.$SCM.OPTION_ALL_INT],
 			selection: [],
 			column: [
 				{ label: "id", prop: "id", hide: true },
@@ -128,7 +128,7 @@ export default {
 	},
 	mounted() {
 		this.$SCM.list_dic(this.client_list, 'client_type', true);
-		this.$SCM.list_status(this.row_status_list);
+		this.$SCM.list_status(this.row_status_list, true);
 	},
 	methods: {
 		complete() {

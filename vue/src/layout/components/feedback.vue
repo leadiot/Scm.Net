@@ -30,12 +30,11 @@ export default {
     emits: ["complete"],
     data() {
         return {
-            types_list: [],
             visible: false,
             isSaveing: false,
             formData: {
                 url: this.$route.path,
-                types: 0,
+                types: this.$SCM.ID_ONE_INT,
                 title: '',
                 remark: ''
             },
@@ -47,6 +46,7 @@ export default {
                     { required: true, trigger: "blur", message: "请输入回馈事项" },
                 ],
             },
+            types_list: [this.$SCM.OPTION_ONE_INT],
         }
     },
     mounted() {

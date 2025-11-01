@@ -50,7 +50,7 @@ export default {
 					{ required: true, trigger: "blur", message: "请输入应用简介", },
 				],
 			},
-			app_types_list: [],
+			app_types_list: [this.$SCM.OPTION_ONE_INT],
 		};
 	},
 	mounted() {
@@ -60,7 +60,7 @@ export default {
 		def_data() {
 			return {
 				id: '0',
-				types: 0,
+				types: this.$SCM.ID_ONE_INT,
 				code: '',
 				name: '',
 				content: '',

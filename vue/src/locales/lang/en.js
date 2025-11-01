@@ -1,13 +1,13 @@
 export default {
 	login: {
-		slogan: "Cloud platform management system",
+		slogan: "",
 		describe: "",
 		signInTitle: "Sign in",
 		accountLogin: "Account sign in",
 		phoneLogin: "Mobile sign in",
 		phonePlaceholder: "Mobile",
 		phoneError: "Please input mobile",
-		emailLogin:"Email sign in",
+		emailLogin: "Email sign in",
 		emailPlaceholder: "Email",
 		emailError: "Please input email",
 		msgPlaceholder: "SMS Code",
@@ -34,19 +34,15 @@ export default {
 		themeTitle: "Change Theme",
 		langTitle: "Change Language",
 		wechatLoginTitle: "QR code sign in",
-		wechatLoginMsg:
-			"Please use wechat to scan and log in | Auto scan after 3 seconds of simulation",
-		wechatLoginResult:
-			"Scanned | Please click authorize login in the device",
+		wechatLoginMsg: "Please use wechat to scan and log in | Auto scan after 3 seconds of simulation",
+		wechatLoginResult: "Scanned | Please click authorize login in the device",
 	},
 	user: {
-		dynamic: "Dynamic",
 		info: "User Info",
 		settings: "Settings",
 		nightmode: "night mode",
 		nightmode_msg: "Suitable for low light environment",
 		language: "language",
-		language_msg:
-			"Translation in progress,Temporarily translated the text of this view",
+		language_msg: "Current language is English",
 	},
 };

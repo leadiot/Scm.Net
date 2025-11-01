@@ -35,7 +35,7 @@ export default {
 		return {
 			sex_list: [],
 			form: {
-				id: '0',
+				id: this.$SCM.DEF_ID,
 				codec: '',
 				names: "",
 				namec: "",

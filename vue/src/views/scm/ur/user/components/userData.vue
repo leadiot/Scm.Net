@@ -36,7 +36,7 @@ export default {
     methods: {
         def_data() {
             return {
-                id: '0',
+                id: this.$SCM.DEF_ID,
                 data: this.$SCM.ID_ONE_INT
             };
         },

@@ -50,7 +50,7 @@ export default {
             tableName: 'samples_po_flow',
             apiObj: this.$API.samplespodetail.page,
             param: {
-                id: '0',
+                id: this.$SCM.DEF_ID,
                 row_status: this.$SCM.DEF_STATUS,
                 create_time: '',
                 key: ''

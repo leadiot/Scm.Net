@@ -135,7 +135,7 @@ export default {
 				});
 				// m.api.some((r) => {
 				// 	menutree.push({
-				// 		id: '0',
+				// 		id: this.$SCM.DEF_ID,
 				// 		number: this.$TOOL.uuid(),
 				// 		value: r.url,
 				// 		label: r.code,

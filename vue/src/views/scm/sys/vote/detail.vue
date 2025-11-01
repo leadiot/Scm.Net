@@ -29,7 +29,7 @@ export default {
 			mode: "add",
 			title: '投票明细',
 			addTemplate: {
-				id: '0',
+				id: this.$SCM.DEF_ID,
 				header_id: '0',
 				title: '',
 				remark: ''
@@ -44,7 +44,7 @@ export default {
 	methods: {
 		def_data() {
 			return {
-				id: '0',
+				id: this.$SCM.DEF_ID,
 				details: [],
 			}
 		},

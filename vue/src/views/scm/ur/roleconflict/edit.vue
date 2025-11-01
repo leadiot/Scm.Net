@@ -51,7 +51,7 @@ export default {
 	methods: {
 		def_data() {
 			return {
-				id: '0',
+				id: this.$SCM.DEF_ID,
 				rolea_id: "",
 				roleb_id: "",
 				remark: "",

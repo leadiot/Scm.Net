@@ -50,7 +50,7 @@ export default {
     methods: {
         def_data() {
             return {
-                id: '0',
+                id: this.$SCM.DEF_ID,
                 refer_id: this.$SCM.ID_ONE,
                 refer_qty: 0,
             }

@@ -123,7 +123,7 @@ export default {
     methods: {
         def_data() {
             return {
-                id: '0',
+                id: this.$SCM.DEF_ID,
                 client: this.$SCM.ID_ONE_INT,
                 app_id: this.$SCM.ID_ONE,
                 date: '',
@@ -161,10 +161,10 @@ export default {
                     if (this.formData.time) {
                         this.formData.date = this.$TOOL.dateFormat(this.formData.time, 'yyyy-MM-dd');
                     }
-                    if (this.formData.id === '0') {
-                        res = await this.$API.scmdevversion.add.post(this.formData);
-                    } else {
+                    if (this.$SCM.is_valid_id(this.formData.id)) {
                         res = await this.$API.scmdevversion.update.put(this.formData);
+                    } else {
+                        res = await this.$API.scmdevversion.add.post(this.formData);
                     }
                     this.isSaveing = false;
                     if (res.code == 200) {

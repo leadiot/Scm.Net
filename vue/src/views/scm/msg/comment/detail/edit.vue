@@ -6,17 +6,20 @@
 					clearable></el-input>
 			</el-form-item>
 			<el-form-item label="评分" prop="score">
-				<el-input v-model="formData.score" placeholder="请输入评分" :maxlength="11" show-word-limit clearable></el-input>
+				<el-input v-model="formData.score" placeholder="请输入评分" :maxlength="11" show-word-limit
+					clearable></el-input>
 			</el-form-item>
 			<el-form-item label="评论" prop="comment">
 				<el-input v-model="formData.comment" placeholder="请输入评论" :maxlength="1024" show-word-limit
 					clearable></el-input>
 			</el-form-item>
 			<el-form-item label="回复ID" prop="rid">
-				<el-input v-model="formData.rid" placeholder="请输入回复ID" :maxlength="20" show-word-limit clearable></el-input>
+				<el-input v-model="formData.rid" placeholder="请输入回复ID" :maxlength="20" show-word-limit
+					clearable></el-input>
 			</el-form-item>
 			<el-form-item label="引用ID" prop="pid">
-				<el-input v-model="formData.pid" placeholder="请输入引用ID" :maxlength="20" show-word-limit clearable></el-input>
+				<el-input v-model="formData.pid" placeholder="请输入引用ID" :maxlength="20" show-word-limit
+					clearable></el-input>
 			</el-form-item>
 
 		</el-form>
@@ -46,7 +49,7 @@ export default {
 	methods: {
 		def_data() {
 			return {
-				id: '0',
+				id: this.$SCM.DEF_ID,
 				comment_id: '',
 				score: '',
 				comment: '',
@@ -70,10 +73,10 @@ export default {
 				if (valid) {
 					this.isSaveing = true;
 					let res = null;
-					if (this.formData.id === '0') {
-						res = await this.$API.scmmsgcommentdetail.add.post(this.formData);
-					} else {
+					if (this.$SCM.is_valid_id(this.formData.id)) {
 						res = await this.$API.scmmsgcommentdetail.update.put(this.formData);
+					} else {
+						res = await this.$API.scmmsgcommentdetail.add.post(this.formData);
 					}
 					this.isSaveing = false;
 					if (res.code == 200) {

@@ -48,7 +48,7 @@ export default {
     methods: {
         def_data() {
             return {
-                id: '0',
+                id: this.$SCM.DEF_ID,
                 cat_id: '0',
                 title: '',
                 content: ''
@@ -63,7 +63,7 @@ export default {
                 return;
             }
 
-            this.cat_list.push({ id: '0', value: '0', label: '默认' });
+            this.cat_list.push({ id: this.$SCM.DEF_ID, value: '0', label: '默认' });
             res.data.forEach(element => {
                 this.cat_list.push({ id: element.id, value: element.id, label: element.namec });
             });

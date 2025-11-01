@@ -195,12 +195,12 @@ export default {
 		//新建通知
 		addNew() {
 			this.lookType = 2;
-			this.infoModel = { id: '0', user: null };
+			this.infoModel = { id: this.$SCM.DEF_ID, user: null };
 		},
 		//回复通知
 		goReply(user) {
 			this.lookType = 2;
-			this.infoModel = { id: '0', user: user };
+			this.infoModel = { id: this.$SCM.DEF_ID, user: user };
 		},
 		//添加完成通知
 		sendComplete() {

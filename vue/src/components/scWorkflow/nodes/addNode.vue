@@ -44,7 +44,7 @@ export default {
 			var node = {}
 			if (type == 2) {
 				node = {
-					id: '0',
+					id: this.$SCM.DEF_ID,
 					nodeName: "审核人",
 					type: 2,			//节点类型
 					setType: 1,			//审核人类型
@@ -62,7 +62,7 @@ export default {
 				}
 			} else if (type == 3) {
 				node = {
-					id: '0',
+					id: this.$SCM.DEF_ID,
 					nodeName: "抄送人",
 					type: 3,
 					userSelectFlag: true,
@@ -72,7 +72,7 @@ export default {
 
 			} else if (type == 4) {
 				node = {
-					id: '0',
+					id: this.$SCM.DEF_ID,
 					nodeName: "条件路由",
 					type: 4,
 					conditionNodes: [

@@ -37,7 +37,7 @@ export default {
 	methods: {
 		def_data() {
 			return {
-				id: '0',
+				id: this.$SCM.DEF_ID,
 				owner_id: '0'
 			}
 		},

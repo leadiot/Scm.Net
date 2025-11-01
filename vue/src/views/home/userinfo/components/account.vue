@@ -37,7 +37,7 @@ export default {
 	data() {
 		return {
 			form: {
-				id: '0',
+				id: this.$SCM.DEF_ID,
 				codec: "",
 				names: "",
 				namec: "",

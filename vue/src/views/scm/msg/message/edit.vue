@@ -54,7 +54,7 @@ export default {
 	methods: {
 		def_data() {
 			return {
-				id: '0',
+				id: this.$SCM.DEF_ID,
 				tags: ['0'],
 				title: '',
 				remark: ''
@@ -75,10 +75,10 @@ export default {
 				if (valid) {
 					this.isSaveing = true;
 					let res = null;
-					if (this.formData.id === '0') {
-						res = await this.$API.scmmsgmessage.add.post(this.formData);
-					} else {
+					if (this.$SCM.is_valid_id(this.formData.id)) {
 						res = await this.$API.scmmsgmessage.update.put(this.formData);
+					} else {
+						res = await this.$API.scmmsgmessage.add.post(this.formData);
 					}
 					this.isSaveing = false;
 					if (res.code == 200) {

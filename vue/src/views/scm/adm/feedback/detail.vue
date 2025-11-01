@@ -65,7 +65,7 @@ export default {
 	methods: {
 		def_data() {
 			return {
-				id: '0',
+				id: this.$SCM.DEF_ID,
 				header_id: '0',
 				content: '',
 			}

@@ -96,7 +96,6 @@ export default {
 		return {
 			tableName: 'scm_sys_uom',
 			apiObj: this.$API.scmsysuom.page,
-			list: [],
 			param: {
 				types: this.$SCM.ID_ALL_INT,
 				modes: this.$SCM.ID_ALL_INT,

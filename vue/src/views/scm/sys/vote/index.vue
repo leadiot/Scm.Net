@@ -18,7 +18,7 @@
 			</div>
 		</el-header>
 		<el-main class="nopadding">
-			<scTable ref="table" :api-obj="apiObj" :column="column" :menu-column="menuColumn" row-key="id"
+			<scTable ref="table" :tableName="tableName" :api-obj="apiObj" :column="column" :menu-column="menuColumn" row-key="id"
 				@selection-change="selectionChange" @menu-handle="menuHandle">
 				<!-- 固定列-选择列 -->
 				<el-table-column fixed type="selection" width="60" />
@@ -61,7 +61,7 @@
 <script>
 import { defineAsyncComponent } from "vue";
 export default {
-	name: 'scm_vote',
+	name: 'scm_sys_vote',
 	components: {
 		voteHeader: defineAsyncComponent(() => import("./header")),
 		voteDetail: defineAsyncComponent(() => import("./detail")),
@@ -69,8 +69,8 @@ export default {
 	},
 	data() {
 		return {
+			tableName: 'scm_sys_vote',
 			apiObj: this.$API.scmsysvoteheader.page,
-			list: [],
 			param: {
 				key: "",
 			},

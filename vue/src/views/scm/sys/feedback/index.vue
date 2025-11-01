@@ -49,7 +49,6 @@ export default {
 		return {
 			tableName: 'scm_sys_feedback',
 			apiObj: this.$API.scmsysfeedback.page,
-			list: [],
 			param: {
 				unit_id: '0',
 				types: this.$SCM.ID_ALL_INT,

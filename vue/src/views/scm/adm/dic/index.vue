@@ -100,7 +100,6 @@ export default {
 		return {
 			tableName: 'scm_adm_dic',
 			apiObj: this.$API.scmadmdicdetail.page,
-			list: [],
 			showGrouploading: false,
 			groupFilterText: "",
 			group: [],

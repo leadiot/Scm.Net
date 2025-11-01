@@ -99,7 +99,6 @@ export default {
 		return {
 			tableName: 'scm_sys_export',
 			apiObj: this.$API.sysexportdetail.page,
-			list: [],
 			showGrouploading: false,
 			groupFilterText: "",
 			group: [],

@@ -18,7 +18,7 @@
 			</div>
 		</el-header>
 		<el-main class="nopadding">
-			<scTable ref="table" :api-obj="apiObj" :column="column" row-key="id" @menu-handle="menuHandle"
+			<scTable ref="table" :tableName="tableName" :api-obj="apiObj" :column="column" row-key="id" @menu-handle="menuHandle"
 				@selection-change="selectionChange">
 				<!-- 固定列-选择列 -->
 				<el-table-column fixed type="selection" align="center" width="60" />
@@ -64,8 +64,8 @@ export default {
 	},
 	data() {
 		return {
+			tableName: 'scm_ur_roleconflict',
 			apiObj: this.$API.scmurroleconflict.page,
-			list: [],
 			param: {
 				key: "",
 			},

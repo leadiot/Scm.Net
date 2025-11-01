@@ -43,16 +43,15 @@
 <script>
 import { defineAsyncComponent } from "vue";
 export default {
-	name: 'dev_gen',
+	name: 'scm_dev_gen',
 	components: {
 		column: defineAsyncComponent(() => import("./column")),
 		save: defineAsyncComponent(() => import("./save")),
 	},
 	data() {
 		return {
-			tableName: 'dev_code_gen',
+			tableName: 'scm_dev_gen',
 			apiObj: this.$API.scmdevgen.list,
-			list: [],
 			param: {
 				key: "",
 			},

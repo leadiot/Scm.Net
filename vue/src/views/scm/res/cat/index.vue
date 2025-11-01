@@ -90,7 +90,7 @@ export default {
 	},
 	data() {
 		return {
-			tableName: '',
+			tableName: 'scm_res_cat',
 			apiObj: this.$API.scmrescat.list,
 			param: {
 				app: '0',
@@ -98,7 +98,6 @@ export default {
 				create_time: '',
 				key: ''
 			},
-			list: [],
 			selection: [],
 			column: [
 				{ label: "id", prop: "id", hide: true },

@@ -82,7 +82,6 @@ export default {
 		return {
 			tableName: 'scm_sys_floworder',
 			apiObj: this.$API.scmsysfloworder.page,
-			list: [],
 			param: {
 				option_id: '0',
 				row_status: this.$SCM.DEF_STATUS,

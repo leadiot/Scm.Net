@@ -51,7 +51,7 @@
 			</div>
 		</el-header>
 		<el-main class="nopadding">
-			<scTable ref="table" :api-obj="apiObj" :column="column" row-key="id" @menu-handle="menuHandle"
+			<scTable ref="table" :tableName="tableName" :api-obj="apiObj" :column="column" row-key="id" @menu-handle="menuHandle"
 				@selection-change="selectionChange">
 				<el-table-column align="center" fixed type="selection" width="60" />
 				<el-table-column label="#" type="index" width="50"></el-table-column>
@@ -88,8 +88,8 @@ export default {
 	},
 	data() {
 		return {
+			tableName: 'scm_res_sms',
 			apiObj: this.$API.scmressms.page,
-			list: [],
 			param: {
 				option_id: 0,
 				row_status: this.$SCM.DEF_STATUS,

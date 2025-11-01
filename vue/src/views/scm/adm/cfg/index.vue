@@ -99,7 +99,6 @@ export default {
 		return {
 			tableName: 'scm_adm_cfg',
 			apiObj: this.$API.scmadmconfig.page,
-			list: [],
 			showGrouploading: false,
 			groupFilterText: "",
 			group: [],

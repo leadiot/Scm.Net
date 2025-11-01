@@ -52,7 +52,6 @@ export default {
 		return {
 			tableName: 'mgr_feedback',
 			apiObj: this.$API.scmadmfeedback.page,
-			list: [],
 			param: {
 				user_id: '0',
 				types: this.$SCM.ID_ALL_INT,

@@ -78,15 +78,14 @@
 <script>
 import { defineAsyncComponent } from "vue";
 export default {
-	name: 'dev_app',
+	name: 'scm_dev_app',
 	components: {
 		edit: defineAsyncComponent(() => import("./edit")),
 	},
 	data() {
 		return {
-			tableName: 'dev_app',
+			tableName: 'scm_dev_app',
 			apiObj: this.$API.scmdevapp.page,
-			list: [],
 			param: {
 				types: this.$SCM.ID_ALL_INT,
 				row_status: this.$SCM.DEF_STATUS,

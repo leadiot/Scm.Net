@@ -90,7 +90,6 @@ export default {
 		return {
 			serverApi: undefined,
 			apiObj: this.$API.scmsysadvinfo.page,
-			list: [],
 			showGrouploading: false,
 			groupFilterText: "",
 			group: [],

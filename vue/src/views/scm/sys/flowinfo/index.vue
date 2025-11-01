@@ -69,7 +69,6 @@ export default {
 		return {
 			tableName: 'scm_sys_flowinfo',
 			apiObj: this.$API.scmsysflowinfo.page,
-			list: [],
 			param: {
 				key: "",
 			},

@@ -68,7 +68,6 @@ export default {
 		return {
 			tableName: 'scm_sys_flowdata',
 			apiObj: this.$API.scmsysflowdata.page,
-			list: [],
 			param: {
 				option_id: '0',
 				row_status: this.$SCM.DEF_STATUS,

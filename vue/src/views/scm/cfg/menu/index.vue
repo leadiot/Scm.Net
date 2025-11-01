@@ -59,7 +59,6 @@ export default {
 	data() {
 		return {
 			apiObj: this.$API.scmcfgmenu.page,
-			list: [],
 			param: {
 				option_id: '0',
 				row_status: this.$SCM.DEF_STATUS,

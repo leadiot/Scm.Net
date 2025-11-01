@@ -81,12 +81,11 @@ export default {
 	},
 	data() {
 		return {
-			apiObj: this.$API.scmurorganize.list,
 			tableName: 'scm_ur_organize',
+			apiObj: this.$API.scmurorganize.list,
 			param: {
 				key: "",
 			},
-			list: [],
 			selection: [],
 			column: [
 				{ label: "id", prop: "id", hide: true },

@@ -101,7 +101,6 @@ export default {
 		return {
 			tableName: 'scm_task',
 			apiObj: this.$API.scmsysquartz.page,
-			list: [],
 			param: {
 				key: '',
 			},

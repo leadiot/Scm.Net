@@ -4,19 +4,6 @@ import tool from "@/utils/tool";
 
 const scm = {};
 
-/**默认ID */
-scm.DEF_ID = "0";
-/**系统ID */
-scm.SYS_ID = "1000000000000000001";
-/**单选ID */
-scm.ID_ONE = "0";
-/**单选ID整数 */
-scm.ID_ONE_INT = 0;
-/**所有ID */
-scm.ID_ALL = "1000000000000000001";
-/**所有ID整数 */
-scm.ID_ALL_INT = 0;
-
 /**默认头像 */
 scm.DEF_AVATAR = "0.png";
 
@@ -27,12 +14,26 @@ scm.REGEX_NAMEC = /^\S{4,64}$/;
 scm.REGEX_NAMEF = /^\S{4,128}$/;
 scm.REGEX_NUMBER = /^\d+$/;
 
+/**默认ID */
+scm.DEF_ID = "0";
+/**系统ID */
+scm.SYS_ID = "1000000000000000001";
+
+/**单选ID */
+scm.ID_ONE = "0";
+/**单选ID整数 */
+scm.ID_ONE_INT = 0;
+/**所有ID */
+scm.ID_ALL = "1000000000000000001";
+/**所有ID整数 */
+scm.ID_ALL_INT = 0;
+
 /**所有选项 */
 scm.OPTION_ALL = { label: "所有", id: scm.ID_ALL, value: scm.ID_ALL };
-/**请选择选项 */
-scm.OPTION_ONE = { label: "请选择", id: scm.ID_ONE, value: scm.ID_ONE };
 /**所有选项（整数） */
 scm.OPTION_ALL_INT = { label: "所有", id: scm.ID_ALL, value: scm.ID_ALL_INT };
+/**请选择选项 */
+scm.OPTION_ONE = { label: "请选择", id: scm.ID_ONE, value: scm.ID_ONE };
 /**请选择选项（整数） */
 scm.OPTION_ONE_INT = { label: "请选择", id: scm.ID_ONE, value: scm.ID_ONE_INT };
 

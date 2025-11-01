@@ -7,7 +7,7 @@
 		</el-form-item>
 		<el-form-item prop="pass">
 			<el-input v-model="form.pass" prefix-icon="el-icon-lock" clearable show-password
-				:placeholder="$t('login.PWPlaceholder')"></el-input>
+				:placeholder="$t('login.pwPlaceholder')"></el-input>
 		</el-form-item>
 		<el-form-item prop="code">
 			<el-input v-model.trim="form.code" :placeholder="$t('login.userCode')" clearable
@@ -52,7 +52,7 @@ export default {
 			},
 			rules: {
 				user: [{ required: true, trigger: "blur", message: this.$t("login.userError") }],
-				pass: [{ required: true, trigger: "blur", message: this.$t("login.PWError") }],
+				pass: [{ required: true, trigger: "blur", message: this.$t("login.pwError") }],
 				code: [{ required: true, trigger: "blur", message: "验证码不能空" }],
 			},
 			islogin: false,

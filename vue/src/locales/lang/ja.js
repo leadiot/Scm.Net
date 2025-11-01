@@ -8,8 +8,8 @@ export default {
 		signIn: 'ログイン',
 		userPlaceholder: 'ユーザ名/携帯電話/メールアドレス',
 		userError: 'ユーザ名を入力してください',
-		PWPlaceholder: 'パスワードを入力してください',
-		PWError: 'パスワードを入力してください',
+		pwPlaceholder: 'パスワードを入力してください',
+		pwError: 'パスワードを入力してください',
 		admin: '管理者',
 		user: 'ユーザー'
 	},

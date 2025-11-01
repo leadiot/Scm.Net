@@ -29,10 +29,7 @@ export default {
 		//设置主题颜色
 		const app_color = this.$CONFIG.COLOR || this.$TOOL.data.get("APP_COLOR");
 		if (app_color) {
-			document.documentElement.style.setProperty(
-				"--el-color-primary",
-				app_color
-			);
+			document.documentElement.style.setProperty("--el-color-primary", app_color);
 			for (let i = 1; i <= 9; i++) {
 				document.documentElement.style.setProperty(
 					`--el-color-primary-light-${i}`,

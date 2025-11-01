@@ -25,7 +25,7 @@
 				<el-button type="primary" @click="open_owner()" :disabled="selection.length != 1">修改负责人</el-button>
 			</div>
 			<div class="right-panel">
-				<el-input v-model="param.key" clearable placeholder="关键字">
+				<el-input v-model="param.key" clearable placeholder="关键字" @keyup.enter="search()">
 					<template #append>
 						<el-button type="primary" @click="search"><sc-icon name="sc-search" /></el-button>
 					</template>

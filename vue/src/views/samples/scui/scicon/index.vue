@@ -12,7 +12,7 @@
 				<el-color-picker v-model="color" :predefine="predefineColors" />
 			</div>
 			<div class="right-panel">
-				<el-input v-model="param.key" clearable placeholder="关键字">
+				<el-input v-model="param.key" clearable placeholder="关键字" @keyup.enter="search()">
 					<template #append>
 						<el-button type="primary" @click="search"><sc-icon name="sc-search" /></el-button>
 					</template>

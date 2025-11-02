@@ -3,13 +3,13 @@ using Com.Scm.Enums;
 using SqlSugar;
 using System.ComponentModel.DataAnnotations;
 
-namespace Com.Scm.Dev;
+namespace Com.Scm.Adm.Menu;
 
 /// <summary>
 /// 资源菜单表
 /// </summary>
 [SugarTable("scm_sys_menu")]
-public class MenuDao : ScmDataDao, ISortableDao, IDeleteDao
+public class AdmMenuDao : ScmDataDao, ISortableDao, IDeleteDao
 {
     /// <summary>
     /// 终端类型

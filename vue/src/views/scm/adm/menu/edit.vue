@@ -195,7 +195,7 @@ export default {
 		//保存
 		async save() {
 			this.loading = true;
-			var res = await this.$API.scmdevmenu.update.put(this.form);
+			var res = await this.$API.scmadmmenu.update.put(this.form);
 			this.loading = false;
 			if (res.code == 200) {
 				this.$emit("complete");
@@ -209,7 +209,7 @@ export default {
 		},
 		//表单注入数据
 		async setData(data) {
-			const res = await this.$API.scmdevmenu.model.get(data.id);
+			const res = await this.$API.scmadmmenu.model.get(data.id);
 			if (res.data) {
 				if (!res.data.icon) {
 					res.data.icon = "";

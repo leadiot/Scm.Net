@@ -1,4 +1,4 @@
-using Com.Scm.Dev;
+using Com.Scm.Adm.Menu;
 using Com.Scm.Dsa;
 using Com.Scm.Exceptions;
 using Com.Scm.Jwt;
@@ -166,7 +166,7 @@ namespace Com.Scm.Cfg.Menu
                 return true;
             }
 
-            var menuDao = await _thisRepository.Change<MenuDao>().GetByIdAsync(id);
+            var menuDao = await _thisRepository.Change<AdmMenuDao>().GetByIdAsync(id);
             if (menuDao == null)
             {
                 throw new BusinessException("无效的菜单信息！");

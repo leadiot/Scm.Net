@@ -1,24 +1,16 @@
-﻿using Com.Scm.Dto;
+﻿using Com.Scm.Dvo;
 using Com.Scm.Enums;
-using System.ComponentModel.DataAnnotations;
 
-namespace Com.Scm.Dev
+namespace Com.Scm.Adm.Menu.Dvo
 {
-    public class DevMenuDto : ScmDataDto
+    /// <summary>
+    /// 
+    /// </summary>
+    public class AdmMenuDvo : ScmDataDvo
     {
-        public const long HOME_ID = 1000000000000000010L;
-        public const long FAV_ID = 1000000000000000020L;
-
-        /// <summary>
-        /// 应用
-        /// </summary>
-        [Required]
-        public ScmClientTypeEnum client { get; set; }
-
         /// <summary>
         /// 菜单类型
         /// </summary>
-        [Required]
         public ScmMenuTypesEnum types { get; set; }
 
         /// <summary>
@@ -34,8 +26,6 @@ namespace Com.Scm.Dev
         /// <summary>
         /// 菜单名称
         /// </summary>
-        [Required]
-        [StringLength(32)]
         public string namec { get; set; }
 
         /// <summary>
@@ -44,9 +34,14 @@ namespace Com.Scm.Dev
         public long pid { get; set; }
 
         /// <summary>
+        /// 菜单层级
+        /// </summary>
+        public int layer { get; set; }
+
+        /// <summary>
         /// 路由地址
         /// </summary>
-        public string uri { get; set; }
+        public string url { get; set; }
 
         /// <summary>
         /// 重定向
@@ -74,27 +69,14 @@ namespace Com.Scm.Dev
         public string color { get; set; }
 
         /// <summary>
-        /// 菜单层级
+        /// 排序
         /// </summary>
-        [Required]
-        public int layer { get; set; } = 1;
+        public int od { get; set; }
 
         /// <summary>
-        /// 显示排序
-        /// </summary>
-        [Required]
-        public int od { get; set; } = 1;
-
-        /// <summary>
-        /// 是否可用
+        /// 是否显示
         /// </summary>
         public bool visible { get; set; }
-
-        /// <summary>
-        /// 是否使能
-        /// </summary>
-        public bool enabled { get; set; }
-
         /// <summary>
         /// 是否全屏
         /// </summary>
@@ -108,26 +90,5 @@ namespace Com.Scm.Dev
         /// 接口权限
         /// </summary>
         public List<SysMenuApiUrl> api { get; set; } = new();
-    }
-
-    /// <summary>
-    /// 接口权限
-    /// </summary>
-    public class SysMenuApiUrl
-    {
-        /// <summary>
-        /// 权限标识
-        /// </summary>
-        public string code { get; set; }
-
-        /// <summary>
-        /// 方法
-        /// </summary>
-        public string method { get; set; }
-
-        /// <summary>
-        /// Api url
-        /// </summary>
-        public string url { get; set; }
     }
 }

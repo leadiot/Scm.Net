@@ -84,10 +84,10 @@ module.exports = defineConfig({
 			'vue-router': 'VueRouter',
 			'vuex': 'Vuex',
 			'axios': 'axios',
-			// 'element-plus': 'ElementPlus',
+			'element-plus': 'ElementPlus',
 			'element-icons': 'ElementPlusIconsVue',
 			'echarts': 'echarts',
-			// 'xlsx': 'Xlsx',
+			'xlsx': 'XLSX',
 			'highlight.js': 'highlight.js',
 			'wang-editor': 'wangEditor',
 			'editorjs': 'editorjs'

@@ -1,4 +1,4 @@
-﻿using Com.Scm.Dev;
+﻿using Com.Scm.Adm.Menu;
 
 namespace Com.Scm.Ur.RoleAuth.Dvo;
 

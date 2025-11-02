@@ -1373,7 +1373,7 @@ public class OperatorService : ApiService
         var menuIds = roleAuthList.Select(m => m.auth_id).ToList();
 
         //根据菜单ID查询菜单详细
-        var menuList = await _SqlClient.Queryable<Dev.MenuDao>()
+        var menuList = await _SqlClient.Queryable<Adm.Menu.AdmMenuDao>()
             .Where(a => menuIds.Contains(a.id) && a.row_status == ScmRowStatusEnum.Enabled)
             .WhereIF(client != ScmClientTypeEnum.None, a => a.client == client)
             .WhereIF(!string.IsNullOrWhiteSpace(lang), a => a.lang == lang)
@@ -1421,7 +1421,7 @@ public class OperatorService : ApiService
     /// <param name="menuList"></param>
     /// <param name="pId"></param>
     /// <returns></returns>
-    private List<AuthorityDvo> RecursiveModuleSc(List<Dev.MenuDao> menuList, long pId)
+    private List<AuthorityDvo> RecursiveModuleSc(List<Adm.Menu.AdmMenuDao> menuList, long pId)
     {
         var result = new List<AuthorityDvo>();
         foreach (var item in menuList.Where(m => m.pid == pId).OrderBy(m => m.od))

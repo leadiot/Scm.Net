@@ -123,7 +123,7 @@ export default {
 			this.roleTree = this.$TOOL.changeTree(_tree);
 
 			this.menuloading = true;
-			var resMenu = await this.$API.scmdevmenu.list.get();
+			var resMenu = await this.$API.scmsysmenu.list.get();
 			this.menuloading = false;
 			let menutree = [];
 			resMenu.data.some((m) => {

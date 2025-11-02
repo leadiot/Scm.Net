@@ -22,7 +22,7 @@ export default {
 		userPlaceholder: "用户名",
 		userError: "请输入用户名",
 		pwPlaceholder: "请输入密码",
-		pwWError: "请输入密码",
+		pwError: "请输入密码",
 		admin: "管理员",
 		user: "用户",
 		smsPlaceholder: "短信验证码",

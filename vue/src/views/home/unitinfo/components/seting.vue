@@ -47,7 +47,7 @@ export default {
 			menuIsCollapse: this.$store.state.global.menuIsCollapse,
 			layoutTags: this.$store.state.global.layoutTags,
 			lang: this.$TOOL.data.get('APP_LANG') || this.$CONFIG.LANG,
-			dark: this.$TOOL.data.get('APP_DARK') || false,
+			dark: this.$TOOL.data.get('APP_THEME') == 'dark',
 			colorList: this.$CONFIG.PREDEFINE_COLORS,
 			colorPrimary: this.$TOOL.data.get('APP_COLOR') || this.$CONFIG.COLOR || '#409EFF'
 		}
@@ -65,10 +65,10 @@ export default {
 		dark(val) {
 			if (val) {
 				document.documentElement.classList.add("dark")
-				this.$TOOL.data.set("APP_DARK", val)
+				this.$TOOL.data.set("APP_THEME", "dark")
 			} else {
 				document.documentElement.classList.remove("dark")
-				this.$TOOL.data.remove("APP_DARK")
+				this.$TOOL.data.remove("APP_THEME")
 			}
 		},
 		lang(val) {

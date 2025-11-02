@@ -15,10 +15,6 @@
 	<link rel="stylesheet" href="index.css" />
 	<script type="text/javascript">
 		document.write("<script src='config.js?" + new Date().getTime() + "'><\/script>");
-		var theme = window.localStorage.getItem('APP_THEME');
-		if (theme) {
-			document.body.setAttribute('data-theme', JSON.parse(theme))
-		}
 	</script>
 </head>
 
@@ -43,7 +39,6 @@
 			</div>
 		</div>
 	</div>
-	<!-- built files will be auto injected -->
 	<div id="versionCheck" class="lower-version" style="display: none;">
 		<h2>当前使用的浏览器内核版本过低 :(</h2>
 		<p>当前版本：<span id="versionCheck-type">--</span> <span id="versionCheck-version">--</span></p>

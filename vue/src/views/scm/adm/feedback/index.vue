@@ -28,7 +28,7 @@
 			</div>
 		</el-header>
 		<el-main class="nopadding">
-			<scTable ref="table" :tableName="tableName" :api-obj="apiObj" :column="column" row-key="id"
+			<scTable ref="table" :table-name="tableName" :api-obj="apiObj" :column="column" row-key="id"
 				@menu-handle="menuHandle" @selection-change="selectionChange">
 				<el-table-column align="center" fixed type="selection" width="60" />
 				<el-table-column label="#" type="index" width="50"></el-table-column>
@@ -52,11 +52,10 @@ export default {
 		return {
 			tableName: 'mgr_feedback',
 			apiObj: this.$API.scmadmfeedback.page,
-			list: [],
 			param: {
 				user_id: '0',
-				types: 0,
-				row_status: 1,
+				types: this.$SCM.ID_ALL_INT,
+				row_status: this.$SCM.DEF_STATUS,
 				create_time: '',
 				key: ''
 			},
@@ -75,13 +74,13 @@ export default {
 				{ prop: 'create_time', label: '创建时间', width: 160, formatter: this.$TOOL.dateTimeFormat },
 				{ prop: 'create_names', label: '创建人员', width: 100 },
 			],
-			row_status_list: [],
-			types_list: [],
+			row_status_list: [this.$SCM.OPTION_ALL_INT],
+			types_list: [this.$SCM.OPTION_ALL_INT],
 			user_list: [],
 		};
 	},
 	mounted() {
-		this.$SCM.list_status(this.row_status_list);
+		this.$SCM.list_status(this.row_status_list, true);
 		this.$SCM.list_dic(this.types_list, 'feedback_type', true);
 		this.$SCM.list_option(this.user_list, this.$API.scmmgrunit.option, 0, true);
 	},

@@ -21,7 +21,7 @@
 						</el-button>
 						<template #dropdown>
 							<el-dropdown-menu>
-								<el-dropdown-item v-for="item in lang" :key="item.value" :command="item"
+								<el-dropdown-item v-for="item in lang_list" :key="item.value" :command="item"
 									:class="{ selected: config.lang == item.value }">{{ item.name }}</el-dropdown-item>
 							</el-dropdown-menu>
 						</template>
@@ -103,15 +103,18 @@ export default {
 		var lang = this.$TOOL.getCache("APP_LANG") || this.$CONFIG.LANG;
 		this.$i18n.locale = lang;
 
+		var dark = this.$TOOL.getCache("APP_THEME") == "dark";
+		if (dark) {
+			document.documentElement.classList.add("dark");
+		} else {
+			document.documentElement.classList.remove("dark");
+		}
+
 		return {
 			config: {
 				lang: lang,
-				dark: this.$TOOL.getCache("APP_DARK") || false,
+				dark: dark,
 			},
-			lang: [
-				{ name: "简体中文", value: "zh-cn", },
-				{ name: "English", value: "en", },
-			],
 			info: {},
 			theme: {
 				page: {
@@ -125,16 +128,20 @@ export default {
 				}
 			},
 			mode: [10],
+			lang_list: [
+				{ name: "简体中文", value: "zh-cn", },
+				{ name: "English", value: "en", },
+			],
 		};
 	},
 	watch: {
 		"config.dark"(val) {
 			if (val) {
 				document.documentElement.classList.add("dark");
-				this.$TOOL.setCache("APP_DARK", val);
+				this.$TOOL.setCache("APP_THEME", "dark");
 			} else {
 				document.documentElement.classList.remove("dark");
-				this.$TOOL.removeCache("APP_DARK");
+				this.$TOOL.removeCache("APP_THEME");
 			}
 		},
 		"config.lang"(val) {
@@ -154,13 +161,13 @@ export default {
 		this.$store.commit("clearIframeList");
 	},
 	mounted() {
+		this.mode = this.$CONFIG.DEF_LOGIN_MODE;
+
 		this.loadInfo();
 		this.loadTheme();
 	},
 	methods: {
 		async loadInfo() {
-			this.mode = this.$CONFIG.DEF_LOGIN_MODE;
-			//var res = await this.$API.scmdevapp.model.get({ 'code': this.$CONFIG.APP_CODE });
 			var res = await this.$API.scmsysapp.model.get(this.$CONFIG.APP_CODE);
 			if (res == null || res.code != 200) {
 				return;

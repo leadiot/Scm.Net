@@ -53,9 +53,9 @@ export default {
 					{ required: true, trigger: "blur", message: "编码不能为空" },
 				]
 			},
-			types_list: [this.$SCM.OPTION_ALL],
-			org_list: [this.$SCM.OPTION_ALL],
-			app_list: [this.$SCM.OPTION_ALL],
+			types_list: [this.$SCM.OPTION_ONE_INT],
+			org_list: [this.$SCM.OPTION_ONE],
+			app_list: [this.$SCM.OPTION_ONE],
 		};
 	},
 	mounted() {
@@ -65,7 +65,7 @@ export default {
 	methods: {
 		def_data() {
 			return {
-				id: '0',
+				id: this.$SCM.DEF_ID,
 				types: this.$SCM.ID_ONE_INT,
 				codec: '',
 				sign: '',
@@ -92,10 +92,10 @@ export default {
 
 				this.isSaveing = true;
 				let res = null;
-				if (this.formData.id === '0') {
-					res = await this.$API.scmfesext.add.post(this.formData);
-				} else {
+				if (this.$SCM.is_valid_id(this.formData.id)) {
 					res = await this.$API.scmfesext.update.put(this.formData);
+				} else {
+					res = await this.$API.scmfesext.add.post(this.formData);
 				}
 				this.isSaveing = false;
 

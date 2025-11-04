@@ -43,7 +43,7 @@
 			</div>
 		</el-header>
 		<el-main class="nopadding">
-			<scTable ref="table" :tableName="tableName" :api-obj="apiObj" :column="column" row-key="id"
+			<scTable ref="table" :table-name="tableName" :api-obj="apiObj" :column="column" row-key="id"
 				@menu-handle="menuHandle" @selection-change="selectionChange">
 				<el-table-column align="center" fixed type="selection" width="60" />
 				<el-table-column label="#" type="index" width="50"></el-table-column>
@@ -78,18 +78,17 @@
 <script>
 import { defineAsyncComponent } from "vue";
 export default {
-	name: 'dev_app',
+	name: 'scm_dev_app',
 	components: {
 		edit: defineAsyncComponent(() => import("./edit")),
 	},
 	data() {
 		return {
-			tableName: 'dev_app',
+			tableName: 'scm_dev_app',
 			apiObj: this.$API.scmdevapp.page,
-			list: [],
 			param: {
-				types: 0,
-				row_status: 1,
+				types: this.$SCM.ID_ALL_INT,
+				row_status: this.$SCM.DEF_STATUS,
 				create_time: '',
 				key: ''
 			},
@@ -105,13 +104,13 @@ export default {
 				{ prop: 'create_time', label: '创建时间', width: "160", sortable: true, formatter: this.$TOOL.dateTimeFormat },
 				{ prop: 'create_names', label: '创建人员', width: 100 },
 			],
-			row_status_list: [],
-			app_types_list: [],
+			row_status_list: [this.$SCM.OPTION_ALL_INT],
+			app_types_list: [this.$SCM.OPTION_ALL_INT],
 		};
 	},
 	mounted() {
 		this.$SCM.list_dic(this.app_types_list, 'app_types', true);
-		this.$SCM.list_status(this.row_status_list);
+		this.$SCM.list_status(this.row_status_list, true);
 	},
 	methods: {
 		complete() {

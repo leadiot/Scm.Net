@@ -57,7 +57,7 @@ export default {
 				height: 120,
 			},
 			format_list: [this.$SCM.OPTION_ONE],
-			position_list: [this.$SCM.OPTION_ONE],
+			position_list: [this.$SCM.OPTION_ONE_INT],
 			option_list: [],
 			font_list: [this.$SCM.OPTION_ONE],
 			barcodes: [],

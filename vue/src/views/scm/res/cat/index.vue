@@ -42,7 +42,7 @@
 				</el-button-group>
 			</div>
 			<div class="right-panel">
-				<el-input v-model="param.key" clearable placeholder="关键字">
+				<el-input v-model="param.key" clearable placeholder="关键字" @keyup.enter="search()">
 					<template #append>
 						<el-button type="primary" @click="search()"><sc-icon name="sc-search" /></el-button>
 					</template>
@@ -51,7 +51,7 @@
 			</div>
 		</el-header>
 		<el-main class="nopadding">
-			<scTable ref="table" :tableName="tableName" :api-obj="apiObj" :column="column" hide-pagination is-tree
+			<scTable ref="table" :table-name="tableName" :api-obj="apiObj" :column="column" hide-pagination is-tree
 				row-key="id" @menu-handle="menuHandle" @selection-change="selectionChange">
 				<el-table-column align="center" fixed type="selection" width="60" />
 				<el-table-column label="操作" align="center" fixed="right" width="140">
@@ -90,15 +90,14 @@ export default {
 	},
 	data() {
 		return {
-			tableName: '',
+			tableName: 'scm_res_cat',
 			apiObj: this.$API.scmrescat.list,
 			param: {
 				app: '0',
-				row_status: 1,
+				row_status: this.$SCM.DEF_STATUS,
 				create_time: '',
 				key: ''
 			},
-			list: [],
 			selection: [],
 			column: [
 				{ label: "id", prop: "id", hide: true },
@@ -113,13 +112,13 @@ export default {
 				{ prop: 'create_time', label: '创建时间', width: 160, formatter: this.$TOOL.dateTimeFormat },
 				{ prop: 'create_names', label: '创建人员', width: 100 },
 			],
-			row_status_list: [],
+			row_status_list: [this.$SCM.OPTION_ALL_INT],
 			app_list: [],
 		};
 	},
 	mounted() {
 		this.$SCM.list_app(this.app_list, 0, true);
-		this.$SCM.list_status(this.row_status_list);
+		this.$SCM.list_status(this.row_status_list, true);
 	},
 	methods: {
 		complete() {

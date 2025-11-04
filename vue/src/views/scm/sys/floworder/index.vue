@@ -33,7 +33,7 @@
 				</el-button-group>
 			</div>
 			<div class="right-panel">
-				<el-input v-model="param.key" clearable placeholder="关键字">
+				<el-input v-model="param.key" clearable placeholder="关键字" @keyup.enter="search()">
 					<template #append>
 						<el-button type="primary" @click="search()"><sc-icon name="sc-search" /></el-button>
 					</template>
@@ -82,10 +82,9 @@ export default {
 		return {
 			tableName: 'scm_sys_floworder',
 			apiObj: this.$API.scmsysfloworder.page,
-			list: [],
 			param: {
 				option_id: '0',
-				row_status: 1,
+				row_status: this.$SCM.DEF_STATUS,
 				create_time: '',
 				key: ''
 			},
@@ -100,7 +99,7 @@ export default {
 				{ prop: "create_names", label: "创建人员", width: 100, },
 				{ prop: "create_time", label: "创建时间", width: 160, formatter: this.$TOOL.dateTimeFormat },
 			],
-			row_status_list: [this.$SCM.OPTION_ALL],
+			row_status_list: [this.$SCM.OPTION_ALL_INT],
 			option_list: [this.$SCM.OPTION_ALL],
 		};
 	},

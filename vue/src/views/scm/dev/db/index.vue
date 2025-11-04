@@ -39,7 +39,7 @@
 				</el-button-group>
 			</div>
 			<div class="right-panel">
-				<el-input v-model="param.key" clearable placeholder="关键字">
+				<el-input v-model="param.key" clearable placeholder="关键字" @keyup.enter="search()">
 					<template #append>
 						<el-button type="primary" @click="search()"><sc-icon name="sc-search" /></el-button>
 					</template>
@@ -48,7 +48,7 @@
 			</div>
 		</el-header>
 		<el-main class="nopadding">
-			<scTable ref="table" :tableName="tableName" :api-obj="apiObj" :column="column" row-key="id"
+			<scTable ref="table" :table-name="tableName" :api-obj="apiObj" :column="column" row-key="id"
 				@menu-handle="menuHandle" @selection-change="selectionChange">
 				<el-table-column align="center" fixed type="selection" width="60" />
 				<el-table-column label="#" type="index" width="50"></el-table-column>
@@ -83,18 +83,17 @@
 <script>
 import { defineAsyncComponent } from "vue";
 export default {
-	name: 'dev_db',
+	name: 'scm_dev_db',
 	components: {
 		edit: defineAsyncComponent(() => import("./edit")),
 	},
 	data() {
 		return {
-			tableName: 'dev_db',
+			tableName: 'scm_dev_db',
 			apiObj: this.$API.scmdevdb.page,
-			list: [],
 			param: {
 				option_id: '0',
-				row_status: 1,
+				row_status: this.$SCM.DEF_STATUS,
 				create_time: '',
 				key: ''
 			},
@@ -113,7 +112,7 @@ export default {
 				{ prop: 'create_time', label: '创建时间', width: "160", sortable: true, formatter: this.$TOOL.dateTimeFormat },
 				{ prop: 'create_names', label: '创建人员', width: 100 },
 			],
-			row_status_list: [this.$SCM.OPTION_ALL],
+			row_status_list: [this.$SCM.OPTION_ALL_INT],
 		};
 	},
 	mounted() {

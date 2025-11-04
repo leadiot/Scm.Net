@@ -1,5 +1,5 @@
+using Com.Scm.Adm.Menu;
 using Com.Scm.Dao;
-using Com.Scm.Dev;
 using Com.Scm.Enums;
 using SqlSugar;
 using System.ComponentModel.DataAnnotations;

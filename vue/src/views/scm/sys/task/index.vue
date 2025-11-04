@@ -46,7 +46,7 @@
 			</div>
 		</el-header>
 		<el-main class="nopadding">
-			<scTable ref="table" :api-obj="apiObj" :column="column" row-key="id" @menu-handle="menuHandle"
+			<scTable ref="table" :table-name="tableName" :api-obj="apiObj" :column="column" row-key="id" @menu-handle="menuHandle"
 				@selection-change="selectionChange">
 				<el-table-column align="center" fixed type="selection" width="60" />
 				<el-table-column label="#" type="index" width="50"></el-table-column>
@@ -88,13 +88,13 @@ export default {
 	},
 	data() {
 		return {
+			tableName: 'scm_sys_task',
 			apiObj: this.$API.scmsystask.page,
-			list: [],
 			param: {
-				types: '0',
-				handle: '0',
-				result: '0',
-				row_status: 1,
+				types: this.$SCM.ID_ALL_INT,
+				handle: this.$SCM.ID_ALL_INT,
+				result: this.$SCM.ID_ALL_INT,
+				row_status: this.$SCM.DEF_STATUS,
 				create_time: '',
 				key: ''
 			},
@@ -116,17 +116,17 @@ export default {
 				{ prop: 'create_time', label: '创建时间', width: 160, formatter: this.$TOOL.dateTimeFormat },
 				{ prop: 'create_names', label: '创建人员', width: 100 },
 			],
-			row_status_list: [],
-			types_list: [],
-			handle_list: [],
-			result_list: [],
+			row_status_list: [this.$SCM.OPTION_ALL_INT],
+			types_list: [this.$SCM.OPTION_ALL_INT],
+			handle_list: [this.$SCM.OPTION_ALL_INT],
+			result_list: [this.$SCM.OPTION_ALL_INT],
 		};
 	},
 	mounted() {
 		this.$SCM.list_dic(this.types_list, 'task_type', true);
 		this.$SCM.list_dic(this.handle_list, 'task_handle', true);
 		this.$SCM.list_dic(this.result_list, 'task_result', true);
-		this.$SCM.list_status(this.row_status_list);
+		this.$SCM.list_status(this.row_status_list, true);
 	},
 	methods: {
 		complete() {

@@ -13,7 +13,7 @@
 			</div>
 		</el-header>
 		<el-main class="nopadding">
-			<scTable ref="table" :tableName="tableName" :api-obj="apiObj" :column="column" row-key="id"
+			<scTable ref="table" :table-name="tableName" :api-obj="apiObj" :column="column" row-key="id"
 				:hidePagination="true" :hideDo="true" :hide-context-menu="false" @selection-change="selectionChange">
 				<!-- 固定列-选择列 -->
 				<el-table-column fixed type="selection" width="60" align="center" />
@@ -43,16 +43,15 @@
 <script>
 import { defineAsyncComponent } from "vue";
 export default {
-	name: 'dev_gen',
+	name: 'scm_dev_gen',
 	components: {
 		column: defineAsyncComponent(() => import("./column")),
 		save: defineAsyncComponent(() => import("./save")),
 	},
 	data() {
 		return {
-			tableName: 'dev_code_gen',
+			tableName: 'scm_dev_gen',
 			apiObj: this.$API.scmdevgen.list,
-			list: [],
 			param: {
 				key: "",
 			},

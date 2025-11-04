@@ -27,7 +27,7 @@ export default {
                     { required: true, trigger: "blur", message: "请选择权限类型" },
                 ],
             },
-            data_list: [],
+            data_list: [this.$SCM.OPTION_ONE_INT],
         };
     },
     mounted() {
@@ -36,8 +36,8 @@ export default {
     methods: {
         def_data() {
             return {
-                id: '0',
-                data: 0
+                id: this.$SCM.DEF_ID,
+                data: this.$SCM.ID_ONE_INT
             };
         },
         async open(row) {

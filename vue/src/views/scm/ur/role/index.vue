@@ -23,7 +23,7 @@
 				</el-button-group>
 			</div>
 			<div class="right-panel">
-				<el-input v-model="param.key" clearable placeholder="关键字">
+				<el-input v-model="param.key" clearable placeholder="关键字" @keyup.enter="search()">
 					<template #append>
 						<el-button type="primary" @click="search()"><sc-icon name="sc-search" /></el-button>
 					</template>
@@ -43,7 +43,8 @@
 						<el-divider direction="vertical" />
 						<el-popconfirm title="确定删除吗？" @confirm="delete_item(scope.row, scope.$index)">
 							<template #reference>
-								<el-button text :disabled="scope.row.isSystem" type="primary" size="small">删除</el-button>
+								<el-button text :disabled="scope.row.isSystem" type="primary"
+									size="small">删除</el-button>
 							</template>
 						</el-popconfirm>
 					</template>

@@ -10,7 +10,7 @@
 				</el-button>
 			</div>
 			<div class="right-panel">
-				<el-input v-model="param.key" clearable placeholder="关键字">
+				<el-input v-model="param.key" clearable placeholder="关键字" @keyup.enter="search()">
 					<template #append>
 						<el-button type="primary" @click="search()"><sc-icon name="sc-search" /></el-button>
 					</template>
@@ -18,7 +18,7 @@
 			</div>
 		</el-header>
 		<el-main class="nopadding">
-			<scTable ref="table" :api-obj="apiObj" :column="column" row-key="id" @menu-handle="menuHandle"
+			<scTable ref="table" :table-name="tableName" :api-obj="apiObj" :column="column" row-key="id" @menu-handle="menuHandle"
 				@selection-change="selectionChange">
 				<!-- 固定列-选择列 -->
 				<el-table-column fixed type="selection" align="center" width="60" />
@@ -64,8 +64,8 @@ export default {
 	},
 	data() {
 		return {
+			tableName: 'scm_ur_roleconflict',
 			apiObj: this.$API.scmurroleconflict.page,
-			list: [],
 			param: {
 				key: "",
 			},

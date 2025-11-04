@@ -41,7 +41,7 @@
 				</div>
 			</el-header>
 			<el-main class="nopadding">
-				<scTable ref="table" :tableName="tableName" :api-obj="apiObj" :column="column" row-key="id"
+				<scTable ref="table" :table-name="tableName" :api-obj="apiObj" :column="column" row-key="id"
 					@menu-handle="menuHandle" @selection-change="selectionChange">
 					<!-- 固定列-选择列 -->
 					<el-table-column fixed type="selection" width="60" />
@@ -104,8 +104,6 @@ export default {
 			apiObj: this.$API.scmuruser.page,
 			showGrouploading: false,
 			groupFilterText: "",
-			group: [],
-			list: [],
 			param: {
 				key: "",
 			},
@@ -128,6 +126,7 @@ export default {
 				{ prop: "create_names", label: "创建人员", width: "100", },
 				{ prop: "create_time", label: "创建时间", width: "160", formatter: this.$TOOL.dateTimeFormat },
 			],
+			group: [],
 			sex_list: [],
 		};
 	},

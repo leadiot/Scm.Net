@@ -177,7 +177,7 @@ export default {
 				api_parameter: "",
 				dll_uri: "",
 				dll_method: "",
-				id: '0',
+				id: this.$SCM.DEF_ID,
 			};
 		},
 		save() {
@@ -185,12 +185,10 @@ export default {
 				if (valid) {
 					this.isSaveing = true;
 					let res = null;
-					if (this.formData.id === '0') {
-						res = await this.$API.scmsysquartz.add.post(this.formData);
+					if (this.$SCM.is_valid_id(this.formData.id)) {
+						res = await this.$API.scmsysquartz.update.put(this.formData);
 					} else {
-						res = await this.$API.scmsysquartz.update.put(
-							this.formData
-						);
+						res = await this.$API.scmsysquartz.add.post(this.formData);
 					}
 					this.isSaveing = false;
 					if (res.code == 200) {

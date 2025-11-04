@@ -40,7 +40,7 @@ export default {
 			visible: false,
 			isSaveing: false,
 			formData: {
-				id: '0',
+				id: this.$SCM.DEF_ID,
 				codec: '',
 				namec: '',
 				names: '',
@@ -76,10 +76,10 @@ export default {
 				if (valid) {
 					this.isSaveing = true;
 					let res = null;
-					if (this.formData.id === '0') {
-						res = await this.$API.samplesbook.add.post(this.formData);
-					} else {
+					if (this.$SCM.is_valid_id(this.formData.id)) {
 						res = await this.$API.samplesbook.save.put(this.formData);
+					} else {
+						res = await this.$API.samplesbook.add.post(this.formData);
 					}
 					this.isSaveing = false;
 					if (res.code == 200) {
@@ -94,7 +94,7 @@ export default {
 		},
 		close() {
 			this.formData = {
-				id: '0',
+				id: this.$SCM.DEF_ID,
 				option_id: 0,
 				text: ''
 			};

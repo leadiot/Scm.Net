@@ -91,10 +91,10 @@ export default {
 					{ required: true, trigger: "blur", message: "单位名称不能为空" }
 				],
 			},
-			types_list: [this.$SCM.OPTION_ONE],
-			modes_list: [this.$SCM.OPTION_ONE],
-			kinds_list: [this.$SCM.OPTION_ONE],
-			lang_list: [this.$SCM.OPTION_ONE],
+			types_list: [this.$SCM.OPTION_ONE_INT],
+			modes_list: [this.$SCM.OPTION_ONE_INT],
+			kinds_list: [this.$SCM.OPTION_ONE_INT],
+			lang_list: [this.$SCM.OPTION_ONE_INT],
 		};
 	},
 	mounted() {
@@ -106,12 +106,12 @@ export default {
 	methods: {
 		def_data() {
 			return {
-				id: '0',
-				types: 0,
-				modes: 0,
-				kinds: 0,
+				id: this.$SCM.DEF_ID,
+				types: this.$SCM.ID_ALL_INT,
+				modes: this.$SCM.ID_ALL_INT,
+				kinds: this.$SCM.ID_ALL_INT,
 				od: 0,
-				lang: 0,
+				lang: this.$SCM.ID_ALL_INT,
 				codec: '',
 				namec: '',
 				symbol: '',
@@ -135,10 +135,10 @@ export default {
 
 				this.isSaveing = true;
 				let res = null;
-				if (this.formData.id === '0') {
-					res = await this.$API.scmsysuom.add.post(this.formData);
-				} else {
+				if (this.$SCM.is_valid_id(this.formData.id)) {
 					res = await this.$API.scmsysuom.update.put(this.formData);
+				} else {
+					res = await this.$API.scmsysuom.add.post(this.formData);
 				}
 				this.isSaveing = false;
 

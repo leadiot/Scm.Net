@@ -1,6 +1,6 @@
 export default {
 	login: {
-		slogan: "云端平台管理系统",
+		slogan: "",
 		describe: "",
 		signInTitle: "用户登录",
 		accountLogin: "账号登录",
@@ -21,8 +21,8 @@ export default {
 		signIn: "登录",
 		userPlaceholder: "用户名",
 		userError: "请输入用户名",
-		PWPlaceholder: "请输入密码",
-		PWError: "请输入密码",
+		pwPlaceholder: "请输入密码",
+		pwError: "请输入密码",
 		admin: "管理员",
 		user: "用户",
 		smsPlaceholder: "短信验证码",
@@ -38,12 +38,11 @@ export default {
 		wechatLoginResult: "已扫描 | 请在设备中点击授权登录",
 	},
 	user: {
-		dynamic: "近期动态",
 		info: "个人信息",
 		settings: "设置",
-		nightmode: "黑夜模式",
+		nightmode: "夜间模式",
 		nightmode_msg: "适合光线较弱的环境",
 		language: "语言",
-		language_msg: "翻译进行中，暂翻译了本视图的文本",
+		language_msg: "当前语言为中文",
 	},
 };

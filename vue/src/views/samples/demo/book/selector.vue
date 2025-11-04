@@ -5,7 +5,7 @@
                 <div class="left-panel">
                 </div>
                 <div class="right-panel">
-                    <el-input v-model="param.key" clearable placeholder="关键字">
+                    <el-input v-model="param.key" clearable placeholder="关键字" @keyup.enter="search()">
                         <template #append>
                             <el-button type="primary" @click="search()"><sc-icon name="sc-search" /></el-button>
                         </template>
@@ -40,7 +40,7 @@ export default {
             visible: false,
             isSaveing: false,
             param: {
-                row_status: 1,
+                row_status: this.$SCM.DEF_STATUS,
                 key: ''
             },
             selection: [],
@@ -56,7 +56,7 @@ export default {
                 { prop: 'create_time', label: '创建时间', width: 160, formatter: this.$TOOL.dateTimeFormat },
                 { prop: 'create_names', label: '创建人员', width: 100 },
             ],
-            id: '0',
+            id: this.$SCM.DEF_ID,
             api: null,
         };
     },

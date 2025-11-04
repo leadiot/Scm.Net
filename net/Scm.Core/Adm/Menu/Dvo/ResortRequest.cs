@@ -1,0 +1,41 @@
+﻿namespace Com.Scm.Adm.Menu.Dvo;
+
+/// <summary>
+/// 
+/// </summary>
+public class ResortRequest
+{
+    /// <summary>
+    /// 拖动节点
+    /// </summary>
+    public SysMenuDropModelDto DragNode { get; set; }
+
+    /// <summary>
+    /// 跌落节点
+    /// </summary>
+    public SysMenuDropModelDto DropNode { get; set; }
+
+    /// <summary>
+    /// 模式   before 向上  after 向下  inner 变更为子级
+    /// </summary>
+    public string SortType { get; set; }
+
+    /// <summary>
+    /// 拖拽对象
+    /// </summary>
+    public class SysMenuDropModelDto
+    {
+        /// <summary>
+        /// 
+        /// </summary>
+        public long Id { get; set; }
+        /// <summary>
+        /// 
+        /// </summary>
+        public string Label { get; set; }
+        /// <summary>
+        /// 
+        /// </summary>
+        public long ParentId { get; set; }
+    }
+}

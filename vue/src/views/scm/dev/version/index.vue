@@ -45,7 +45,7 @@
 				<el-button type="primary" @click="set_current()">设为当前版本</el-button>
 			</div>
 			<div class="right-panel">
-				<el-input v-model="param.key" clearable placeholder="关键字">
+				<el-input v-model="param.key" clearable placeholder="关键字" @keyup.enter="search()">
 					<template #append>
 						<el-button type="primary" @click="search()"><sc-icon name="sc-search" /></el-button>
 					</template>
@@ -54,7 +54,7 @@
 			</div>
 		</el-header>
 		<el-main class="nopadding">
-			<scTable ref="table" :tableName="tableName" :api-obj="apiObj" :column="column" row-key="id"
+			<scTable ref="table" :table-name="tableName" :api-obj="apiObj" :column="column" row-key="id"
 				@menu-handle="menuHandle" @selection-change="selectionChange">
 				<el-table-column align="center" fixed type="selection" width="60" />
 				<el-table-column label="#" type="index" width="50"></el-table-column>
@@ -91,23 +91,22 @@
 <script>
 import { defineAsyncComponent } from "vue";
 export default {
-	name: 'dev_version',
+	name: 'scm_dev_version',
 	components: {
 		edit: defineAsyncComponent(() => import("./edit")),
 	},
 	data() {
 		return {
-			tableName: 'dev_version',
+			tableName: 'scm_dev_version',
 			apiObj: this.$API.scmdevversion.page,
-			list: [],
 			param: {
-				client: 0,
-				row_status: 1,
+				client: this.$SCM.ID_ALL_INT,
+				row_status: this.$SCM.DEF_STATUS,
 				create_time: '',
 				key: ''
 			},
-			client_list: [],
-			row_status_list: [],
+			client_list: [this.$SCM.OPTION_ALL_INT],
+			row_status_list: [this.$SCM.OPTION_ALL_INT],
 			selection: [],
 			column: [
 				{ label: "id", prop: "id", hide: true },
@@ -128,7 +127,7 @@ export default {
 	},
 	mounted() {
 		this.$SCM.list_dic(this.client_list, 'client_type', true);
-		this.$SCM.list_status(this.row_status_list);
+		this.$SCM.list_status(this.row_status_list, true);
 	},
 	methods: {
 		complete() {

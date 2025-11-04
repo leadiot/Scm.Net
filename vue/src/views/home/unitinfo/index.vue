@@ -99,7 +99,7 @@ export default {
 				},
 			],
 			user: {
-				id: '0',
+				id: this.$SCM.DEF_ID,
 				account: "user@c-scm.net",
 				name: "user",
 				avatar: "",

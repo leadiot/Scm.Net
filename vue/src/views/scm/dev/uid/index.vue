@@ -39,7 +39,7 @@
 				</el-button-group>
 			</div>
 			<div class="right-panel">
-				<el-input v-model="param.key" clearable placeholder="关键字">
+				<el-input v-model="param.key" clearable placeholder="关键字" @keyup.enter="search()">
 					<template #append>
 						<el-button type="primary" @click="search()"><sc-icon name="sc-search" /></el-button>
 					</template>
@@ -48,7 +48,7 @@
 			</div>
 		</el-header>
 		<el-main class="nopadding">
-			<scTable ref="table" :tableName="tableName" :api-obj="apiObj" :column="column" row-key="id"
+			<scTable ref="table" :table-name="tableName" :api-obj="apiObj" :column="column" row-key="id"
 				@menu-handle="menuHandle" @selection-change="selectionChange">
 				<el-table-column align="center" fixed type="selection" width="60" />
 				<el-table-column label="#" type="index" width="50"></el-table-column>
@@ -80,18 +80,17 @@
 <script>
 import { defineAsyncComponent } from "vue";
 export default {
-	name: 'dev_uid',
+	name: 'scm_dev_uid',
 	components: {
 		edit: defineAsyncComponent(() => import("./edit")),
 	},
 	data() {
 		return {
-			tableName: 'dev_uid',
+			tableName: 'scm_dev_uid',
 			apiObj: this.$API.scmdevuid.page,
-			list: [],
 			param: {
 				option_id: '',
-				row_status: 1,
+				row_status: this.$SCM.DEF_STATUS,
 				create_time: '',
 				key: ''
 			},
@@ -107,7 +106,7 @@ export default {
 				{ prop: 'p', label: '后置掩码', width: 80, align: 'left' },
 				{ prop: 't', label: '访问时间', width: 160, formatter: this.$TOOL.dateTimeFormat },
 			],
-			row_status_list: [],
+			row_status_list: [this.$SCM.OPTION_ALL_INT],
 			option_list: [],
 		};
 	},

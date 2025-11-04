@@ -24,12 +24,11 @@
 import socket from "@/utils/socket"
 
 export default {
-	name: 'log_online',
+	name: 'scm_log_online',
 	data() {
 		return {
-			tableName: 'log_online',
+			tableName: 'scm_log_online',
 			apiObj: this.$API.scmlogonline.list,
-			list: [],
 			param: {
 				key: "",
 			},

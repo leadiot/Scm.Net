@@ -9,7 +9,7 @@
 				<el-input v-model="formData.namec" clearable :maxlength="30" placeholder="请输入角色名称" show-word-limit />
 			</el-form-item>
 			<el-form-item label="数据权限" prop="data">
-				<sc-select v-model="formData.data" placeholder="请选择数据权限" :data="role_data_list" />
+				<sc-select v-model="formData.data" placeholder="请选择数据权限" :data="data_list" />
 			</el-form-item>
 			<el-form-item label="备注" prop="remark">
 				<el-input v-model="formData.remark" :autosize="{ minRows: 2, maxRows: 4 }" :maxlength="500"
@@ -47,7 +47,7 @@ export default {
 				],
 				remark: [],
 			},
-			role_data_list: [],
+			data_list: [this.$SCM.OPTION_ONE_INT],
 			parentIdOptions: [],
 			parentIdProps: {
 				multiple: false,
@@ -57,15 +57,15 @@ export default {
 		};
 	},
 	mounted() {
-		this.$SCM.list_dic(this.role_data_list, 'role_data', false);
+		this.$SCM.list_dic(this.data_list, 'role_data', false);
 	},
 	methods: {
 		def_data() {
 			return {
-				id: '0',
+				id: this.$SCM.DEF_ID,
 				pid: '0',
 				namec: undefined,
-				data: 0,
+				data: this.$SCM.ID_ONE_INT,
 				remark: undefined,
 				od: 1,
 			}
@@ -101,10 +101,10 @@ export default {
 				if (valid) {
 					this.isSaveing = true;
 					let res = null;
-					if (this.formData.id === '0') {
-						res = await this.$API.scmurrole.add.post(this.formData);
-					} else {
+					if (this.$SCM.is_valid_id(this.formData.id)) {
 						res = await this.$API.scmurrole.update.put(this.formData);
+					} else {
+						res = await this.$API.scmurrole.add.post(this.formData);
 					}
 					this.isSaveing = false;
 					if (res.code == 200) {

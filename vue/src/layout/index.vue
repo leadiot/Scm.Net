@@ -194,10 +194,10 @@
 </template>
 
 <script>
-import SideM from './components/sideM.vue';
+import SideM from './components/sideMenu.vue';
 import Topbar from './components/topbar.vue';
 import Tags from './components/tags.vue';
-import NavMenu from './components/NavMenu.vue';
+import NavMenu from './components/navMenu.vue';
 import userbar from './components/userbar.vue';
 import setting from './components/setting.vue';
 import feedback from './components/feedback.vue';

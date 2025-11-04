@@ -26,21 +26,27 @@ export default {
     },
     methods: {
         async init() {
+            // 默认使用关于作者
+            var section = "author";
+            // 默认使用系统配置的代码
+            var code = this.$CONFIG.APP_CODE;
+
             var route = useRoute();
             var path = route.path.toLowerCase();
             var idx = path.indexOf('/app/');
-            if (idx < 0) {
-                return;
-            }
+            if (idx > 0) {
+                path = path.substring(idx + 5);
+                var arr = path.split('/');
+                // 如果指定了模块，从路径中获取
+                if (arr.length > 0) {
+                    section = arr[0];
+                }
 
-            path = path.substring(idx + 1);
-            var arr = path.split('/');
-            if (arr.length < 3) {
-                return;
+                // 如果指定代码，从路径中获取
+                if (arr.length > 1) {
+                    code = arr[1];
+                }
             }
-
-            var section = arr[1];
-            var code = arr[2];
 
             var res = await this.$API.scmabout.info.get({ 'code': code, 'section': section });
             if (!res || res.code != 200) {

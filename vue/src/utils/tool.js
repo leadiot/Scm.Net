@@ -1,10 +1,3 @@
-/*
- * @Descripttion: 工具集
- * @version: 1.1
- * @LastEditors: sakuya
- * @LastEditTime: 2021年7月20日10:58:41
- */
-
 const tool = {};
 
 tool.trim = function (x) {
@@ -13,8 +6,6 @@ tool.trim = function (x) {
 	}
 	return x.toString().replace(/^\s+|\s+$/gm, "");
 };
-
-tool._cache = [];
 
 tool.setCache = function (key, obj) {
 	tool.data.set(key, obj);
@@ -50,6 +41,8 @@ tool.removeCache = function (key) {
 	tool.session.remove(key);
 	tool.local.remove(key);
 };
+
+tool._cache = [];
 
 /** 临时缓存 */
 tool.data = {
@@ -145,7 +138,10 @@ tool.cookie = {
 			httpOnly: false,
 			...config,
 		};
-		var cookieStr = `${key}=${escape(value)}`;
+		if (typeof value != "string") {
+			value = JSON.stringify(value);
+		}
+		var cookieStr = `${key}=${encodeURIComponent(value)}`;
 		if (cfg.expires) {
 			var exp = new Date();
 			exp.setTime(exp.getTime() + parseInt(cfg.expires || 1) * 1000);
@@ -165,7 +161,7 @@ tool.cookie = {
 			new RegExp("(^| )" + key + "=([^;]*)(;|$)")
 		);
 		if (arr != null) {
-			return unescape(arr[2]);
+			return decodeURIComponent(arr[2]);
 		} else {
 			return def;
 		}
@@ -435,8 +431,7 @@ tool.changeTree = function (data, pid) {
 };
 
 tool.uuid = function (length = 32) {
-	const num =
-		"abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
+	const num = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
 	let str = "";
 	for (let i = 0; i < length; i++) {
 		str += num.charAt(Math.floor(Math.random() * num.length));
@@ -505,15 +500,26 @@ tool.fileSize = function (limit) {
 
 	var sizeStr = size + ""; //转成字符串
 	var index = sizeStr.indexOf("."); //获取小数点处的索引
-	var dou = sizeStr.substr(index + 1, 2); //获取小数点后两位的值
+	var dou = sizeStr.substring(index + 1, index + 3); //获取小数点后两位的值
 	if (dou == "00") {
 		//判断后两位是否为00，如果是则删除00
-		return sizeStr.substring(0, index) + sizeStr.substr(index + 3, 2);
+		return sizeStr.substring(0, index) + sizeStr.substring(index + 3, index + 5);
 	}
 	return size;
 };
 
-tool.randomString = function (length, upper) {
+tool.randomNumber = function (length = 6) {
+	const characters = "0123456789";
+	const charactersLength = characters.length;
+
+	let result = "";
+	for (let i = 0; i < length; i++) {
+		result += characters.charAt(Math.floor(Math.random() * charactersLength));
+	}
+	return result;
+};
+
+tool.randomString = function (length, upper = false) {
 	let result = "";
 	const characters = upper
 		? "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ"
@@ -521,9 +527,7 @@ tool.randomString = function (length, upper) {
 	const charactersLength = characters.length;
 
 	for (let i = 0; i < length; i++) {
-		result += characters.charAt(
-			Math.floor(Math.random() * charactersLength)
-		);
+		result += characters.charAt(Math.floor(Math.random() * charactersLength));
 	}
 
 	return result;

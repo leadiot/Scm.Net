@@ -38,8 +38,8 @@ export default {
 			isSaveing: false,
 			visible: false,
 			formData: this.def_data(),
-			client_list: [],
-			data_list: [],
+			client_list: [this.$SCM.OPTION_ONE_INT],
+			data_list: [this.$SCM.OPTION_ONE_INT],
 			rules: {
 				client: [
 					{ required: true, trigger: "blur", message: "请选择终端类型" },
@@ -60,11 +60,11 @@ export default {
 	methods: {
 		def_data() {
 			return {
-				id: '0',
+				id: this.$SCM.DEF_ID,
 				cat_id: '0',
 				user_id: '0',
-				client: 0,
-				data: 0,
+				client: this.$SCM.INT_ONE_INT,
+				data: this.$SCM.INT_ONE_INT,
 				key: undefined,
 				value: undefined,
 				remark: undefined,
@@ -88,10 +88,10 @@ export default {
 				if (valid) {
 					this.isSaveing = true;
 					let res = null;
-					if (this.formData.id === '0') {
-						res = await this.$API.scmadmconfig.add.post(this.formData);
-					} else {
+					if (this.$SCM.is_valid_id(this.formData.id)) {
 						res = await this.$API.scmadmconfig.update.put(this.formData);
+					} else {
+						res = await this.$API.scmadmconfig.add.post(this.formData);
 					}
 					this.isSaveing = false;
 					if (res.code == 200) {

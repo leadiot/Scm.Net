@@ -36,7 +36,7 @@
 				</el-button-group>
 			</div>
 			<div class="right-panel">
-				<el-input v-model="param.key" clearable placeholder="关键字">
+				<el-input v-model="param.key" clearable placeholder="关键字" @keyup.enter="search()">
 					<template #append>
 						<el-button type="primary" @click="search()"><sc-icon name="sc-search" /></el-button>
 					</template>
@@ -89,9 +89,9 @@ export default {
 		return {
 			apiObj: this.$API.scmurposition.page,
 			tableName: 'scm_ur_position',
-			row_status_list: [this.$SCM.OPTION_ALL],
+			row_status_list: [this.$SCM.OPTION_ALL_INT],
 			param: {
-				row_status: 1,
+				row_status: this.$SCM.DEF_STATUS,
 				create_time: '',
 				key: ""
 			},

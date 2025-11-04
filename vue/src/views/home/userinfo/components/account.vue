@@ -36,9 +36,8 @@
 export default {
 	data() {
 		return {
-			sex_list: [],
 			form: {
-				id: '0',
+				id: this.$SCM.DEF_ID,
 				codec: "",
 				names: "",
 				namec: "",
@@ -67,6 +66,7 @@ export default {
 					{ required: true, trigger: "blur", message: "请输入电子邮件" },
 				],
 			},
+			sex_list: [this.$SCM.OPTION_ONE_INT],
 		};
 	},
 	mounted() {

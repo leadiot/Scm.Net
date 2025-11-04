@@ -70,7 +70,7 @@ export default {
 	data() {
 		return {
 			formData: {
-				id: '0',
+				id: this.$SCM.DEF_ID,
 				title: "",
 				content: "",
 				recipients: [],
@@ -131,10 +131,10 @@ export default {
 			});
 			this.formData.operate = operate;
 			let res = null;
-			if (this.formData.id === '0') {
-				res = await this.$API.scmsysnotice.add.post(this.formData);
-			} else {
+			if (this.$SCM.is_valid_id(this.formData.id)) {
 				res = await this.$API.scmsysnotice.update.put(this.formData);
+			} else {
+				res = await this.$API.scmsysnotice.add.post(this.formData);
 			}
 			this.isSaveing = false;
 			if (res.code == 200) {
@@ -148,7 +148,7 @@ export default {
 		clearForm() {
 			this.erceipt = [];
 			this.formData = {
-				id: '0',
+				id: this.$SCM.DEF_ID,
 				title: "",
 				content: "",
 				recipients: [],

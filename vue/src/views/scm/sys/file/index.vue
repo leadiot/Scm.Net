@@ -91,11 +91,11 @@ export default {
 			group: [],//目录列表
 			props: { label: "name" },
 			param: {
-				type: 0,
+				type: this.$SCM.ID_ALL_INT,
 				path: '/',
 				key: "",
 			},
-			type_list: [],//文件类型列表
+			type_list: [this.$SCM.OPTION_ALL_INT],//文件类型列表
 			files: [],//文件列表
 			previewList: [],//预览列表
 			value: [],

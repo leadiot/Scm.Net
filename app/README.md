@@ -1,15 +1,21 @@
-# neutralinojs-minimal
+【项目说明】
+这是 Scm.Net 的客户端应用，支持 Windows、macOS 和 Linux。
 
-The default template for a Neutralinojs app. It's possible to use your favorite frontend framework by using [these steps](https://neutralino.js.org/docs/getting-started/using-frontend-libraries).
+【使用方法】
+1、下载最新版本的客户端应用；
+2、解压到任意目录；
+3、根据操作系统，双击运行对应的可执行文件：
 
-## Contributors
+- Windows：scm.net-\*.exe
+- macOS：scm.net-mac-\*
+- Linux：scm.net-linux-\*
 
-[![Contributors](https://contrib.rocks/image?repo=neutralinojs/neutralinojs-minimal)](https://github.com/neutralinojs/neutralinojs-minimal/graphs/contributors)
-
-## License
-
-[MIT](LICENSE)
-
-## Icon credits
-
-- `trayIcon.png` - Made by [Freepik](https://www.freepik.com) and downloaded from [Flaticon](https://www.flaticon.com)
+【代码开发】
+1、安装 Node.js；
+2、安装 Neutralinojs CLI：
+npm install -g @neutralinojs/neu
+3、进入项目目录，运行以下命令启动应用：
+neu run
+4、修改项目配置及文件，并根据需要进行调整；
+5、编译项目：
+neu build

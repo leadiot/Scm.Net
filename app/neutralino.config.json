@@ -42,7 +42,7 @@
       "fullScreen": false,
       "alwaysOnTop": false,
       "icon": "/resources/icons/appIcon.png",
-      "enableInspector": true,
+      "enableInspector": false,
       "borderless": false,
       "maximize": false,
       "hidden": false,
@@ -64,8 +64,8 @@
       ]
     },
     "chrome": {
-      "width": 800,
-      "height": 500,
+      "width": 1280,
+      "height": 720,
       "args": "--user-agent=\"Neutralinojs chrome mode\"",
       "nativeBlockList": [
         "filesystem.*",
@@ -74,7 +74,7 @@
     }
   },
   "cli": {
-    "binaryName": "app",
+    "binaryName": "scm.net",
     "resourcesPath": "/resources/",
     "extensionsPath": "/extensions/",
     "clientLibrary": "/resources/js/neutralino.js",

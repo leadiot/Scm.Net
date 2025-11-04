@@ -204,5 +204,17 @@ namespace Com.Scm.Otp.Totp
             return utcTime.AddSeconds(remainingSeconds);
         }
         #endregion
+
+        /// <summary>
+        /// 生成TOTP URL（用于生成二维码）
+        /// </summary>
+        public override string GenerateOtpUrl(string secretKey, string account, string issuer)
+        {
+            string encodedAccount = Uri.EscapeDataString(account);
+            string encodedIssuer = Uri.EscapeDataString(issuer);
+            string encodedSecret = Uri.EscapeDataString(secretKey);
+
+            return $"otpauth://totp/{encodedIssuer}:{encodedAccount}?secret={encodedSecret}&issuer={encodedIssuer}&algorithm=SHA1&digits=6&period=30";
+        }
     }
 }

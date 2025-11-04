@@ -4,7 +4,7 @@ using Com.Scm.Otp.Totp;
 
 public class Program
 {
-    public static void Main1(string[] args)
+    public static void Main(string[] args)
     {
         Console.WriteLine("=== HOTP实现示例 ===\n");
 
@@ -72,7 +72,7 @@ public class Program
         }
     }
 
-    public static void Main(string[] args)
+    public static void Main2(string[] args)
     {
         Console.WriteLine("=== TOTP实现示例 ===\n");
 

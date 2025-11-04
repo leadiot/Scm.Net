@@ -132,5 +132,13 @@ namespace Com.Scm.Otp
 
             return TextUtils.Base32Encode(randomBytes);
         }
+
+        /// <summary>
+        /// 生成TOTP URL（用于生成二维码）
+        /// </summary>
+        public virtual string GenerateOtpUrl(string secretKey, string account, string issuer)
+        {
+            return "";
+        }
     }
 }

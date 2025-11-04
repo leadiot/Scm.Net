@@ -1,6 +1,11 @@
 {
   "$schema": "https://raw.githubusercontent.com/neutralinojs/neutralinojs/main/schemas/neutralino.config.schema.json",
   "applicationId": "scm.net",
+  "applicationName": "Scm.Net",
+  "applicationIcon": "resources/icons/appIcon.png",
+  "description": "一款基于.Net 9.0和Vue 3.0技术框架、适用于企业中后台管理系统的快速开发框架。",
+  "author": "c-scm.net",
+  "copyRight": "Copyright (c) c-scm.net",
   "version": "1.0.0",
   "defaultMode": "window",
   "port": 0,

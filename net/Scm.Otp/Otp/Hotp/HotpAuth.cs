@@ -80,14 +80,7 @@ namespace Com.Scm.Otp.Hotp
             // 解码Base32密钥
             byte[] keyBytes = TextUtils.Base32Decode(secretKey);
 
-            // 生成HMAC哈希
-            byte[] hash = ComputeHmacHash(keyBytes, counter);
-
-            // 动态截断获取密码
-            int code = TruncateHash(hash);
-
-            // 格式化输出
-            return code.ToString($"D{CodeLength}");
+            return GenerateCode(keyBytes, counter);
         }
 
         /// <summary>
@@ -123,11 +116,14 @@ namespace Com.Scm.Otp.Hotp
                 return false;
             }
 
+            // 解码Base32密钥
+            byte[] keyBytes = TextUtils.Base32Decode(secretKey);
+
             // 尝试当前计数器及后续ResyncWindow个计数器
             for (int i = 0; i <= ResyncWindow; i++)
             {
                 long targetCounter = currentCounter + i;
-                string generatedCode = GenerateCode(secretKey, targetCounter);
+                string generatedCode = GenerateCode(keyBytes, targetCounter);
 
                 if (generatedCode == code)
                 {

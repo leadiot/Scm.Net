@@ -33,6 +33,18 @@ namespace Com.Scm.Otp
         public OtpHashAlgorithm HashAlgorithm { get; protected set; }
         #endregion
 
+        protected string GenerateCode(byte[] keyBytes, long counter)
+        {
+            // 生成HMAC哈希
+            byte[] hash = ComputeHmacHash(keyBytes, counter);
+
+            // 动态截断获取密码
+            int code = TruncateHash(hash);
+
+            // 格式化输出
+            return code.ToString($"D{CodeLength}");
+        }
+
         #region 辅助方法
 
         /// <summary>

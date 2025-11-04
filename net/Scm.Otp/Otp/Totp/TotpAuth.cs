@@ -98,14 +98,7 @@ namespace Com.Scm.Otp.Totp
             // 计算时间计数器
             long counter = GetTimeCounter(utcTime);
 
-            // 生成HMAC哈希
-            byte[] hash = ComputeHmacHash(keyBytes, counter);
-
-            // 动态截断获取密码
-            int code = TruncateHash(hash);
-
-            // 格式化输出
-            return code.ToString($"D{CodeLength}");
+            return GenerateCode(keyBytes, counter);
         }
 
         /// <summary>
@@ -159,7 +152,7 @@ namespace Com.Scm.Otp.Totp
             for (int i = -ValidationWindow; i <= ValidationWindow; i++)
             {
                 long targetCounter = currentCounter + i;
-                string generatedCode = GenerateCodeFromCounter(keyBytes, targetCounter);
+                string generatedCode = GenerateCode(keyBytes, targetCounter);
 
                 if (generatedCode == code)
                 {
@@ -190,16 +183,6 @@ namespace Com.Scm.Otp.Totp
             return totalSeconds / TimeStep;
         }
 
-        /// <summary>
-        /// 从计数器生成密码
-        /// </summary>
-        private string GenerateCodeFromCounter(byte[] keyBytes, long counter)
-        {
-            byte[] hash = ComputeHmacHash(keyBytes, counter);
-            int code = TruncateHash(hash);
-            return code.ToString($"D{CodeLength}");
-        }
-
         #endregion
 
         #region 静态辅助方法
@@ -211,7 +194,9 @@ namespace Com.Scm.Otp.Totp
         public DateTime GetExpirationTime(DateTime utcTime)
         {
             if (utcTime.Kind != DateTimeKind.Utc)
+            {
                 throw new ArgumentException("时间必须是UTC时间", nameof(utcTime));
+            }
 
             long totalSeconds = (long)(utcTime - new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc)).TotalSeconds;
             long remainingSeconds = TimeStep - totalSeconds % TimeStep;

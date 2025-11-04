@@ -47,6 +47,244 @@ namespace Com.Scm.Utils
         }
         #endregion
 
+        #region 编码方案转换
+        #region 任意进制字符转换
+        /// <summary>
+        /// 将字节数组转换为指定进制的字符串
+        /// </summary>
+        /// <param name="bytes">要转换的数据</param>
+        /// <param name="bits">转换的进制，在1-8之间</param>
+        /// <param name="masks">转换的掩码</param>
+        /// <param name="padChar">位数不足时的填充字符</param>
+        /// <returns>转换后的字符串</returns>
+        public static string Encode(byte[] bytes, int bits, string masks, char padChar = '=')
+        {
+            if (bytes == null || bytes.Length == 0)
+            {
+                throw new ArgumentException("目标数据不能为空！");
+            }
+
+            if (bits < 1 || bits > 8)
+            {
+                throw new ArgumentException("无效的进制：" + bits);
+            }
+
+            var qty = 1 << bits;
+            if (masks == null || masks.Length < qty)
+            {
+                throw new ArgumentException("掩码空间不足！");
+            }
+
+            qty = (bytes.Length * 8 + 1) / bits;
+            var mask = 0xFF >> (8 - bits);
+
+            int buffer = 0;
+            int bitsLeft = 0;
+
+            var builder = new StringBuilder();
+            foreach (byte tmp in bytes)
+            {
+                buffer = (buffer << 8) | tmp;
+                bitsLeft += 8;
+
+                while (bitsLeft >= bits)
+                {
+                    int index = (buffer >> (bitsLeft - bits)) & mask;
+                    builder.Append(masks[index]);
+                    bitsLeft -= bits;
+                }
+            }
+
+            // 处理剩余的位
+            if (bitsLeft > 0)
+            {
+                int index = (buffer << (bits - bitsLeft)) & mask;
+                builder.Append(masks[index]);
+            }
+
+            var length = builder.Length;
+            while (length < qty)
+            {
+                builder.Append(padChar);
+                length += 1;
+            }
+            return builder.ToString();
+        }
+
+        /// <summary>
+        /// 将字符串转换为指定进制的字节数组
+        /// </summary>
+        /// <param name="base32">Base32编码字符串</param>
+        /// <returns>解码后的数据</returns>
+        public static byte[] Decode(string chars, int bits, string masks, char padChar = '=')
+        {
+            if (chars == null || chars.Length < 1)
+            {
+                throw new ArgumentException("目标数据不能为空！");
+            }
+
+            if (bits < 1 || bits > 8)
+            {
+                throw new ArgumentException("无效的进制：" + bits);
+            }
+
+            var qty = 1 << bits;
+            if (masks == null || masks.Length < qty)
+            {
+                throw new ArgumentException("掩码空间不足！");
+            }
+
+            chars = chars.TrimEnd(padChar);
+
+            int buffer = 0;
+            int bitsLeft = 0;
+
+            qty = (chars.Length * bits + 1) / 8;
+            var result = new byte[qty];
+            int index = 0;
+            foreach (char tmp in chars)
+            {
+                int charIndex = masks.IndexOf(tmp);
+                if (charIndex == -1)
+                {
+                    throw new ArgumentException("无效的字符：" + tmp);
+                }
+
+                buffer = (buffer << bits) | charIndex;
+                bitsLeft += bits;
+
+                if (bitsLeft >= 8)
+                {
+                    result[index++] = (byte)(buffer >> (bitsLeft - 8));
+                    bitsLeft -= 8;
+                }
+            }
+
+            return result;
+        }
+        #endregion
+
+        #region 16进制转换
+        public const string Base16Chars = "0123456789ABCDEF";
+        /// <summary>
+        /// 将字节数组转换为16进制的字符串
+        /// </summary>
+        /// <param name="bytes"></param>
+        /// <returns></returns>
+        public static string Base16Encode(byte[] bytes)
+        {
+            return Encode(bytes, 4, Base16Chars);
+        }
+
+        /// <summary>
+        /// 将字符串转换为16进制的字节数组
+        /// </summary>
+        /// <param name="chars"></param>
+        /// <returns></returns>
+        public static byte[] Base16Decode(string chars)
+        {
+            return Decode(chars, 4, Base16Chars);
+        }
+        #endregion
+
+        #region 32进制转换
+        public const string Base32Chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ234567";
+        /// <summary>
+        /// 将字节数组转换为32进制的字符串
+        /// </summary>
+        /// <param name="bytes"></param>
+        /// <returns></returns>
+        public static string Base32Encode(byte[] bytes)
+        {
+            return Encode(bytes, 5, Base32Chars);
+        }
+
+        /// <summary>
+        /// 将字符串转换为32进制的字节数组
+        /// </summary>
+        /// <param name="chars"></param>
+        /// <returns></returns>
+        public static byte[] Base32Decode(string chars)
+        {
+            return Decode(chars, 5, Base32Chars);
+        }
+        #endregion
+
+        #region 64进制转换
+        public const string Base64Chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456790+/";
+
+        /// <summary>
+        /// 将字节数组转换为64进制的字符串
+        /// </summary>
+        /// <param name="bytes"></param>
+        /// <returns></returns>
+        public static string Base64Encode(byte[] bytes)
+        {
+            return Encode(bytes, 6, Base64Chars);
+        }
+
+        /// <summary>
+        /// 将字符串转换为64进制的字节数组
+        /// </summary>
+        /// <param name="chars"></param>
+        /// <returns></returns>
+        public static byte[] Base64Decode(string chars)
+        {
+            return Decode(chars, 6, Base64Chars);
+        }
+        #endregion
+
+        /// <summary>
+        /// 转换为2进制字符串
+        /// </summary>
+        /// <param name="bytes"></param>
+        /// <returns></returns>
+        public static string ToBinString(byte[] bytes)
+        {
+            return Encode(bytes, 1, Base16Chars);
+        }
+
+        /// <summary>
+        /// 转换为8进制字符串
+        /// </summary>
+        /// <param name="bytes"></param>
+        /// <param name="upperCase"></param>
+        /// <returns></returns>
+        public static string ToOctString(byte[] bytes)
+        {
+            return Encode(bytes, 3, Base16Chars);
+        }
+
+        /// <summary>
+        /// 转换为16进制字符串
+        /// </summary>
+        /// <param name="bytes">待转换数组</param>
+        /// <param name="upperCase">是否为大写</param>
+        /// <returns></returns>
+        public static string ToHexString(byte[] bytes, bool upperCase = false)
+        {
+            var format = upperCase ? "X2" : "x2";
+            var builder = new StringBuilder();
+            foreach (var b in bytes)
+            {
+                builder.Append(b.ToString(format));
+            }
+            return builder.ToString();
+        }
+
+        public string FromUrlBase64String(string str)
+        {
+            byte[] decbuff = Convert.FromBase64String(str.Replace(",", "=").Replace("-", "+").Replace("/", "_"));
+            return System.Text.Encoding.UTF8.GetString(decbuff);
+        }
+
+        public string ToUrlBase64String(string input)
+        {
+            byte[] encbuff = Encoding.UTF8.GetBytes(input ?? "");
+            return Convert.ToBase64String(encbuff).Replace("=", ",").Replace("+", "-").Replace("_", "/");
+        }
+        #endregion
+
         #region 字符与对象转换
         private static JsonSerializerSettings _Settings = new JsonSerializerSettings();
 
@@ -114,71 +352,6 @@ namespace Com.Scm.Utils
                 }
             }
             return obj;
-        }
-        #endregion
-
-        #region 编码方案转换
-        /// <summary>
-        /// 字节数组转换为字符
-        /// </summary>
-        /// <param name="bytes"></param>
-        /// <param name="masks"></param>
-        /// <returns></returns>
-        public static string EncodeString(byte[] bytes, byte[] masks = null)
-        {
-            var text = new StringBuilder();
-            foreach (var b in bytes)
-            {
-                text.Append(b.ToString("x2"));
-            }
-            return text.ToString();
-        }
-
-        /// <summary>
-        /// 字符转换为字节数组
-        /// </summary>
-        /// <param name="text"></param>
-        /// <param name="masks"></param>
-        /// <returns></returns>
-        public static byte[] DecodeString(string text, byte[] masks = null)
-        {
-            //var text = new StringBuilder();
-            //foreach (var b in bytes)
-            //{
-            //    text.Append(b.ToString("x2"));
-            //}
-            //return text.ToString();
-            var bytes = new byte[text.Length];
-            return bytes;
-        }
-
-        /// <summary>
-        /// 转换为16进度字符串
-        /// </summary>
-        /// <param name="bytes">待转换数组</param>
-        /// <param name="upperCase">是否为大写</param>
-        /// <returns></returns>
-        public static string ToHexString(byte[] bytes, bool upperCase = false)
-        {
-            var format = upperCase ? "X2" : "x2";
-            var builder = new StringBuilder();
-            foreach (var b in bytes)
-            {
-                builder.Append(b.ToString(format));
-            }
-            return builder.ToString();
-        }
-
-        public string FromUrlBase64String(string str)
-        {
-            byte[] decbuff = Convert.FromBase64String(str.Replace(",", "=").Replace("-", "+").Replace("/", "_"));
-            return System.Text.Encoding.UTF8.GetString(decbuff);
-        }
-
-        public string ToUrlBase64String(string input)
-        {
-            byte[] encbuff = Encoding.UTF8.GetBytes(input ?? "");
-            return Convert.ToBase64String(encbuff).Replace("=", ",").Replace("+", "-").Replace("_", "/");
         }
         #endregion
 
@@ -906,22 +1079,53 @@ namespace Com.Scm.Utils
 
         #endregion
 
+        public static string Random(string marks, int length, bool repeatable = true)
+        {
+            if (marks.Length < 1)
+            {
+                throw new Exception("掩码字符不能为空！");
+            }
+
+            if (!repeatable && marks.Length < length)
+            {
+                throw new Exception("掩码字符空间不足！");
+            }
+
+            var random = new Random();
+
+            var builder = new StringBuilder();
+            var index = 0;
+            if (repeatable)
+            {
+                for (var i = 0; i < length; i++)
+                {
+                    index = random.Next(marks.Length);
+                    builder.Append(marks[index]);
+                }
+            }
+            else
+            {
+                var chars = marks.ToList();
+                for (var i = 0; i < length; i++)
+                {
+                    index = random.Next(chars.Count);
+                    builder.Append(marks[index]);
+                    chars.RemoveAt(index);
+                }
+            }
+
+            return builder.ToString();
+        }
+
         /// <summary>
         /// 随机数字串
         /// </summary>
         /// <param name="length"></param>
         /// <returns></returns>
-        public static string RandomNumber(int length = 10)
+        public static string RandomNumber(int length = 6)
         {
             string chars = "0123456789";
-            var content = new char[length];
-            var random = new Random();
-            for (var i = 0; i < length; i++)
-            {
-                content[i] = chars[random.Next(chars.Length)];
-            }
-
-            return new string(content);
+            return Random(chars, length, true);
         }
 
         /// <summary>
@@ -930,17 +1134,10 @@ namespace Com.Scm.Utils
         /// <param name="length"></param>
         /// <param name="upper"></param>
         /// <returns></returns>
-        public static string RandomString(int length = 10, bool upper = true)
+        public static string RandomString(int length = 8, bool upper = true)
         {
             string chars = upper ? "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ" : "0123456789abcdefghijklmnopqrstuvwxyz";
-            var content = new char[length];
-            var random = new Random();
-            for (var i = 0; i < length; i++)
-            {
-                content[i] = chars[random.Next(chars.Length)];
-            }
-
-            return new string(content);
+            return Random(chars, length, true);
         }
 
         public static bool IsHexGuid(string text)

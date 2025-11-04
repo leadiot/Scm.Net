@@ -1,0 +1,124 @@
+﻿using Com.Scm.Utils;
+using System;
+using System.Security.Cryptography;
+
+namespace Com.Scm.Otp
+{
+    /// <summary>
+    /// One-Time Password
+    /// </summary>
+    public class OtpAuth
+    {
+        #region 常量定义
+        /// <summary>
+        /// 默认密码长度（6位数字）
+        /// </summary>
+        public const int DefaultCodeLength = 6;
+
+        /// <summary>
+        /// 默认哈希算法
+        /// </summary>
+        public const OtpHashAlgorithm DefaultHashAlgorithm = OtpHashAlgorithm.SHA1;
+        #endregion
+
+        #region 属性
+        /// <summary>
+        /// 密码长度（4-8位）
+        /// </summary>
+        public int CodeLength { get; protected set; }
+
+        /// <summary>
+        /// 哈希算法
+        /// </summary>
+        public OtpHashAlgorithm HashAlgorithm { get; protected set; }
+        #endregion
+
+        #region 辅助方法
+
+        /// <summary>
+        /// 计算HMAC哈希
+        /// </summary>
+        /// <param name="keyBytes">密钥字节数组</param>
+        /// <param name="counter">计数器值</param>
+        /// <returns>HMAC哈希结果</returns>
+        protected byte[] ComputeHmacHash(byte[] keyBytes, long counter)
+        {
+            // 将计数器转换为8字节大端序
+            byte[] counterBytes = BitConverter.GetBytes(counter);
+            if (BitConverter.IsLittleEndian)
+            {
+                Array.Reverse(counterBytes);
+            }
+
+            // 根据指定算法创建HMAC实例
+            using (HMAC hmac = CreateHmacInstance(keyBytes))
+            {
+                return hmac.ComputeHash(counterBytes);
+            }
+        }
+
+        /// <summary>
+        /// 创建HMAC实例
+        /// </summary>
+        /// <param name="keyBytes">密钥字节数组</param>
+        /// <returns>HMAC实例</returns>
+        protected HMAC CreateHmacInstance(byte[] keyBytes)
+        {
+            switch (HashAlgorithm)
+            {
+                case OtpHashAlgorithm.SHA1:
+                    return new HMACSHA1(keyBytes);
+                case OtpHashAlgorithm.SHA256:
+                    return new HMACSHA256(keyBytes);
+                case OtpHashAlgorithm.SHA512:
+                    return new HMACSHA512(keyBytes);
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(HashAlgorithm), "不支持的哈希算法");
+            }
+        }
+
+        /// <summary>
+        /// 动态截断哈希值获取密码
+        /// </summary>
+        /// <param name="hash">HMAC哈希结果</param>
+        /// <returns>密码数字</returns>
+        protected int TruncateHash(byte[] hash)
+        {
+            // 获取偏移量（哈希值最后一个字节的低4位）
+            int offset = hash[hash.Length - 1] & 0x0F;
+
+            // 从偏移量开始取4个字节，转换为32位整数
+            int code = (hash[offset] & 0x7F) << 24
+                     | (hash[offset + 1] & 0xFF) << 16
+                     | (hash[offset + 2] & 0xFF) << 8
+                     | (hash[offset + 3] & 0xFF);
+
+            // 取模得到指定长度的密码
+            int mod = (int)Math.Pow(10, CodeLength);
+            return code % mod;
+        }
+
+        #endregion
+
+        /// <summary>
+        /// 生成随机的Base32密钥
+        /// </summary>
+        /// <param name="length">密钥长度（字节）</param>
+        /// <returns>Base32编码的随机密钥</returns>
+        public static string GenerateRandomKey(int length = 16)
+        {
+            if (length <= 0)
+            {
+                throw new ArgumentOutOfRangeException(nameof(length), "长度必须大于0");
+            }
+
+            byte[] randomBytes = new byte[length];
+            using (RandomNumberGenerator rng = RandomNumberGenerator.Create())
+            {
+                rng.GetBytes(randomBytes);
+            }
+
+            return TextUtils.Base32Encode(randomBytes);
+        }
+    }
+}

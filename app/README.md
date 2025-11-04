@@ -14,8 +14,9 @@
 1、安装 Node.js；
 2、安装 Neutralinojs CLI：
 npm install -g @neutralinojs/neu
-3、进入项目目录，运行以下命令启动应用：
+3、进入项目目录：
+cd app/
+4、运行项目：
 neu run
-4、修改项目配置及文件，并根据需要进行调整；
 5、编译项目：
 neu build

@@ -5,10 +5,10 @@ using System.Text;
 namespace Com.Scm.Otp.Hotp
 {
     /// <summary>
-    /// HMAC based One-Time Password
+    /// HMAC-based One-Time Password
     /// HOTP算法（基于HMAC的一次性密码）实现
     /// 符合RFC 4226标准
-    /// https://datatracker.ietf.org/doc/html/rfc4226
+    /// 文档：https://datatracker.ietf.org/doc/html/rfc4226
     /// </summary>
     public class HotpAuth : OtpAuth
     {
@@ -206,11 +206,19 @@ namespace Com.Scm.Otp.Hotp
 
         #endregion
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
         public override long GetCounter()
         {
             return _Counter;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
         public override bool ChangeCounter()
         {
             _Counter += HmacStep;

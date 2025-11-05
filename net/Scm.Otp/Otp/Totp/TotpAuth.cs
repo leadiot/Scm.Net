@@ -6,7 +6,7 @@ using System.Text;
 namespace Com.Scm.Otp.Totp
 {
     /// <summary>
-    /// Time based One-Time Password
+    /// Time-based One-Time Password
     /// TOTP算法（基于时间的一次性密码）实现
     /// 符合RFC 6238标准
     /// https://datatracker.ietf.org/doc/html/rfc6238
@@ -18,6 +18,8 @@ namespace Com.Scm.Otp.Totp
         /// 默认时间步长（秒），推荐使用30秒
         /// </summary>
         public const int DefaultTimeStep = 30;
+
+        private static readonly DateTime EPOCH = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
         #endregion
 
         #region 属性
@@ -32,7 +34,7 @@ namespace Com.Scm.Otp.Totp
         public int ValidationWindow { get; set; } = 1;
 
         /// <summary>
-        /// 
+        /// 当前时间
         /// </summary>
         private DateTime _Now;
         #endregion
@@ -227,22 +229,28 @@ namespace Com.Scm.Otp.Totp
         /// <returns>时间计数器</returns>
         private long GetTimeCounter(DateTime utcTime)
         {
-            // Unix时间戳起始时间：1970-01-01 00:00:00 UTC
-            DateTime epoch = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
-
             // 计算总秒数
-            long totalSeconds = (long)(utcTime - epoch).TotalSeconds;
+            long totalSeconds = (long)(utcTime - EPOCH).TotalSeconds;
 
             // 计算时间计数器
             return GetTimeCounter(totalSeconds);
         }
 
+        /// <summary>
+        /// 计算指定时间的时间计数器
+        /// </summary>
+        /// <param name="seconds">Unix时间戳，以秒为单位</param>
+        /// <returns></returns>
         private long GetTimeCounter(long seconds)
         {
             // 计算时间计数器
             return seconds / TimeStep;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
         public override bool ChangeCounter()
         {
             _Now = DateTime.UtcNow;
@@ -264,7 +272,7 @@ namespace Com.Scm.Otp.Totp
                 throw new ArgumentException("时间必须是UTC时间", nameof(utcTime));
             }
 
-            long totalSeconds = (long)(utcTime - new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc)).TotalSeconds;
+            long totalSeconds = (long)(utcTime - EPOCH).TotalSeconds;
             long remainingSeconds = TimeStep - totalSeconds % TimeStep;
 
             return utcTime.AddSeconds(remainingSeconds);

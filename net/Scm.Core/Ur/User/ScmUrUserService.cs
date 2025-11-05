@@ -287,7 +287,7 @@ namespace Com.Scm.Ur.User
                 pass = _EnvConfig.GetPassword();
             }
             var newPass = CryptoUtils.Sha(pass);
-            newPass = TextUtils.EncodePass(newPass);
+            newPass = SecUtils.EncodePass(newPass);
             await _thisRepository.UpdateAsync(m => new UserDao()
             {
                 pass = newPass

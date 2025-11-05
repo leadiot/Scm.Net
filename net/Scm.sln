@@ -115,8 +115,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Scm.Server.Aiml", "Scm.Serv
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Scm.Server.Quartz", "Scm.Server.Quartz\Scm.Server.Quartz.csproj", "{E41B1870-E651-EA98-5D83-BC79279D8949}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Scm.Otp", "Scm.Otp\Scm.Otp.csproj", "{03E46FB1-5219-4A21-9E2E-4E194BFD5FAC}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -315,10 +313,6 @@ Global
 		{E41B1870-E651-EA98-5D83-BC79279D8949}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E41B1870-E651-EA98-5D83-BC79279D8949}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E41B1870-E651-EA98-5D83-BC79279D8949}.Release|Any CPU.Build.0 = Release|Any CPU
-		{03E46FB1-5219-4A21-9E2E-4E194BFD5FAC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{03E46FB1-5219-4A21-9E2E-4E194BFD5FAC}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{03E46FB1-5219-4A21-9E2E-4E194BFD5FAC}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{03E46FB1-5219-4A21-9E2E-4E194BFD5FAC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -372,7 +366,6 @@ Global
 		{EA0554A5-D8D0-E03A-9C74-9C9D56EFDB71} = {5BDDD8D6-97AE-4ACF-88E2-9C3E714AB2E7}
 		{26386135-FB06-7238-E7EB-30EFAB3B36B4} = {F31CAB49-534E-4B14-AE02-8F99D01B6DB5}
 		{E41B1870-E651-EA98-5D83-BC79279D8949} = {F31CAB49-534E-4B14-AE02-8F99D01B6DB5}
-		{03E46FB1-5219-4A21-9E2E-4E194BFD5FAC} = {B079BB77-40DD-4024-9A9C-14C824DDE273}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {E3837A3D-CB67-4767-B922-BCB491FA6C81}

@@ -10,7 +10,7 @@ namespace Com.Scm.Ur.UserOtp.Dvo
         /// <summary>
         /// 登录用户
         /// </summary>
-        public string user { get; set; }
+        public string codec { get; set; }
 
         /// <summary>
         /// 展示名称
@@ -26,5 +26,20 @@ namespace Com.Scm.Ur.UserOtp.Dvo
         /// 凭证
         /// </summary>
         public string token { get; set; }
+
+        /// <summary>
+        /// 发行者
+        /// </summary>
+        public string issuer { get; set; }
+
+        /// <summary>
+        /// 密码长度
+        /// </summary>
+        public int code_length { get; set; }
+
+        /// <summary>
+        /// 摘要算法
+        /// </summary>
+        public string algorithm { get; set; }
     }
 }

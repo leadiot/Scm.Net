@@ -1,47 +1,50 @@
+using Com.Scm.Config;
 using Com.Scm.Dsa;
-using Com.Scm.Exceptions;
 using Com.Scm.Jwt;
+using Com.Scm.Otp.Totp;
 using Com.Scm.Service;
+using Com.Scm.Ur.UserOtp.Dvo;
 using Com.Scm.Utils;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Com.Scm.Ur.UserOtp
 {
     /// <summary>
-    /// 三方登录服务接口
+    /// Otp服务接口
     /// </summary>
     [ApiExplorerSettings(GroupName = "Ur")]
     public class ScmUrUserTokenService : ApiService
     {
         private readonly JwtContextHolder _contextHolder;
         private readonly SugarRepository<UserDao> _thisRepository;
+        private readonly OtpConfig _otpConfig;
 
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="contextHolder"></param>
         /// <param name="userRepository"></param>
         /// <returns></returns>
         public ScmUrUserTokenService(JwtContextHolder contextHolder,
-            SugarRepository<UserDao> userRepository)
+            SugarRepository<UserDao> userRepository,
+            OtpConfig otpConfig)
         {
             _contextHolder = contextHolder;
             _thisRepository = userRepository;
+            _otpConfig = otpConfig;
         }
 
         /// <summary>
-        /// 根据主键查询
+        /// 
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
         [HttpGet("{id}")]
-        public async Task<UserDto> GetAsync(long id)
+        public async Task<UserOtpDvo> GetAsync()
         {
-            return await _thisRepository
-                .AsQueryable()
-                .Where(a => a.id == id)
-                .Select<UserDto>()
-                .FirstAsync();
+            var token = _contextHolder.GetToken();
+
+            var userDao = await _thisRepository.GetByIdAsync(token.user_id);
+            return ConvertToDvo(userDao);
         }
 
         /// <summary>
@@ -49,53 +52,53 @@ namespace Com.Scm.Ur.UserOtp
         /// </summary>
         /// <param name="model"></param>
         /// <returns></returns>
-        public async Task UpdateAsync(UserOAuthDto model)
+        public async Task<UserOtpDvo> UpdateAsync()
         {
-            //var dao = await _thisRepository.GetFirstAsync(a => a.codec == model.codec && a.id != model.id);
-            //if (dao != null)
-            //{
-            //    throw new BusinessException($"已存在编码为{model.codec}的三方登录！");
-            //}
+            var token = _contextHolder.GetToken();
 
-            //if (string.IsNullOrWhiteSpace(model.names))
-            //{
-            //    model.names = model.namec;
-            //}
-            //dao = await _thisRepository.GetFirstAsync(a => a.names == model.names && a.id != model.id);
-            //if (dao != null)
-            //{
-            //    throw new BusinessException($"已存在简称为{model.names}的三方登录！");
-            //}
+            var userDao = await _thisRepository.GetByIdAsync(token.user_id);
+            userDao.GenerateToken();
 
-            var dao = await _thisRepository.GetByIdAsync(model.id);
-            if (dao == null)
-            {
-                throw new BusinessException($"无效的数据信息，更新失败！");
-            }
+            await _thisRepository.UpdateAsync(userDao);
+            return ConvertToDvo(userDao);
+        }
 
-            dao = model.Adapt(dao);
-            await _thisRepository.UpdateAsync(dao);
+        private UserOtpDvo ConvertToDvo(UserDao userDao)
+        {
+            var dvo = new UserOtpDvo();
+            dvo.issuer = _otpConfig.Issuer;
+            dvo.code_length = _otpConfig.Digits;
+            dvo.algorithm = EnumUtils.ToKey(_otpConfig.Algorithm);
+            dvo.codec = userDao.codec;
+            dvo.namec = userDao.namec;
+            dvo.avatar = userDao.avatar;
+
+            var bytes = userDao.DecodeToken();
+            var otpSecret = TextUtils.Base32Encode(bytes);
+            var template = _otpConfig.Template ?? "";
+            dvo.token = template.Replace("{issuer}", Uri.UnescapeDataString(_otpConfig.Issuer))
+                .Replace("{account}", Uri.UnescapeDataString(userDao.codec))
+                .Replace("{secret}", Uri.UnescapeDataString(otpSecret))
+                .Replace("{algorithm}", EnumUtils.ToKey(_otpConfig.Algorithm))
+                .Replace("{digits}", _otpConfig.Digits.ToString())
+                .Replace("{period}", _otpConfig.Digits.ToString());
+
+            return dvo;
         }
 
         /// <summary>
-        /// 批量更新状态
+        /// 校验是否成功
         /// </summary>
-        /// <param name="param">逗号分隔</param>
         /// <returns></returns>
-        public async Task<int> StatusAsync(ScmChangeStatusRequest param)
+        public async Task<bool> VerifyAsync(string code)
         {
-            return await UpdateStatus(_thisRepository, param.ids, param.status);
-        }
+            var token = _contextHolder.GetToken();
 
-        /// <summary>
-        /// 批量删除记录
-        /// </summary>
-        /// <param name="ids">逗号分隔</param>
-        /// <returns></returns>
-        [HttpDelete]
-        public async Task<int> DeleteAsync(string ids)
-        {
-            return await DeleteRecord(_thisRepository, ids.ToListLong());
+            var userDao = await _thisRepository.GetByIdAsync(token.user_id);
+            var secret = userDao.DecodeToken();
+
+            var totp = new TotpAuth(_otpConfig.Period, _otpConfig.Digits, Otp.OtpHashAlgorithm.SHA1);
+            return totp.VerifyCode(secret, code);
         }
     }
 }

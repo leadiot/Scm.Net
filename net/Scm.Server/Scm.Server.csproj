@@ -33,6 +33,9 @@
     <Reference Include="Scm.Common.Http">
       <HintPath>..\Libs\netstandard2.0\Scm.Common.Http.dll</HintPath>
     </Reference>
+    <Reference Include="Scm.Common.Otp">
+      <HintPath>..\Libs\netstandard2.0\Scm.Common.Otp.dll</HintPath>
+    </Reference>
     <Reference Include="Scm.Common.Text">
       <HintPath>..\Libs\netstandard2.0\Scm.Common.Text.dll</HintPath>
     </Reference>

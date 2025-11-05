@@ -22,21 +22,14 @@ namespace Com.Scm.Utils
         /// </summary>
         /// <param name="encryptString"></param>
         /// <returns></returns>
-        public static string AesEncrypt(string encryptString)
+        public static byte[] AesEncrypt(byte[] encryptData)
         {
-            return AesEncrypt(encryptString, Default_AES_Key);
+            return AesEncrypt(encryptData, Default_AES_Key);
         }
 
-        /// <summary>
-        /// AES加密
-        /// </summary>
-        /// <param name="encryptString"></param>
-        /// <param name="encryptKey"></param>
-        /// <param name="mode"></param>
-        /// <returns></returns>
-        public static string AesEncrypt(string encryptString, string encryptKey, CipherMode mode = CipherMode.CBC)
+        public static byte[] AesEncrypt(byte[] encryptData, string encryptKey, CipherMode mode = CipherMode.CBC)
         {
-            if (string.IsNullOrEmpty(encryptString))
+            if (encryptData == null || encryptData.Length < 1)
             {
                 return null;
             }
@@ -54,31 +47,29 @@ namespace Com.Scm.Utils
 
             var cryptoTransform = aes.CreateEncryptor();
 
-            var bytes = Encoding.UTF8.GetBytes(encryptString);
-            var result = cryptoTransform.TransformFinalBlock(bytes, 0, bytes.Length);
-            return Convert.ToBase64String(result);
+            return cryptoTransform.TransformFinalBlock(encryptData, 0, encryptData.Length);
         }
 
         /// <summary>
         /// AES解密
         /// </summary>
-        /// <param name="decryptString"></param>
+        /// <param name="decryptData"></param>
         /// <returns></returns>
-        public static string AesDecrypt(string decryptString)
+        public static byte[] AesDecrypt(byte[] decryptData)
         {
-            return AesDecrypt(decryptString, Default_AES_Key);
+            return AesDecrypt(decryptData, Default_AES_Key);
         }
 
         /// <summary>
         /// AES解密
         /// </summary>
-        /// <param name="decryptString"></param>
+        /// <param name="decryptData"></param>
         /// <param name="decryptKey"></param>
         /// <param name="mode"></param>
         /// <returns></returns>
-        public static string AesDecrypt(string decryptString, string decryptKey, CipherMode mode = CipherMode.CBC)
+        public static byte[] AesDecrypt(byte[] decryptData, string decryptKey, CipherMode mode = CipherMode.CBC)
         {
-            if (string.IsNullOrEmpty(decryptString))
+            if (decryptData == null || decryptData.Length < 1)
             {
                 return null;
             }
@@ -96,9 +87,7 @@ namespace Com.Scm.Utils
 
             var cryptoTransform = aes.CreateDecryptor();
 
-            byte[] bytes = Convert.FromBase64String(decryptString);
-            var result = cryptoTransform.TransformFinalBlock(bytes, 0, bytes.Length);
-            return Encoding.UTF8.GetString(result);
+            return cryptoTransform.TransformFinalBlock(decryptData, 0, decryptData.Length);
         }
         #endregion
 

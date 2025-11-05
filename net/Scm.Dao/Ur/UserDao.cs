@@ -3,6 +3,7 @@ using Com.Scm.Enums;
 using Com.Scm.Utils;
 using SqlSugar;
 using System.ComponentModel.DataAnnotations;
+using System.Security.Cryptography;
 
 namespace Com.Scm.Ur
 {
@@ -187,6 +188,28 @@ namespace Com.Scm.Ur
         public void UseDefaultAvatar()
         {
             this.avatar = "0.png";
+        }
+
+        /// <summary>
+        /// 生成Token
+        /// </summary>
+        /// <param name="length"></param>
+        public void GenerateToken(int length = 16)
+        {
+            byte[] randomBytes = new byte[length];
+            using (RandomNumberGenerator rng = RandomNumberGenerator.Create())
+            {
+                rng.GetBytes(randomBytes);
+            }
+
+            var result = SecUtils.AesEncrypt(randomBytes);
+            token = Convert.ToBase64String(result);
+        }
+
+        public byte[] DecodeToken()
+        {
+            var bytes = Convert.FromBase64String(token);
+            return SecUtils.AesDecrypt(bytes);
         }
     }
 }

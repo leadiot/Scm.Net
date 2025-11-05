@@ -97,6 +97,11 @@ namespace Com.Scm.Api
             oidcConfig.Prepare(envConfig);
             services.AddSingleton(oidcConfig);
 
+            // Otp
+            var otpConfig = AppUtils.GetConfig<OtpConfig>(OtpConfig.NAME) ?? new OtpConfig();
+            otpConfig.Prepare(envConfig);
+            services.AddSingleton(otpConfig);
+
             services.AddScoped<IUserService, ScmUserService>();
             services.AddScoped<ILogService, ScmLogService>();
             services.AddScoped<IDicService, ScmDicService>();

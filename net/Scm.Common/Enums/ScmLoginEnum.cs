@@ -19,8 +19,12 @@
         /// </summary>
         ByEmail = 30,
         /// <summary>
+        /// Otp登录
+        /// </summary>
+        ByOtp = 40,
+        /// <summary>
         /// 联合登录
         /// </summary>
-        ByOauth = 40
+        ByOauth = 50
     }
 }

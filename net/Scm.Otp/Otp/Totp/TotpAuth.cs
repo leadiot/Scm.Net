@@ -1,5 +1,7 @@
-﻿using Com.Scm.Utils;
+﻿using Com.Scm.Otp.Hotp;
+using Com.Scm.Utils;
 using System;
+using System.Text;
 
 namespace Com.Scm.Otp.Totp
 {
@@ -7,10 +9,11 @@ namespace Com.Scm.Otp.Totp
     /// Time based One-Time Password
     /// TOTP算法（基于时间的一次性密码）实现
     /// 符合RFC 6238标准
+    /// https://datatracker.ietf.org/doc/html/rfc6238
     /// </summary>
     public class TotpAuth : OtpAuth
     {
-        #region 常量定义
+        #region 常量
         /// <summary>
         /// 默认时间步长（秒），推荐使用30秒
         /// </summary>
@@ -21,12 +24,17 @@ namespace Com.Scm.Otp.Totp
         /// <summary>
         /// 时间步长（秒）
         /// </summary>
-        public int TimeStep { get; }
+        public int TimeStep { get; private set; }
 
         /// <summary>
         /// 验证时考虑的时间窗口数量（前后各n个窗口）
         /// </summary>
         public int ValidationWindow { get; set; } = 1;
+
+        /// <summary>
+        /// 
+        /// </summary>
+        private DateTime _Now;
         #endregion
 
         #region 构造函数
@@ -64,41 +72,56 @@ namespace Com.Scm.Otp.Totp
         #endregion
 
         #region 核心方法
+
         /// <summary>
         /// 生成TOTP密码
         /// </summary>
         /// <param name="secretKey">Base32编码的共享密钥</param>
         /// <returns>生成的一次性密码</returns>
-        public string GenerateCode(string secretKey)
-        {
-            return GenerateCode(secretKey, DateTime.UtcNow);
-        }
-
-        /// <summary>
-        /// 生成指定时间的TOTP密码
-        /// </summary>
-        /// <param name="secretKey">Base32编码的共享密钥</param>
-        /// <param name="utcTime">指定的UTC时间</param>
-        /// <returns>生成的一次性密码</returns>
-        public string GenerateCode(string secretKey, DateTime utcTime)
+        public override string GenerateCode(string secretKey)
         {
             if (string.IsNullOrEmpty(secretKey))
             {
                 throw new ArgumentNullException(nameof(secretKey));
             }
 
+            _Now = DateTime.UtcNow;
+
+            // 解码Base32密钥
+            byte[] keyBytes = TextUtils.Base32Decode(secretKey);
+
+            return GenerateTimeCode(keyBytes, _Now);
+        }
+
+        /// <summary>
+        /// 生成TOTP密码
+        /// </summary>
+        /// <param name="secretKey">共享密钥</param>
+        /// <returns>生成的一次性密码</returns>
+        public override string GenerateCode(byte[] secretKey)
+        {
+            _Now = DateTime.UtcNow;
+
+            return GenerateTimeCode(secretKey, _Now);
+        }
+
+        /// <summary>
+        /// 生成指定时间的TOTP密码
+        /// </summary>
+        /// <param name="secretKey">共享密钥</param>
+        /// <param name="utcTime">指定的UTC时间</param>
+        /// <returns>生成的一次性密码</returns>
+        private string GenerateTimeCode(byte[] secretKey, DateTime utcTime)
+        {
             if (utcTime.Kind != DateTimeKind.Utc)
             {
                 throw new ArgumentException("时间必须是UTC时间", nameof(utcTime));
             }
 
-            // 解码Base32密钥
-            byte[] keyBytes = TextUtils.Base32Decode(secretKey);
-
             // 计算时间计数器
             long counter = GetTimeCounter(utcTime);
 
-            return GenerateCode(keyBytes, counter);
+            return GenerateCode(secretKey, counter);
         }
 
         /// <summary>
@@ -107,19 +130,7 @@ namespace Com.Scm.Otp.Totp
         /// <param name="secretKey">Base32编码的共享密钥</param>
         /// <param name="code">要验证的密码</param>
         /// <returns>验证结果</returns>
-        public bool VerifyCode(string secretKey, string code)
-        {
-            return VerifyCode(secretKey, code, DateTime.UtcNow);
-        }
-
-        /// <summary>
-        /// 验证指定时间的TOTP密码
-        /// </summary>
-        /// <param name="secretKey">Base32编码的共享密钥</param>
-        /// <param name="code">要验证的密码</param>
-        /// <param name="utcTime">验证的UTC时间</param>
-        /// <returns>验证结果</returns>
-        public bool VerifyCode(string secretKey, string code, DateTime utcTime)
+        public override bool VerifyCode(string secretKey, string code)
         {
             if (string.IsNullOrEmpty(secretKey))
             {
@@ -131,6 +142,43 @@ namespace Com.Scm.Otp.Totp
                 throw new ArgumentNullException(nameof(code));
             }
 
+            // 解码Base32密钥
+            byte[] keyBytes = TextUtils.Base32Decode(secretKey);
+
+            return VerifyTimeCode(keyBytes, code, DateTime.UtcNow);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="secretKey"></param>
+        /// <param name="code"></param>
+        /// <returns></returns>
+        /// <exception cref="ArgumentNullException"></exception>
+        public override bool VerifyCode(byte[] secretKey, string code)
+        {
+            if (secretKey == null || secretKey.Length == 0)
+            {
+                throw new ArgumentNullException(nameof(secretKey));
+            }
+
+            if (string.IsNullOrEmpty(code))
+            {
+                throw new ArgumentNullException(nameof(code));
+            }
+
+            return VerifyTimeCode(secretKey, code, DateTime.UtcNow);
+        }
+
+        /// <summary>
+        /// 验证指定时间的TOTP密码
+        /// </summary>
+        /// <param name="secretKey">Base32编码的共享密钥</param>
+        /// <param name="code">要验证的密码</param>
+        /// <param name="utcTime">验证的UTC时间</param>
+        /// <returns>验证结果</returns>
+        private bool VerifyTimeCode(byte[] secretKey, string code, DateTime utcTime)
+        {
             if (utcTime.Kind != DateTimeKind.Utc)
             {
                 throw new ArgumentException("时间必须是UTC时间", nameof(utcTime));
@@ -142,9 +190,6 @@ namespace Com.Scm.Otp.Totp
                 return false;
             }
 
-            // 解码Base32密钥
-            byte[] keyBytes = TextUtils.Base32Decode(secretKey);
-
             // 获取当前时间计数器
             long currentCounter = GetTimeCounter(utcTime);
 
@@ -152,7 +197,7 @@ namespace Com.Scm.Otp.Totp
             for (int i = -ValidationWindow; i <= ValidationWindow; i++)
             {
                 long targetCounter = currentCounter + i;
-                string generatedCode = GenerateCode(keyBytes, targetCounter);
+                string generatedCode = GenerateCode(secretKey, targetCounter);
 
                 if (generatedCode == code)
                 {
@@ -167,6 +212,15 @@ namespace Com.Scm.Otp.Totp
 
         #region 辅助方法
         /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        public override long GetCounter()
+        {
+            return GetTimeCounter(_Now);
+        }
+
+        /// <summary>
         /// 计算指定时间的时间计数器
         /// </summary>
         /// <param name="utcTime">UTC时间</param>
@@ -180,7 +234,19 @@ namespace Com.Scm.Otp.Totp
             long totalSeconds = (long)(utcTime - epoch).TotalSeconds;
 
             // 计算时间计数器
-            return totalSeconds / TimeStep;
+            return GetTimeCounter(totalSeconds);
+        }
+
+        private long GetTimeCounter(long seconds)
+        {
+            // 计算时间计数器
+            return seconds / TimeStep;
+        }
+
+        public override bool ChangeCounter()
+        {
+            _Now = DateTime.UtcNow;
+            return true;
         }
 
         #endregion
@@ -205,14 +271,44 @@ namespace Com.Scm.Otp.Totp
         }
         #endregion
 
+        #region 验证方法
+
+        /// <summary>
+        /// 验证RFC 4226测试向量
+        /// </summary>
+        public override bool VerifyRfcTestVectors()
+        {
+            // RFC 4226附录D的测试向量
+            byte[] secretKey = Encoding.UTF8.GetBytes("12345678901234567890");
+            long[] counters = { 59, 1111111109, 1111111111, 1234567890, 2000000000, 20000000000 };
+            string[] expectedCodes = { "94287082", "07081804", "14050471", "89005924", "69279037", "65353130" };
+
+            HotpAuth hotp = new HotpAuth(30, 8, OtpHashAlgorithm.SHA1);
+
+            for (int i = 0; i < counters.Length; i++)
+            {
+                string generatedCode = hotp.GenerateCode(secretKey, GetTimeCounter(counters[i]));
+                if (generatedCode != expectedCodes[i])
+                {
+                    Console.WriteLine($"测试失败: 计数器 {counters[i]}，期望 {expectedCodes[i]}，实际 {generatedCode}");
+                    return false;
+                }
+            }
+
+            Console.WriteLine("所有RFC 6238测试向量验证通过");
+            return true;
+        }
+
+        #endregion
+
         /// <summary>
         /// 生成TOTP URL（用于生成二维码）
         /// </summary>
-        public override string GenerateOtpUrl(string secretKey, string account, string issuer)
+        public override string GenerateOtpUrl(OtpConfig config)
         {
-            string encodedAccount = Uri.EscapeDataString(account);
-            string encodedIssuer = Uri.EscapeDataString(issuer);
-            string encodedSecret = Uri.EscapeDataString(secretKey);
+            string encodedAccount = Uri.EscapeDataString(config.Account);
+            string encodedIssuer = Uri.EscapeDataString(config.Issuer);
+            string encodedSecret = Uri.EscapeDataString(TextUtils.Base32Encode(config.Secret));
 
             return $"otpauth://totp/{encodedIssuer}:{encodedAccount}?secret={encodedSecret}&issuer={encodedIssuer}&algorithm=SHA1&digits=6&period=30";
         }

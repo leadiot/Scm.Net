@@ -1,25 +1,29 @@
 ﻿using Com.Scm.Otp;
 using Com.Scm.Otp.Hotp;
 using Com.Scm.Otp.Totp;
+using Com.Scm.Utils;
+using static System.Net.WebRequestMethods;
 
 public class Program
 {
-    public static void Main(string[] args)
+    public static void Main1(string[] args)
     {
         Console.WriteLine("=== HOTP实现示例 ===\n");
 
+        HotpAuth hotp = new HotpAuth();
+
         // 1. 验证RFC 4226测试向量
         Console.WriteLine("正在验证RFC 4226测试向量...");
-        bool rfcTestPassed = HotpAuth.VerifyRfcTestVectors();
+        bool rfcTestPassed = hotp.VerifyRfcTestVectors();
         Console.WriteLine();
 
         // 2. 生成随机密钥
-        string secretKey = HotpAuth.GenerateRandomKey();
-        Console.WriteLine($"生成的随机密钥: {secretKey}");
-        Console.WriteLine($"密钥长度: {secretKey.Length} 字符\n");
+        var secretKey = HotpAuth.GenerateRandomKey();
+        string secret = TextUtils.Base32Encode(secretKey);
+        Console.WriteLine($"生成的随机密钥: {secret}");
+        Console.WriteLine($"密钥长度: {secret.Length} 字符\n");
 
         // 3. 创建HOTP实例
-        HotpAuth hotp = new HotpAuth();
         Console.WriteLine($"使用参数:");
         Console.WriteLine($"  密码长度: {hotp.CodeLength} 位");
         Console.WriteLine($"  哈希算法: {hotp.HashAlgorithm}");
@@ -37,52 +41,58 @@ public class Program
         Console.WriteLine();
 
         // 5. 验证密码示例
-        long currentCounter = 2;
-        string codeToVerify = hotp.GenerateCode(secretKey, currentCounter);
+        hotp.ChangeCounter();
+        string codeToVerify = hotp.GenerateCode(secretKey);
 
         Console.WriteLine($"验证测试:");
         Console.WriteLine($"  待验证密码: {codeToVerify}");
-        Console.WriteLine($"  当前计数器: {currentCounter}");
+        Console.WriteLine($"  当前计数器: {hotp.GetCounter()}");
 
-        bool isValid = hotp.VerifyCode(secretKey, codeToVerify, currentCounter, out long newCounter);
+        bool isValid = hotp.VerifyCode(secretKey, codeToVerify);
 
         Console.WriteLine($"  验证结果: {(isValid ? "成功" : "失败")}");
         if (isValid)
         {
-            Console.WriteLine($"  新计数器值: {newCounter}");
+            Console.WriteLine($"  新计数器值: {hotp.GetCounter()}");
         }
         Console.WriteLine();
 
         // 6. 测试重新同步功能
-        currentCounter = 3;
-        long expectedCounter = currentCounter + 1; // 模拟客户端超前1个计数
-        string resyncCode = hotp.GenerateCode(secretKey, expectedCounter);
+        //hotp.ChangeCounter();
+        //long expectedCounter = currentCounter + 1; // 模拟客户端超前1个计数
+        //string resyncCode = hotp.GenerateCode(secretKey, expectedCounter);
 
-        Console.WriteLine("重新同步测试:");
-        Console.WriteLine($"  待验证密码: {resyncCode}");
-        Console.WriteLine($"  当前计数器: {currentCounter}");
-        Console.WriteLine($"  实际生成密码时的计数器: {expectedCounter}");
+        //Console.WriteLine("重新同步测试:");
+        //Console.WriteLine($"  待验证密码: {resyncCode}");
+        //Console.WriteLine($"  当前计数器: {currentCounter}");
+        //Console.WriteLine($"  实际生成密码时的计数器: {expectedCounter}");
 
-        bool resyncSuccess = hotp.VerifyCode(secretKey, resyncCode, currentCounter, out long resyncedCounter);
+        //bool resyncSuccess = hotp.VerifyCode(secretKey, resyncCode);
 
-        Console.WriteLine($"  重新同步结果: {(resyncSuccess ? "成功" : "失败")}");
-        if (resyncSuccess)
-        {
-            Console.WriteLine($"  同步后的计数器值: {resyncedCounter}");
-        }
+        //Console.WriteLine($"  重新同步结果: {(resyncSuccess ? "成功" : "失败")}");
+        //if (resyncSuccess)
+        //{
+        //    Console.WriteLine($"  同步后的计数器值: {hotp.GetCounter()}");
+        //}
     }
 
-    public static void Main2(string[] args)
+    public static void Main(string[] args)
     {
         Console.WriteLine("=== TOTP实现示例 ===\n");
 
+        TotpAuth totp = new TotpAuth();
+
+        // 1. 验证RFC 4226测试向量
+        Console.WriteLine("正在验证RFC 6238测试向量...");
+        bool rfcTestPassed = totp.VerifyRfcTestVectors();
+        Console.WriteLine();
+
         // 1. 生成随机密钥
-        string secretKey = TotpAuth.GenerateRandomKey();
+        string secretKey = TextUtils.Base32Encode(TotpAuth.GenerateRandomKey());
         Console.WriteLine($"生成的随机密钥: {secretKey}");
         Console.WriteLine($"密钥长度: {secretKey.Length} 字符\n");
 
         // 2. 创建TOTP实例
-        TotpAuth totp = new TotpAuth();
         Console.WriteLine($"使用参数:");
         Console.WriteLine($"  时间步长: {totp.TimeStep} 秒");
         Console.WriteLine($"  密码长度: {totp.CodeLength} 位");

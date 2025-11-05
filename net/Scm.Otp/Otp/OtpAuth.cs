@@ -1,5 +1,4 @@
-﻿using Com.Scm.Utils;
-using System;
+﻿using System;
 using System.Security.Cryptography;
 
 namespace Com.Scm.Otp
@@ -7,9 +6,9 @@ namespace Com.Scm.Otp
     /// <summary>
     /// One-Time Password
     /// </summary>
-    public class OtpAuth
+    public abstract class OtpAuth
     {
-        #region 常量定义
+        #region 常量
         /// <summary>
         /// 默认密码长度（6位数字）
         /// </summary>
@@ -33,10 +32,68 @@ namespace Com.Scm.Otp
         public OtpHashAlgorithm HashAlgorithm { get; protected set; }
         #endregion
 
-        protected string GenerateCode(byte[] keyBytes, long counter)
+        #region 公共方法
+
+        /// <summary>
+        /// 生成校验码
+        /// </summary>
+        /// <param name="secretKey">Base32编码的密钥</param>
+        /// <returns></returns>
+        public abstract string GenerateCode(string secretKey);
+
+        /// <summary>
+        /// 生成校验码
+        /// </summary>
+        /// <param name="secretKey">密钥</param>
+        /// <returns></returns>
+        public abstract string GenerateCode(byte[] secretKey);
+
+        /// <summary>
+        /// 验证校验码
+        /// </summary>
+        /// <param name="secretKey">Base32编码的密钥</param>
+        /// <param name="code"></param>
+        /// <returns></returns>
+        public abstract bool VerifyCode(string secretKey, string code);
+
+        /// <summary>
+        /// 验证校验码
+        /// </summary>
+        /// <param name="secretKey">密钥</param>
+        /// <param name="code"></param>
+        /// <returns></returns>
+        public abstract bool VerifyCode(byte[] secretKey, string code);
+
+        /// <summary>
+        /// 获取计数器
+        /// </summary>
+        /// <returns></returns>
+        public abstract long GetCounter();
+
+        /// <summary>
+        /// 更新计数器
+        /// </summary>
+        /// <returns></returns>
+        public abstract bool ChangeCounter();
+
+        /// <summary>
+        /// RFC标准验证
+        /// </summary>
+        /// <returns></returns>
+        public abstract bool VerifyRfcTestVectors();
+        #endregion
+
+        #region 虚方法
+        /// <summary>
+        /// 生成校验码
+        /// </summary>
+        /// <param name="secretKey"></param>
+        /// <param name="counter"></param>
+        /// <returns></returns>
+        public virtual string GenerateCode(byte[] secretKey, long counter)
         {
             // 生成HMAC哈希
-            byte[] hash = ComputeHmacHash(keyBytes, counter);
+            byte[] hash = ComputeHash(secretKey, counter);
 
             // 动态截断获取密码
             int code = TruncateHash(hash);
@@ -45,36 +102,23 @@ namespace Com.Scm.Otp
             return code.ToString($"D{CodeLength}");
         }
 
-        #region 辅助方法
-
         /// <summary>
-        /// 计算HMAC哈希
+        /// 生成URL（用于生成二维码）
         /// </summary>
-        /// <param name="keyBytes">密钥字节数组</param>
-        /// <param name="counter">计数器值</param>
-        /// <returns>HMAC哈希结果</returns>
-        protected byte[] ComputeHmacHash(byte[] keyBytes, long counter)
+        public virtual string GenerateOtpUrl(OtpConfig config)
         {
-            // 将计数器转换为8字节大端序
-            byte[] counterBytes = BitConverter.GetBytes(counter);
-            if (BitConverter.IsLittleEndian)
-            {
-                Array.Reverse(counterBytes);
-            }
-
-            // 根据指定算法创建HMAC实例
-            using (HMAC hmac = CreateHmacInstance(keyBytes))
-            {
-                return hmac.ComputeHash(counterBytes);
-            }
+            return "";
         }
+        #endregion
+
+        #region 私有方法
 
         /// <summary>
         /// 创建HMAC实例
         /// </summary>
         /// <param name="keyBytes">密钥字节数组</param>
         /// <returns>HMAC实例</returns>
-        protected HMAC CreateHmacInstance(byte[] keyBytes)
+        protected HMAC CreateInstance(byte[] keyBytes)
         {
             switch (HashAlgorithm)
             {
@@ -86,6 +130,28 @@ namespace Com.Scm.Otp
                     return new HMACSHA512(keyBytes);
                 default:
                     throw new ArgumentOutOfRangeException(nameof(HashAlgorithm), "不支持的哈希算法");
+            }
+        }
+
+        /// <summary>
+        /// 计算HMAC哈希
+        /// </summary>
+        /// <param name="keyBytes">密钥字节数组</param>
+        /// <param name="counter">计数器值</param>
+        /// <returns>HMAC哈希结果</returns>
+        protected byte[] ComputeHash(byte[] keyBytes, long counter)
+        {
+            // 将计数器转换为8字节大端序
+            byte[] counterBytes = BitConverter.GetBytes(counter);
+            if (BitConverter.IsLittleEndian)
+            {
+                Array.Reverse(counterBytes);
+            }
+
+            // 根据指定算法创建HMAC实例
+            using (HMAC hmac = CreateInstance(keyBytes))
+            {
+                return hmac.ComputeHash(counterBytes);
             }
         }
 
@@ -112,12 +178,13 @@ namespace Com.Scm.Otp
 
         #endregion
 
+        #region 静态方法
         /// <summary>
-        /// 生成随机的Base32密钥
+        /// 生成随机密钥
         /// </summary>
         /// <param name="length">密钥长度（字节）</param>
-        /// <returns>Base32编码的随机密钥</returns>
-        public static string GenerateRandomKey(int length = 16)
+        /// <returns>随机密钥</returns>
+        public static byte[] GenerateRandomKey(int length = 16)
         {
             if (length <= 0)
             {
@@ -130,15 +197,8 @@ namespace Com.Scm.Otp
                 rng.GetBytes(randomBytes);
             }
 
-            return TextUtils.Base32Encode(randomBytes);
+            return randomBytes;
         }
-
-        /// <summary>
-        /// 生成TOTP URL（用于生成二维码）
-        /// </summary>
-        public virtual string GenerateOtpUrl(string secretKey, string account, string issuer)
-        {
-            return "";
-        }
+        #endregion
     }
 }

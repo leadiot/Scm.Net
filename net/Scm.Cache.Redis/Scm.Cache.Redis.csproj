@@ -12,6 +12,12 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Reference Include="Scm.Common.Text">
+      <HintPath>..\Libs\netstandard2.0\Scm.Common.Text.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\Scm.Cache\Scm.Cache.csproj" />
   </ItemGroup>
 

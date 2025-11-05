@@ -14,7 +14,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Scm.Common.Http\Scm.Common.Http.csproj" />
     <ProjectReference Include="..\Scm.Common\Scm.Common.csproj" />
     <ProjectReference Include="..\Scm.Email\Scm.Email.csproj" />
     <ProjectReference Include="..\Scm.Plugin.Audio\Scm.Plugin.Audio.csproj" />

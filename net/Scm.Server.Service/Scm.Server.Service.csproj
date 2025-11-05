@@ -8,6 +8,8 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Scm.Cache.Dictionary\Scm.Cache.Dictionary.csproj" />
+    <ProjectReference Include="..\Scm.Cache\Scm.Cache.csproj" />
     <ProjectReference Include="..\Scm.Common.Time\Scm.Common.Time.csproj" />
     <ProjectReference Include="..\Scm.Dao\Scm.Dao.csproj" />
     <ProjectReference Include="..\Scm.Dsa.Dba.Sugar\Scm.Dsa.Dba.Sugar.csproj" />
@@ -18,11 +20,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Reference Include="Scm.Cache">
-      <HintPath>..\libs\net9.0\Scm.Cache.dll</HintPath>
-    </Reference>
-    <Reference Include="Scm.Cache.Dictionary">
-      <HintPath>..\libs\net9.0\Scm.Cache.Dictionary.dll</HintPath>
+    <Reference Include="Scm.Common.Text">
+      <HintPath>..\Libs\netstandard2.0\Scm.Common.Text.dll</HintPath>
     </Reference>
     <Reference Include="Scm.Workflow">
       <HintPath>..\Libs\net9.0\Scm.Workflow.dll</HintPath>

@@ -14,6 +14,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Reference Include="Scm.Common.Text">
+      <HintPath>..\Libs\netstandard2.0\Scm.Common.Text.dll</HintPath>
+    </Reference>
     <Reference Include="Scm.Uid">
       <HintPath>..\Libs\net9.0\Scm.Uid.dll</HintPath>
     </Reference>

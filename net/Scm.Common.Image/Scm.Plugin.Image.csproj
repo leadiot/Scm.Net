@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>net9.0;net48</TargetFrameworks>
+    <TargetFramework>net9.0</TargetFramework>
     <ImplicitUsings>disable</ImplicitUsings>
     <Nullable>disable</Nullable>
     <RootNamespace>Com.Scm.Image</RootNamespace>
@@ -18,6 +18,12 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Scm.Plugin\Scm.Plugin.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="Scm.Common.Text">
+      <HintPath>..\Libs\netstandard2.0\Scm.Common.Text.dll</HintPath>
+    </Reference>
   </ItemGroup>
 
 </Project>

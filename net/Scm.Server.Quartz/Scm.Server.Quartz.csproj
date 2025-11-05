@@ -16,11 +16,19 @@
   <ItemGroup>
     <ProjectReference Include="..\Scm.Common.Dto\Scm.Common.Dto.csproj" />
     <ProjectReference Include="..\Scm.Common.File\Scm.Common.File.csproj" />
-    <ProjectReference Include="..\Scm.Common.Http\Scm.Common.Http.csproj" />
     <ProjectReference Include="..\Scm.Common\Scm.Common.csproj" />
     <ProjectReference Include="..\Scm.Dsa.Dba.Sugar\Scm.Dsa.Dba.Sugar.csproj" />
     <ProjectReference Include="..\Scm.Server.Dao\Scm.Server.Dao.csproj" />
     <ProjectReference Include="..\Scm.Server\Scm.Server.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="Scm.Common.Http">
+      <HintPath>..\Libs\netstandard2.0\Scm.Common.Http.dll</HintPath>
+    </Reference>
+    <Reference Include="Scm.Common.Text">
+      <HintPath>..\Libs\netstandard2.0\Scm.Common.Text.dll</HintPath>
+    </Reference>
   </ItemGroup>
 
 </Project>

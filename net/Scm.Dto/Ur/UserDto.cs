@@ -4,7 +4,7 @@ using Com.Scm.Enums;
 namespace Com.Scm.Ur;
 
 /// <summary>
-/// 管理员表
+/// 用户
 /// </summary>
 public class UserDto : ScmDataDto
 {

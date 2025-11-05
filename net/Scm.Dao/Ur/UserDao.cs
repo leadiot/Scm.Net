@@ -40,12 +40,6 @@ namespace Com.Scm.Ur
         public string namec { get; set; }
 
         /// <summary>
-        /// 登录用户
-        /// </summary>
-        [StringLength(32)]
-        public string user { get; set; }
-
-        /// <summary>
         /// 登录密码
         /// </summary>
         [Required]
@@ -79,6 +73,11 @@ namespace Com.Scm.Ur
         /// 性别
         /// </summary>
         public ScmSexEnum sex { get; set; }
+
+        /// <summary>
+        /// OTP Token
+        /// </summary>
+        public string token { get; set; }
 
         /// <summary>
         /// 备注
@@ -116,11 +115,6 @@ namespace Com.Scm.Ur
         public long next_time { get; set; }
         #endregion
 
-        /// <summary>
-        /// 
-        /// </summary>
-        public ScmDeleteEnum row_delete { get; set; }
-
         #region 数据权限
         /// <summary>
         /// 数据权限
@@ -131,6 +125,11 @@ namespace Com.Scm.Ur
         /// </summary>
         public ScmUserHomeTypesEnum home { get; set; }
         #endregion
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public ScmDeleteEnum row_delete { get; set; }
 
         /// <summary>
         /// 

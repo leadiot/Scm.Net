@@ -81,4 +81,16 @@ namespace Com.Scm.Enums
     {
         None = 0,
     }
+
+    /// <summary>
+    /// token类型
+    /// </summary>
+    public enum ScmUserTokenTypeEnum
+    {
+        None,
+        /// <summary>
+        /// One Time Password
+        /// </summary>
+        Otp,
+    }
 }

@@ -392,7 +392,6 @@ public class OperatorService : ApiService
         userDao.codec = temp;
         userDao.names = name;
         userDao.namec = name;
-        userDao.user = code;
         //userDao.pass = CryptoUtils.Sha(request.pass);
         userDao.email = request.email;
         userDao.cellphone = request.phone;
@@ -401,7 +400,7 @@ public class OperatorService : ApiService
         var qty = await _SqlClient.Insertable(userDao).ExecuteCommandAsync();
         if (qty < 1)
         {
-            LogUtils.Info($"用户注册：用户{userDao.user}数据库插入异常！");
+            LogUtils.Info($"用户注册：用户{userDao.codec}数据库插入异常！");
             response.SetFailure(LoginResponse.ERROR_23, "用户注册失败，请重试！");
             return null;
         }
@@ -803,7 +802,7 @@ public class OperatorService : ApiService
     {
         var user = request.user;
         var userDao = await _SqlClient.Queryable<UserDao>()
-            .Where(a => a.user == user)
+            .Where(a => a.codec == user)
             .FirstAsync();
         if (userDao != null)
         {
@@ -816,7 +815,6 @@ public class OperatorService : ApiService
         userDao.codec = request.user;
         userDao.names = request.user;
         userDao.namec = request.user_name;
-        userDao.user = user;
         userDao.pass = request.pass;
         userDao.email = request.email;
         userDao.cellphone = request.phone;
@@ -824,7 +822,7 @@ public class OperatorService : ApiService
         var result = await _SqlClient.Insertable(userDao).ExecuteCommandAsync();
         if (result < 1)
         {
-            LogUtils.Info($"用户注册：用户{userDao.user}数据库插入异常！");
+            LogUtils.Info($"用户注册：用户{userDao.codec}数据库插入异常！");
             response.SetFailure(SignonResponse.ERROR_15, "用户信息注册失败，请修改名称后重试！");
             return false;
         }
@@ -881,7 +879,7 @@ public class OperatorService : ApiService
         }
 
         var userDao = await _SqlClient.Queryable<UserDao>()
-              .Where(a => a.user == user && a.row_status == ScmRowStatusEnum.Enabled)
+              .Where(a => a.codec == user && a.row_status == ScmRowStatusEnum.Enabled)
               .FirstAsync();
         // 检测用户信息
         if (userDao == null)
@@ -952,7 +950,6 @@ public class OperatorService : ApiService
         userDao.codec = logOAuthDao.code;
         userDao.names = logOAuthDao.name;
         userDao.namec = logOAuthDao.name;
-        userDao.user = logOAuthDao.user;
         userDao.pass = SecUtils.Sha256(_EnvConfig.GetPassword());
         userDao.email = "";
         userDao.cellphone = "";

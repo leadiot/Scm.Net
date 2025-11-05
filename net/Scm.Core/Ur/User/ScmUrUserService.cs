@@ -258,7 +258,6 @@ namespace Com.Scm.Ur.User
             }
 
             userDao = model.Adapt<UserDao>();
-            userDao.user = model.codec;
 
             await _thisRepository.InsertAsync(userDao);
 
@@ -349,7 +348,6 @@ namespace Com.Scm.Ur.User
             }
 
             userDao = CommonUtils.Adapt(model, userDao);
-            userDao.user = model.codec;
 
             await _thisRepository.AsUpdateable(userDao).IgnoreColumns(a => new { a.pass }).ExecuteCommandAsync();
 

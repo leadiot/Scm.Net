@@ -46,8 +46,4 @@
     </Reference>
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Ur\UserOtp\" />
-  </ItemGroup>
-
 </Project>

@@ -276,7 +276,7 @@ public class OperatorService : ApiService
         }
 
         userDao.DecodePass();
-        if (pass != CryptoUtils.Sha(userDao.pass + "@" + request.time))
+        if (pass != SecUtils.Sha256(userDao.pass + "@" + request.time))
         {
             await LoginPassError(userDao, time);
             var msg = "账号密码输入错误！";
@@ -563,9 +563,9 @@ public class OperatorService : ApiService
             throw new BusinessException("登录口令不能为空！");
         }
 
-        pass = CryptoUtils.Sha(pass);
+        pass = SecUtils.Sha256(pass);
         var time = TimeUtils.GetUnixTime();
-        pass = CryptoUtils.Sha(pass += "@" + time);
+        pass = SecUtils.Sha256(pass += "@" + time);
         return await LoginAsync(new LoginRequest { mode = ScmLoginModeEnum.ByPass, user = user, pass = pass, time = time });
     }
     #endregion
@@ -953,7 +953,7 @@ public class OperatorService : ApiService
         userDao.names = logOAuthDao.name;
         userDao.namec = logOAuthDao.name;
         userDao.user = logOAuthDao.user;
-        userDao.pass = SecUtils.Sha(_EnvConfig.GetPassword());
+        userDao.pass = SecUtils.Sha256(_EnvConfig.GetPassword());
         userDao.email = "";
         userDao.cellphone = "";
         userDao.UseDefaultAvatar();
@@ -1262,7 +1262,7 @@ public class OperatorService : ApiService
     /// <returns></returns>
     public async Task UpdateUserPassAsync(UserPassRequest model)
     {
-        var oldPass = CryptoUtils.Sha(model.OldPass);
+        var oldPass = SecUtils.Sha256(model.OldPass);
         var userDao = await _SqlClient.Queryable<UserDao>().Where(a => a.id == model.id).FirstAsync();
         if (userDao == null)
         {
@@ -1274,7 +1274,7 @@ public class OperatorService : ApiService
             throw new BusinessException("原密码输入错误~");
         }
 
-        userDao.pass = CryptoUtils.Sha(model.NewPass);
+        userDao.pass = SecUtils.Sha256(model.NewPass);
         userDao.EncodePass();
         userDao.PrepareUpdate(userDao.id);
 

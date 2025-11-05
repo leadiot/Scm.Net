@@ -8,6 +8,106 @@ namespace Com.Scm.Utils
 {
     public class SecUtils
     {
+        private static readonly string Default_AES_Key = "@Scm.Net";
+
+        private static byte[] Keys = new byte[16]
+        {
+            64, 83, 99, 109, 46, 78, 101, 116,
+            64, 83, 99, 109, 46, 78, 101, 116,
+        };
+
+        #region AES算法
+        /// <summary>
+        /// AES加密
+        /// </summary>
+        /// <param name="encryptString"></param>
+        /// <returns></returns>
+        public static string AesEncrypt(string encryptString)
+        {
+            return AesEncrypt(encryptString, Default_AES_Key);
+        }
+
+        /// <summary>
+        /// AES加密
+        /// </summary>
+        /// <param name="encryptString"></param>
+        /// <param name="encryptKey"></param>
+        /// <param name="mode"></param>
+        /// <returns></returns>
+        public static string AesEncrypt(string encryptString, string encryptKey, CipherMode mode = CipherMode.CBC)
+        {
+            if (string.IsNullOrEmpty(encryptString))
+            {
+                return null;
+            }
+
+            if (string.IsNullOrEmpty(encryptKey))
+            {
+                encryptKey = Default_AES_Key;
+            }
+            encryptKey = encryptKey.PadRight(32, ' ');
+
+            var aes = Aes.Create();
+            aes.Key = Encoding.UTF8.GetBytes(encryptKey.Substring(0, 32));
+            aes.IV = Keys;
+            aes.Mode = mode;
+
+            var cryptoTransform = aes.CreateEncryptor();
+
+            var bytes = Encoding.UTF8.GetBytes(encryptString);
+            var result = cryptoTransform.TransformFinalBlock(bytes, 0, bytes.Length);
+            return Convert.ToBase64String(result);
+        }
+
+        /// <summary>
+        /// AES解密
+        /// </summary>
+        /// <param name="decryptString"></param>
+        /// <returns></returns>
+        public static string AesDecrypt(string decryptString)
+        {
+            return AesDecrypt(decryptString, Default_AES_Key);
+        }
+
+        /// <summary>
+        /// AES解密
+        /// </summary>
+        /// <param name="decryptString"></param>
+        /// <param name="decryptKey"></param>
+        /// <param name="mode"></param>
+        /// <returns></returns>
+        public static string AesDecrypt(string decryptString, string decryptKey, CipherMode mode = CipherMode.CBC)
+        {
+            if (string.IsNullOrEmpty(decryptString))
+            {
+                return null;
+            }
+
+            if (string.IsNullOrEmpty(decryptKey))
+            {
+                decryptKey = Default_AES_Key;
+            }
+            decryptKey = decryptKey.PadRight(32, ' ');
+
+            var aes = Aes.Create();
+            aes.Key = Encoding.UTF8.GetBytes(decryptKey.Substring(0, 32));
+            aes.IV = Keys;
+            aes.Mode = mode;
+
+            var cryptoTransform = aes.CreateDecryptor();
+
+            byte[] bytes = Convert.FromBase64String(decryptString);
+            var result = cryptoTransform.TransformFinalBlock(bytes, 0, bytes.Length);
+            return Encoding.UTF8.GetString(result);
+        }
+        #endregion
+
+        #region 消息摘要
+        /// <summary>
+        /// MD5摘要
+        /// </summary>
+        /// <param name="input"></param>
+        /// <returns></returns>
         public static string Md5(string input)
         {
             if (input == null)
@@ -31,28 +131,29 @@ namespace Com.Scm.Utils
             return TextUtils.ToHexString(bytes);
         }
 
-        public static string Sha(string input)
+        public static string Sha256(string input)
         {
             var alg = SHA256.Create();
             byte[] bytes = alg.ComputeHash(Encoding.UTF8.GetBytes(input));
             return TextUtils.ToHexString(bytes);
         }
 
-        public static string Sha(Stream stream)
+        public static string Sha256(Stream stream)
         {
             var alg = SHA256.Create();
             byte[] bytes = alg.ComputeHash(stream);
             return TextUtils.ToHexString(bytes);
         }
 
-        public static string Sha(byte[] bytes)
+        public static string Sha256(byte[] bytes)
         {
             var alg = SHA256.Create();
             bytes = alg.ComputeHash(bytes);
             return TextUtils.ToHexString(bytes);
         }
+        #endregion
 
-        #region 密码掩码处理
+        #region 掩码处理
         /// <summary>
         /// 
         /// </summary>

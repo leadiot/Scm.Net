@@ -319,7 +319,7 @@ namespace Com.Scm.Api.Configure.Filters
             var signKey = _Config.SignKey;
             //拼接签名数据
             var signStr = appId + signKey + timeStamp + data;
-            var newSign = CryptoUtils.Md5(signStr);
+            var newSign = SecUtils.Md5(signStr);
             return newSign == signature;
         }
 

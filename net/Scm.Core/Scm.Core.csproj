@@ -9,7 +9,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Scm.Cache\Scm.Cache.csproj" />
-    <ProjectReference Include="..\Scm.Common.Crypto\Scm.Common.Crypto.csproj" />
     <ProjectReference Include="..\Scm.Common.Dto\Scm.Common.Dto.csproj" />
     <ProjectReference Include="..\Scm.Common.Log\Scm.Common.Log.csproj" />
     <ProjectReference Include="..\Scm.Common.OS\Scm.Common.Os.csproj" />
@@ -39,6 +38,10 @@
     <Reference Include="Scm.Workflow">
       <HintPath>..\Libs\net9.0\Scm.Workflow.dll</HintPath>
     </Reference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Ur\UserOtp\" />
   </ItemGroup>
 
 </Project>

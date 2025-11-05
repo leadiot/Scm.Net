@@ -5,8 +5,4 @@
     <RootNamespace>Com.Scm</RootNamespace>
   </PropertyGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\Scm.Common.Text\Scm.Common.Text.csproj" />
-  </ItemGroup>
-
 </Project>

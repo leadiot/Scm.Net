@@ -76,9 +76,14 @@ namespace Com.Scm.Ur
         public ScmSexEnum sex { get; set; }
 
         /// <summary>
+        /// OTP是否启用
+        /// </summary>
+        public ScmRowStatusEnum otp_status { get; set; }
+        /// <summary>
         /// OTP Token
         /// </summary>
-        public string token { get; set; }
+        [StringLength(256)]
+        public string otp_token { get; set; }
 
         /// <summary>
         /// 备注
@@ -203,12 +208,12 @@ namespace Com.Scm.Ur
             }
 
             var result = SecUtils.AesEncrypt(randomBytes);
-            token = Convert.ToBase64String(result);
+            otp_token = Convert.ToBase64String(result);
         }
 
         public byte[] DecodeToken()
         {
-            var bytes = Convert.FromBase64String(token);
+            var bytes = Convert.FromBase64String(otp_token);
             return SecUtils.AesDecrypt(bytes);
         }
     }

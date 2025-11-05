@@ -100,5 +100,25 @@ namespace Com.Scm.Ur.UserOtp
             var totp = new TotpAuth(_otpConfig.Period, _otpConfig.Digits, Otp.OtpHashAlgorithm.SHA1);
             return totp.VerifyCode(secret, code);
         }
+
+        /// <summary>
+        /// 更新状态
+        /// </summary>
+        /// <param name="param">逗号分隔</param>
+        /// <returns></returns>
+        public async Task<int> StatusAsync(ScmChangeStatusRequest param)
+        {
+            var token = _contextHolder.GetToken();
+
+            var userDao = await _thisRepository.GetByIdAsync(token.user_id);
+            if (userDao != null)
+            {
+                userDao.otp_status = param.status;
+                await _thisRepository.UpdateAsync(userDao);
+                return 1;
+            }
+
+            return 0;
+        }
     }
 }

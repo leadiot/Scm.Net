@@ -17,10 +17,4 @@
     <ProjectReference Include="..\Scm.Server\Scm.Server.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Reference Include="Scm.Cache">
-      <HintPath>..\libs\net9.0\Scm.Cache.dll</HintPath>
-    </Reference>
-  </ItemGroup>
-
 </Project>

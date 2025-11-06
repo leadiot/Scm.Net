@@ -178,7 +178,7 @@ namespace Com.Scm.Ur
         /// </summary>
         public void EncodePass()
         {
-            pass = SecUtils.EncodePass(pass);
+            pass = ScmUtils.EncodePass(pass);
         }
 
         /// <summary>
@@ -186,7 +186,7 @@ namespace Com.Scm.Ur
         /// </summary>
         public void DecodePass()
         {
-            pass = SecUtils.DecodePass(pass);
+            pass = ScmUtils.DecodePass(pass);
         }
 
         public void UseDefaultPass()

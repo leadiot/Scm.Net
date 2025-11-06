@@ -1,11 +1,12 @@
 using Com.Scm.Dvo;
+using Com.Scm.Enums;
 
 namespace Com.Scm.Ur.UserOtp.Dvo
 {
     /// <summary>
     /// 三方登录
     /// </summary>
-    public class UserOtpDvo : ScmDataDvo
+    public class UserOtpDvo : ScmDvo
     {
         /// <summary>
         /// 登录用户
@@ -23,9 +24,19 @@ namespace Com.Scm.Ur.UserOtp.Dvo
         public string avatar { get; set; }
 
         /// <summary>
+        /// 启用状态
+        /// </summary>
+        public ScmRowStatusEnum status { get; set; }
+
+        /// <summary>
         /// 凭证
         /// </summary>
-        public string token { get; set; }
+        public string secret { get; set; }
+
+        /// <summary>
+        /// 启用时间
+        /// </summary>
+        public long time { get; set; }
 
         /// <summary>
         /// 发行者
@@ -35,11 +46,16 @@ namespace Com.Scm.Ur.UserOtp.Dvo
         /// <summary>
         /// 密码长度
         /// </summary>
-        public int code_length { get; set; }
+        public int digits { get; set; }
 
         /// <summary>
         /// 摘要算法
         /// </summary>
         public string algorithm { get; set; }
+
+        /// <summary>
+        /// 用于生成二维码的Uri
+        /// </summary>
+        public string uri { get; set; }
     }
 }

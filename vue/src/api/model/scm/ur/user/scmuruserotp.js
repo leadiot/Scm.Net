@@ -8,6 +8,13 @@ export default {
 			return await http.get(this.url);
 		},
 	},
+	view: {
+		url: `${config.API_URL}/scmuruserotp/view`,
+		name: "查询",
+		get: async function () {
+			return await http.get(this.url);
+		},
+	},
 	update: {
 		url: `${config.API_URL}/scmuruserotp`,
 		name: "更新",

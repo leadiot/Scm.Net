@@ -1,5 +1,6 @@
 using Com.Scm.Config;
 using Com.Scm.Dsa;
+using Com.Scm.Exceptions;
 using Com.Scm.Jwt;
 using Com.Scm.Otp.Totp;
 using Com.Scm.Service;
@@ -13,7 +14,7 @@ namespace Com.Scm.Ur.UserOtp
     /// Otp服务接口
     /// </summary>
     [ApiExplorerSettings(GroupName = "Ur")]
-    public class ScmUrUserTokenService : ApiService
+    public class ScmUrUserOtpService : ApiService
     {
         private readonly JwtContextHolder _contextHolder;
         private readonly SugarRepository<UserDao> _thisRepository;
@@ -24,7 +25,7 @@ namespace Com.Scm.Ur.UserOtp
         /// </summary>
         /// <param name="userRepository"></param>
         /// <returns></returns>
-        public ScmUrUserTokenService(JwtContextHolder contextHolder,
+        public ScmUrUserOtpService(JwtContextHolder contextHolder,
             SugarRepository<UserDao> userRepository,
             OtpConfig otpConfig)
         {
@@ -38,8 +39,22 @@ namespace Com.Scm.Ur.UserOtp
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        [HttpGet("{id}")]
+        [HttpGet]
         public async Task<UserOtpDvo> GetAsync()
+        {
+            var token = _contextHolder.GetToken();
+
+            var userDao = await _thisRepository.GetByIdAsync(token.user_id);
+
+            var dvo = new UserOtpDvo();
+            dvo.status = userDao.otp_status;
+            dvo.time = userDao.otp_time;
+
+            return dvo;
+        }
+
+        [HttpGet]
+        public async Task<UserOtpDvo> GetViewAsync()
         {
             var token = _contextHolder.GetToken();
 
@@ -48,7 +63,7 @@ namespace Com.Scm.Ur.UserOtp
         }
 
         /// <summary>
-        /// 更新
+        /// 更新密钥
         /// </summary>
         /// <param name="model"></param>
         /// <returns></returns>
@@ -57,48 +72,73 @@ namespace Com.Scm.Ur.UserOtp
             var token = _contextHolder.GetToken();
 
             var userDao = await _thisRepository.GetByIdAsync(token.user_id);
-            userDao.GenerateToken();
+            userDao.GenerateSecret();
+            userDao.otp_time = TimeUtils.GetUnixTime();
 
             await _thisRepository.UpdateAsync(userDao);
-            return ConvertToDvo(userDao);
+
+            var dvo = new UserOtpDvo();
+            dvo.status = userDao.otp_status;
+            dvo.time = userDao.otp_time;
+
+            return dvo;
         }
 
         private UserOtpDvo ConvertToDvo(UserDao userDao)
         {
             var dvo = new UserOtpDvo();
             dvo.issuer = _otpConfig.Issuer;
-            dvo.code_length = _otpConfig.Digits;
+            dvo.digits = _otpConfig.Digits;
             dvo.algorithm = EnumUtils.ToKey(_otpConfig.Algorithm);
             dvo.codec = userDao.codec;
             dvo.namec = userDao.namec;
             dvo.avatar = userDao.avatar;
+            dvo.status = userDao.otp_status;
+            dvo.time = userDao.otp_time;
 
-            var bytes = userDao.DecodeToken();
-            var otpSecret = TextUtils.Base32Encode(bytes);
+            var bytes = userDao.DecodeSecret();
+            if (bytes != null)
+            {
+                dvo.secret = TextUtils.Base32Encode(bytes);
+            }
+
             var template = _otpConfig.Template ?? "";
-            dvo.token = template.Replace("{issuer}", Uri.UnescapeDataString(_otpConfig.Issuer))
+            dvo.uri = template.Replace("{issuer}", Uri.UnescapeDataString(_otpConfig.Issuer))
                 .Replace("{account}", Uri.UnescapeDataString(userDao.codec))
-                .Replace("{secret}", Uri.UnescapeDataString(otpSecret))
+                .Replace("{secret}", Uri.UnescapeDataString(dvo.secret))
                 .Replace("{algorithm}", EnumUtils.ToKey(_otpConfig.Algorithm))
                 .Replace("{digits}", _otpConfig.Digits.ToString())
-                .Replace("{period}", _otpConfig.Digits.ToString());
+                .Replace("{period}", _otpConfig.Period.ToString());
 
             return dvo;
         }
 
         /// <summary>
-        /// 校验是否成功
+        /// 口令校验
         /// </summary>
         /// <returns></returns>
-        public async Task<bool> VerifyAsync(string code)
+        public async Task<bool> VerifyAsync(VerifyRequest request)
         {
+            if (request == null)
+            {
+                return false;
+            }
+            if (string.IsNullOrEmpty(request.code))
+            {
+                throw new BusinessException("输入口令不能为空！");
+            }
+            if (!TextUtils.IsNumberic(request.code, 6))
+            {
+                throw new BusinessException("无效的口令格式！");
+            }
+
             var token = _contextHolder.GetToken();
 
             var userDao = await _thisRepository.GetByIdAsync(token.user_id);
-            var secret = userDao.DecodeToken();
+            var secret = userDao.DecodeSecret();
 
-            var totp = new TotpAuth(_otpConfig.Period, _otpConfig.Digits, Otp.OtpHashAlgorithm.SHA1);
-            return totp.VerifyCode(secret, code);
+            var totp = new TotpAuth(_otpConfig.Period, _otpConfig.Digits, _otpConfig.Algorithm);
+            return totp.VerifyCode(secret, request.code);
         }
 
         /// <summary>
@@ -106,19 +146,32 @@ namespace Com.Scm.Ur.UserOtp
         /// </summary>
         /// <param name="param">逗号分隔</param>
         /// <returns></returns>
-        public async Task<int> StatusAsync(ScmChangeStatusRequest param)
+        public async Task<UserOtpDvo> StatusAsync(ScmChangeStatusRequest param)
         {
             var token = _contextHolder.GetToken();
+
+            var otpDvo = new UserOtpDvo();
 
             var userDao = await _thisRepository.GetByIdAsync(token.user_id);
             if (userDao != null)
             {
                 userDao.otp_status = param.status;
+                if (param.status == Enums.ScmRowStatusEnum.Enabled)
+                {
+                    if (string.IsNullOrWhiteSpace(userDao.otp_secret))
+                    {
+                        userDao.GenerateSecret();
+                    }
+                    userDao.otp_time = TimeUtils.GetUnixTime();
+                }
+
                 await _thisRepository.UpdateAsync(userDao);
-                return 1;
+
+                otpDvo.status = param.status;
+                otpDvo.time = userDao.otp_time;
             }
 
-            return 0;
+            return otpDvo;
         }
     }
 }

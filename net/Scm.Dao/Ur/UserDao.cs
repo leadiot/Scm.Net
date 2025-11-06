@@ -80,10 +80,14 @@ namespace Com.Scm.Ur
         /// </summary>
         public ScmRowStatusEnum otp_status { get; set; }
         /// <summary>
-        /// OTP Token
+        /// OTP Secret
         /// </summary>
         [StringLength(256)]
-        public string otp_token { get; set; }
+        public string otp_secret { get; set; }
+        /// <summary>
+        /// Otp启用时间
+        /// </summary>
+        public long otp_time { get; set; }
 
         /// <summary>
         /// 备注
@@ -199,7 +203,7 @@ namespace Com.Scm.Ur
         /// 生成Token
         /// </summary>
         /// <param name="length"></param>
-        public void GenerateToken(int length = 16)
+        public void GenerateSecret(int length = 16)
         {
             byte[] randomBytes = new byte[length];
             using (RandomNumberGenerator rng = RandomNumberGenerator.Create())
@@ -208,12 +212,17 @@ namespace Com.Scm.Ur
             }
 
             var result = SecUtils.AesEncrypt(randomBytes);
-            otp_token = Convert.ToBase64String(result);
+            otp_secret = Convert.ToBase64String(result);
         }
 
-        public byte[] DecodeToken()
+        public byte[] DecodeSecret()
         {
-            var bytes = Convert.FromBase64String(otp_token);
+            if (string.IsNullOrEmpty(otp_secret))
+            {
+                return null;
+            }
+
+            var bytes = Convert.FromBase64String(otp_secret);
             return SecUtils.AesDecrypt(bytes);
         }
     }

@@ -61,8 +61,10 @@ export default {
 		save() {
 			this.$refs.form.validate(async (valid) => {
 				if (valid) {
-					const user = this.$TOOL.data.get("USER_INFO");
-					let res = await this.$API.login.userPass.put({ id: user.id, oldPass: this.form.oldPass, newPass: this.form.newPass });
+					var oldPass = this.$CRYPTO.SHA(this.form.oldPass);
+					var newPass = this.$CRYPTO.SHA(this.form.newPass);
+					
+					let res = await this.$API.login.userPass.put({ oldPass: oldPass, newPass: newPass });
 					if (res.code == 200) {
 						this.$alert("密码修改成功，是否跳转至登录页使用新密码登录", "修改成功", {
 							type: 'success',

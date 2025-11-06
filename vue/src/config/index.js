@@ -106,6 +106,8 @@ const DEFAULT_CONFIG = {
 	// OIDC 重定向URI，不能修改，否则授权回调页面无法打开
 	OIDC_REDIRECT_URI: process.env.VUE_APP_OIDC_REDIRECT_URI,
 
+	USER_REGISTER_ENABLED: true,
+
 	// 系统预定义颜色列表，可以根据需要修改
 	PREDEFINE_COLORS: [
 		"#ffffff",

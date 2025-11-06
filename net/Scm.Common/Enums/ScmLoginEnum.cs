@@ -11,20 +11,16 @@
         /// </summary>
         ByPass = 10,
         /// <summary>
-        /// 手机登录
+        /// 手机登录，后续变为ByToken
         /// </summary>
         ByPhone = 20,
         /// <summary>
-        /// 邮件登录
+        /// 邮件登录，后续变为ByOtp
         /// </summary>
         ByEmail = 30,
         /// <summary>
-        /// Otp登录
-        /// </summary>
-        ByOtp = 40,
-        /// <summary>
         /// 联合登录
         /// </summary>
-        ByOauth = 50
+        ByOauth = 40
     }
 }

@@ -68,7 +68,7 @@ export default {
                 return;
             }
 
-            var res = await this.$API.scmlogsms.view.get(row.id);
+            var res = await this.$API.scmlogotp.view.get(row.id);
             if (res.code != 200) {
                 return;
             }

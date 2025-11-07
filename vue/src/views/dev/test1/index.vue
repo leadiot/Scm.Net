@@ -79,7 +79,7 @@ export default {
     data() {
         return {
             tableName: 'scm_log_sms',
-            apiObj: this.$API.scmlogsms.page,
+            apiObj: this.$API.scmlogotp.page,
             param: {
                 types: 0,
                 row_status: this.$SCM.DEF_STATUS,
@@ -115,16 +115,16 @@ export default {
             this.$refs.table.upData(this.param);
         },
         async status_item(e, row) {
-            this.$SCM.status_item(this, this.$API.scmlogsms.status, row, row.row_status);
+            this.$SCM.status_item(this, this.$API.scmlogotp.status, row, row.row_status);
         },
         status_list(status) {
-            this.$SCM.status_list(this, this.$API.scmlogsms.status, this.selection, status);
+            this.$SCM.status_list(this, this.$API.scmlogotp.status, this.selection, status);
         },
         async delete_item(row) {
-            this.$SCM.delete_item(this, this.$API.scmlogsms.delete, row);
+            this.$SCM.delete_item(this, this.$API.scmlogotp.delete, row);
         },
         delete_list() {
-            this.$SCM.delete_list(this, this.$API.scmlogsms.delete, this.selection);
+            this.$SCM.delete_list(this, this.$API.scmlogotp.delete, this.selection);
         },
         show_search() {
             this.$refs.search.open(this.param.key);

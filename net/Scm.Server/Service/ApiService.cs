@@ -199,7 +199,7 @@ namespace Com.Scm.Service
             dao.clazz = handler.GetType().FullName;
             dao.json = json;
             dao.file = "";
-            dao.handle = ScmHandleEnum.Init;
+            dao.handle = ScmHandleEnum.Todo;
             dao.result = ScmResultEnum.None;
             dao.need_time_f = handler.FromTime();
             dao.need_time_t = handler.ToTime();

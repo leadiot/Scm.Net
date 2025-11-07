@@ -109,7 +109,7 @@ namespace Com.Scm.Api
             services.AddScoped<ISecService, ScmSecService>();
             services.AddScoped<ICatService, ScmCatService>();
             services.AddScoped<ITagService, ScmTagService>();
-            services.AddScoped<ISmsService, ScmSmsService>();
+            services.AddScoped<IOtpService, ScmOtpService>();
             services.AddScoped<IFlowService, ScmFlowService>();
 
             // 自定义服务

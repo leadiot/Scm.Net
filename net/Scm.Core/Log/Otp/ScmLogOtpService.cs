@@ -1,28 +1,28 @@
 using Com.Scm.Dsa;
 using Com.Scm.Enums;
 using Com.Scm.Exceptions;
-using Com.Scm.Res.Sms.Dvo;
+using Com.Scm.Log.Sms.Dvo;
 using Com.Scm.Service;
 using Com.Scm.Utils;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Com.Scm.Res.Sms
+namespace Com.Scm.Log.Sms
 {
     /// <summary>
-    /// 消息模板服务接口
+    /// 服务接口
     /// </summary>
-    [ApiExplorerSettings(GroupName = "res")]
-    public class ScmResSmsService : ApiService
+    [ApiExplorerSettings(GroupName = "log")]
+    public class ScmLogOtpService : ApiService
     {
-        private readonly SugarRepository<SmsDao> _thisRepository;
-        
+        private readonly SugarRepository<LogOtpDao> _thisRepository;
+
         /// <summary>
         /// 
         /// </summary>
         /// <param name="thisRepository"></param>
         /// <param name="userService"></param>
         /// <returns></returns>
-        public ScmResSmsService(SugarRepository<SmsDao> thisRepository, IUserService userService)
+        public ScmLogOtpService(SugarRepository<LogOtpDao> thisRepository, IUserService userService)
         {
             _thisRepository = thisRepository;
             _UserService = userService;
@@ -33,14 +33,14 @@ namespace Com.Scm.Res.Sms
         /// </summary>
         /// <param name="request"></param>
         /// <returns></returns>
-        public async Task<ScmSearchPageResponse<SmsDvo>> GetPagesAsync(ScmSearchPageRequest request)
+        public async Task<ScmSearchPageResponse<LogOtpDvo>> GetPagesAsync(ScmSearchPageRequest request)
         {
             var result = await _thisRepository.AsQueryable()
                 .WhereIF(!request.IsAllStatus(), a => a.row_status == request.row_status)
                 //.WhereIF(IsValidId(request.option_id), a => a.option_id == request.option_id)
                 //.WhereIF(!string.IsNullOrEmpty(request.key), a => a.text.Contains(request.key))
                 .OrderBy(a => a.id)
-                .Select<SmsDvo>()
+                .Select<LogOtpDvo>()
                 .ToPageAsync(request.page, request.limit);
 
             Prepare(result.Items);
@@ -52,13 +52,13 @@ namespace Com.Scm.Res.Sms
         /// </summary>
         /// <param name="request"></param>
         /// <returns></returns>
-        public async Task<List<SmsDvo>> GetListAsync(ScmSearchRequest request)
+        public async Task<List<LogOtpDvo>> GetListAsync(ScmSearchPageRequest request)
         {
             var result = await _thisRepository.AsQueryable()
                 .Where(a => a.row_status == ScmRowStatusEnum.Enabled)
                 //.WhereIF(!string.IsNullOrEmpty(request.key), a => a.text.Contains(request.key))
                 .OrderBy(a => a.id)
-                .Select<SmsDvo>()
+                .Select<LogOtpDvo>()
                 .ToListAsync();
 
             Prepare(result);
@@ -71,10 +71,10 @@ namespace Com.Scm.Res.Sms
         /// <param name="id"></param>
         /// <returns></returns>
         [HttpGet("{id}")]
-        public async Task<SmsDto> GetAsync(long id)
+        public async Task<ScmLogOtpDto> GetAsync(long id)
         {
             var model = await _thisRepository.GetByIdAsync(id);
-            return model.Adapt<SmsDto>();
+            return model.Adapt<ScmLogOtpDto>();
         }
 
         /// <summary>
@@ -83,11 +83,11 @@ namespace Com.Scm.Res.Sms
         /// <param name="id"></param>
         /// <returns></returns>
         [HttpGet("{id}")]
-        public async Task<SmsDto> GetEditAsync(long id)
+        public async Task<ScmLogOtpDto> GetEditAsync(long id)
         {
             return await _thisRepository
                 .AsQueryable()
-                .Select<SmsDto>()
+                .Select<ScmLogOtpDto>()
                 .FirstAsync(m => m.id == id);
         }
 
@@ -97,11 +97,11 @@ namespace Com.Scm.Res.Sms
         /// <param name="id"></param>
         /// <returns></returns>
         [HttpGet("{id}")]
-        public async Task<SmsDvo> GetViewAsync(long id)
+        public async Task<LogOtpDvo> GetViewAsync(long id)
         {
             return await _thisRepository
                 .AsQueryable()
-                .Select<SmsDvo>()
+                .Select<LogOtpDvo>()
                 .FirstAsync(m => m.id == id);
         }
 
@@ -110,12 +110,12 @@ namespace Com.Scm.Res.Sms
         /// </summary>
         /// <param name="model"></param>
         /// <returns></returns>
-        public async Task<bool> AddAsync(SmsDto model)
+        public async Task<bool> AddAsync(ScmLogOtpDto model)
         {
             //var dao = await _thisRepository.GetFirstAsync(a => a.codec == model.codec);
             //if (dao != null)
             //{
-            //    throw new BusinessException($"已存在编码为{model.codec}的消息模板！");
+            //    throw new BusinessException($"已存在编码为{model.codec}的！");
             //}
 
             //if (string.IsNullOrWhiteSpace(model.names))
@@ -125,10 +125,10 @@ namespace Com.Scm.Res.Sms
             //dao = await _thisRepository.GetFirstAsync(a => a.names == model.names);
             //if (dao != null)
             //{
-            //    throw new BusinessException($"已存在简称为{model.names}的消息模板！");
+            //    throw new BusinessException($"已存在简称为{model.names}的！");
             //}
 
-            return await _thisRepository.InsertAsync(model.Adapt<SmsDao>());
+            return await _thisRepository.InsertAsync(model.Adapt<LogOtpDao>());
         }
 
         /// <summary>
@@ -136,12 +136,12 @@ namespace Com.Scm.Res.Sms
         /// </summary>
         /// <param name="model"></param>
         /// <returns></returns>
-        public async Task UpdateAsync(SmsDto model)
+        public async Task UpdateAsync(ScmLogOtpDto model)
         {
             //var dao = await _thisRepository.GetFirstAsync(a => a.codec == model.codec && a.id != model.id);
             //if (dao != null)
             //{
-            //    throw new BusinessException($"已存在编码为{model.codec}的消息模板！");
+            //    throw new BusinessException($"已存在编码为{model.codec}的！");
             //}
 
             //if (string.IsNullOrWhiteSpace(model.names))
@@ -151,7 +151,7 @@ namespace Com.Scm.Res.Sms
             //dao = await _thisRepository.GetFirstAsync(a => a.names == model.names && a.id != model.id);
             //if (dao != null)
             //{
-            //    throw new BusinessException($"已存在简称为{model.names}的消息模板！");
+            //    throw new BusinessException($"已存在简称为{model.names}的！");
             //}
 
             var dao = await _thisRepository.GetByIdAsync(model.id);

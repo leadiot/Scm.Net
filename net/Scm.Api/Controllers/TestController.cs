@@ -8,9 +8,9 @@ namespace Com.Scm.Api.Controllers
     [ApiExplorerSettings(GroupName = "Scm")]
     public class TestController : ApiController
     {
-        private readonly ISmsService _SmsService;
+        private readonly IOtpService _SmsService;
 
-        public TestController(ISmsService smsService)
+        public TestController(IOtpService smsService)
         {
             _SmsService = smsService;
         }

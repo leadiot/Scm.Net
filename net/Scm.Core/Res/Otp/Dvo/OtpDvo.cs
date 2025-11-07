@@ -1,17 +1,17 @@
 using Com.Scm.Dvo;
 using Com.Scm.Log;
 
-namespace Com.Scm.Res.Sms.Dvo
+namespace Com.Scm.Res.Otp.Dvo
 {
     /// <summary>
     /// 消息模板
     /// </summary>
-    public class SmsDvo : ScmDataDvo
+    public class OtpDvo : ScmDataDvo
     {
         /// <summary>
         /// 模板类型
         /// </summary>
-        public SmsTypesEnum types { get; set; }
+        public OtpTypesEnum types { get; set; }
 
         /// <summary>
         /// 模板代码

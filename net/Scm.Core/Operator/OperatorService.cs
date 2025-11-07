@@ -49,7 +49,7 @@ public class OperatorService : ApiService
 
     private readonly JwtContextHolder _jwtContextHolder;
     private readonly ILogService _logService;
-    private readonly ISmsService _smsService;
+    private readonly IOtpService _smsService;
     private readonly OidcConfig _oidcConfig;
 
     /// <summary>
@@ -66,7 +66,7 @@ public class OperatorService : ApiService
         , Cache.ICacheService cacheService
         , JwtContextHolder jwtContextHolder
         , ILogService logService
-        , ISmsService smsService
+        , IOtpService smsService
         , OidcConfig oidcConfig)
     {
         _SqlClient = sqlClient;
@@ -1290,7 +1290,7 @@ public class OperatorService : ApiService
     [AllowAnonymous]
     public async Task<SendSmsResponse> SendSmsAsync(SendSmsRequest request)
     {
-        var types = SmsTypesEnum.Email;
+        var types = OtpTypesEnum.Email;
 
         if (request.mode == ScmLoginModeEnum.ByPhone)
         {
@@ -1298,7 +1298,7 @@ public class OperatorService : ApiService
             {
                 throw new BusinessException("无效的手机号码！");
             }
-            types = SmsTypesEnum.Phone;
+            types = OtpTypesEnum.Phone;
         }
         else if (request.mode == ScmLoginModeEnum.ByEmail)
         {
@@ -1306,7 +1306,7 @@ public class OperatorService : ApiService
             {
                 throw new BusinessException("无效的电子邮件！~");
             }
-            types = SmsTypesEnum.Email;
+            types = OtpTypesEnum.Email;
         }
         else
         {

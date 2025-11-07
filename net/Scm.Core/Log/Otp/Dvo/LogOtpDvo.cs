@@ -5,7 +5,7 @@ namespace Com.Scm.Log.Sms.Dvo
     /// <summary>
     /// 
     /// </summary>
-    public class LogSmsDvo : ScmDataDvo
+    public class LogOtpDvo : ScmDataDvo
     {
         /// <summary>
         /// 身份标识

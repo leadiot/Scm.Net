@@ -2,14 +2,14 @@
 using Com.Scm.Enums;
 using Com.Scm.Log;
 using Com.Scm.Phone.Config;
-using Com.Scm.Res.Sms;
+using Com.Scm.Res.Otp;
 using Com.Scm.Ur;
 using Com.Scm.Utils;
 using SqlSugar;
 
 namespace Com.Scm.Service
 {
-    public class ScmSmsService : ISmsService
+    public class ScmOtpService : IOtpService
     {
         private readonly ISqlSugarClient _SqlClient;
         private readonly EmailConfig _emailConfig;
@@ -20,7 +20,7 @@ namespace Com.Scm.Service
         /// </summary>
         /// <param name="sqlClient"></param>
         /// <param name="emailConfig"></param>
-        public ScmSmsService(ISqlSugarClient sqlClient, EmailConfig emailConfig, PhoneConfig phoneConfig)
+        public ScmOtpService(ISqlSugarClient sqlClient, EmailConfig emailConfig, PhoneConfig phoneConfig)
         {
             _SqlClient = sqlClient;
             _emailConfig = emailConfig;
@@ -36,7 +36,7 @@ namespace Com.Scm.Service
         /// <param name="code">接收代码（手机或邮箱等）</param>
         /// <param name="templateCode">模板编码</param>
         /// <returns></returns>
-        public async Task<SmsResult> SendSmsAsync(SmsTypesEnum types, string code, string seq, string templateCode)
+        public async Task<SmsResult> SendSmsAsync(OtpTypesEnum types, string code, string seq, string templateCode)
         {
             if (seq == null)
             {
@@ -45,7 +45,7 @@ namespace Com.Scm.Service
 
             var result = new SmsResult();
 
-            if (types == SmsTypesEnum.Phone)
+            if (types == OtpTypesEnum.Phone)
             {
                 if (!TextUtils.IsCellphone(code))
                 {
@@ -53,7 +53,7 @@ namespace Com.Scm.Service
                     return result;
                 }
             }
-            else if (types == SmsTypesEnum.Email)
+            else if (types == OtpTypesEnum.Email)
             {
                 if (!TextUtils.IsEmail(code))
                 {
@@ -68,19 +68,19 @@ namespace Com.Scm.Service
             }
 
             // 重复发送校验
-            var logSmsDao = await _SqlClient.Queryable<LogSmsDao>()
+            var logSmsDao = await _SqlClient.Queryable<LogOtpDao>()
                 .Where(a => a.types == types && a.code == code && a.key == seq && a.row_status == ScmRowStatusEnum.Enabled)
                 .OrderBy(a => a.id, OrderByType.Desc)
                 .FirstAsync();
 
             if (logSmsDao == null)
             {
-                logSmsDao = new Log.LogSmsDao();
+                logSmsDao = new Log.LogOtpDao();
                 logSmsDao.key = TextUtils.GuidString();
                 logSmsDao.types = types;
                 logSmsDao.code = code;
                 logSmsDao.seq = seq;
-                logSmsDao.handle = SmsHandleEnum.Todo;
+                logSmsDao.handle = ScmHandleEnum.Todo;
                 logSmsDao.PrepareCreate(UserDto.SYS_ID);
 
                 await _SqlClient.InsertAsync(logSmsDao);
@@ -103,17 +103,17 @@ namespace Com.Scm.Service
 
             // 设置为发送中
             logSmsDao.sms = ScmUtils.SmsCode();
-            logSmsDao.handle = SmsHandleEnum.Doing;
+            logSmsDao.handle = ScmHandleEnum.Doing;
             logSmsDao.PrepareUpdate(UserDto.SYS_ID);
             await _SqlClient.UpdateAsync(logSmsDao);
 
             // 执行发送
             var handle = false;
-            if (types == SmsTypesEnum.Phone)
+            if (types == OtpTypesEnum.Phone)
             {
                 handle = SendSmsByPhone(logSmsDao, templateCode);
             }
-            else if (types == SmsTypesEnum.Email)
+            else if (types == OtpTypesEnum.Email)
             {
                 handle = await SendSmsByEmailAsync(logSmsDao, templateCode);
             }
@@ -121,15 +121,16 @@ namespace Com.Scm.Service
             // 记录发送结果
             logSmsDao.send_qty += 1;
             logSmsDao.send_time = TimeUtils.GetUnixTime(now);
+            logSmsDao.handle = ScmHandleEnum.Done;
             if (handle)
             {
                 logSmsDao.expired = TimeUtils.GetUnixTime(now.AddMinutes(10));
-                logSmsDao.handle = SmsHandleEnum.Success;
+                logSmsDao.result = ScmResultEnum.Success;
             }
             else
             {
                 logSmsDao.expired = 0;
-                logSmsDao.handle = SmsHandleEnum.Failure;
+                logSmsDao.result = ScmResultEnum.Failure;
             }
             logSmsDao.PrepareUpdate(UserDto.SYS_ID);
             await _SqlClient.UpdateAsync(logSmsDao);
@@ -143,7 +144,7 @@ namespace Com.Scm.Service
         /// </summary>
         /// <param name="logSmsDao"></param>
         /// <returns></returns>
-        private bool SendSmsByPhone(LogSmsDao logSmsDao, string templateCode)
+        private bool SendSmsByPhone(LogOtpDao logSmsDao, string templateCode)
         {
             return PhoneHelper.SendPhone(_phoneConfig, logSmsDao.code, logSmsDao.sms);
         }
@@ -155,7 +156,7 @@ namespace Com.Scm.Service
         /// <param name="seq"></param>
         /// <param name="templateCode"></param>
         /// <returns></returns>
-        public async Task<bool> SendSmsByEmailAsync(LogSmsDao logSmsDao, string templateCode)
+        public async Task<bool> SendSmsByEmailAsync(LogOtpDao logSmsDao, string templateCode)
         {
             var headText = "登录验证码";
             var bodyText = logSmsDao.sms;
@@ -163,11 +164,11 @@ namespace Com.Scm.Service
             var file = "";
 
             // 加载消息模板
-            SmsDao resSmsDao = null;
+            OtpDao resSmsDao = null;
             if (!string.IsNullOrWhiteSpace(templateCode))
             {
-                resSmsDao = await _SqlClient.Queryable<SmsDao>()
-                    .Where(a => a.codec == templateCode && a.types == SmsTypesEnum.Email && a.row_status == ScmRowStatusEnum.Enabled)
+                resSmsDao = await _SqlClient.Queryable<OtpDao>()
+                    .Where(a => a.codec == templateCode && a.types == OtpTypesEnum.Email && a.row_status == ScmRowStatusEnum.Enabled)
                     .FirstAsync();
             }
 
@@ -222,7 +223,7 @@ namespace Com.Scm.Service
 
             // 检测校验码是否正确
             var now = DateTime.Now;
-            var logSmsDao = await _SqlClient.Queryable<LogSmsDao>()
+            var logSmsDao = await _SqlClient.Queryable<LogOtpDao>()
                 .Where(a => a.key == key && a.row_status == ScmRowStatusEnum.Enabled)
                 .FirstAsync();
             if (logSmsDao == null)
@@ -244,7 +245,7 @@ namespace Com.Scm.Service
             }
 
             // 数据清理
-            if (logSmsDao.handle > SmsHandleEnum.Success || logSmsDao.IsExpired(now))
+            if (logSmsDao.handle == ScmHandleEnum.Done || logSmsDao.IsExpired(now))
             {
                 logSmsDao.row_status = ScmRowStatusEnum.Disabled;
                 logSmsDao.PrepareUpdate(UserDto.SYS_ID);

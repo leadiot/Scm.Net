@@ -2,13 +2,13 @@
 
 namespace Com.Scm
 {
-    public interface ISmsService
+    public interface IOtpService
     {
         /// <param name="types">消息类型</param>
         /// <param name="code">接收代码（手机或邮箱等）</param>
         /// <param name="seq">发送代码，用于判断是否重复发送</param>
         /// <param name="templateCode">模板编码</param>
-        Task<SmsResult> SendSmsAsync(SmsTypesEnum types, string code, string seq, string templateCode);
+        Task<SmsResult> SendSmsAsync(OtpTypesEnum types, string code, string seq, string templateCode);
 
         /// <param name="types">消息类型</param>
         /// <param name="code">接收代码（手机或邮箱等）</param>
@@ -42,7 +42,7 @@ namespace Com.Scm
 
         public int Code { get; set; }
         public string Text { get; set; }
-        public LogSmsDao Dao { get; set; }
+        public LogOtpDao Dao { get; set; }
 
         public void SetError(int code, string text)
         {

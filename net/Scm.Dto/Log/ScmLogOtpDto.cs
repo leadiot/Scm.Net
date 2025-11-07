@@ -1,6 +1,4 @@
-﻿using Com.Scm.Dao;
-using Com.Scm.Utils;
-using SqlSugar;
+using Com.Scm.Dto;
 using System.ComponentModel.DataAnnotations;
 
 namespace Com.Scm.Log
@@ -8,8 +6,7 @@ namespace Com.Scm.Log
     /// <summary>
     /// 
     /// </summary>
-    [SugarTable("scm_log_sms")]
-    public class LogSmsDao : ScmDataDao
+    public class ScmLogOtpDto : ScmDataDto
     {
         /// <summary>
         /// 身份标识
@@ -24,27 +21,16 @@ namespace Com.Scm.Log
         public long sms_id { get; set; }
 
         /// <summary>
-        /// 模板代码（冗余）
-        /// </summary>
-        public string sms_codec { get; set; }
-
-        /// <summary>
         /// 终端类型
         /// </summary>
         [Required]
-        public SmsTypesEnum types { get; set; }
+        public int types { get; set; }
 
         /// <summary>
         /// 终端号码
         /// </summary>
         [StringLength(128)]
         public string code { get; set; }
-
-        /// <summary>
-        /// 请求序列
-        /// </summary>
-        [StringLength(32)]
-        public string seq { get; set; }
 
         /// <summary>
         /// 校验码
@@ -79,21 +65,6 @@ namespace Com.Scm.Log
         /// <summary>
         /// 发送状态
         /// </summary>
-        public SmsHandleEnum handle { get; set; }
-
-        /// <summary>
-        /// 核验次数
-        /// </summary>
-        public int verify { get; set; }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="time"></param>
-        /// <returns></returns>
-        public bool IsExpired(DateTime time)
-        {
-            return TimeUtils.GetUnixTime(time) > expired;
-        }
+        public int handle { get; set; }
     }
 }

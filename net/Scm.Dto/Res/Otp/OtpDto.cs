@@ -1,20 +1,18 @@
-﻿using Com.Scm.Dao;
+using Com.Scm.Dto;
 using Com.Scm.Log;
-using SqlSugar;
 using System.ComponentModel.DataAnnotations;
 
-namespace Com.Scm.Res.Sms
+namespace Com.Scm.Res.Otp
 {
     /// <summary>
     /// 消息模板
     /// </summary>
-    [SugarTable("scm_res_sms")]
-    public class SmsDao : ScmDataDao
+    public class OtpDto : ScmDataDto
     {
         /// <summary>
         /// 模板类型
         /// </summary>
-        public SmsTypesEnum types { get; set; }
+        public OtpTypesEnum types { get; set; }
 
         /// <summary>
         /// 模板代码
@@ -51,5 +49,7 @@ namespace Com.Scm.Res.Sms
         /// </summary>
         [StringLength(64)]
         public string file { get; set; }
+
+
     }
 }

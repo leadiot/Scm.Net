@@ -44,7 +44,7 @@ namespace Com.Scm.Tasks.DataIO
             var needQty = await _SqlClient.Updateable<TaskDao>()
                 .SetColumns(a => a.handle == ScmHandleEnum.Todo)
                 .SetColumns(a => a.exec_time_f == now)
-                .Where(a => a.handle == ScmHandleEnum.Init && a.row_status == Enums.ScmRowStatusEnum.Enabled && now >= a.need_time_f && now < a.need_time_t)
+                .Where(a => a.handle == ScmHandleEnum.Todo && a.row_status == Enums.ScmRowStatusEnum.Enabled && now >= a.need_time_f && now < a.need_time_t)
                 .ExecuteCommandAsync();
             if (needQty == 0)
             {

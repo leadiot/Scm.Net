@@ -1,0 +1,30 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net9.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>disable</Nullable>
+    <RootNamespace>Com.Scm</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Folder Include="Brv\Face\" />
+    <Folder Include="Brv\Finger\" />
+    <Folder Include="Brv\Voiceprint\" />
+    <Folder Include="Mut\Scan\" />
+    <Folder Include="Mut\Token\" />
+    <Folder Include="Otp\Email\" />
+    <Folder Include="Otp\Phone\" />
+    <Folder Include="Pwd\" />
+    <Folder Include="Sso\OAuth\" />
+    <Folder Include="Sso\Oidc\" />
+    <Folder Include="Sso\Saml\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="Scm.Common.Text">
+      <HintPath>..\Libs\netstandard2.0\Scm.Common.Text.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+</Project>

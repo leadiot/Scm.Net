@@ -283,10 +283,9 @@ namespace Com.Scm.Ur.User
         {
             if (string.IsNullOrWhiteSpace(pass))
             {
-                pass = _EnvConfig.GetPassword();
+                pass = SecUtils.Sha256(_EnvConfig.GetPassword());
             }
-            var newPass = SecUtils.Sha256(pass);
-            newPass = SecUtils.EncodePass(newPass);
+            var newPass = ScmUtils.EncodePass(pass);
             await _thisRepository.UpdateAsync(m => new UserDao()
             {
                 pass = newPass

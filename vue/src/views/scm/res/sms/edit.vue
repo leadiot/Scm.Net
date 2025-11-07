@@ -1,5 +1,5 @@
 <template>
-	<sc-dialog v-model="visible" show-fullscreen destroy-on-close :title="titleMap[mode]" width="750px" @close="close">
+	<sc-dialog v-model="visible" show-fullscreen destroy-on-close :title="titleMap[mode]" width="450px" @close="close">
 		<el-form ref="formRef" label-width="100px" :model="formData" :rules="rules">
 			<el-form-item label="模板类型" prop="types">
 				<sc-select v-model="formData.types" placeholder="请选择模板类型" :data="types_list"></sc-select>
@@ -12,20 +12,20 @@
 				<el-input v-model="formData.namec" placeholder="请输入模板名称" :maxlength="64" show-word-limit
 					clearable></el-input>
 			</el-form-item>
-			<el-form-item label="标题模板" prop="head">
-				<el-input v-model="formData.head" placeholder="请输入标题模板" :maxlength="128" show-word-limit
+			<el-form-item label="模板标题" prop="head">
+				<el-input v-model="formData.head" placeholder="请输入模板标题" :maxlength="128" show-word-limit
 					clearable></el-input>
 			</el-form-item>
-			<el-form-item label="内容模板" prop="body">
-				<el-input v-model="formData.body" placeholder="请输入内容模板" :maxlength="512" show-word-limit clearable
+			<el-form-item label="模板内容" prop="body">
+				<el-input v-model="formData.body" placeholder="请输入模板内容" :maxlength="512" show-word-limit clearable
 					type="textarea"></el-input>
 			</el-form-item>
-			<el-form-item label="声明模板" prop="foot">
-				<el-input v-model="formData.foot" placeholder="请输入声明模板" :maxlength="128" show-word-limit
+			<el-form-item label="模板声明" prop="foot">
+				<el-input v-model="formData.foot" placeholder="请输入模板声明" :maxlength="128" show-word-limit
 					clearable></el-input>
 			</el-form-item>
-			<el-form-item label="文件模板" prop="file">
-				<el-input v-model="formData.file" placeholder="请输入文件模板" :maxlength="64" show-word-limit
+			<el-form-item label="模板文件" prop="file">
+				<el-input v-model="formData.file" placeholder="请输入模板文件" :maxlength="64" show-word-limit
 					clearable></el-input>
 			</el-form-item>
 		</el-form>
@@ -58,10 +58,10 @@ export default {
 					{ required: true, trigger: "blur", message: "请输入模板名称！", },
 				],
 				head: [
-					{ required: true, trigger: "blur", message: "请输入标题模板！", },
+					{ required: true, trigger: "blur", message: "请输入模板标题！", },
 				],
 				body: [
-					{ required: true, trigger: "blur", message: "请输入内容模板！", },
+					{ required: true, trigger: "blur", message: "请输入模板内容！", },
 				],
 			},
 			types_list: [this.$SCM.OPTION_ONE_INT],

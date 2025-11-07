@@ -2,8 +2,8 @@
 	<sc-search ref="search" @search="search">
 		<template #search>
 			<el-form ref="formRef" label-width="80px" :model="param">
-				<el-form-item label="查询选项" prop="option_id">
-					<sc-select v-model="param.option_id" placeholder="请选择" :data="option_list" />
+				<el-form-item label="消息类型" prop="types">
+					<sc-select v-model="param.types" placeholder="请选择" :data="types_list" />
 				</el-form-item>
 				<el-form-item label="数据状态" prop="row_status">
 					<sc-select v-model="param.row_status" placeholder="请选择" :data="row_status_list" />
@@ -51,8 +51,8 @@
 			</div>
 		</el-header>
 		<el-main class="nopadding">
-			<scTable ref="table" :table-name="tableName" :api-obj="apiObj" :column="column" row-key="id" @menu-handle="menuHandle"
-				@selection-change="selectionChange">
+			<scTable ref="table" :table-name="tableName" :api-obj="apiObj" :column="column" row-key="id"
+				@menu-handle="menuHandle" @selection-change="selectionChange">
 				<el-table-column align="center" fixed type="selection" width="60" />
 				<el-table-column label="#" type="index" width="50"></el-table-column>
 				<el-table-column label="操作" align="center" fixed="right" width="140">
@@ -91,7 +91,7 @@ export default {
 			tableName: 'scm_res_sms',
 			apiObj: this.$API.scmressms.page,
 			param: {
-				option_id: 0,
+				types: 0,
 				row_status: this.$SCM.DEF_STATUS,
 				create_time: '',
 				key: ''
@@ -99,13 +99,9 @@ export default {
 			selection: [],
 			column: [
 				{ prop: "id", label: "id", hide: true },
-				{ prop: 'types', label: '模板类型', width: 100 },
-				{ prop: 'codec', label: '模板代码', width: 100 },
-				{ prop: 'namec', label: '模板名称', width: 100 },
-				{ prop: 'head', label: '标题模板', width: 100, align: 'left' },
-				{ prop: 'body', label: '内容模板', minWidth: 200, align: 'left' },
-				{ prop: 'foot', label: '声明模板', width: 100, align: 'left' },
-				{ prop: 'file', label: '文件模板', width: 100 },
+				{ prop: 'types', label: '模板类型', width: 80 },
+				{ prop: 'codec', label: '模板代码', width: 100, align: 'left' },
+				{ prop: 'namec', label: '模板名称', minWidth: 120, align: 'left' },
 				{ prop: 'row_status', label: '数据状态', width: 80 },
 				{ prop: 'update_time', label: '更新时间', width: 160, formatter: this.$TOOL.dateTimeFormat },
 				{ prop: 'update_names', label: '更新人员', width: 100 },
@@ -113,11 +109,12 @@ export default {
 				{ prop: 'create_names', label: '创建人员', width: 100 },
 			],
 			row_status_list: [this.$SCM.OPTION_ALL_INT],
-			option_list: [],
+			types_list: [this.$SCM.OPTION_ALL_INT],
 		};
 	},
 	mounted() {
 		this.$SCM.list_status(this.row_status_list, true);
+		this.$SCM.list_dic(this.types_list, 'sms_types', true);
 	},
 	methods: {
 		complete() {

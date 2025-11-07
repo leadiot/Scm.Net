@@ -9,7 +9,7 @@ namespace Com.Scm.Log
     /// 三方登录日志
     /// </summary>
     [SugarTable("scm_log_oauth")]
-    public class LogOAuthDao : ScmDataDao
+    public class LogOidcDao : ScmDataDao
     {
         /// <summary>
         /// 登录标识

@@ -15,7 +15,7 @@ namespace Com.Scm.Log.OAuth
     [ApiExplorerSettings(GroupName = "Log")]
     public class ScmLogOauthService : ApiService
     {
-        private readonly SugarRepository<LogOAuthDao> _thisRepository;
+        private readonly SugarRepository<LogOidcDao> _thisRepository;
 
         /// <summary>
         /// 
@@ -23,7 +23,7 @@ namespace Com.Scm.Log.OAuth
         /// <param name="thisRepository"></param>
         /// <param name="userService"></param>
         /// <returns></returns>
-        public ScmLogOauthService(SugarRepository<LogOAuthDao> thisRepository, IUserService userService)
+        public ScmLogOauthService(SugarRepository<LogOidcDao> thisRepository, IUserService userService)
         {
             _thisRepository = thisRepository;
             _UserService = userService;
@@ -129,7 +129,7 @@ namespace Com.Scm.Log.OAuth
             //    throw new BusinessException($"已存在简称为{model.names}的三方登录！");
             //}
 
-            return await _thisRepository.InsertAsync(model.Adapt<LogOAuthDao>());
+            return await _thisRepository.InsertAsync(model.Adapt<LogOidcDao>());
         }
 
         /// <summary>

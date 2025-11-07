@@ -1,176 +1,160 @@
 <template>
+    <sc-search ref="search" @search="search">
+        <template #search>
+            <el-form ref="formRef" label-width="80px" :model="param">
+                <el-form-item label="消息类型" prop="types">
+                    <sc-select v-model="param.types" placeholder="请选择" :data="types_list" />
+                </el-form-item>
+                <el-form-item label="数据状态" prop="row_status">
+                    <sc-select v-model="param.row_status" placeholder="请选择" :data="row_status_list" />
+                </el-form-item>
+                <el-form-item label="创建时间" prop="create_time">
+                    <el-date-picker v-model="param.create_time" type="datetimerange" range-separator="至"
+                        start-placeholder="开始日期" end-placeholder="结束日期" />
+                </el-form-item>
+                <el-form-item label="搜索内容">
+                    <el-input v-model="param.key" clearable placeholder="关键字" />
+                </el-form-item>
+            </el-form>
+        </template>
+    </sc-search>
     <el-container>
         <el-header>
             <div class="left-panel">
-                <span>语言：</span>
-                <sc-select v-model="lang" :data="lang_list" style="width: 120px;" />
+                <el-button type="primary" @click="open_dialog()"><sc-icon name="sc-plus" /></el-button>
+                <el-divider direction="vertical"></el-divider>
+                <el-button-group>
+                    <el-tooltip content="启用">
+                        <el-button type="primary" plain :disabled="selection.length == 0"
+                            @click="status_list(1)"><sc-icon name="sc-check-circle-line" /></el-button>
+                    </el-tooltip>
+                    <el-tooltip content="停用">
+                        <el-button type="primary" plain :disabled="selection.length == 0"
+                            @click="status_list(2)"><sc-icon name="sc-pause-circle-line" /></el-button>
+                    </el-tooltip>
+                    <el-tooltip content="删除">
+                        <el-button type="danger" plain :disabled="selection.length == 0" @click="delete_list"><sc-icon
+                                name="sc-close-circle-line" /></el-button>
+                    </el-tooltip>
+                </el-button-group>
             </div>
             <div class="right-panel">
-                <el-button type="primary" @click="format">格式化</el-button>
+                <el-input v-model="param.key" clearable placeholder="关键字" @keyup.enter="search()">
+                    <template #append>
+                        <el-button type="primary" @click="search()"><sc-icon name="sc-search" /></el-button>
+                    </template>
+                </el-input>
+                <el-button @click="show_search">高级</el-button>
             </div>
         </el-header>
-        <el-main>
-            <div class="main-panel">
-                <div class="editor">
-                    <textarea v-model="input" />
-                </div>
-                <div class="format">
-                    <pre><code class="hljs" :class="lang" v-html="code"></code></pre>
-                </div>
-            </div>
+        <el-main class="nopadding">
+            <scTable ref="table" :table-name="tableName" :api-obj="apiObj" :column="column" row-key="id"
+                @menu-handle="menuHandle" @selection-change="selectionChange">
+                <el-table-column align="center" fixed type="selection" width="60" />
+                <el-table-column label="#" type="index" width="50"></el-table-column>
+                <el-table-column label="操作" align="center" fixed="right" width="140">
+                    <template #default="scope">
+                        <el-button text type="primary" size="small" @click="open_drawer(scope.row)">
+                            详情
+                        </el-button>
+                        <el-divider direction="vertical" />
+                        <el-popconfirm title="确定删除吗？" @confirm="table_del(scope.row, scope.$index)">
+                            <template #reference>
+                                <el-button text type="primary" size="small">删除</el-button>
+                            </template>
+                        </el-popconfirm>
+                    </template>
+                </el-table-column>
+            </scTable>
         </el-main>
+        <smsView ref="view" />
     </el-container>
 </template>
 <script>
-import vkbeautify from "vkbeautify";
-
+import { defineAsyncComponent } from "vue";
 export default {
-    name: 'tools_code',
+    components: {
+        smsView: defineAsyncComponent(() => import("./view")),
+    },
     data() {
         return {
-            hljs: null,
-            lang: 'json',
-            input: '',
-            code: '',
-            lang_list: [
-                // { label: '纯文本', value: 'plaintext', },
-                // { label: 'C', value: 'c', },
-                // { label: 'C++', value: 'cpp', },
-                // { label: 'C#', value: 'c#', },
-                { label: 'CSS', value: 'css', },
-                // { label: 'F#', value: 'fsharp', },
-                // { label: 'Go', value: 'go', },
-                // { label: 'Gradle', value: 'gradle', },
-                // { label: 'INI', value: 'ini', },
-                // { label: 'Java', value: 'java', },
-                { label: 'JSON', value: 'json', },
-                // { label: 'Kotlin', value: 'kotlin', },
-                // { label: 'Lua', value: 'lua', },
-                // { label: 'Makefile', value: 'makefile', },
-                // { label: 'Matlab', value: 'matlab', },
-                // { label: 'Perl', value: 'perl', },
-                // { label: 'PHP', value: 'php', },
-                // { label: 'Python', value: 'python', },
-                // { label: 'Ruby', value: 'ruby', },
-                // { label: 'Rust', value: 'rust', },
-                // { label: 'Shell', value: 'shell', },
-                { label: 'SQL', value: 'sql', },
-                // { label: 'Swift', value: 'swift', },
-                // { label: 'Tcl', value: 'tcl', },
-                // { label: 'Vbscript', value: 'vbscript', },
-                { label: 'XML', value: 'xml', },
+            tableName: 'scm_log_sms',
+            apiObj: this.$API.scmlogsms.page,
+            param: {
+                types: 0,
+                row_status: this.$SCM.DEF_STATUS,
+                create_time: '',
+                key: ''
+            },
+            selection: [],
+            column: [
+                { prop: "id", label: "id", hide: true },
+                { prop: 'types', label: '终端类型', width: 100 },
+                { prop: 'code', label: '终端号码', minWidth: 160, align: 'left' },
+                { prop: 'sms', label: '校验码', width: 80 },
+                { prop: 'send_qty', label: '发送次数', width: 80 },
+                { prop: 'send_time', label: '发送时间', width: 160, formatter: this.$TOOL.dateTimeFormat },
+                { prop: 'expired', label: '过期时间', width: 160, formatter: this.$TOOL.dateTimeFormat },
+                { prop: 'handle', label: '发送状态', width: 100 },
+                { prop: 'update_time', label: '更新时间', width: 160, formatter: this.$TOOL.dateTimeFormat },
+                { prop: 'create_time', label: '创建时间', width: 160, formatter: this.$TOOL.dateTimeFormat },
             ],
-            isString: false,
+            row_status_list: [this.$SCM.OPTION_ALL_INT],
+            types_list: [this.$SCM.OPTION_ALL_INT],
         };
     },
     mounted() {
-        this.loadHighlight();
+        this.$SCM.list_status(this.row_status_list, true);
+        this.$SCM.list_dic(this.types_list, 'sms_types', true);
     },
     methods: {
-        async loadHighlight() {
-            try {
-                // 动态加载highlight.js
-                const modual = await import('highlight.js/lib/core');
-                console.log(modual);
-
-                this.hljs = modual.default;
-
-                // 按需加载需要的语言
-                const css = await import('highlight.js/lib/languages/css');
-                const json = await import('highlight.js/lib/languages/json');
-                const sql = await import('highlight.js/lib/languages/sql');
-                const xml = await import('highlight.js/lib/languages/xml');
-
-                // 注册语言
-                this.hljs.registerLanguage('css', css.default);
-                this.hljs.registerLanguage('json', json.default);
-                this.hljs.registerLanguage('sql', sql.default);
-                this.hljs.registerLanguage('xml', xml.default);
-
-                // 加载样式（可选）
-                import('highlight.js/styles/github.css');
-
-                // 使用highlight方法
-                // const codeBlocks = document.querySelectorAll('pre code');
-                // codeBlocks.forEach(block => {
-                //     hljs.highlightElement(block);
-                // });
-            } catch (error) {
-                console.error('Failed to load highlight.js:', error);
-            }
+        complete() {
+            this.$refs.table.refresh();
         },
-        format() {
-            if (!this.input) {
-                this.code = '';
+        search() {
+            this.$refs.table.upData(this.param);
+        },
+        async status_item(e, row) {
+            this.$SCM.status_item(this, this.$API.scmlogsms.status, row, row.row_status);
+        },
+        status_list(status) {
+            this.$SCM.status_list(this, this.$API.scmlogsms.status, this.selection, status);
+        },
+        async delete_item(row) {
+            this.$SCM.delete_item(this, this.$API.scmlogsms.delete, row);
+        },
+        delete_list() {
+            this.$SCM.delete_list(this, this.$API.scmlogsms.delete, this.selection);
+        },
+        show_search() {
+            this.$refs.search.open(this.param.key);
+        },
+        open_dialog(row) {
+            this.$refs.edit.open(row);
+        },
+        open_drawer(row) {
+            this.$refs.view.open(row);
+        },
+        selectionChange(selection) {
+            this.selection = selection;
+        },
+        menuHandle(obj) {
+            if (obj.command == "add") {
+                this.open_dialog();
                 return;
             }
-
-            var temp = this.input;
-            try {
-                if (this.lang == 'json') {
-                    temp = this.jsonFormat(temp);
-                } else if (this.lang == 'xml') {
-                    temp = vkbeautify.xml(temp);
-                } else if (this.lang == 'sql') {
-                    temp = vkbeautify.sql(temp);
-                } else if (this.lang == 'css') {
-                    temp = vkbeautify.css(temp);
-                }
-            } catch (e) {
-                this.isString = true;
+            if (obj.command == "edit") {
+                this.open_dialog(obj.row);
+                return;
             }
-
-            //this.code = hljs.highlightAuto(this.code).value;
-            this.code = this.hljs.highlight(temp, { language: this.lang }).value;
+            if (obj.command == "delete") {
+                this.delete_item(obj.row);
+                return;
+            }
         },
-        jsonFormat(jsonTemp) {
-            // stringify 时需指定缩进否则不会显示换行。为了防止传入的string没有指定 在此统一执行一遍
-            if (typeof jsonTemp == 'string') {
-                jsonTemp = JSON.parse(jsonTemp);
-            }
-
-            var json = JSON.stringify(jsonTemp, undefined, 2);
-
-            let jsonObj = JSON.parse(json);
-            if (typeof jsonObj === "object") {
-                this.isString = false;
-                return vkbeautify.json(jsonTemp);
-            } else {
-                this.isString = true;
-                return jsonTemp;
-            }
+        showSms(id) {
+            this.$refs.view.open(id);
         }
-    }
-}
+    },
+};
 </script>
-<style scoped>
-.main-panel {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
-    gap: 1rem;
-    width: 100%;
-    height: 100%;
-}
-
-.editor {
-    height: 100%;
-    width: 50%;
-
-    textarea {
-        height: 100%;
-        width: 100%;
-        padding: 0.5rem;
-        border: 1px solid #e5e5e5;
-    }
-}
-
-.format {
-    height: 100%;
-    width: 50%;
-    background-color: #ffffff;
-    border: 1px solid #e5e5e5;
-    overflow: auto;
-}
-</style>

@@ -22,7 +22,7 @@ namespace Com.Scm.Ur.UserOAuth
         private readonly JwtContextHolder _contextHolder;
         private readonly SugarRepository<UserOAuthDao> _thisRepository;
         private readonly SugarRepository<UserDao> _userRepository;
-        private readonly SugarRepository<LogOAuthDao> _logOAuthRepository;
+        private readonly SugarRepository<LogOidcDao> _logOAuthRepository;
         private readonly OidcConfig _oidcConfig;
 
         /// <summary>
@@ -35,7 +35,7 @@ namespace Com.Scm.Ur.UserOAuth
         /// <returns></returns>
         public ScmUrUserOauthService(JwtContextHolder contextHolder,
             SugarRepository<UserOAuthDao> thisRepository, SugarRepository<UserDao> userRepository,
-            SugarRepository<LogOAuthDao> oauthRepository, OidcConfig oidcConfig)
+            SugarRepository<LogOidcDao> oauthRepository, OidcConfig oidcConfig)
         {
             _contextHolder = contextHolder;
             _thisRepository = thisRepository;

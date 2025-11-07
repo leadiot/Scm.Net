@@ -461,7 +461,7 @@ public class OperatorService : ApiService
                 return null;
             }
 
-            var logOAuthDao = new LogOAuthDao();
+            var logOAuthDao = new LogOidcDao();
             logOAuthDao.provider = "oidc:" + oidcUser.Osp;
             logOAuthDao.code = request.code;
             logOAuthDao.state = request.state;
@@ -752,9 +752,9 @@ public class OperatorService : ApiService
         return await _SqlClient.Queryable<ConfigDao>().FirstAsync(a => a.key == key);
     }
 
-    private async Task<LogOAuthDao> GetLogOAuth(string code)
+    private async Task<LogOidcDao> GetLogOAuth(string code)
     {
-        return await _SqlClient.Queryable<LogOAuthDao>().FirstAsync(a => a.code == code);
+        return await _SqlClient.Queryable<LogOidcDao>().FirstAsync(a => a.code == code);
     }
     #endregion
 
@@ -944,7 +944,7 @@ public class OperatorService : ApiService
     /// <param name="response"></param>
     /// <param name="logOAuthDao"></param>
     /// <returns></returns>
-    private async Task<bool> CreateUserWithOAuthAsync(SignonRequest request, SignonResponse response, LogOAuthDao logOAuthDao)
+    private async Task<bool> CreateUserWithOAuthAsync(SignonRequest request, SignonResponse response, LogOidcDao logOAuthDao)
     {
         var userDao = new UserDao();
         userDao.codec = logOAuthDao.code;
@@ -981,7 +981,7 @@ public class OperatorService : ApiService
     /// <param name="logOAuthDao"></param>
     /// <param name="od"></param>
     /// <returns></returns>
-    private async Task<UserOAuthDao> CreateUserOAuthAsync(long userId, LogOAuthDao logOAuthDao, int od = 0)
+    private async Task<UserOAuthDao> CreateUserOAuthAsync(long userId, LogOidcDao logOAuthDao, int od = 0)
     {
         var userOauthDao = new UserOAuthDao();
         userOauthDao.user_id = userId;

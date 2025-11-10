@@ -54,13 +54,13 @@
 												<el-tab-pane :label="$t('login.accountLogin')" lazy v-if="hasMode(10)">
 													<pass-form></pass-form>
 												</el-tab-pane>
-												<el-tab-pane :label="$t('login.phoneLogin')" lazy v-if="hasMode(20)">
+												<el-tab-pane :label="$t('login.phoneLogin')" lazy v-if="hasMode(21)">
 													<phone-form></phone-form>
 												</el-tab-pane>
-												<el-tab-pane :label="$t('login.emailLogin')" lazy v-if="hasMode(30)">
+												<el-tab-pane :label="$t('login.emailLogin')" lazy v-if="hasMode(22)">
 													<email-form></email-form>
 												</el-tab-pane>
-												<el-tab-pane :label="$t('login.oauthLogin')" lazy v-if="hasMode(40)">
+												<el-tab-pane :label="$t('login.oauthLogin')" lazy v-if="hasMode(30)">
 													<oauth-form></oauth-form>
 												</el-tab-pane>
 											</el-tabs>

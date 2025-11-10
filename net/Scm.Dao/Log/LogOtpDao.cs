@@ -51,7 +51,7 @@ namespace Com.Scm.Log
         /// 校验码
         /// </summary>
         [StringLength(8)]
-        public string sms { get; set; }
+        public string pass { get; set; }
 
         /// <summary>
         /// 消息内容

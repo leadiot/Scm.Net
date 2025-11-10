@@ -3,7 +3,21 @@
     public enum OtpTypesEnum
     {
         None = 0,
-        Phone = 1,
-        Email = 2
+        /// <summary>
+        /// 短信口令
+        /// </summary>
+        Phone,
+        /// <summary>
+        /// 邮件口令
+        /// </summary>
+        Email,
+        /// <summary>
+        /// 事件口令
+        /// </summary>
+        Hotp,
+        /// <summary>
+        /// 时序口令
+        /// </summary>
+        Totp,
     }
 }

@@ -6,6 +6,7 @@ using Com.Scm.Email.Config;
 using Com.Scm.Extensions;
 using Com.Scm.Generator.Config;
 using Com.Scm.Hubs;
+using Com.Scm.Login.Otp;
 using Com.Scm.Mapper;
 using Com.Scm.Phone.Config;
 using Com.Scm.Quartz;
@@ -109,7 +110,6 @@ namespace Com.Scm.Api
             services.AddScoped<ISecService, ScmSecService>();
             services.AddScoped<ICatService, ScmCatService>();
             services.AddScoped<ITagService, ScmTagService>();
-            services.AddScoped<IOtpService, ScmOtpService>();
             services.AddScoped<IFlowService, ScmFlowService>();
 
             // 自定义服务

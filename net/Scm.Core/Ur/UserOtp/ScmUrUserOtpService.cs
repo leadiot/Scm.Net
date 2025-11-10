@@ -1,7 +1,7 @@
-using Com.Scm.Config;
 using Com.Scm.Dsa;
 using Com.Scm.Exceptions;
 using Com.Scm.Jwt;
+using Com.Scm.Login.Otp;
 using Com.Scm.Otp.Totp;
 using Com.Scm.Service;
 using Com.Scm.Ur.UserOtp.Dvo;
@@ -89,7 +89,7 @@ namespace Com.Scm.Ur.UserOtp
             var dvo = new UserOtpDvo();
             dvo.issuer = _otpConfig.Issuer;
             dvo.digits = _otpConfig.Digits;
-            dvo.algorithm = EnumUtils.ToKey(_otpConfig.Algorithm);
+            dvo.algorithm = _otpConfig.Algorithm;
             dvo.codec = userDao.codec;
             dvo.namec = userDao.namec;
             dvo.avatar = userDao.avatar;
@@ -106,7 +106,7 @@ namespace Com.Scm.Ur.UserOtp
             dvo.uri = template.Replace("{issuer}", Uri.UnescapeDataString(_otpConfig.Issuer))
                 .Replace("{account}", Uri.UnescapeDataString(userDao.codec))
                 .Replace("{secret}", Uri.UnescapeDataString(dvo.secret))
-                .Replace("{algorithm}", EnumUtils.ToKey(_otpConfig.Algorithm))
+                .Replace("{algorithm}", _otpConfig.Algorithm)
                 .Replace("{digits}", _otpConfig.Digits.ToString())
                 .Replace("{period}", _otpConfig.Period.ToString());
 
@@ -137,8 +137,10 @@ namespace Com.Scm.Ur.UserOtp
             var userDao = await _thisRepository.GetByIdAsync(token.user_id);
             var secret = userDao.DecodeSecret();
 
-            var totp = new TotpAuth(_otpConfig.Period, _otpConfig.Digits, _otpConfig.Algorithm);
-            return totp.VerifyCode(secret, request.code);
+            var totp = new TotpAuth(null);
+            totp.Init(null);
+            var result = totp.VerifyCode("0", request.code);
+            return result.success;
         }
 
         /// <summary>

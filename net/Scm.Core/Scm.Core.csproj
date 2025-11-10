@@ -15,6 +15,7 @@
     <ProjectReference Include="..\Scm.Common\Scm.Common.csproj" />
     <ProjectReference Include="..\Scm.Dto\Scm.Dto.csproj" />
     <ProjectReference Include="..\Scm.Email\Scm.Email.csproj" />
+    <ProjectReference Include="..\Scm.Phone\Scm.Phone.csproj" />
     <ProjectReference Include="..\Scm.Plugin.Image.SkiaSharp\Scm.Plugin.Image.SkiaSharp.csproj" />
     <ProjectReference Include="..\Scm.Server.Aiml\Scm.Server.Aiml.csproj" />
     <ProjectReference Include="..\Scm.Server.Api\Scm.Server.Api.csproj" />
@@ -35,9 +36,6 @@
     <Reference Include="Scm.Common.Http">
       <HintPath>..\Libs\netstandard2.0\Scm.Common.Http.dll</HintPath>
     </Reference>
-    <Reference Include="Scm.Common.Otp">
-      <HintPath>..\Libs\netstandard2.0\Scm.Common.Otp.dll</HintPath>
-    </Reference>
     <Reference Include="Scm.Common.Text">
       <HintPath>..\Libs\netstandard2.0\Scm.Common.Text.dll</HintPath>
     </Reference>
@@ -47,6 +45,18 @@
     <Reference Include="Scm.Workflow">
       <HintPath>..\Libs\net9.0\Scm.Workflow.dll</HintPath>
     </Reference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Login\Brv\Face\" />
+    <Folder Include="Login\Brv\Finger\" />
+    <Folder Include="Login\Brv\Voiceprint\" />
+    <Folder Include="Login\Mut\Scan\" />
+    <Folder Include="Login\Mut\Token\" />
+    <Folder Include="Login\Pwd\" />
+    <Folder Include="Login\Sso\OAuth\" />
+    <Folder Include="Login\Sso\Oidc\" />
+    <Folder Include="Login\Sso\Saml\" />
   </ItemGroup>
 
 </Project>

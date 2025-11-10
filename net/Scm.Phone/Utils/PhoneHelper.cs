@@ -20,6 +20,13 @@ namespace Com.Scm.Utils
             return new AlibabaCloud.SDK.Dysmsapi20170525.Client(aliyunConfig);
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="config"></param>
+        /// <param name="phone"></param>
+        /// <param name="sms"></param>
+        /// <returns></returns>
         public static bool SendPhone(PhoneConfig config, string phone, string sms)
         {
             AlibabaCloud.SDK.Dysmsapi20170525.Client client = CreateClient(config);
@@ -33,6 +40,30 @@ namespace Com.Scm.Utils
 
             // 复制代码运行请自行打印 API 的返回值
             client.SendSmsWithOptions(sendSmsRequest, new AlibabaCloud.TeaUtil.Models.RuntimeOptions());
+
+            return true;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="config"></param>
+        /// <param name="phone"></param>
+        /// <param name="sms"></param>
+        /// <returns></returns>
+        public static async Task<bool> SendPhoneAsync(PhoneConfig config, string phone, string sms)
+        {
+            AlibabaCloud.SDK.Dysmsapi20170525.Client client = CreateClient(config);
+            AlibabaCloud.SDK.Dysmsapi20170525.Models.SendSmsRequest sendSmsRequest = new AlibabaCloud.SDK.Dysmsapi20170525.Models.SendSmsRequest
+            {
+                PhoneNumbers = phone,
+                SignName = config.SignName,
+                TemplateCode = config.TemplateCode,
+                TemplateParam = config.TemplateData.Replace("$sms$", sms)
+            };
+
+            // 复制代码运行请自行打印 API 的返回值
+            await client.SendSmsWithOptionsAsync(sendSmsRequest, new AlibabaCloud.TeaUtil.Models.RuntimeOptions());
 
             return true;
         }

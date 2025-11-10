@@ -8,9 +8,13 @@ using Com.Scm.Enums;
 using Com.Scm.Exceptions;
 using Com.Scm.Jwt;
 using Com.Scm.Log;
+using Com.Scm.Login.Otp;
+using Com.Scm.Login.Otp.Email;
+using Com.Scm.Login.Otp.Phone;
 using Com.Scm.Msg.Message;
 using Com.Scm.Operator.Dvo;
 using Com.Scm.Operator.Oidc;
+using Com.Scm.Otp;
 using Com.Scm.Service;
 using Com.Scm.Sys.Config;
 using Com.Scm.Sys.Menu;
@@ -49,8 +53,8 @@ public class OperatorService : ApiService
 
     private readonly JwtContextHolder _jwtContextHolder;
     private readonly ILogService _logService;
-    private readonly IOtpService _smsService;
     private readonly OidcConfig _oidcConfig;
+    private readonly OtpConfig _otpConfig;
 
     /// <summary>
     /// 
@@ -66,8 +70,8 @@ public class OperatorService : ApiService
         , Cache.ICacheService cacheService
         , JwtContextHolder jwtContextHolder
         , ILogService logService
-        , IOtpService smsService
-        , OidcConfig oidcConfig)
+        , OidcConfig oidcConfig
+        , OtpConfig otpConfig)
     {
         _SqlClient = sqlClient;
         _EnvConfig = envConfig;
@@ -75,8 +79,8 @@ public class OperatorService : ApiService
 
         _jwtContextHolder = jwtContextHolder;
         _logService = logService;
-        _smsService = smsService;
         _oidcConfig = oidcConfig;
+        _otpConfig = otpConfig;
     }
 
     /// <summary>
@@ -135,7 +139,7 @@ public class OperatorService : ApiService
     /// <param name="request"></param>
     /// <returns></returns>
     [AllowAnonymous]
-    public async Task<LoginResponse> LoginAsync(LoginRequest request)
+    public async Task<LoginResponse> SignInAsync(LoginRequest request)
     {
         var response = new LoginResponse();
 
@@ -143,15 +147,15 @@ public class OperatorService : ApiService
 
         if (request.mode == ScmLoginModeEnum.ByPass)
         {
-            userDao = await LoginByPwdAsync(request, response);
+            userDao = await SignInByPwdAsync(request, response);
         }
         else if (request.mode == ScmLoginModeEnum.ByPhone || request.mode == ScmLoginModeEnum.ByEmail)
         {
-            userDao = await LoginBySmsAsync(request, response);
+            userDao = await SignInByOtpAsync(request, response);
         }
         else if (request.mode == ScmLoginModeEnum.ByOauth)
         {
-            userDao = await LoginByOAuthAsync(request, response);
+            userDao = await SignInByOidcAsync(request, response);
         }
         else
         {
@@ -219,7 +223,7 @@ public class OperatorService : ApiService
     /// <param name="response"></param>
     /// <returns></returns>
     [NonDynamicMethod]
-    private async Task<UserDao> LoginByPwdAsync(LoginRequest request, LoginResponse response)
+    private async Task<UserDao> SignInByPwdAsync(LoginRequest request, LoginResponse response)
     {
         var config = AppUtils.GetConfig<OperatorConfig>("Operator");
         if (config == null || !config.IgnoreCaptcha)
@@ -303,9 +307,10 @@ public class OperatorService : ApiService
     /// <param name="request"></param>
     /// <param name="response"></param>
     /// <returns></returns>
-    private async Task<UserDao> LoginBySmsAsync(LoginRequest request, LoginResponse response)
+    private async Task<UserDao> SignInByOtpAsync(LoginRequest request, LoginResponse response)
     {
         var code = "";
+        OtpAuth otpAuth;
         if (request.mode == ScmLoginModeEnum.ByPhone)
         {
             if (!TextUtils.IsCellphone(request.phone))
@@ -314,6 +319,7 @@ public class OperatorService : ApiService
                 return null;
             }
             code = request.phone;
+            otpAuth = new PhoneAuth(_otpConfig, _SqlClient);
         }
         else if (request.mode == ScmLoginModeEnum.ByEmail)
         {
@@ -323,6 +329,7 @@ public class OperatorService : ApiService
                 return null;
             }
             code = request.email;
+            otpAuth = new EmailAuth(_otpConfig, _SqlClient);
         }
         else
         {
@@ -330,10 +337,10 @@ public class OperatorService : ApiService
             return null;
         }
 
-        var result = await _smsService.VerifySmsAsync(request.key, request.code);
-        if (result.HasError())
+        var result = await otpAuth.VerifyCodeAsync(request.key, request.code);
+        if (!result.success)
         {
-            response.SetFailure(LoginResponse.ERROR_22, result.Text);
+            response.SetFailure(LoginResponse.ERROR_22, result.error_message);
             return null;
         }
 
@@ -417,7 +424,7 @@ public class OperatorService : ApiService
     /// <param name="request"></param>
     /// <param name="response"></param>
     /// <returns></returns>
-    private async Task<UserDao> LoginByOAuthAsync(LoginRequest request, LoginResponse response)
+    private async Task<UserDao> SignInByOidcAsync(LoginRequest request, LoginResponse response)
     {
         //var state = request.state?.ToLower();
         //if (state != "login")
@@ -565,7 +572,7 @@ public class OperatorService : ApiService
         pass = SecUtils.Sha256(pass);
         var time = TimeUtils.GetUnixTime();
         pass = SecUtils.Sha256(pass += "@" + time);
-        return await LoginAsync(new LoginRequest { mode = ScmLoginModeEnum.ByPass, user = user, pass = pass, time = time });
+        return await SignInAsync(new LoginRequest { mode = ScmLoginModeEnum.ByPass, user = user, pass = pass, time = time });
     }
     #endregion
 
@@ -764,17 +771,17 @@ public class OperatorService : ApiService
     /// </summary>
     /// <returns></returns>
     [AllowAnonymous]
-    public async Task<SignonResponse> SignOnAsync(SignonRequest request)
+    public async Task<SignonResponse> SignUpAsync(SignonRequest request)
     {
         var response = new SignonResponse();
 
         if (request.mode == ScmLoginModeEnum.ByPass)
         {
-            await SignonByPwdAsync(request, response);
+            await SignUpByPwdAsync(request, response);
         }
         else if (request.mode == ScmLoginModeEnum.ByOauth)
         {
-            await SignonByOauthAsync(request, response);
+            await SignUpByOauthAsync(request, response);
         }
 
         return response;
@@ -787,9 +794,9 @@ public class OperatorService : ApiService
     /// <param name="response"></param>
     /// <returns></returns>
     /// <exception cref="BusinessException"></exception>
-    private async Task<bool> SignonByPwdAsync(SignonRequest request, SignonResponse response)
+    private async Task<bool> SignUpByPwdAsync(SignonRequest request, SignonResponse response)
     {
-        return await SignonByPwdAsUserAsync(request, response);
+        return await SignUpByPwdAsUserAsync(request, response);
     }
 
     /// <summary>
@@ -798,7 +805,7 @@ public class OperatorService : ApiService
     /// <param name="request"></param>
     /// <param name="response"></param>
     /// <returns></returns>
-    private async Task<bool> SignonByPwdAsUserAsync(SignonRequest request, SignonResponse response)
+    private async Task<bool> SignUpByPwdAsUserAsync(SignonRequest request, SignonResponse response)
     {
         var user = request.user;
         var userDao = await _SqlClient.Queryable<UserDao>()
@@ -841,7 +848,7 @@ public class OperatorService : ApiService
     /// <param name="request"></param>
     /// <param name="response"></param>
     /// <returns></returns>
-    private async Task<bool> SignonByOauthAsync(SignonRequest request, SignonResponse response)
+    private async Task<bool> SignUpByOauthAsync(SignonRequest request, SignonResponse response)
     {
         var time = TimeUtils.GetUnixTime();
 
@@ -1162,9 +1169,7 @@ public class OperatorService : ApiService
             user_codes = userDao.codes,
             user_name = userDao.namec,
             time = DateTime.Now,
-            data = userDao.data,
-            //Role = "Admin",
-            //RoleArray = "0"
+            data = userDao.data
         });
     }
 
@@ -1175,21 +1180,12 @@ public class OperatorService : ApiService
     /// <returns></returns>
     private OperatorInfo GetUserInfo(UserDao userDao)
     {
-        var unitDao = GetUnitInfo();
-        if (unitDao == null)
-        {
-            unitDao = new OperatorUnitDvo();
-            unitDao.LoadDef();
-        }
-
         return new OperatorInfo()
         {
             Id = userDao.id.ToString(),
             UserId = userDao.id,
             UserCode = userDao.codec,
             UserName = userDao.namec,
-            UnitCode = unitDao.codec,
-            UnitName = unitDao.namec,
             Avatar = userDao.avatar
         };
     }
@@ -1288,17 +1284,18 @@ public class OperatorService : ApiService
     /// <param name="request"></param>
     /// <returns></returns>
     [AllowAnonymous]
-    public async Task<SendSmsResponse> SendSmsAsync(SendSmsRequest request)
+    public async Task<SendSmsResponse> SendOtpAsync(SendSmsRequest request)
     {
-        var types = OtpTypesEnum.Email;
-
+        OtpAuth otpAuth;
         if (request.mode == ScmLoginModeEnum.ByPhone)
         {
             if (!TextUtils.IsCellphone(request.code))
             {
                 throw new BusinessException("无效的手机号码！");
             }
-            types = OtpTypesEnum.Phone;
+
+            otpAuth = new PhoneAuth(_otpConfig, _SqlClient);
+            otpAuth.Init(new PhoneParam { phone = request.code, template = "sms_login" });
         }
         else if (request.mode == ScmLoginModeEnum.ByEmail)
         {
@@ -1306,21 +1303,23 @@ public class OperatorService : ApiService
             {
                 throw new BusinessException("无效的电子邮件！~");
             }
-            types = OtpTypesEnum.Email;
+
+            otpAuth = new EmailAuth(_otpConfig, _SqlClient);
+            otpAuth.Init(new EmailParam { email = request.code, template = "sms_login" });
         }
         else
         {
             throw new BusinessException("不支持的验证码方式！~");
         }
 
-        var result = await _smsService.SendSmsAsync(types, request.code, request.req, "sms_login");
-        if (result.HasError())
+        var result = await otpAuth.GenerateCodeAsync(request.req);
+        if (!result.success)
         {
-            throw new BusinessException(result.Text);
+            throw new BusinessException(result.error_message);
         }
 
         var response = new SendSmsResponse();
-        response.key = result.Dao.key;
+        response.key = result.data;
         response.SetSuccess();
         return response;
     }

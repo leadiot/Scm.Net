@@ -1,6 +1,9 @@
-﻿using Com.Scm.Otp;
+﻿using Com.Scm.Config;
+using Com.Scm.Email.Config;
+using Com.Scm.Log;
+using Com.Scm.Phone.Config;
 
-namespace Com.Scm.Config
+namespace Com.Scm.Login.Otp
 {
     public class OtpConfig
     {
@@ -9,11 +12,11 @@ namespace Com.Scm.Config
         /// <summary>
         /// 类型：totp,hotp
         /// </summary>
-        public string Type { get; set; }
+        public OtpTypesEnum Type { get; set; }
         /// <summary>
         /// 摘要算法
         /// </summary>
-        public OtpHashAlgorithm Algorithm { get; set; } = OtpHashAlgorithm.SHA1;
+        public string Algorithm { get; set; } = "SHA1";
         /// <summary>
         /// 发行者
         /// </summary>
@@ -38,12 +41,6 @@ namespace Com.Scm.Config
 
         public void Prepare(EnvConfig envConfig)
         {
-            Type = (Type ?? "").ToLower();
-            if (Type != "hotp")
-            {
-                Type = "totp";
-            }
-
             if (string.IsNullOrEmpty(Issuer))
             {
                 Issuer = "Scm.Net";
@@ -59,5 +56,9 @@ namespace Com.Scm.Config
                 Period = 30;
             }
         }
+
+        public PhoneConfig Phone { get; set; }
+
+        public EmailConfig Email { get; set; }
     }
 }

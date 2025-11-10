@@ -83,7 +83,7 @@ export default {
 				code: this.form.phone,
 				req: this.form.req,
 			};
-			var userRes = await this.$API.login.sendSms.post(data);
+			var userRes = await this.$API.login.sendOtp.post(data);
 			if (userRes.code != 200) {
 				this.$message.warning(userRes.message);
 				return false;

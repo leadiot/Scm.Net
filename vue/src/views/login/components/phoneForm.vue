@@ -31,7 +31,7 @@ export default {
 	data() {
 		return {
 			form: {
-				mode: 20,
+				mode: 21,
 				unit: this.$CONFIG.DEF_LOGIN_UNIT,
 				phone: '',
 				code: '',

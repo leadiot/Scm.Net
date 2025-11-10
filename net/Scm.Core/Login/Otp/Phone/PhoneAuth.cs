@@ -22,6 +22,7 @@ namespace Com.Scm.Login.Otp.Phone
         /// <param name="sqlClient"></param>
         public PhoneAuth(OtpConfig config, ISqlSugarClient sqlClient) : base(config)
         {
+            _PhoneConfig = config.Phone;
             _SqlClient = sqlClient;
             Type = OtpTypesEnum.Phone;
         }
@@ -57,6 +58,11 @@ namespace Com.Scm.Login.Otp.Phone
             if (!TextUtils.IsCellphone(code))
             {
                 result.SetFailure(PhoneResult.ERROR_CODE_SEND_111, PhoneResult.ERROR_TEXT_SEND_111);
+                return result;
+            }
+            if (_PhoneConfig == null)
+            {
+                result.SetFailure(PhoneResult.ERROR_CODE_SEND_112, PhoneResult.ERROR_TEXT_SEND_112);
                 return result;
             }
 
@@ -141,6 +147,11 @@ namespace Com.Scm.Login.Otp.Phone
             if (!TextUtils.IsCellphone(code))
             {
                 result.SetFailure(PhoneResult.ERROR_CODE_SEND_111, PhoneResult.ERROR_TEXT_SEND_111);
+                return result;
+            }
+            if (_PhoneConfig == null)
+            {
+                result.SetFailure(PhoneResult.ERROR_CODE_SEND_112, PhoneResult.ERROR_TEXT_SEND_112);
                 return result;
             }
 

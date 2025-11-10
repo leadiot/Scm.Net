@@ -9,7 +9,7 @@ namespace Com.Scm.Log
     /// <summary>
     /// 
     /// </summary>
-    [SugarTable("scm_log_sms")]
+    [SugarTable("scm_log_otp")]
     public class LogOtpDao : ScmDataDao
     {
         /// <summary>

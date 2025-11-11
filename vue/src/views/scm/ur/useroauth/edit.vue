@@ -158,7 +158,7 @@ err_msg:'',
 				this.mode = "add";
 			} else {
 				this.mode = "edit";
-				var res = await this.$API.scmuruseroauth.edit.get(row.id);
+				var res = await this.$API.scmuruseroidc.edit.get(row.id);
 				this.formData = res.data;
 			}
 			this.visible = true;
@@ -169,9 +169,9 @@ err_msg:'',
 					this.isSaveing = true;
 					let res = null;
 					if (this.$SCM.is_valid_id(this.formData.id)) {
-						res = await this.$API.scmuruseroauth.update.put(this.formData);
+						res = await this.$API.scmuruseroidc.update.put(this.formData);
 					} else {
-						res = await this.$API.scmuruseroauth.add.post(this.formData);
+						res = await this.$API.scmuruseroidc.add.post(this.formData);
 					}
 					this.isSaveing = false;
 					if (res.code == 200) {

@@ -82,7 +82,7 @@ export default {
 				code: this.form.email,
 				req: this.form.req,
 			};
-			var userRes = await this.$API.login.sendOtp.post(data);
+			var userRes = await this.$API.operator.sendOtp.post(data);
 			if (userRes.code != 200) {
 				this.$message.warning(userRes.message);
 				return false;
@@ -110,7 +110,7 @@ export default {
 			this.islogin = false;
 		},
 		async checkAuth() {
-			var userRes = await this.$API.login.token.post(this.form);
+			var userRes = await this.$API.operator.token.post(this.form);
 			if (userRes.code != 200) {
 				this.$message.warning(userRes.message);
 				return false;
@@ -127,7 +127,7 @@ export default {
 			this.$TOOL.data.set("USER_THEME", userRes.data.userTheme);
 
 			//获取菜单
-			var menuRes = await this.$API.login.authority.get();
+			var menuRes = await this.$API.operator.authority.get();
 			if (menuRes.code != 200) {
 				this.$message.warning(menuRes.message);
 				return false;

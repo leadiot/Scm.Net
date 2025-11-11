@@ -174,7 +174,7 @@ export default {
 				phone: this.formData.phone,
 				open: []
 			};
-			var res = await this.$API.login.signon.post(form);
+			var res = await this.$API.operator.signon.post(form);
 			if (res.code != 200) {
 				this.$message.warning(res.message);
 				return false;

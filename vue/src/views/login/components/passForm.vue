@@ -96,7 +96,7 @@ export default {
 				code: this.form.code,
 				key: this.form.codeKey,
 			};
-			var userRes = await this.$API.login.token.post(data);
+			var userRes = await this.$API.operator.token.post(data);
 			if (userRes.code != 200) {
 				this.$message.warning(userRes.message);
 				return false;
@@ -111,7 +111,7 @@ export default {
 			this.$TOOL.data.set("USER_THEME", userData.userTheme);
 
 			//获取菜单
-			var menuRes = await this.$API.login.authority.get();
+			var menuRes = await this.$API.operator.authority.get();
 			if (menuRes.code != 200) {
 				this.$message.warning(menuRes.message);
 				return false;

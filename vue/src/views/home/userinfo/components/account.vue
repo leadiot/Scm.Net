@@ -75,7 +75,7 @@ export default {
 	},
 	methods: {
 		async init() {
-			const res = await this.$API.login.userwork.get();
+			const res = await this.$API.operator.userwork.get();
 			if (!res || res.code != 200) {
 				return;
 			}
@@ -87,7 +87,7 @@ export default {
 				if (valid) {
 					const user = this.$TOOL.data.get("USER_INFO");
 					this.form.id = user.id;
-					const res = await this.$API.login.userBasic.put(this.form);
+					const res = await this.$API.operator.userBasic.put(this.form);
 					if (res.code == 200) {
 						this.$message.success("保存成功");
 					} else {

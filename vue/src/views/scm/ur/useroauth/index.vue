@@ -83,7 +83,7 @@ export default {
 	data() {
 		return {
 			tableName: 'scm_ur_useroauth',
-			apiObj: this.$API.scmuruseroauth.page,
+			apiObj: this.$API.scmuruseroidc.page,
 			param: {
 				option_id: 0,
 				row_status: this.$SCM.DEF_STATUS,
@@ -126,16 +126,16 @@ export default {
 			this.$refs.table.upData(this.param);
 		},
 		async status_item(e, row) {
-			this.$SCM.status_item(this, this.$API.scmuruseroauth.status, row, row.row_status);
+			this.$SCM.status_item(this, this.$API.scmuruseroidc.status, row, row.row_status);
 		},
 		status_list(status) {
-			this.$SCM.status_list(this, this.$API.scmuruseroauth.status, this.selection, status);
+			this.$SCM.status_list(this, this.$API.scmuruseroidc.status, this.selection, status);
 		},
 		async delete_item(row) {
-			this.$SCM.delete_item(this, this.$API.scmuruseroauth.delete, row);
+			this.$SCM.delete_item(this, this.$API.scmuruseroidc.delete, row);
 		},
 		delete_list() {
-			this.$SCM.delete_list(this, this.$API.scmuruseroauth.delete, this.selection);
+			this.$SCM.delete_list(this, this.$API.scmuruseroidc.delete, this.selection);
 		},
 		show_search() {
 			this.$refs.search.open(this.param.key);

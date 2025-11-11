@@ -94,7 +94,7 @@ export default {
         async checkAuth(key) {
             this.key = key;
             var data = { type: this.formData.type, mode: this.formData.mode, key: key, code: key };
-            var res = await this.$API.login.token.post(data);
+            var res = await this.$API.operator.token.post(data);
             if (res.code != 200) {
                 this.$message.warning(res.message);
                 return false;
@@ -116,7 +116,7 @@ export default {
             this.$TOOL.data.set("USER_THEME", userData.userTheme);
 
             //获取菜单
-            var menuRes = await this.$API.login.authority.get();
+            var menuRes = await this.$API.operator.authority.get();
             if (menuRes.code != 200) {
                 this.$message.warning(menuRes.message);
                 return false;
@@ -168,7 +168,7 @@ export default {
                 opt: this.formData.opt,
                 key: this.key
             };
-            var res = await this.$API.login.signon.post(data);
+            var res = await this.$API.operator.signon.post(data);
             if (res.code != 200) {
                 this.$message.warning(res.message);
                 return false;

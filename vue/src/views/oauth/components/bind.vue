@@ -23,7 +23,7 @@ export default {
     },
     methods: {
         async init(code) {
-            var res = await this.$API.scmuruseroauth.dobind.post({ 'key': code });
+            var res = await this.$API.scmuruseroidc.dobind.post({ 'key': code });
             if (res.code != 200) {
                 this.$message.warning(res.message);
                 return false;

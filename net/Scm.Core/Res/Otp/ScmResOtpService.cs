@@ -9,13 +9,13 @@ using Microsoft.AspNetCore.Mvc;
 namespace Com.Scm.Res.Otp
 {
     /// <summary>
-    /// 消息模板服务接口
+    /// Otp管理
     /// </summary>
     [ApiExplorerSettings(GroupName = "res")]
     public class ScmResOtpService : ApiService
     {
         private readonly SugarRepository<OtpDao> _thisRepository;
-        
+
         /// <summary>
         /// 
         /// </summary>

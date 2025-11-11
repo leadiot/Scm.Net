@@ -45,7 +45,6 @@ namespace Com.Scm.Sys.Table
             var token = _contextHolder.GetToken();
 
             var dto = await _headerRepository.AsQueryable()
-                .ClearFilter()
                 .Where(a => a.codec == codec && a.user_id == token.user_id)
                 .Select<SysTableHeaderDto>()
                 .FirstAsync();
@@ -67,11 +66,8 @@ namespace Com.Scm.Sys.Table
         /// <returns></returns>
         public async Task<bool> PostSaveAsync(SaveRequest request)
         {
-            var token = _contextHolder.GetToken();
-
             var dao = await _headerRepository.AsQueryable()
-                .ClearFilter()
-                .Where(a => a.codec == request.codec && a.user_id == token.user_id)
+                .Where(a => a.codec == request.codec)
                 .FirstAsync();
             if (dao == null)
             {

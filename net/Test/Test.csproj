@@ -15,9 +15,16 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Scm.Common\Scm.Common.csproj" />
+    <ProjectReference Include="..\Scm.Core\Scm.Core.csproj" />
     <ProjectReference Include="..\Scm.Email\Scm.Email.csproj" />
     <ProjectReference Include="..\Scm.Plugin.Audio\Scm.Plugin.Audio.csproj" />
     <ProjectReference Include="..\Scm.Server.Service\Scm.Server.Service.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="Scm.Common.Text">
+      <HintPath>..\Libs\netstandard2.0\Scm.Common.Text.dll</HintPath>
+    </Reference>
   </ItemGroup>
 
 </Project>

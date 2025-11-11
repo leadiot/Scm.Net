@@ -30,7 +30,7 @@ export default {
 	data() {
 		return {
 			form: {
-				mode: 30,
+				mode: 22,
 				unit: this.$CONFIG.DEF_LOGIN_UNIT,
 				email: '',
 				code: '',

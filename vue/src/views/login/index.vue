@@ -61,7 +61,7 @@
 													<email-form></email-form>
 												</el-tab-pane>
 												<el-tab-pane :label="$t('login.oauthLogin')" lazy v-if="hasMode(30)">
-													<oauth-form></oauth-form>
+													<oidc-form></oidc-form>
 												</el-tab-pane>
 											</el-tabs>
 										</div>
@@ -89,7 +89,7 @@
 import passForm from "./components/passForm";
 import phoneForm from "./components/phoneForm";
 import emailForm from "./components/emailForm";
-import oauthForm from "./components/oauthForm";
+import oidcForm from "./components/oidcForm";
 
 export default {
 	name: 'login',
@@ -97,7 +97,7 @@ export default {
 		passForm,
 		phoneForm,
 		emailForm,
-		oauthForm,
+		oidcForm,
 	},
 	data() {
 		var lang = this.$TOOL.getCache("APP_LANG") || this.$CONFIG.LANG;

@@ -8,6 +8,9 @@
         public const int ERROR_CODE_SEND_111 = 111;
         public const string ERROR_TEXT_SEND_111 = "无效的手机号码！";
 
+        public const int ERROR_CODE_SEND_112 = 112;
+        public const string ERROR_TEXT_SEND_112 = "无效的短信服务器配置！";
+
 
         public const int ERROR_CODE_SEND_121 = 121;
         public const string ERROR_TEXT_SEND_121 = "验证码发送过于频繁，请1分钟后重试！";

@@ -8,6 +8,9 @@
         public const int ERROR_CODE_SEND_111 = 111;
         public const string ERROR_TEXT_SEND_111 = "无效的电子邮件！";
 
+        public const int ERROR_CODE_SEND_112 = 112;
+        public const string ERROR_TEXT_SEND_112 = "无效的邮件服务配置！";
+
 
         public const int ERROR_CODE_SEND_121 = 121;
         public const string ERROR_TEXT_SEND_121 = "验证码发送过于频繁，请1分钟后重试！";

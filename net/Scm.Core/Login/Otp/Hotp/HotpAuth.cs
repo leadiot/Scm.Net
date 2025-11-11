@@ -1,5 +1,6 @@
 ﻿using Com.Scm.Log;
 using Com.Scm.Login.Otp;
+using Com.Scm.Login.Otp.Hotp;
 using System.Security.Cryptography;
 using System.Text;
 
@@ -14,6 +15,8 @@ namespace Com.Scm.Otp.Hotp
     public class HotpAuth : OtpAuth
     {
         #region 属性
+
+        private HotpConfig _Config;
 
         /// <summary>
         /// 
@@ -34,6 +37,7 @@ namespace Com.Scm.Otp.Hotp
         /// </summary>
         public HotpAuth(OtpConfig config) : base(config)
         {
+            _Config = config.Hotp;
             Type = OtpTypesEnum.Hotp;
         }
 
@@ -43,21 +47,12 @@ namespace Com.Scm.Otp.Hotp
         /// <param name="param"></param>
         public override bool Init(OtpParam param)
         {
-            var tmp = param as HotpParam;
-
-            if (tmp == null)
+            Param = param as HotpParam;
+            if (Param == null)
             {
-                tmp = new HotpParam();
-                tmp.LoadDefault();
+                Param = new HotpParam();
             }
 
-            // 验证参数有效性
-            if (tmp.Digits < 4 || tmp.Digits > 8)
-            {
-                throw new ArgumentOutOfRangeException(nameof(tmp.Digits), "密码长度必须在4-8位之间");
-            }
-
-            Param = tmp;
             return true;
         }
 
@@ -159,7 +154,7 @@ namespace Com.Scm.Otp.Hotp
             }
 
             // 检查密码长度
-            if (code.Length != Param.Digits)
+            if (code.Length != Config.Digits)
             {
                 result.SetFailure(0, "");
                 return result;
@@ -169,7 +164,7 @@ namespace Com.Scm.Otp.Hotp
             long currentCounter = counter;
 
             // 尝试当前计数器及后续ResyncWindow个计数器
-            for (int i = 0; i <= Param.Windows; i++)
+            for (int i = 0; i <= _Config.Windows; i++)
             {
                 long targetCounter = currentCounter + i;
                 string generatedCode = GenerateCode(secretKey, targetCounter);
@@ -212,7 +207,7 @@ namespace Com.Scm.Otp.Hotp
         /// <returns></returns>
         public override bool ChangeCode(string requestId)
         {
-            _Counter += Param.HmacStep;
+            _Counter += _Config.Period;
             return true;
         }
 
@@ -228,14 +223,14 @@ namespace Com.Scm.Otp.Hotp
             long[] counters = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 };
             string[] expectedCodes = { "755224", "287082", "359152", "969429", "338314", "254676", "287922", "162583", "399871", "520489" };
 
-            var param = new HotpParam()
+            var config = new OtpConfig { Digits = 6 };
+            config.Hotp = new HotpConfig()
             {
-                HmacStep = 1,
-                Digits = 6,
+                Period = 1,
                 Algorithm = HotpAlgorithm.SHA1
             };
-            HotpAuth hotp = new HotpAuth(null);
-            hotp.Init(param);
+            HotpAuth hotp = new HotpAuth(config);
+            hotp.Init(new HotpParam { Secret = secretKey });
 
             for (int i = 0; i < counters.Length; i++)
             {
@@ -269,7 +264,7 @@ namespace Com.Scm.Otp.Hotp
             int code = TruncateHash(hash);
 
             // 格式化输出
-            return code.ToString($"D{Param.Digits}");
+            return code.ToString($"D{Config.Digits}");
         }
 
         /// <summary>
@@ -279,7 +274,7 @@ namespace Com.Scm.Otp.Hotp
         /// <returns>HMAC实例</returns>
         protected HMAC CreateInstance(byte[] keyBytes)
         {
-            switch (Param.Algorithm)
+            switch (_Config.Algorithm)
             {
                 case HotpAlgorithm.SHA1:
                     return new HMACSHA1(keyBytes);
@@ -288,7 +283,7 @@ namespace Com.Scm.Otp.Hotp
                 case HotpAlgorithm.SHA512:
                     return new HMACSHA512(keyBytes);
                 default:
-                    throw new ArgumentOutOfRangeException(nameof(Param.Algorithm), "不支持的哈希算法");
+                    throw new ArgumentOutOfRangeException(nameof(_Config.Algorithm), "不支持的哈希算法");
             }
         }
 
@@ -331,7 +326,7 @@ namespace Com.Scm.Otp.Hotp
                      | (hash[offset + 3] & 0xFF);
 
             // 取模得到指定长度的密码
-            int mod = (int)Math.Pow(10, Param.Digits);
+            int mod = (int)Math.Pow(10, Config.Digits);
             return code % mod;
         }
 

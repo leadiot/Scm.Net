@@ -23,6 +23,7 @@ namespace Com.Scm.Login.Otp.Email
         /// <param name="sqlClient"></param>
         public EmailAuth(OtpConfig config, ISqlSugarClient sqlClient) : base(config)
         {
+            _EmailConfig = config.Email;
             _SqlClient = sqlClient;
             Type = OtpTypesEnum.Phone;
         }
@@ -55,9 +56,14 @@ namespace Com.Scm.Login.Otp.Email
             var result = new EmailResult();
 
             var code = _EmailParam.email;
-            if (!TextUtils.IsCellphone(code))
+            if (!TextUtils.IsEmail(code))
             {
                 result.SetFailure(EmailResult.ERROR_CODE_SEND_111, EmailResult.ERROR_TEXT_SEND_111);
+                return result;
+            }
+            if (_EmailConfig == null)
+            {
+                result.SetFailure(EmailResult.ERROR_CODE_SEND_112, EmailResult.ERROR_TEXT_SEND_112);
                 return result;
             }
 
@@ -99,7 +105,7 @@ namespace Com.Scm.Login.Otp.Email
             }
 
             // 设置为发送中
-            logOtpDao.pass = TextUtils.RandomNumber(_EmailParam.Digits);
+            logOtpDao.pass = TextUtils.RandomNumber(Config.Digits);
             logOtpDao.handle = ScmHandleEnum.Doing;
             logOtpDao.PrepareUpdate(UserDto.SYS_ID);
             _SqlClient.Update(logOtpDao);
@@ -139,9 +145,14 @@ namespace Com.Scm.Login.Otp.Email
             var result = new EmailResult();
 
             var code = _EmailParam.email;
-            if (!TextUtils.IsCellphone(code))
+            if (!TextUtils.IsEmail(code))
             {
                 result.SetFailure(EmailResult.ERROR_CODE_SEND_111, EmailResult.ERROR_TEXT_SEND_111);
+                return result;
+            }
+            if (_EmailConfig == null)
+            {
+                result.SetFailure(EmailResult.ERROR_CODE_SEND_112, EmailResult.ERROR_TEXT_SEND_112);
                 return result;
             }
 
@@ -183,7 +194,7 @@ namespace Com.Scm.Login.Otp.Email
             }
 
             // 设置为发送中
-            logOtpDao.pass = TextUtils.RandomNumber(_EmailParam.Digits);
+            logOtpDao.pass = TextUtils.RandomNumber(Config.Digits);
             logOtpDao.handle = ScmHandleEnum.Doing;
             logOtpDao.PrepareUpdate(UserDto.SYS_ID);
             await _SqlClient.UpdateAsync(logOtpDao);

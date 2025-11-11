@@ -104,7 +104,7 @@ export default {
                 code: this.form.email,
                 req: this.form.req,
             };
-            var userRes = await this.$API.login.sendOtp.post(data);
+            var userRes = await this.$API.login.sendSms.post(data);
             if (userRes.code != 200) {
                 this.$message.warning(userRes.message);
                 return false;

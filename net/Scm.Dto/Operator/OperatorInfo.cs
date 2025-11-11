@@ -14,9 +14,9 @@ namespace Com.Scm.Operator
         public string Id { get; set; }
 
         /// <summary>
-        /// 
+        /// 暂未使用
         /// </summary>
-        public ScmUserTypesEnum types { get; set; }
+        public ScmUserTypesEnum Type { get; set; }
 
         /// <summary>
         /// 人员ID
@@ -32,21 +32,6 @@ namespace Com.Scm.Operator
         /// 人员名称
         /// </summary>
         public string UserName { get; set; }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        public string UnitCode { get; set; }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        public string UnitName { get; set; }
-
-        /// <summary>
-        /// 许可状态
-        /// </summary>
-        public ScmGrandResultEnums Grand { get; set; }
 
         /// <summary>
         /// 用户头像

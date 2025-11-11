@@ -31,7 +31,7 @@ export default {
 	data() {
 		return {
 			form: {
-				mode: 21,
+				mode: 20,
 				unit: this.$CONFIG.DEF_LOGIN_UNIT,
 				phone: '',
 				code: '',
@@ -83,7 +83,7 @@ export default {
 				code: this.form.phone,
 				req: this.form.req,
 			};
-			var userRes = await this.$API.login.sendOtp.post(data);
+			var userRes = await this.$API.login.sendSms.post(data);
 			if (userRes.code != 200) {
 				this.$message.warning(userRes.message);
 				return false;

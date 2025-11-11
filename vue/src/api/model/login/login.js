@@ -4,14 +4,14 @@ import tool from "@/utils/tool";
 
 export default {
 	token: {
-		url: `${config.API_URL}/operator/signin`,
+		url: `${config.API_URL}/operator/login`,
 		name: "登录获取TOKEN",
 		post: async function (data = {}) {
 			return await http.post(this.url, data);
 		},
 	},
-	sendOtp: {
-		url: `${config.API_URL}/operator/sendOtp`,
+	sendSms: {
+		url: `${config.API_URL}/operator/sendSms`,
 		name: "发送验证码",
 		post: async function (data) {
 			return await http.post(this.url, data);

@@ -1,5 +1,6 @@
 ﻿using Com.Scm.Log;
 using Com.Scm.Login.Otp;
+using Com.Scm.Login.Otp.Totp;
 using Com.Scm.Utils;
 using System.Security.Cryptography;
 using System.Text;
@@ -32,6 +33,8 @@ namespace Com.Scm.Otp.Totp
         /// 当前时间
         /// </summary>
         private DateTime _Now;
+
+        private TotpConfig _Config;
         #endregion
 
         #region 构造函数
@@ -41,6 +44,7 @@ namespace Com.Scm.Otp.Totp
         /// </summary>
         public TotpAuth(OtpConfig config) : base(config)
         {
+            _Config = config.Totp;
             Type = OtpTypesEnum.Totp;
         }
 
@@ -50,15 +54,12 @@ namespace Com.Scm.Otp.Totp
         /// <param name="param"></param>
         public override bool Init(OtpParam param)
         {
-            var tmp = param as TotpParam;
-
-            if (tmp == null)
+            _Param = param as TotpParam;
+            if (_Param == null)
             {
-                tmp = new TotpParam();
-                tmp.LoadDefault();
+                _Param = new TotpParam();
             }
 
-            _Param = tmp;
             return true;
         }
         #endregion
@@ -140,7 +141,7 @@ namespace Com.Scm.Otp.Totp
             }
 
             // 检查密码长度
-            if (code.Length != _Param.Digits)
+            if (code.Length != Config.Digits)
             {
                 result.SetFailure(0, "");
                 return result;
@@ -150,7 +151,7 @@ namespace Com.Scm.Otp.Totp
             long currentCounter = GetTimeCounter(utcTime);
 
             // 检查当前窗口及前后ValidationWindow个窗口
-            for (int i = -_Param.Windows; i <= _Param.Windows; i++)
+            for (int i = -_Config.Windows; i <= _Config.Windows; i++)
             {
                 long targetCounter = currentCounter + i;
                 string generatedCode = GenerateCode(secretKey, targetCounter);
@@ -200,7 +201,7 @@ namespace Com.Scm.Otp.Totp
         private long GetTimeCounter(long seconds)
         {
             // 计算时间计数器
-            return seconds / _Param.TimeStep;
+            return seconds / _Config.Period;
         }
 
         /// <summary>
@@ -229,7 +230,7 @@ namespace Com.Scm.Otp.Totp
             }
 
             long totalSeconds = (long)(utcTime - EPOCH).TotalSeconds;
-            long remainingSeconds = _Param.TimeStep - totalSeconds % _Param.TimeStep;
+            long remainingSeconds = _Config.Period - totalSeconds % _Config.Period;
 
             return utcTime.AddSeconds(remainingSeconds);
         }
@@ -247,14 +248,14 @@ namespace Com.Scm.Otp.Totp
             long[] counters = { 59, 1111111109, 1111111111, 1234567890, 2000000000, 20000000000 };
             string[] expectedCodes = { "94287082", "07081804", "14050471", "89005924", "69279037", "65353130" };
 
-            var param = new TotpParam
+            var otpConfig = new OtpConfig { Digits = 8 };
+            otpConfig.Totp = new TotpConfig
             {
-                TimeStep = 30,
-                Digits = 8,
+                Period = 30,
                 Algorithm = TotpAlgorithm.SHA1
             };
-            TotpAuth hotp = new TotpAuth(null);
-            hotp.Init(param);
+            TotpAuth hotp = new TotpAuth(otpConfig);
+            hotp.Init(new TotpParam { Secret = secretKey });
 
             for (int i = 0; i < counters.Length; i++)
             {
@@ -289,7 +290,7 @@ namespace Com.Scm.Otp.Totp
             int code = TruncateHash(hash);
 
             // 格式化输出
-            return code.ToString($"D{_Param.Digits}");
+            return code.ToString($"D{Config.Digits}");
         }
 
         /// <summary>
@@ -299,7 +300,7 @@ namespace Com.Scm.Otp.Totp
         /// <returns>HMAC实例</returns>
         protected HMAC CreateInstance(byte[] keyBytes)
         {
-            switch (_Param.Algorithm)
+            switch (_Config.Algorithm)
             {
                 case TotpAlgorithm.SHA1:
                     return new HMACSHA1(keyBytes);
@@ -308,7 +309,7 @@ namespace Com.Scm.Otp.Totp
                 case TotpAlgorithm.SHA512:
                     return new HMACSHA512(keyBytes);
                 default:
-                    throw new ArgumentOutOfRangeException(nameof(_Param.Algorithm), "不支持的哈希算法");
+                    throw new ArgumentOutOfRangeException(nameof(_Config.Algorithm), "不支持的哈希算法");
             }
         }
 
@@ -351,7 +352,7 @@ namespace Com.Scm.Otp.Totp
                      | (hash[offset + 3] & 0xFF);
 
             // 取模得到指定长度的密码
-            int mod = (int)Math.Pow(10, _Param.Digits);
+            int mod = (int)Math.Pow(10, Config.Digits);
             return code % mod;
         }
 
@@ -365,9 +366,9 @@ namespace Com.Scm.Otp.Totp
             string encodedIssuer = Uri.EscapeDataString(issuer);
             string encodedAccount = Uri.EscapeDataString(account);
             string encodedSecret = Uri.EscapeDataString(TextUtils.Base32Encode(secret));
-            string algorithm = Enum.GetName(typeof(TotpAlgorithm), _Param.Algorithm);
+            string algorithm = Enum.GetName(_Config.Algorithm);
 
-            return $"otpauth://totp/{encodedIssuer}:{encodedAccount}?secret={encodedSecret}&issuer={encodedIssuer}&algorithm={algorithm}&digits={_Param.Digits}&period={_Param.TimeStep}";
+            return $"otpauth://totp/{encodedIssuer}:{encodedAccount}?secret={encodedSecret}&issuer={encodedIssuer}&algorithm={algorithm}&digits={Config.Digits}&period={_Config.Period}";
         }
     }
 }

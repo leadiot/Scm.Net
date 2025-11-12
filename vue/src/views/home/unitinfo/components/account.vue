@@ -67,7 +67,7 @@ export default {
 	},
 	methods: {
 		async init() {
-			const res = await this.$API.login.unitWork.get();
+			const res = await this.$API.operator.unitWork.get();
 			if (!res || res.code != 200) {
 				return;
 			}
@@ -77,7 +77,7 @@ export default {
 		async saveBasic() {
 			this.$refs.formRef.validate(async (valid) => {
 				if (valid) {
-					const res = await this.$API.login.unitBasic.put(this.form);
+					const res = await this.$API.operator.unitBasic.put(this.form);
 					if (res.code == 200) {
 						this.$message.success("保存成功");
 					} else {

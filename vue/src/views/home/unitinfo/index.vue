@@ -132,7 +132,7 @@ export default {
 	},
 	methods: {
 		async init() {
-			const res = await this.$API.login.userwork.get();
+			const res = await this.$API.operator.userwork.get();
 			this.user = res.data;
 		},
 		openPage(item) {

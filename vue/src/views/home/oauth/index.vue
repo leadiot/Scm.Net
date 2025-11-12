@@ -55,7 +55,7 @@ export default {
             window.oidc.init(config.OIDC_KEY, "oidc", this.oidc_option);
         },
         async load() {
-            var res = await this.$API.scmuruseroauth.list.get();
+            var res = await this.$API.scmuruseroidc.list.get();
             if (!res || res.code != 200) {
                 return;
             }
@@ -89,7 +89,7 @@ export default {
             this.$message.warning('联合登录绑定失败：' + message);
         },
         async doBind(user) {
-            var res = await this.$API.scmuruseroauth.dobind.post(user);
+            var res = await this.$API.scmuruseroidc.dobind.post(user);
             if (res.code != 200) {
                 this.isLoading = false;
                 this.$message.warning(res.message);
@@ -104,7 +104,7 @@ export default {
             window.oidc.init(config.OIDC_KEY, "oidc", this.oidc_option);
         },
         async unBind(id) {
-            var res = await this.$API.scmuruseroauth.unbind.post({ 'id': id });
+            var res = await this.$API.scmuruseroidc.unbind.post({ 'id': id });
             if (res.code != 200) {
                 this.$message.warning(res.message);
                 return false;

@@ -3,15 +3,8 @@ import http from "@/utils/request";
 import tool from "@/utils/tool";
 
 export default {
-	token: {
-		url: `${config.API_URL}/operator/login`,
-		name: "登录获取TOKEN",
-		post: async function (data = {}) {
-			return await http.post(this.url, data);
-		},
-	},
-	sendSms: {
-		url: `${config.API_URL}/operator/sendSms`,
+	sendOtp: {
+		url: `${config.API_URL}/operator/sendOtp`,
 		name: "发送验证码",
 		post: async function (data) {
 			return await http.post(this.url, data);
@@ -38,8 +31,8 @@ export default {
 			return await http.post(this.url, data);
 		},
 	},
-	signon: {
-		url: `${config.API_URL}/operator/signon`,
+	signUp: {
+		url: `${config.API_URL}/operator/signUp`,
 		name: "注册",
 		post: async function (data) {
 			return await http.post(this.url, data);

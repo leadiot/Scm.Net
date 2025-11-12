@@ -168,7 +168,7 @@ export default {
 				return false;
 			}
 			this.islogin = true;
-			var user = await this.$API.login.token.post(this.ruleForm);
+			var user = await this.$API.operator.signIn.post(this.ruleForm);
 			if (user.code == 200) {
 				this.$TOOL.data.set("TOKEN", user.data.accessToken);
 				this.$TOOL.data.set("USER_INFO", user.data.userInfo);
@@ -178,7 +178,7 @@ export default {
 				return false;
 			}
 			//获取菜单
-			var menuRes = await this.$API.login.authority.get();
+			var menuRes = await this.$API.operator.authority.get();
 			if (menuRes.code == 200) {
 				if (menuRes.data.length == 0) {
 					this.islogin = false;

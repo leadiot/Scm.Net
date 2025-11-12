@@ -176,7 +176,7 @@ export default {
 			this.info = res.data;
 		},
 		async loadTheme() {
-			var res = await this.$API.login.dateTheme.get({});
+			var res = await this.$API.operator.dateTheme.get({});
 			if (res == null || res.code != 200) {
 				return;
 			}

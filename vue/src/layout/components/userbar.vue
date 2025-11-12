@@ -1,8 +1,5 @@
 <template>
 	<div class="user-bar">
-		<div title="许可信息">
-			<label class="ver-alert">{{ verName }}</label>
-		</div>
 		<div title="机构信息">
 			<label>{{ unitName }}</label>
 		</div>
@@ -94,7 +91,6 @@ export default {
 			userName: '',
 			userNameF: '',
 			unitName: '',
-			verName: '',
 			avatar: '',
 			fit: 'cover',
 			show_avatar: true,

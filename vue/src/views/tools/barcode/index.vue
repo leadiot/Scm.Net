@@ -16,7 +16,7 @@
 					</el-form-item>
 					<el-form-item label="条码">
 						<el-input v-model="formData.meta" placeholder="请输入条码，多个请以空格或换行分隔，扫描文字请以/分隔。如：12345678/这是测试文字"
-							type="textarea" rows="10"></el-input>
+							type="textarea" :rows="10"></el-input>
 					</el-form-item>
 					<el-form-item>
 						<el-button @click="genBarcode()">生成</el-button>
@@ -50,7 +50,7 @@ export default {
 				meta: '',
 				format: '0',
 				showText: '0',
-				position: '10',
+				position: 10,
 				fontName: '3',
 				fontSize: 32,
 				width: 800,

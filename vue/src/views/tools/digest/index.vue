@@ -15,8 +15,8 @@
                         <sc-select v-model="param.sep" :data="sepList" style="margin: 0px 10px;width: 100px;"
                             v-show="param.binary == 16"></sc-select>
                         <el-radio-group v-model="param.binary">
-                            <el-radio-button label="16">16进制</el-radio-button>
-                            <el-radio-button label="64">64进制</el-radio-button>
+                            <el-radio-button :value="16">16进制</el-radio-button>
+                            <el-radio-button :value="64">64进制</el-radio-button>
                         </el-radio-group>
                     </el-col>
                 </el-row>
@@ -55,7 +55,7 @@ export default {
                 { id: 'SHA3-512', label: 'SHA3-512', value: 'SHA3-512' },
                 { id: 'RIPEMD160', label: 'RIPEMD160', value: 'RIPEMD160' },],
             sepList: [
-                { id: '1', label: '无', value: '' },
+                { id: '1', label: '无', value: '0' },
                 { id: '2', label: '空格( )', value: ' ' },
                 { id: '3', label: '冒号(:)', value: ':' },
                 { id: '4', label: '中横(-)', value: '-' }],
@@ -63,7 +63,7 @@ export default {
                 input: '',
                 alg: 'MD5',
                 binary: 16,
-                sep: '',
+                sep: '0',
                 letter: 'lower',
             },
             result: ''
@@ -141,7 +141,9 @@ export default {
                 tmp = map[(word >>> 4) & 0xf] + map[(word) & 0xf];
                 chars.push(tmp);
             }
-            this.result = chars.join(this.param.sep);
+
+            var sep = this.param.sep == '0' ? '' : this.param.sep;
+            this.result = chars.join(sep);
         }
     },
 }

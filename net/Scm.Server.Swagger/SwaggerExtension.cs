@@ -1,7 +1,7 @@
 ﻿using Com.Scm.Config;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.OpenApi.Models;
+using Microsoft.OpenApi;
 
 namespace Com.Scm;
 
@@ -46,21 +46,20 @@ public static class SwaggerExtension
                 Type = SecuritySchemeType.ApiKey
             });
 
-            s.AddSecurityRequirement(new OpenApiSecurityRequirement
-            {
-                {
-                    new OpenApiSecurityScheme
-                    {
-                        Reference = new OpenApiReference
-                        {
-                            Type = ReferenceType.SecurityScheme,
-                            Id = "Bearer"
-                        }
-                    },
-                    new string[] {}
-                }
-            });
-
+            //s.AddSecurityRequirement(new OpenApiSecurityRequirement
+            //{
+            //    {
+            //        new OpenApiSecurityScheme
+            //        {
+            //            Reference = new OpenApiReference
+            //            {
+            //                Type = ReferenceType.SecurityScheme,
+            //                Id = "Bearer"
+            //            }
+            //        },
+            //        new string[] {}
+            //    }
+            //});
         });
     }
 

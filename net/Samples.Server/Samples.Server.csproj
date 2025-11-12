@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net9.0</TargetFramework>
+    <TargetFramework>net10.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>disable</Nullable>
     <RootNamespace>Com.Scm.Samples</RootNamespace>
@@ -10,7 +10,7 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Core" Version="2.3.0" />
     <PackageReference Include="MiniExcel" Version="1.41.4" />
-    <PackageReference Include="SqlSugarCore" Version="5.1.4.205" />
+    <PackageReference Include="SqlSugarCore" Version="5.1.4.207" />
   </ItemGroup>
 
   <ItemGroup>

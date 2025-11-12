@@ -158,11 +158,11 @@ export default {
 			const formName = `stepForm_${this.stepActive}`
 			this.$refs[formName].validate((valid) => {
 				if (valid) {
-					this.signon();
+					this.signUp();
 				}
 			});
 		},
-		async signon() {
+		async signUp() {
 			var form = {
 				type: this.formData.type,
 				mode: this.formData.mode,
@@ -174,7 +174,7 @@ export default {
 				phone: this.formData.phone,
 				open: []
 			};
-			var res = await this.$API.operator.signon.post(form);
+			var res = await this.$API.operator.signUp.post(form);
 			if (res.code != 200) {
 				this.$message.warning(res.message);
 				return false;

@@ -21,7 +21,7 @@
             <div class="el-form-item-msg">请输账户对应的登录密码</div>
         </el-form-item>
         <div style="text-align: center;">
-            <el-button type="primary" @click="signon()">提交</el-button>
+            <el-button type="primary" @click="signUp()">提交</el-button>
         </div>
     </el-form>
     <div class="loading" v-else>
@@ -78,7 +78,7 @@ export default {
         save() {
             this.$refs.userForm.validate((valid) => {
                 if (valid) {
-                    this.signon();
+                    this.signUp();
                 }
             });
         },
@@ -159,7 +159,7 @@ export default {
                 }
             });
         },
-        async signon() {
+        async signUp() {
             var data = {
                 type: this.formData.type,
                 mode: this.formData.mode,
@@ -168,7 +168,7 @@ export default {
                 opt: this.formData.opt,
                 key: this.key
             };
-            var res = await this.$API.operator.signon.post(data);
+            var res = await this.$API.operator.signUp.post(data);
             if (res.code != 200) {
                 this.$message.warning(res.message);
                 return false;

@@ -94,7 +94,7 @@ export default {
         async checkAuth(key) {
             this.key = key;
             var data = { type: this.formData.type, mode: this.formData.mode, key: key, code: key };
-            var res = await this.$API.operator.token.post(data);
+            var res = await this.$API.operator.signIn.post(data);
             if (res.code != 200) {
                 this.$message.warning(res.message);
                 return false;

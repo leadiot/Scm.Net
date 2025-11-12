@@ -96,7 +96,7 @@ export default {
 				code: this.form.code,
 				key: this.form.codeKey,
 			};
-			var userRes = await this.$API.operator.token.post(data);
+			var userRes = await this.$API.operator.signIn.post(data);
 			if (userRes.code != 200) {
 				this.$message.warning(userRes.message);
 				return false;

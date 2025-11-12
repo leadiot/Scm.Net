@@ -168,7 +168,7 @@ export default {
 				return false;
 			}
 			this.islogin = true;
-			var user = await this.$API.operator.token.post(this.ruleForm);
+			var user = await this.$API.operator.signIn.post(this.ruleForm);
 			if (user.code == 200) {
 				this.$TOOL.data.set("TOKEN", user.data.accessToken);
 				this.$TOOL.data.set("USER_INFO", user.data.userInfo);

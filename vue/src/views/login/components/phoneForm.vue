@@ -111,7 +111,7 @@ export default {
 			this.islogin = false;
 		},
 		async checkAuth() {
-			var userRes = await this.$API.operator.token.post(this.form);
+			var userRes = await this.$API.operator.signIn.post(this.form);
 			if (userRes.code != 200) {
 				this.$message.warning(userRes.message);
 				return false;

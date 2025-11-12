@@ -21,4 +21,8 @@
     <ProjectReference Include="..\Scm.Cache\Scm.Cache.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Properties\" />
+  </ItemGroup>
+
 </Project>

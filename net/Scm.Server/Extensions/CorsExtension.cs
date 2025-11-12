@@ -1,30 +1,57 @@
 ﻿using Com.Scm.Config;
-using Com.Scm.Utils;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Com.Scm.Server
 {
     public static class CorsExtension
     {
-        public static void CorsSetup(this IServiceCollection services)
+        public static void CorsSetup(this IServiceCollection services, CorsConfig corsConfig)
         {
-            var config = AppUtils.GetConfig<CorConfig>(CorConfig.NAME);
-            if (config == null || config.Origion == null)
+            if (corsConfig == null)
             {
                 return;
             }
 
             services.AddCors(options =>
             {
-                options.AddPolicy(name: "ScmCors",
-                    policy =>
+                options.AddPolicy(name: ScmEnv.SCM_CORS, policy =>
+                {
+                    if (corsConfig.AllowAnyOrigin)
                     {
-                        policy.WithOrigins(config.Origion)
-                            .AllowAnyHeader()
-                            .AllowAnyMethod()
-                            .AllowCredentials()
-                            .WithExposedHeaders("X-Refresh-Token");
-                    });
+                        policy.AllowAnyOrigin();
+                    }
+                    else
+                    {
+                        policy.WithOrigins(corsConfig.AllowedOrigins);
+
+                        if (corsConfig.AllowCredentials)
+                        {
+                            policy.AllowCredentials();
+                        }
+                    }
+
+                    if (corsConfig.AllowAnyMethod)
+                    {
+                        policy.AllowAnyMethod();
+                    }
+                    else
+                    {
+                        policy.WithMethods(corsConfig.AllowedMethods);
+                    }
+
+                    if (corsConfig.AllowAnyHeader)
+                    {
+                        policy.AllowAnyHeader();
+                    }
+                    else
+                    {
+                        policy.WithHeaders(corsConfig.AllowedHeaders);
+                    }
+
+                    policy.WithExposedHeaders(corsConfig.ExposedHeaders);
+
+                    policy.SetPreflightMaxAge(TimeSpan.FromHours(corsConfig.PreflightMaxAge));
+                });
             });
         }
     }

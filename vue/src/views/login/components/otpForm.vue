@@ -2,9 +2,9 @@
     <el-form ref="loginForm" :model="form" :rules="rules" label-width="0" size="large">
         <el-form-item prop="email">
             <el-radio-group v-model="form.type" @change="changeType" style="width: 100%;" size="small">
-                <el-radio-button label="手机号码" :value="21" />
-                <el-radio-button label="电子邮件" :value="22" />
-                <el-radio-button label="随机口令" :value="23" />
+                <el-radio-button :value="21">手机号码</el-radio-button>
+                <el-radio-button :value="22">电子邮件</el-radio-button>
+                <el-radio-button :value="23">随机口令</el-radio-button>
             </el-radio-group>
         </el-form-item>
         <el-form-item prop="phone" v-if="form.type == 21">

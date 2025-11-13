@@ -27,7 +27,7 @@
 		<div class="scTable-page">
 			<div class="scTable-pagination">
 				<el-pagination v-if="!hidePagination" :currentPage="currentPage" :page-size="pageSize"
-					:page-sizes="scPageSize" :layout="paginationLayout" :total="total" background :small="true"
+					:page-sizes="scPageSize" :layout="paginationLayout" :total="total" background size="small"
 					@size-change="paginationSizeChange" @current-change="paginationChange" />
 			</div>
 			<div class="scTable-do" v-if="!hideDo">
@@ -66,9 +66,9 @@
 					<el-form label-width="80px" label-position="left">
 						<el-form-item label="表格尺寸">
 							<el-radio-group v-model="config.size" size="small" @change="configSizeChange">
-								<el-radio-button label="large">大</el-radio-button>
-								<el-radio-button label="default">正常</el-radio-button>
-								<el-radio-button label="small">小</el-radio-button>
+								<el-radio-button value="large">大</el-radio-button>
+								<el-radio-button value="default">正常</el-radio-button>
+								<el-radio-button value="small">小</el-radio-button>
 							</el-radio-group>
 						</el-form-item>
 						<el-form-item label="样式">

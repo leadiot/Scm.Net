@@ -29,7 +29,7 @@
 				<el-col :span="12">
 					<el-form-item v-if="formData.types == 2" label="请求类型" prop="api_method">
 						<el-radio-group v-model="formData.api_method">
-							<el-radio v-for="(item, index) in requestTypeOptions" :key="index" :label="item.value"
+							<el-radio v-for="(item, index) in requestTypeOptions" :key="index" :value="item.value"
 								:disabled="item.disabled">
 								{{ item.label }}
 							</el-radio>

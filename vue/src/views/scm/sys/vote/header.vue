@@ -7,7 +7,7 @@
 			</el-form-item>
 			<el-form-item label="投票类型" prop="type">
 				<el-radio-group v-model="formData.type">
-					<el-radio v-for="(item, index) in type_list" :key="index" :label="item.value"
+					<el-radio v-for="(item, index) in type_list" :key="index" :value="item.value"
 						:disabled="item.disabled">{{ item.label }}</el-radio>
 				</el-radio-group>
 			</el-form-item>

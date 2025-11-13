@@ -8,12 +8,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="Tasks\**" />
-    <EmbeddedResource Remove="Tasks\**" />
-    <None Remove="Tasks\**" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\Scm.Dto\Scm.Dto.csproj" />
     <ProjectReference Include="..\Scm.Server.Dao\Scm.Server.Dao.csproj" />
   </ItemGroup>

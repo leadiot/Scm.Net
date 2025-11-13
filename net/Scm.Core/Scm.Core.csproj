@@ -57,7 +57,6 @@
     <Folder Include="Login\Sso\OAuth\" />
     <Folder Include="Login\Sso\Oidc\" />
     <Folder Include="Login\Sso\Saml\" />
-    <Folder Include="Properties\" />
   </ItemGroup>
 
 </Project>

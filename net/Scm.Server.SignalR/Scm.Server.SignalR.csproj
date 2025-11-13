@@ -8,12 +8,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="SignalR\**" />
-    <EmbeddedResource Remove="SignalR\**" />
-    <None Remove="SignalR\**" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\Scm.Server\Scm.Server.csproj" />
   </ItemGroup>
 

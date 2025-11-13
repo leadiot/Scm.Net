@@ -12,9 +12,6 @@
     <Compile Remove="logs\**" />
     <Compile Remove="Publish\**" />
     <Compile Remove="quartz\**" />
-    <Content Remove="logs\**" />
-    <Content Remove="Publish\**" />
-    <Content Remove="quartz\**" />
     <EmbeddedResource Remove="logs\**" />
     <EmbeddedResource Remove="Publish\**" />
     <EmbeddedResource Remove="quartz\**" />

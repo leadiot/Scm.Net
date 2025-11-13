@@ -24,5 +24,9 @@
         /// 默认密码
         /// </summary>
         public const string DEFAULT_PASS = "123456";
+        /// <summary>
+        /// 跨域配置
+        /// </summary>
+        public const string SCM_CORS = "ScmCors";
     }
 }

@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net9.0</TargetFramework>
+    <TargetFramework>net10.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>disable</Nullable>
     <RootNamespace>Com.Scm</RootNamespace>
@@ -30,20 +30,20 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Reference Include="Scm.Aiml">
-      <HintPath>..\Libs\net9.0\Scm.Aiml.dll</HintPath>
-    </Reference>
     <Reference Include="Scm.Common.Http">
       <HintPath>..\Libs\netstandard2.0\Scm.Common.Http.dll</HintPath>
     </Reference>
     <Reference Include="Scm.Common.Text">
       <HintPath>..\Libs\netstandard2.0\Scm.Common.Text.dll</HintPath>
     </Reference>
+    <Reference Include="Scm.Aiml">
+      <HintPath>..\Libs\net10.0\Scm.Aiml.dll</HintPath>
+    </Reference>
     <Reference Include="Scm.Uid">
-      <HintPath>..\Libs\net9.0\Scm.Uid.dll</HintPath>
+      <HintPath>..\Libs\net10.0\Scm.Uid.dll</HintPath>
     </Reference>
     <Reference Include="Scm.Workflow">
-      <HintPath>..\Libs\net9.0\Scm.Workflow.dll</HintPath>
+      <HintPath>..\Libs\net10.0\Scm.Workflow.dll</HintPath>
     </Reference>
   </ItemGroup>
 
@@ -57,6 +57,7 @@
     <Folder Include="Login\Sso\OAuth\" />
     <Folder Include="Login\Sso\Oidc\" />
     <Folder Include="Login\Sso\Saml\" />
+    <Folder Include="Properties\" />
   </ItemGroup>
 
 </Project>

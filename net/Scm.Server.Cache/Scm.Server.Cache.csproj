@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net9.0</TargetFramework>
+    <TargetFramework>net10.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>disable</Nullable>
     <RootNamespace>Com.Scm</RootNamespace>
@@ -11,6 +11,10 @@
     <ProjectReference Include="..\Scm.Cache.Dictionary\Scm.Cache.Dictionary.csproj" />
     <ProjectReference Include="..\Scm.Cache\Scm.Cache.csproj" />
     <ProjectReference Include="..\Scm.Server\Scm.Server.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Properties\" />
   </ItemGroup>
 
 </Project>

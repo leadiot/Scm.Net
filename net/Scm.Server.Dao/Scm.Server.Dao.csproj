@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net9.0</TargetFramework>
+    <TargetFramework>net10.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>disable</Nullable>
     <RootNamespace>Com.Scm</RootNamespace>
@@ -18,7 +18,7 @@
       <HintPath>..\Libs\netstandard2.0\Scm.Common.Text.dll</HintPath>
     </Reference>
     <Reference Include="Scm.Uid">
-      <HintPath>..\Libs\net9.0\Scm.Uid.dll</HintPath>
+      <HintPath>..\Libs\net10.0\Scm.Uid.dll</HintPath>
     </Reference>
   </ItemGroup>
 

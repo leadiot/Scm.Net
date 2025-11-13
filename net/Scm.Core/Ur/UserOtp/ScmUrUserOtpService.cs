@@ -86,10 +86,17 @@ namespace Com.Scm.Ur.UserOtp
 
         private UserOtpDvo ConvertToDvo(UserDao userDao)
         {
+            var totpConfig = _otpConfig.Totp;
+            if (totpConfig == null)
+            {
+                totpConfig = new Login.Otp.Totp.TotpConfig();
+                totpConfig.LoadDef();
+            }
+
             var dvo = new UserOtpDvo();
-            dvo.issuer = _otpConfig.Issuer;
+            dvo.issuer = totpConfig.Issuer;
             dvo.digits = _otpConfig.Digits;
-            dvo.algorithm = _otpConfig.Algorithm;
+            dvo.algorithm = Enum.GetName(totpConfig.Algorithm);
             dvo.codec = userDao.codec;
             dvo.namec = userDao.namec;
             dvo.avatar = userDao.avatar;
@@ -102,13 +109,13 @@ namespace Com.Scm.Ur.UserOtp
                 dvo.secret = TextUtils.Base32Encode(bytes);
             }
 
-            var template = _otpConfig.Template ?? "";
-            dvo.uri = template.Replace("{issuer}", Uri.UnescapeDataString(_otpConfig.Issuer))
+            var template = totpConfig.Template ?? "";
+            dvo.uri = template.Replace("{issuer}", Uri.UnescapeDataString(totpConfig.Issuer))
                 .Replace("{account}", Uri.UnescapeDataString(userDao.codec))
                 .Replace("{secret}", Uri.UnescapeDataString(dvo.secret))
-                .Replace("{algorithm}", _otpConfig.Algorithm)
+                .Replace("{algorithm}", Enum.GetName(totpConfig.Algorithm))
                 .Replace("{digits}", _otpConfig.Digits.ToString())
-                .Replace("{period}", _otpConfig.Period.ToString());
+                .Replace("{period}", totpConfig.Period.ToString());
 
             return dvo;
         }

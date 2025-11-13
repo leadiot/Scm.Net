@@ -130,7 +130,6 @@ export default {
 				mode: 10,//口令登录
 				unit: this.$CONFIG.DEF_LOGIN_UNIT,
 				user: '',
-				pass: '',
 				password1: '',
 				password2: '',
 				agree: false,

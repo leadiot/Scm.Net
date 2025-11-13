@@ -103,6 +103,13 @@ namespace Com.Scm.Api
             otpConfig.Prepare(envConfig);
             services.AddSingleton(otpConfig);
 
+            // Cors
+            var corsConfig = AppUtils.GetConfig<CorsConfig>(CorsConfig.NAME);
+            if (corsConfig != null)
+            {
+                corsConfig.Prepare(envConfig);
+            }
+
             services.AddScoped<IUserService, ScmUserService>();
             services.AddScoped<ILogService, ScmLogService>();
             services.AddScoped<IDicService, ScmDicService>();
@@ -133,7 +140,7 @@ namespace Com.Scm.Api
             services.SetupJwt();
 
             // 跨域访问
-            services.CorsSetup();
+            services.CorsSetup(corsConfig);
 
             // SignalR
             services.AddSignalR();
@@ -160,7 +167,38 @@ namespace Com.Scm.Api
                 });
             }
 
-            app.UseSetup();
+            app.UseRouting();
+
+            // 跨域设置
+            if (corsConfig != null)
+            {
+                if (corsConfig.GlobalCors)
+                {
+                    app.UseCors(ScmEnv.SCM_CORS);
+                }
+                else
+                {
+                    app.UseCors();
+                }
+            }
+
+            app.Use(next => async context =>
+            {
+                context.Request.EnableBuffering();
+                await next(context);
+            });
+
+            // 认证
+            app.UseAuthentication();
+            // 授权
+            app.UseAuthorization();
+
+            // 中间件异常处理
+            app.UseMiddleware<ExceptionMiddleware>();
+            // Jwt中间件处理
+            app.UseMiddleware<JwtMiddleware>();
+
+            app.UseQuartz();
 
             app.MapControllers().RequireAuthorization();
             app.MapHub<ScmHub>("/scmhub");

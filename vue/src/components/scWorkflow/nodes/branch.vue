@@ -50,8 +50,8 @@
 					<el-form label-position="top">
 						<el-form-item label="条件关系">
 							<el-radio-group v-model="form.conditionMode">
-								<el-radio :label="1">且</el-radio>
-								<el-radio :label="2">或</el-radio>
+								<el-radio :value="1">且</el-radio>
+								<el-radio :value="2">或</el-radio>
 							</el-radio-group>
 						</el-form-item>
 						<el-divider></el-divider>

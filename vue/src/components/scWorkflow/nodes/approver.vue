@@ -54,15 +54,15 @@
 
 						<el-form-item v-if="form.setType==4" label="发起人自选">
 							<el-radio-group v-model="form.selectMode">
-								<el-radio :label="1">自选一个人</el-radio>
-								<el-radio :label="2">自选多个人</el-radio>
+								<el-radio :value="1">自选一个人</el-radio>
+								<el-radio :value="2">自选多个人</el-radio>
 							</el-radio-group>
 						</el-form-item>
 
 						<el-form-item v-if="form.setType==7" label="连续主管审批终点">
 							<el-radio-group v-model="form.directorMode">
-								<el-radio :label="0">直到最上层主管</el-radio>
-								<el-radio :label="1">自定义审批终点</el-radio>
+								<el-radio :value="0">直到最上层主管</el-radio>
+								<el-radio :value="1">自定义审批终点</el-radio>
 							</el-radio-group>
 							<p v-if="form.directorMode==1">直到发起人的第  <el-input-number v-model="form.directorLevel" :min="1"/> 级主管</p>
 						</el-form-item>
@@ -77,17 +77,17 @@
 							</el-form-item>
 							<el-form-item label="审批期限超时后执行">
 								<el-radio-group v-model="form.termMode">
-									<el-radio :label="0">自动通过</el-radio>
-									<el-radio :label="1">自动拒绝</el-radio>
+									<el-radio :value="0">自动通过</el-radio>
+									<el-radio :value="1">自动拒绝</el-radio>
 								</el-radio-group>
 							</el-form-item>
 						</template>
 						<el-divider></el-divider>
 						<el-form-item label="多人审批时审批方式">
 							<el-radio-group v-model="form.examineMode">
-								<p style="width: 100%;"><el-radio :label="1">按顺序依次审批</el-radio></p>
-								<p style="width: 100%;"><el-radio :label="2">会签 (可同时审批，每个人必须审批通过)</el-radio></p>
-								<p style="width: 100%;"><el-radio :label="3">或签 (有一人审批通过即可)</el-radio></p>
+								<p style="width: 100%;"><el-radio :value="1">按顺序依次审批</el-radio></p>
+								<p style="width: 100%;"><el-radio :value="2">会签 (可同时审批，每个人必须审批通过)</el-radio></p>
+								<p style="width: 100%;"><el-radio :value="3">或签 (有一人审批通过即可)</el-radio></p>
 							</el-radio-group>
 						</el-form-item>
 					</el-form>

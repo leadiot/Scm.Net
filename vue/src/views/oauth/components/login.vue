@@ -2,9 +2,9 @@
     <el-form ref="userForm" :model="formData" :rules="rules" :label-width="120" v-if="needOptions">
         <el-form-item label="登录选项" prop="opt">
             <el-radio-group v-model="formData.opt">
-                <el-radio-button label="1">注册新用户</el-radio-button>
-                <el-radio-button label="2">关联已有用户</el-radio-button>
-                <el-radio-button label="3" v-if="error_code == 46">选择登录用户</el-radio-button>
+                <el-radio-button value="1">注册新用户</el-radio-button>
+                <el-radio-button value="2">关联已有用户</el-radio-button>
+                <el-radio-button value="3" v-if="error_code == 46">选择登录用户</el-radio-button>
             </el-radio-group>
             <div class="el-form-item-msg">请选择登录选项</div>
         </el-form-item>

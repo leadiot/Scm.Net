@@ -15,10 +15,10 @@
 					</el-form-item>
 					<el-form-item label="菜单类型" prop="types">
 						<el-radio-group v-model="form.types">
-							<el-radio-button :label="1">菜单</el-radio-button>
-							<el-radio-button :label="2">Iframe</el-radio-button>
-							<el-radio-button :label="3">外链</el-radio-button>
-							<el-radio-button :label="4">按钮</el-radio-button>
+							<el-radio-button :value="1">菜单</el-radio-button>
+							<el-radio-button :value="2">Iframe</el-radio-button>
+							<el-radio-button :value="3">外链</el-radio-button>
+							<el-radio-button :value="4">按钮</el-radio-button>
 						</el-radio-group>
 					</el-form-item>
 					<el-form-item label="显示名称" prop="namec">
@@ -58,8 +58,8 @@
 					</el-form-item>
 					<el-form-item label="是否显示">
 						<el-radio-group v-model="form.visible">
-							<el-radio :label="true">显示</el-radio>
-							<el-radio :label="false">隐藏</el-radio>
+							<el-radio :value="true">显示</el-radio>
+							<el-radio :value="false">隐藏</el-radio>
 						</el-radio-group>
 						<div class="el-form-item-msg">
 							菜单不显示在导航中，但用户依然可以访问
@@ -67,8 +67,8 @@
 					</el-form-item>
 					<el-form-item label="是否全屏">
 						<el-radio-group v-model="form.fullpage">
-							<el-radio :label="true">是</el-radio>
-							<el-radio :label="false">否</el-radio>
+							<el-radio :value="true">是</el-radio>
+							<el-radio :value="false">否</el-radio>
 						</el-radio-group>
 						<div class="el-form-item-msg">
 							一般配合功能列表中详细使用，以及不在资源中显示
@@ -76,8 +76,8 @@
 					</el-form-item>
 					<el-form-item label="是否缓存">
 						<el-radio-group v-model="form.keepAlive">
-							<el-radio :label="true">是</el-radio>
-							<el-radio :label="false">否</el-radio>
+							<el-radio :value="true">是</el-radio>
+							<el-radio :value="false">否</el-radio>
 						</el-radio-group>
 						<div class="el-form-item-msg">
 							启用缓存后，在进行页签切换时，页面不会刷新

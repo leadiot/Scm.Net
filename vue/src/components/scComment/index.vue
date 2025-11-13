@@ -17,9 +17,9 @@
                         </el-col>
                         <el-col :span="12" style="text-align: right;">
                             <el-radio-group v-model="sort">
-                                <el-radio-button label="0">默认</el-radio-button>
-                                <el-radio-button label="1">最新</el-radio-button>
-                                <el-radio-button label="2">最热</el-radio-button>
+                                <el-radio-button value="0">默认</el-radio-button>
+                                <el-radio-button value="1">最新</el-radio-button>
+                                <el-radio-button value="2">最热</el-radio-button>
                             </el-radio-group>
                         </el-col>
                     </el-row>

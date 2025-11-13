@@ -29,8 +29,9 @@
 								</el-scrollbar>
 							</div>
 							<footer>
-								<el-pagination background layout="prev,next" small :total="total" :page-size="pageSize"
-									v-model:currentPage="currentPage" @current-change="paginationChange"></el-pagination>
+								<el-pagination background layout="prev,next" size="small" :total="total"
+									:page-size="pageSize" v-model:currentPage="currentPage"
+									@current-change="paginationChange"></el-pagination>
 							</footer>
 						</div>
 					</div>

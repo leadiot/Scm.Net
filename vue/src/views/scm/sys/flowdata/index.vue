@@ -36,8 +36,8 @@
 				</el-button-group>
 				<el-divider direction="vertical"></el-divider>
 				<el-radio-group v-model="param.filter">
-					<el-radio-button label="我发起的" :value="1" />
-					<el-radio-button label="我收到的" :value="2" />
+					<el-radio-button :value="1">我发起的</el-radio-button>
+					<el-radio-button :value="2">我收到的</el-radio-button>
 				</el-radio-group>
 			</div>
 			<div class="right-panel">

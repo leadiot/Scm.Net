@@ -33,10 +33,10 @@
 					<el-form>
 						<el-form-item label="类型">
 							<el-radio-group v-model="value.second.type">
-								<el-radio-button label="0">任意值</el-radio-button>
-								<el-radio-button label="1">范围</el-radio-button>
-								<el-radio-button label="2">间隔</el-radio-button>
-								<el-radio-button label="3">指定</el-radio-button>
+								<el-radio-button value="0">任意值</el-radio-button>
+								<el-radio-button value="1">范围</el-radio-button>
+								<el-radio-button value="2">间隔</el-radio-button>
+								<el-radio-button value="3">指定</el-radio-button>
 							</el-radio-group>
 						</el-form-item>
 						<el-form-item label="范围" v-if="value.second.type == 1">
@@ -72,10 +72,10 @@
 					<el-form>
 						<el-form-item label="类型">
 							<el-radio-group v-model="value.minute.type">
-								<el-radio-button label="0">任意值</el-radio-button>
-								<el-radio-button label="1">范围</el-radio-button>
-								<el-radio-button label="2">间隔</el-radio-button>
-								<el-radio-button label="3">指定</el-radio-button>
+								<el-radio-button value="0">任意值</el-radio-button>
+								<el-radio-button value="1">范围</el-radio-button>
+								<el-radio-button value="2">间隔</el-radio-button>
+								<el-radio-button value="3">指定</el-radio-button>
 							</el-radio-group>
 						</el-form-item>
 						<el-form-item label="范围" v-if="value.minute.type == 1">
@@ -111,10 +111,10 @@
 					<el-form>
 						<el-form-item label="类型">
 							<el-radio-group v-model="value.hour.type">
-								<el-radio-button label="0">任意值</el-radio-button>
-								<el-radio-button label="1">范围</el-radio-button>
-								<el-radio-button label="2">间隔</el-radio-button>
-								<el-radio-button label="3">指定</el-radio-button>
+								<el-radio-button value="0">任意值</el-radio-button>
+								<el-radio-button value="1">范围</el-radio-button>
+								<el-radio-button value="2">间隔</el-radio-button>
+								<el-radio-button value="3">指定</el-radio-button>
 							</el-radio-group>
 						</el-form-item>
 						<el-form-item label="范围" v-if="value.hour.type == 1">
@@ -150,12 +150,12 @@
 					<el-form>
 						<el-form-item label="类型">
 							<el-radio-group v-model="value.day.type">
-								<el-radio-button label="0">任意值</el-radio-button>
-								<el-radio-button label="1">范围</el-radio-button>
-								<el-radio-button label="2">间隔</el-radio-button>
-								<el-radio-button label="3">指定</el-radio-button>
-								<el-radio-button label="4">本月最后一天</el-radio-button>
-								<el-radio-button label="5">不指定</el-radio-button>
+								<el-radio-button value="0">任意值</el-radio-button>
+								<el-radio-button value="1">范围</el-radio-button>
+								<el-radio-button value="2">间隔</el-radio-button>
+								<el-radio-button value="3">指定</el-radio-button>
+								<el-radio-button value="4">本月最后一天</el-radio-button>
+								<el-radio-button value="5">不指定</el-radio-button>
 							</el-radio-group>
 						</el-form-item>
 						<el-form-item label="范围" v-if="value.day.type == 1">
@@ -191,10 +191,10 @@
 					<el-form>
 						<el-form-item label="类型">
 							<el-radio-group v-model="value.month.type">
-								<el-radio-button label="0">任意值</el-radio-button>
-								<el-radio-button label="1">范围</el-radio-button>
-								<el-radio-button label="2">间隔</el-radio-button>
-								<el-radio-button label="3">指定</el-radio-button>
+								<el-radio-button value="0">任意值</el-radio-button>
+								<el-radio-button value="1">范围</el-radio-button>
+								<el-radio-button value="2">间隔</el-radio-button>
+								<el-radio-button value="3">指定</el-radio-button>
 							</el-radio-group>
 						</el-form-item>
 						<el-form-item label="范围" v-if="value.month.type == 1">
@@ -231,12 +231,12 @@
 						<el-form>
 							<el-form-item label="类型">
 								<el-radio-group v-model="value.week.type">
-									<el-radio-button label="0">任意值</el-radio-button>
-									<el-radio-button label="1">范围</el-radio-button>
-									<el-radio-button label="2">间隔</el-radio-button>
-									<el-radio-button label="3">指定</el-radio-button>
-									<el-radio-button label="4">本月最后一周</el-radio-button>
-									<el-radio-button label="5">不指定</el-radio-button>
+									<el-radio-button value="0">任意值</el-radio-button>
+									<el-radio-button value="1">范围</el-radio-button>
+									<el-radio-button value="2">间隔</el-radio-button>
+									<el-radio-button value="3">指定</el-radio-button>
+									<el-radio-button value="4">本月最后一周</el-radio-button>
+									<el-radio-button value="5">不指定</el-radio-button>
 								</el-radio-group>
 							</el-form-item>
 							<el-form-item label="范围" v-if="value.week.type == 1">
@@ -286,11 +286,11 @@
 					<el-form>
 						<el-form-item label="类型">
 							<el-radio-group v-model="value.year.type">
-								<el-radio-button label="-1">忽略</el-radio-button>
-								<el-radio-button label="0">任意值</el-radio-button>
-								<el-radio-button label="1">范围</el-radio-button>
-								<el-radio-button label="2">间隔</el-radio-button>
-								<el-radio-button label="3">指定</el-radio-button>
+								<el-radio-button value="-1">忽略</el-radio-button>
+								<el-radio-button value="0">任意值</el-radio-button>
+								<el-radio-button value="1">范围</el-radio-button>
+								<el-radio-button value="2">间隔</el-radio-button>
+								<el-radio-button value="3">指定</el-radio-button>
 							</el-radio-group>
 						</el-form-item>
 						<el-form-item label="范围" v-if="value.year.type == 1">

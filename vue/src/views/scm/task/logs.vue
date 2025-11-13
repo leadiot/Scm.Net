@@ -6,7 +6,7 @@
 				<el-table-column label="结束时间" prop="endDate" width="180"></el-table-column>
 				<el-table-column label="执行结果" prop="msg" min-width="300"></el-table-column>
 			</el-table>
-			<el-pagination background layout="prev, pager, next, jumper" style="margin-top:10px;" :small="true"
+			<el-pagination background layout="prev, pager, next, jumper" style="margin-top:10px;" size="small"
 				:total="total" @current-change="handleCurrentChange" />
 		</el-main>
 	</el-drawer>

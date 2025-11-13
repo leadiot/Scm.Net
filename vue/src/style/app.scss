@@ -98,7 +98,7 @@ a,button,input,textarea{-webkit-tap-highlight-color:rgba(0,0,0,0);box-sizing: bo
 .scmui-main {overflow: auto;background-color: #f6f8f9;flex: 1;}
 
 /*页面最大化*/
-.scmui.main-maximize {
+.scmui .main-maximize {
 	.main-maximize-exit {display: block;}
 	.scmui-side-split, .scmui-side, .scmui-header, .scmui-topbar, .scmui-tags {display: none;}
 }

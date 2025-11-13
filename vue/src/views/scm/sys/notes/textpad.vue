@@ -29,7 +29,7 @@
                                     @keydown.enter="handleEnter" />
                             </div>
                             <div class="notepad-content">
-                                <el-input ref="content" v-model="formData.content" type="textarea" rows="30"
+                                <el-input ref="content" v-model="formData.content" type="textarea" :rows="30"
                                     class="content" :placeholder="contentPlaceholder"></el-input>
                             </div>
                         </el-card>

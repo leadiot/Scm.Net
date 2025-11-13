@@ -12,7 +12,7 @@
                     clearable></el-input>
             </el-form-item>
             <el-form-item label="详细说明" prop="remark">
-                <el-input v-model="formData.remark" type="textarea" placeholder="请输入详细说明" :maxlength="1024" rows="5"
+                <el-input v-model="formData.remark" type="textarea" placeholder="请输入详细说明" :maxlength="1024" :rows="5"
                     show-word-limit clearable></el-input>
             </el-form-item>
             <el-form-item>

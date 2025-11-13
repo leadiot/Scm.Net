@@ -14,7 +14,7 @@
 			</el-form-item>
 			<el-form-item label="应用简介" prop="content">
 				<el-input v-model="formData.content" placeholder="请输入应用说明" :maxlength="1024" show-word-limit clearable
-					type="textarea" rows="6"></el-input>
+					type="textarea" :rows="6"></el-input>
 			</el-form-item>
 
 		</el-form>

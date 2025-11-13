@@ -34,7 +34,7 @@
 		</el-row>
 		<el-row>
 			<el-col class="reply">
-				<el-input v-model="formData.content" placeholder="请输入回复内容" type="textarea" rows="5" :maxlength="1024"
+				<el-input v-model="formData.content" placeholder="请输入回复内容" type="textarea" :rows="5" :maxlength="1024"
 					show-word-limit clearable></el-input>
 			</el-col>
 		</el-row>

@@ -44,7 +44,7 @@
                     </el-upload>
                 </div>
                 <div class="textarea">
-                    <el-input v-model="content" type="textarea" resize="none" rows="4" @focus="inputFocus"
+                    <el-input v-model="content" type="textarea" resize="none" :rows="4" @focus="inputFocus"
                         @blur="inputBlur" @keydown="listener" />
                     <el-tooltip effect="dark" placement="top-end" content="按Enter发送消息，Shift+Enter换行">
                         <el-button size="small" class="send" @click="sendMsg">发送</el-button>

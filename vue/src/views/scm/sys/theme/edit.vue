@@ -7,7 +7,7 @@
 			</el-form-item>
 			<el-form-item label="主题内容" prop="theme">
 				<el-input v-model="formData.theme" placeholder="请输入主题内容" :maxlength="1024" show-word-limit clearable
-					type="textarea" rows="6"></el-input>
+					type="textarea" :rows="6"></el-input>
 			</el-form-item>
 		</el-form>
 

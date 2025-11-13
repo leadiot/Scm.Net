@@ -7,7 +7,7 @@
                         <input v-model="formData.title" :placeholder="titlePlaceholder" />
                     </div>
                     <div class="notepad-content">
-                        <el-input v-model="formData.content" type="textarea" rows="30" class="content"
+                        <el-input v-model="formData.content" type="textarea" :rows="30" class="content"
                             :placeholder="contentPlaceholder"></el-input>
                     </div>
                 </el-card>

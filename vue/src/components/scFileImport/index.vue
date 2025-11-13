@@ -11,7 +11,7 @@
 				<div class="sc-download">
 					<div>下载导入模版，根据导入模版填写并上传文件</div>
 					<div>
-						<el-link :href="templateUrl" target="_blank" type="primary" :underline="false">下载导入模板</el-link>
+						<el-link :href="templateUrl" target="_blank" type="primary" underline="never">下载导入模板</el-link>
 					</div>
 				</div>
 			</div>
@@ -39,7 +39,7 @@
 					</el-upload>
 				</div>
 				<div class="item" v-if="errorCode > 0 && errorUrl">
-					<el-link :href="errorUrl" target="_blank" type="primary" :underline="false">下载错误提示</el-link>
+					<el-link :href="errorUrl" target="_blank" type="primary" underline="never">下载错误提示</el-link>
 				</div>
 				<div class="item" v-if="$slots.form">
 					<el-form inline label-width="100px" label-position="left">

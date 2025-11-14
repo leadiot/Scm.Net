@@ -9,8 +9,8 @@
                     </el-col>
                     <el-col :span="20" style="text-align: right;">
                         <el-radio-group v-model="param.letter" v-show="param.binary == 16">
-                            <el-radio-button :value="lower">小写</el-radio-button>
-                            <el-radio-button :value="upper">大写</el-radio-button>
+                            <el-radio-button value="lower">小写</el-radio-button>
+                            <el-radio-button value="upper">大写</el-radio-button>
                         </el-radio-group>
                         <sc-select v-model="param.sep" :data="sepList" style="margin: 0px 10px;width: 100px;"
                             v-show="param.binary == 16"></sc-select>

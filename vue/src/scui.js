@@ -31,9 +31,6 @@ import scUploadMultiple from "./components/scUpload/multiple";
 import scWaterfall from "./components/scWaterfall";
 import scWatermark from "./components/scWatermark";
 
-import scStatusIndicator from "./components/scMini/scStatusIndicator";
-import scTrend from "./components/scTrend";
-
 import auth from "./directives/auth";
 import role from "./directives/role";
 import time from "./directives/time";
@@ -75,8 +72,6 @@ export default {
 		app.component("scWaterfall", scWaterfall);
 		app.component("scWatermark", scWatermark);
 		app.component("scQrCode", scQrCode);
-		app.component("scStatusIndicator", scStatusIndicator);
-		app.component("scTrend", scTrend);
 		app.component("scSelectFilter", scSelectFilter);
 		app.component("scFileImport", scFileImport);
 		app.component("scList", scList);

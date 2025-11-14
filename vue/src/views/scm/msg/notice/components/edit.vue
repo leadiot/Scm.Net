@@ -132,9 +132,9 @@ export default {
 			this.formData.operate = operate;
 			let res = null;
 			if (this.$SCM.is_valid_id(this.formData.id)) {
-				res = await this.$API.scmsysnotice.update.put(this.formData);
+				res = await this.$API.scmmsgnotice.update.put(this.formData);
 			} else {
-				res = await this.$API.scmsysnotice.add.post(this.formData);
+				res = await this.$API.scmmsgnotice.add.post(this.formData);
 			}
 			this.isSaveing = false;
 			if (res.code == 200) {

@@ -142,7 +142,7 @@ export default {
 	},
 	data() {
 		return {
-			apiObj: this.$API.scmsysnotice.page,
+			apiObj: this.$API.scmmsgnotice.page,
 			summary: {},//汇总信息
 			list: [],//消息列表
 			param: {
@@ -169,7 +169,7 @@ export default {
 	},
 	methods: {
 		async init() {
-			var res = await this.$API.scmsysnotice.page.get(this.param);
+			var res = await this.$API.scmmsgnotice.page.get(this.param);
 			if (!res || res.code != 200) {
 				return;
 			}
@@ -177,12 +177,12 @@ export default {
 			this.list = res.data.items;
 		},
 		async initTotal() {
-			var res = await this.$API.scmsysnotice.summary.get();
+			var res = await this.$API.scmmsgnotice.summary.get();
 			this.summary = res.data || {};
 		},
 		//查询详情
 		async goInfo(m) {
-			let http = this.isSender ? this.$API.scmsysnotice.edit : this.$API.scmsysnotice.view;
+			let http = this.isSender ? this.$API.scmmsgnotice.edit : this.$API.scmmsgnotice.view;
 			var res = await http.get(m.id);
 			if (!res || res.code != 200) {
 				return;
@@ -271,7 +271,7 @@ export default {
 		},
 		//设置/取消存档
 		async setArchive(it) {
-			let http = it.status == 0 ? this.$API.scmsysnotice.arced : this.$API.scmsysnotice.unarc;
+			let http = it.status == 0 ? this.$API.scmmsgnotice.arced : this.$API.scmmsgnotice.unarc;
 			let res = await http.put([it.id]);
 			if (res.code == 200) {
 				this.init();
@@ -282,7 +282,7 @@ export default {
 		},
 		//设置已读/取消
 		async setSignRead(it) {
-			let http = it.unread ? this.$API.scmsysnotice.readed : this.$API.scmsysnotice.unread;
+			let http = it.unread ? this.$API.scmmsgnotice.readed : this.$API.scmmsgnotice.unread;
 
 			let res = await http.put([it.id]);
 			if (res.code == 200) {
@@ -294,7 +294,7 @@ export default {
 		},
 		//删除
 		async tableDel(row) {
-			var res = await this.$API.scmsysnotice.status.put({
+			var res = await this.$API.scmmsgnotice.status.put({
 				ids: [row.id],
 				status: 3,
 			});
@@ -330,7 +330,7 @@ export default {
 			})
 				.then(async () => {
 					const loading = this.$loading();
-					var res = await this.$API.scmsysnotice.read.put(checkedArr);
+					var res = await this.$API.scmmsgnotice.read.put(checkedArr);
 					if (res.code == 200) {
 						loading.close();
 						this.init();
@@ -368,7 +368,7 @@ export default {
 			)
 				.then(async () => {
 					const loading = this.$loading();
-					var res = await this.$API.scmsysnotice.status.put({
+					var res = await this.$API.scmmsgnotice.status.put({
 						ids: checkedArr,
 						status: status,
 					});

@@ -2,10 +2,10 @@
     <el-container>
         <el-main>
             <el-card>
-                <h1>Input 输入框</h1>
-                <p>Input 组件用于输入文本。</p>
-                <sc-code lang="html" :code="code1" title="基础用法" desc="Input 组件默认使用示例。">
-                    <sc-trend ref="trend" v-model="data" prefix="prefix" suffix="suffix"></sc-trend>
+                <h1>IconSelect 图标选择器</h1>
+                <p>IconSelect 组件用于选择图标。</p>
+                <sc-code lang="html" :code="code1" title="基础用法" desc="IconSelect 组件默认使用示例。">
+                    <sc-icon-select ref="iconSelect"></sc-icon-select>
                 </sc-code>
             </el-card>
         </el-main>
@@ -13,17 +13,16 @@
 </template>
 <script>
 import scCode from '@/components/scCode';
-import scTrend from '@/components/scTrend';
+import scIconSelect from '@/components/scIconSelect';
 
 export default {
     name: 'scui_icon_select',
     components: {
         scCode,
-        scTrend,
+        scIconSelect,
     },
     data() {
         return {
-            data: 10,
             code1: `<sc-icon-select ref="iconSelect"></sc-icon-select>`,
         };
     },

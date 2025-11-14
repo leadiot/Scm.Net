@@ -1,7 +1,7 @@
 <template>
-    <el-autocomplete v-bind="$attrs" :loading="loading" :fetch-suggestions="querySearch">
-        <template #prepend>Http://</template>
-        <template #append>千克</template>
+    <el-autocomplete v-bind="$attrs" :loading="loading" :fetch-suggestions="querySearch" @select="handleSelect">
+        <template #prepend v-if="prepend">{{ prepend }}</template>
+        <template #append v-if="append">{{ append }}</template>
     </el-autocomplete>
 </template>
 
@@ -12,13 +12,16 @@ export default {
     props: {
         apiObj: { type: Object, default: () => { } },
         data: { type: Object, default: () => { } },
-        params: { type: Object, default: () => ({}) }
+        prepend: { type: String, default: '' },
+        append: { type: String, default: '' },
+        params: { type: Object, default: () => ({}) },
     },
     data() {
         return {
             loading: false,
             options: [],
-            props: config.props
+            props: config.props,
+            param: {}
         }
     },
     created() {
@@ -49,6 +52,10 @@ export default {
             if (!res || !res.data) {
                 return;
             }
+            cb(res.data);
+        },
+        handleSelect(item) {
+            console.log(item);
         }
     }
 }

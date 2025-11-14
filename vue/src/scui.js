@@ -32,7 +32,7 @@ import scWaterfall from "./components/scWaterfall";
 import scWaterMark from "./components/scWaterMark";
 
 import scStatusIndicator from "./components/scMini/scStatusIndicator";
-import scTrend from "./components/scMini/scTrend";
+import scTrend from "./components/scTrend";
 
 import auth from "./directives/auth";
 import role from "./directives/role";

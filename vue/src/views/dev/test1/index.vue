@@ -2,10 +2,30 @@
     <el-container>
         <el-main>
             <el-card>
-                <h1>Form 动态表单</h1>
-                <p>Form 组件用于动态构建表单。</p>
-                <sc-code lang="html" :code="code1" title="基础用法" desc="Form 组件默认使用示例。">
-                    <sc-form ref="form" v-model="form" :config="config"></sc-form>
+                <h1>FormTable 动态表格</h1>
+                <p>FormTable 组件用于动态构建表格。</p>
+                <sc-code lang="html" :code="code1" title="基础用法" desc="FormTable 组件默认使用示例。">
+                    <sc-dynamic-table ref="formTable" v-model="list" :addTemplate="addTemplate">
+                        <el-table-column label="姓名" prop="name">
+                            <template #default="scope">
+                                <el-input v-model="scope.row.name" placeholder="请输入姓名"></el-input>
+                            </template>
+                        </el-table-column>
+                        <el-table-column label="年龄" prop="age">
+                            <template #default="scope">
+                                <el-input-number v-model="scope.row.age" placeholder="请输入年龄"></el-input-number>
+                            </template>
+                        </el-table-column>
+                        <el-table-column label="分数" prop="score">
+                            <template #default="scope">
+                                <el-select v-model="scope.row.score" placeholder="请输入分数">
+                                    <el-option label="A" value="A"></el-option>
+                                    <el-option label="B" value="B"></el-option>
+                                    <el-option label="C" value="C"></el-option>
+                                </el-select>
+                            </template>
+                        </el-table-column>
+                    </sc-dynamic-table>
                 </sc-code>
             </el-card>
         </el-main>
@@ -13,61 +33,44 @@
 </template>
 <script>
 import scCode from '@/components/scCode';
-import scForm from "@/components/scForm";
+import scDynamicTable from "@/components/scDynamicTable";
 
 export default {
-    name: 'scui_form',
+    name: 'scui_form_table',
     components: {
         scCode,
-        scForm,
+        scDynamicTable,
     },
     data() {
         return {
-            visible: false,
-            config: {
-                labelWidth: '100px',
-                labelPosition: 'left',
-                formItems:
-                    [
-                        { component: 'title', label: '这是标题', message: '这是message' },
-                        { component: 'input', label: '用户名', tips: '这是Tips', name: 'input', message: '这是message', options: { placeholder: '这是placeholder', maxlength: 20 } },
-                        { component: 'number', label: '数字选择框', tips: '这是Tips', name: 'number', message: '这是message', options: { placeholder: '这是placeholder', type: 'number', min: 0, max: 100, step: 1 } },
-                        { component: 'radio', label: '单选', tips: '这是Tips', name: 'radio1', message: '这是message', options: { items: [{ label: '选项1', value: '1' }, { label: '选项2', value: '2' }, { label: '选项3', value: '3' }] } },
-                        { component: 'switch', label: '开关', tips: '这是Tips', name: 'switch', message: '这是message' },
-                        { component: 'checkbox', label: '多选', tips: '这是Tips', name: 'list1', message: '这是message', options: { items: [{ label: '选项1', value: '1', name: 'checkbox1' }, { label: '选项2', value: '2', name: 'checkbox2' }] } },
-                        { component: 'checkboxGroup', label: '多选组合', tips: '这是Tips', name: 'list2', message: '这是message', options: { items: [{ label: '选项1', value: '1', name: 'checkboxGroup1' }, { label: '选项2', value: '2', name: 'checkboxGroup2' }, { label: '选项3', value: '3', name: 'checkboxGroup3' }] } },
-                        { component: 'select', label: '选择框', tips: '这是Tips', name: 'select', message: '这是message', options: { placeholder: '这是placeholder', items: [{ label: '选项1', value: '1' }, { label: '选项2', value: '2' }, { label: '选项3', value: '3' }] } },
-                        { component: 'cascader', label: '级联选择框', tips: '这是Tips', name: 'cascader', message: '这是message', options: { placeholder: '这是placeholder', items: [{ label: '选项1', value: '1' }, { label: '选项2', value: '2' }, { label: '选项3', value: '3' }] } },
-                        { component: 'date', label: '日期选择框', tips: '这是Tips', name: 'date', message: '这是message', options: { placeholder: '这是placeholder', type: 'date', shortcuts: [{ text: '今天', value: new Date() }], defaultTime: new Date(), valueFormat: 'yyyy-MM-dd' } },
-                        { component: 'color', label: '颜色选择框', tips: '这是Tips', name: 'color', message: '这是message', options: { placeholder: '这是placeholder', } },
-                        { component: 'rate', label: '评分选择框', tips: '这是Tips', name: 'rate', message: '这是message', options: { placeholder: '这是placeholder', } },
-                        { component: 'slider', label: '滑块选择框', tips: '这是Tips', name: 'slider', message: '这是message', options: { placeholder: '这是placeholder', marks: { 0: '0', 100: '100' } } },
-                        { component: 'tableselect', label: '表格选择框', tips: '这是Tips', name: 'tableselect', message: '这是message', options: { placeholder: '这是placeholder', } },
-                        { component: 'upload', label: '文件上传', tips: '这是Tips', name: 'files', message: '这是message', options: { items: [{ label: '文件1', name: 'file1' }, { label: '文件2', name: 'file2' }, { label: '文件3', name: 'file3' }] } },
-                        { component: 'rate', label: '评分选择框', tips: '这是Tips', name: 'rate', message: '这是message', options: { placeholder: '这是placeholder', } },
-                        { component: 'editor', label: '编辑器', tips: '这是Tips', name: 'editor', message: '这是message', options: { placeholder: '这是placeholder', } },
-                    ]
+            list: [],
+            addTemplate:
+            {
+                name: '',
+                age: 0,
+                score: 'A',
             },
-            form: {
-                input: '',
-                number: 50,
-                radio1: '1',
-                switch: false,
-                list1: [],
-                list2: [],
-                select: '1',
-                cascader: ['1', '2'],
-                date: '2023-01-01',
-                color: '#000000',
-                rate: 5,
-                slider: 50,
-                tableselect: '1',
-                editor: '这是编辑器内容',
-                file1: null,
-                file2: null,
-                file3: null,
-            },
-            code1: `<sc-form ref="form" v-model="form" :config="config"></sc-form>`,
+            code1: `<sc-dynamic-table ref="formTable" v-model="list" :addTemplate="addTemplate">
+    <el-table-column label="姓名" prop="name">
+        <template #default="scope">
+            <el-input v-model="scope.row.name" placeholder="请输入姓名"></el-input>
+        </template>
+    </el-table-column>
+    <el-table-column label="年龄" prop="age">
+        <template #default="scope">
+            <el-input-number v-model="scope.row.age" placeholder="请输入年龄"></el-input-number>
+        </template>
+    </el-table-column>
+    <el-table-column label="分数" prop="score">
+        <template #default="scope">
+            <el-select v-model="scope.row.score" placeholder="请输入分数">
+                <el-option label="A" value="A"></el-option>
+                <el-option label="B" value="B"></el-option>
+                <el-option label="C" value="C"></el-option>
+            </el-select>
+        </template>
+    </el-table-column>
+</sc-dynamic-table>`,
         };
     },
     methods: {

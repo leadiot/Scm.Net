@@ -1,6 +1,6 @@
 <template>
 	<sc-dialog v-model="visible" show-fullscreen :title="title" width="600px" @close="close">
-		<sc-form-table v-model="formData.details" :addTemplate="addTemplate" placeholder="暂无投票项">
+		<sc-dynamic-table v-model="formData.details" :addTemplate="addTemplate" placeholder="暂无投票项">
 			<el-table-column prop="title" label="标题">
 				<template #default="scope">
 					<el-input v-model="scope.row.title" placeholder="请输入标题"></el-input>
@@ -11,7 +11,7 @@
 					<el-input v-model="scope.row.remark" placeholder="请输入说明"></el-input>
 				</template>
 			</el-table-column>
-		</sc-form-table>
+		</sc-dynamic-table>
 
 		<template #footer>
 			<el-button @click="close">取 消</el-button>

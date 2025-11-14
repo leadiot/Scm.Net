@@ -92,7 +92,7 @@
 			</el-col>
 			<el-col :lg="12" class="apilist">
 				<h2>接口权限</h2>
-				<sc-form-table v-model="form.api" :addTemplate="apiListAddTemplate" placeholder="暂无匹配接口权限">
+				<sc-dynamic-table v-model="form.api" :addTemplate="apiListAddTemplate" placeholder="暂无匹配接口权限">
 					<el-table-column prop="codec" label="标识" width="150">
 						<template #default="scope">
 							<el-input v-model="scope.row.codec" placeholder="请输入内容"></el-input>
@@ -110,7 +110,7 @@
 							<el-input v-model="scope.row.url" placeholder="请输入内容"></el-input>
 						</template>
 					</el-table-column>
-				</sc-form-table>
+				</sc-dynamic-table>
 			</el-col>
 		</template>
 	</el-row>

@@ -1,5 +1,5 @@
 <template>
-	<div class="sc-form-table">
+	<div class="sc-dynamic-table">
 		<el-table :data="data" ref="table" :key="toggleIndex" border stripe>
 			<el-table-column type="index" width="50" fixed="left">
 				<template #header>
@@ -7,7 +7,7 @@
 						@click="rowAdd"></el-button>
 				</template>
 				<template #default="scope">
-					<div class="sc-form-table-handle">
+					<div class="sc-dynamic-table-handle">
 						<span>{{ scope.$index + 1 }}</span>
 						<el-button type="danger" icon="el-icon-delete" size="small" plain circle
 							@click="rowDel(scope.row, scope.$index)" />
@@ -96,23 +96,23 @@ export default {
 </script>
 
 <style scoped>
-.sc-form-table .sc-form-table-handle {
+.sc-dynamic-table .sc-dynamic-table-handle {
 	text-align: center;
 }
 
-.sc-form-table .sc-form-table-handle span {
+.sc-dynamic-table .sc-dynamic-table-handle span {
 	display: inline-block;
 }
 
-.sc-form-table .sc-form-table-handle button {
+.sc-dynamic-table .sc-dynamic-table-handle button {
 	display: none;
 }
 
-.sc-form-table .hover-row .sc-form-table-handle span {
+.sc-dynamic-table .hover-row .sc-dynamic-table-handle span {
 	display: none;
 }
 
-.sc-form-table .hover-row .sc-form-table-handle button {
+.sc-dynamic-table .hover-row .sc-dynamic-table-handle button {
 	display: inline-block;
 }
 </style>

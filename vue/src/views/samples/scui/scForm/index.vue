@@ -5,7 +5,7 @@
                 <h1>Form 动态表单</h1>
                 <p>Form 组件用于动态构建表单。</p>
                 <sc-code lang="html" :code="code1" title="基础用法" desc="Form 组件默认使用示例。">
-                    <sc-form ref="form" v-model="form" :config="config"></sc-form>
+                    <sc-dynamic-form ref="form" v-model="form" :config="config"></sc-dynamic-form>
                 </sc-code>
             </el-card>
         </el-main>
@@ -13,13 +13,13 @@
 </template>
 <script>
 import scCode from '@/components/scCode';
-import scForm from "@/components/scForm";
+import scDynamicForm from "@/components/scDynamicForm";
 
 export default {
     name: 'scui_form',
     components: {
         scCode,
-        scForm,
+        scDynamicForm,
     },
     data() {
         return {
@@ -67,7 +67,7 @@ export default {
                 file2: null,
                 file3: null,
             },
-            code1: `<sc-form ref="form" v-model="form" :config="config"></sc-form>`,
+            code1: `<sc-dynamic-form ref="form" v-model="form" :config="config"></sc-dynamic-form>`,
         };
     },
     methods: {

@@ -7,7 +7,7 @@ namespace Com.Scm.Sys.Calendar.Dvo
     /// <summary>
     /// 
     /// </summary>
-    public class CalendarDvo : ScmDataDvo
+    public class ScmSysCalendarDvo : ScmDataDvo
     {
         /// <summary>
         /// 日程标题

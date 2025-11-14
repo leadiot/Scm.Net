@@ -38,7 +38,7 @@ public class ScmSysCalendarService : IApiService
     /// </summary>
     /// <param name="request"></param>
     /// <returns></returns>
-    public async Task<List<CalendarDvo>> GetListAsync(SearchRequest request)
+    public async Task<List<ScmSysCalendarDvo>> GetListAsync(SearchRequest request)
     {
         var userId = request.user_id;
         if (!ScmUtils.IsValidId(userId))
@@ -60,7 +60,7 @@ public class ScmSysCalendarService : IApiService
             .WhereIF(request.level != 0, a => a.level == request.level)
             .WhereIF(request.date != null, a => a.start_time >= timef && a.start_time < timet)
             .OrderBy(a => a.id, OrderByType.Asc)
-            .Select<CalendarDvo>()
+            .Select<ScmSysCalendarDvo>()
             .ToListAsync();
 
         return query;
@@ -72,13 +72,13 @@ public class ScmSysCalendarService : IApiService
     /// <param name="id"></param>
     /// <returns></returns>
     [HttpGet("{id}")]
-    public async Task<CalendarDvo> GetAsync(long id)
+    public async Task<ScmSysCalendarDvo> GetAsync(long id)
     {
         var model = await _thisRepository
             .AsQueryable()
             .FirstAsync(a => a.id == id);
 
-        var dvo = model.Adapt<CalendarDvo>();
+        var dvo = model.Adapt<ScmSysCalendarDvo>();
         if (dvo != null)
         {
             dvo.users = await _Client.Queryable<CalendarUserDao, UserDao>((a, b) => a.user_id == b.id)

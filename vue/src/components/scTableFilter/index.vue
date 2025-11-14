@@ -1,24 +1,11 @@
 <template>
 	<div class="sc-tableFilter">
 		<slot :filterLength="filterObjLength" :openFilter="openFilter">
-			<el-badge
-				:value="filterObjLength"
-				type="danger"
-				:hidden="filterObjLength <= 0"
-			>
-				<el-button
-					icon="el-icon-filter"
-					@click="openFilter"
-				></el-button>
+			<el-badge :value="filterObjLength" type="danger" :hidden="filterObjLength <= 0">
+				<el-button icon="el-icon-filter" @click="openFilter"></el-button>
 			</el-badge>
 		</slot>
-		<el-dialog
-			v-model="dialog"
-			title="高级查询"
-			width="800px"
-			destroy-on-close
-			draggable
-		>
+		<el-dialog v-model="dialog" title="高级查询" width="800px" destroy-on-close draggable>
 			<el-scrollbar>
 				<div class="sc-filter-main">
 					<h2>设置过滤条件</h2>
@@ -38,138 +25,63 @@
 								<el-tag>{{ index + 1 }}</el-tag>
 							</td>
 							<td>
-								<el-select
-									v-model="item.field"
-									placeholder=""
-									@change="fieldChange(item)"
-								>
-									<el-option
-										v-for="it in filterArr"
-										:key="it.prop"
-										:label="it.label"
-										:value="it.prop"
-									></el-option>
+								<el-select v-model="item.field" placeholder="" @change="fieldChange(item)">
+									<el-option v-for="it in filterArr" :key="it.prop" :label="it.label"
+										:value="it.prop"></el-option>
 								</el-select>
 							</td>
 							<td v-if="showOperator">
-								<el-select
-									v-model="item.operator"
-									placeholder="运算符"
-								>
-									<el-option
-										v-for="ope in operators"
-										:key="ope.value"
-										:label="ope.label"
-										:value="ope.value"
-									></el-option>
+								<el-select v-model="item.operator" placeholder="运算符">
+									<el-option v-for="ope in operators" :key="ope.value" :label="ope.label"
+										:value="ope.value"></el-option>
 								</el-select>
 							</td>
 							<td>
 								<!-- 输入框 -->
-								<el-input
-									v-if="item.type == 'text'"
-									v-model="item.value"
-									:placeholder="item.placeholder || '请输入'"
-								></el-input>
+								<el-input v-if="item.type == 'text'" v-model="item.value"
+									:placeholder="item.placeholder || '请输入'"></el-input>
 								<!-- 日期 -->
-								<el-date-picker
-									v-if="item.type == 'date'"
-									v-model="item.value"
-									type="date"
-									value-format="YYYY-MM-DD"
-									:placeholder="
-										item.placeholder || '请选择日期'
-									"
-									style="width: 100%"
-								></el-date-picker>
+								<el-date-picker v-if="item.type == 'date'" v-model="item.value" type="date"
+									value-format="YYYY-MM-DD" :placeholder="item.placeholder || '请选择日期'
+										" style="width: 100%"></el-date-picker>
 								<!-- 日期范围 -->
-								<el-date-picker
-									v-if="item.type == 'daterange'"
-									v-model="item.value"
-									type="daterange"
-									value-format="YYYY-MM-DD"
-									start-placeholder="开始日期"
-									end-placeholder="结束日期"
-									style="width: 100%"
-								></el-date-picker>
+								<el-date-picker v-if="item.type == 'daterange'" v-model="item.value" type="daterange"
+									value-format="YYYY-MM-DD" start-placeholder="开始日期" end-placeholder="结束日期"
+									style="width: 100%"></el-date-picker>
 								<!-- 日期时间 -->
-								<el-date-picker
-									v-if="item.type == 'datetime'"
-									v-model="item.value"
-									type="datetime"
-									value-format="YYYY-MM-DD HH:mm:ss"
-									:placeholder="
-										item.placeholder || '请选择日期'
-									"
-									style="width: 100%"
-								></el-date-picker>
+								<el-date-picker v-if="item.type == 'datetime'" v-model="item.value" type="datetime"
+									value-format="YYYY-MM-DD HH:mm:ss" :placeholder="item.placeholder || '请选择日期'
+										" style="width: 100%"></el-date-picker>
 								<!-- 日期时间范围 -->
-								<el-date-picker
-									v-if="item.type == 'datetimerange'"
-									v-model="item.value"
-									type="datetimerange"
-									value-format="YYYY-MM-DD HH:mm:ss"
-									start-placeholder="开始日期"
-									end-placeholder="结束日期"
-									style="width: 100%"
-								></el-date-picker>
+								<el-date-picker v-if="item.type == 'datetimerange'" v-model="item.value"
+									type="datetimerange" value-format="YYYY-MM-DD HH:mm:ss" start-placeholder="开始日期"
+									end-placeholder="结束日期" style="width: 100%"></el-date-picker>
 								<!-- 开关 -->
-								<el-switch
-									v-if="item.type == 'switch'"
-									v-model="item.value"
-									active-value="1"
-									inactive-value="0"
-								></el-switch>
+								<el-switch v-if="item.type == 'switch'" v-model="item.value" active-value="1"
+									inactive-value="0"></el-switch>
 								<!-- 标签 -->
-								<el-select
-									v-if="item.type == 'tags'"
-									v-model="item.value"
-									multiple
-									filterable
-									allow-create
-									default-first-option
-									no-data-text="输入关键词后按回车确认"
-									:placeholder="item.placeholder || '请输入'"
-								></el-select>
+								<el-select v-if="item.type == 'tags'" v-model="item.value" multiple filterable
+									allow-create default-first-option no-data-text="输入关键词后按回车确认"
+									:placeholder="item.placeholder || '请输入'"></el-select>
 								<!-- 下拉框 -->
-								<el-select
-									v-if="item.type == 'select'"
-									v-model="item.value"
-									:placeholder="item.placeholder || '请选择'"
-									filterable
-									:multiple="item.extend.multiple"
-									:loading="item.selectLoading"
-									@visible-change="
+								<el-select v-if="item.type == 'select'" v-model="item.value"
+									:placeholder="item.placeholder || '请选择'" filterable :multiple="item.extend.multiple"
+									:loading="item.selectLoading" @visible-change="
 										visibleChange($event, item)
-									"
-									:remote="item.extend.remote"
-									:remote-method="
-										(query) => {
+										" :remote="item.extend.remote" :remote-method="(query) => {
 											remoteMethod(query, item);
 										}
-									"
-								>
-									<el-option
-										v-for="field in item.extend.data"
-										:key="field.value"
-										:label="field.label"
-										:value="field.value"
-									></el-option>
+											">
+									<el-option v-for="field in item.extend.data" :key="field.value" :label="field.label"
+										:value="field.value"></el-option>
 								</el-select>
 							</td>
 							<td>
-								<el-icon class="del" @click="delFilter(index)"
-									><el-icon-delete
-								/></el-icon>
+								<el-icon class="del" @click="delFilter(index)"><el-icon-delete /></el-icon>
 							</td>
 						</tr>
 					</table>
-					<el-button
-						type="text"
-						icon="el-icon-plus"
-						@click="addFilter"
-						>增加过滤项</el-button
-					>
+					<el-button type="text" icon="el-icon-plus" @click="addFilter">增加过滤项</el-button>
 				</div>
 			</el-scrollbar>
 
@@ -187,10 +99,10 @@ export default {
 	name: "tableFilter",
 	components: {},
 	props: {
-		column: { type: Object, default: () => {} },
+		column: { type: Object, default: () => { } },
 		filterName: { type: String, default: "" },
 		showOperator: { type: Boolean, default: true },
-		options: { type: Object, default: () => {} },
+		options: { type: Object, default: () => { } },
 	},
 	watch: {},
 	computed: {
@@ -317,30 +229,37 @@ export default {
 	border-bottom: 1px solid #e6e6e6;
 	background: #fff;
 }
+
 .sc-filter-main h2 {
 	font-size: 12px;
 	color: #999;
 	font-weight: normal;
 }
+
 .sc-filter-main table {
 	width: 100%;
 	margin: 15px 0;
 }
-.sc-filter-main table tr {
-}
+
+.sc-filter-main table tr {}
+
 .sc-filter-main table td {
 	padding: 5px 10px 5px 0;
 }
+
 .sc-filter-main table td:deep(.el-input .el-input__inner) {
 	vertical-align: top;
 }
+
 .sc-filter-main table td .el-select {
 	display: block;
 }
+
 .sc-filter-main table td .el-date-editor.el-input {
 	display: block;
 	width: 100%;
 }
+
 .sc-filter-main table td .del {
 	background: #fff;
 	color: #999;
@@ -352,6 +271,7 @@ export default {
 	font-size: 12px;
 	cursor: pointer;
 }
+
 .sc-filter-main table td .del:hover {
 	background: #f56c6c;
 	color: #fff;

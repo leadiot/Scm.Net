@@ -3,10 +3,11 @@
         <el-form ref="formRef" label-width="100px" :model="formData" :rules="rules">
             <el-form-item label="上级" prop="pid">
                 <el-tree-select v-model="formData.pid" :data="parentIdOptions" :default-expand-all="true"
-                    :check-strictly="true" :style="{ width: '100%' }" />
+                    :check-strictly="true" />
             </el-form-item>
             <el-form-item label="名称" prop="namec">
-                <el-input v-model="formData.namec" placeholder="请输入名称" :maxlength="32" show-word-limit clearable></el-input>
+                <el-input v-model="formData.namec" placeholder="请输入名称" :maxlength="32" show-word-limit
+                    clearable></el-input>
             </el-form-item>
             <el-form-item label="图标" prop="image">
                 <el-input v-model="formData.image" placeholder="请输入图标" :maxlength="256" show-word-limit

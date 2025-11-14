@@ -1,22 +1,24 @@
 <template>
-    <h2>{{ title }}</h2>
-    <p>{{ desc }}</p>
-    <div class="example">
-        <div class="example-showcase">
-            <slot></slot>
-        </div>
-        <el-divider style="margin: 0px;" />
-        <div class="op-btns">
-            <span class="scfont sc-file-copy-line op-btn" v-copy="code"></span>
-            <span class="scfont sc-expand-left-right-line op-btn" @click="viewCode"></span>
-        </div>
-        <div class="example-source-wrapper" v-show="codeVisible">
-            <div class="example-source language-vue">
-                <highlightjs language="JavaScript" :autodetect="false" :code="code"></highlightjs>
+    <div class="sc-code">
+        <h2>{{ title }}</h2>
+        <p>{{ desc }}</p>
+        <div class="example">
+            <div class="example-showcase">
+                <slot></slot>
             </div>
-        </div>
-        <div class="example-float-control" tabindex="0" role="button" v-show="codeVisible" @click="viewCode">
-            <span class="scfont sc-arrow-drop-up-fill" style="font-size: 16px;"></span><span>隐藏源代码</span>
+            <el-divider style="margin: 0px;" />
+            <div class="op-btns">
+                <span class="scfont sc-file-copy-line op-btn" v-copy="innerCode"></span>
+                <span class="scfont sc-expand-left-right-line op-btn" @click="viewCode"></span>
+            </div>
+            <div class="example-source-wrapper" v-show="codeVisible">
+                <div class="example-source language">
+                    <highlightjs :language="lang" :autodetect="false" :code="innerCode"></highlightjs>
+                </div>
+            </div>
+            <div class="example-float-control" tabindex="0" role="button" v-show="codeVisible" @click="viewCode">
+                <span class="scfont sc-arrow-drop-up-fill" style="font-size: 16px;"></span><span>隐藏源代码</span>
+            </div>
         </div>
     </div>
 </template>
@@ -34,33 +36,50 @@ export default {
         desc: { type: String, default: '' },
         warning: { type: String, default: '' },
         tips: { type: String, default: '' },
+        lang: { type: String, default: 'JavaScript' },
         code: { type: String, default: '' },
     },
     data() {
         return {
+            innerCode: '',
             codeVisible: false,
         }
     },
     mounted() {
+        this.innerCode = this.code;
+        if (!this.innerCode) {
+            this.innerCode = this.$slots.default().toString();
+        }
     },
     methods: {
         viewCode() {
             this.codeVisible = !this.codeVisible;
-        },
-        copyCode() {
-
         }
     },
 }
 </script>
 <style>
+.sc-code {
+    margin: 1rem 0;
+
+    h2 {
+        font-size: 18px;
+        color: var(--el-text-color-primary);
+    }
+
+    p {
+        font-size: 14px;
+        color: var(--el-text-color-primary);
+    }
+}
+
 .example-showcase {
     padding: 1.5rem;
     margin: 0.5px;
     background-color: var(--el-bg-color);
 }
 
-.language-vue {
+.language {
     margin: 0;
     border-radius: 0;
 }

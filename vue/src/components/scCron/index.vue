@@ -294,12 +294,14 @@
 							</el-radio-group>
 						</el-form-item>
 						<el-form-item label="范围" v-if="value.year.type == 1">
-							<el-input-number v-model="value.year.range.start" controls-position="right"></el-input-number>
+							<el-input-number v-model="value.year.range.start"
+								controls-position="right"></el-input-number>
 							<span style="padding:0 15px;">-</span>
 							<el-input-number v-model="value.year.range.end" controls-position="right"></el-input-number>
 						</el-form-item>
 						<el-form-item label="间隔" v-if="value.year.type == 2">
-							<el-input-number v-model="value.year.loop.start" controls-position="right"></el-input-number>
+							<el-input-number v-model="value.year.loop.start"
+								controls-position="right"></el-input-number>
 							年开始，每
 							<el-input-number v-model="value.year.loop.end" :min="1"
 								controls-position="right"></el-input-number>
@@ -744,7 +746,8 @@ export default {
 }
 </script>
 
-<style scoped>.sc-cron:deep(.el-tabs__item) {
+<style scoped>
+.sc-cron:deep(.el-tabs__item) {
 	height: auto;
 	line-height: 1;
 	padding: 0 7px;
@@ -781,4 +784,5 @@ export default {
 
 [data-theme='dark'] .sc-cron-num h4 {
 	background: var(--el-color-white);
-}</style>
+}
+</style>

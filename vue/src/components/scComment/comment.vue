@@ -8,8 +8,8 @@
                 @{{ replyName }}：{{ replyContent }}
             </div>
             <div class="reply">
-                <div tabindex="0" contenteditable="true" spellcheck="false" :placeholder="placeholder" class="reply-input"
-                    @focus="showReplyBtn" @input="onDivInput($event)" @blur="hideReplyBtn">
+                <div tabindex="0" contenteditable="true" spellcheck="false" :placeholder="placeholder"
+                    class="reply-input" @focus="showReplyBtn" @input="onDivInput($event)" @blur="hideReplyBtn">
                 </div>
             </div>
             <div v-if="btnShow" style="padding-top: 5px;">

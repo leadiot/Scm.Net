@@ -35,7 +35,7 @@
                                     {{ item.namec }}
                                 </el-col>
                                 <el-col :span="4" style="text-align: right;">
-                                    <sc-icon name="sc-star-line"/>
+                                    <sc-icon name="sc-star-line" />
                                     {{ item.likes }}
                                 </el-col>
                             </el-row>
@@ -51,7 +51,8 @@
                             </el-row>
                             <el-row>
                                 <el-col>
-                                    <el-button size="small" @click="showReplyInput(item)" v-if="showReply" style="margin-right: 10px;">
+                                    <el-button size="small" @click="showReplyInput(item)" v-if="showReply"
+                                        style="margin-right: 10px;">
                                         {{ item.reply }} 回复 &gt;
                                     </el-button>
                                     <span class="time">
@@ -103,8 +104,8 @@ export default {
                 return;
             }
 
-            this.comment = res.data;
-            this.list = res.data.details;
+            this.comment = res.data || { qty: 0, details: [] };
+            this.list = this.comment.details;
         },
         showReplyInput(item) {
             this.toId = item.id;

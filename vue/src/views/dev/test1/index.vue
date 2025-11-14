@@ -2,10 +2,10 @@
     <el-container>
         <el-main>
             <el-card>
-                <h1>Code 代码</h1>
-                <p>Code 组件用于显示代码示例。</p>
-                <sc-code lang="html" title="基础用法" desc="Code 组件默认显示代码示例。">
-                    <el-button>测试</el-button>
+                <h1>Dialog 对话框</h1>
+                <p>Dialog 组件用于显示对话框示例。</p>
+                <sc-code lang="html" :code="code1" title="基础用法" desc="Dialog 组件默认使用示例。">
+                    <sc-echarts></sc-echarts>
                 </sc-code>
             </el-card>
         </el-main>
@@ -13,19 +13,18 @@
 </template>
 <script>
 import scCode from '@/components/scCode';
+import scEcharts from "@/components/scEcharts";
 
 export default {
     name: 'scui_button',
     components: {
         scCode,
+        scEcharts,
     },
     data() {
         return {
-            title: 'sc-code',
-            desc: 'sc-code 组件使用示例',
-            code1: `<sc-code title="your title" desc="your desc" code="your code">
-    <el-button>测试</el-button>
-</sc-code>`,
+            visible: false,
+            code1: `<sc-echarts></sc-echarts>`,
         };
     }
 }

@@ -1,13 +1,3 @@
-<!--
- * @Descripttion: scContextmenu组件
- * @version: 1.1
- * @Author: sakuya
- * @Date: 2021年7月23日09:25:57
- * @LastEditors: sakuya
- * @LastEditTime: 2022年5月30日20:17:42
- * @other: 代码完全开源，欢迎参考，也欢迎PR
--->
-
 <template>
 	<transition name="el-zoom-in-top">
 		<div v-if="visible" ref="contextmenu" class="sc-contextmenu" :style="{ left: left + 'px', top: top + 'px' }"
@@ -92,6 +82,7 @@ export default {
 	position: fixed;
 	z-index: 3000;
 	font-size: 12px;
+	background-color: red;
 }
 
 .sc-contextmenu__menu {

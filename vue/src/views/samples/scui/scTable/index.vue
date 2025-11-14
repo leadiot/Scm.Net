@@ -44,13 +44,11 @@
 </template>
 <script>
 import scCode from '@/components/scCode';
-import scSummary from '@/components/scSummary';
 
 export default {
     name: 'scui_table',
     components: {
         scCode,
-        scSummary,
     },
     data() {
         return {

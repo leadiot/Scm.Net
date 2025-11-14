@@ -114,16 +114,18 @@ export default {
 </script>
 
 <style scoped>
-.sc-video:deep(.danmu) > * {
+.sc-video:deep(.danmu)>* {
 	color: #fff;
 	font-size: 20px;
 	font-weight: bold;
 	text-shadow: 1px 1px 0 #000, -1px -1px 0 #000, -1px 1px 0 #000,
 		1px -1px 0 #000;
 }
+
 .sc-video:deep(.xgplayer-controls) {
 	background-image: linear-gradient(180deg, transparent, rgba(0, 0, 0, 0.3));
 }
+
 .sc-video:deep(.xgplayer-progress-tip) {
 	border: 0;
 	color: #fff;
@@ -132,6 +134,7 @@ export default {
 	padding: 0 10px;
 	border-radius: 25px;
 }
+
 .sc-video:deep(.xgplayer-enter-spinner) {
 	width: 50px;
 	height: 50px;

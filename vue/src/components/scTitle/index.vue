@@ -8,14 +8,6 @@
 	export default {
 		props: {
 			title: { type: String, required: true, default: "" },
-		},
-		data() {
-			return {
-
-			}
-		},
-		computed: {
-
 		}
 	}
 </script>

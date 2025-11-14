@@ -6,14 +6,19 @@
 
 <script>
 export default {
+	name: 'scWatermark',
 	props: {
 		text: { type: String, required: true, default: "" },
 		subtext: { type: String, default: "" },
-		color: { type: String, default: "rgba(128,128,128,0.2)" }
+		color: { type: String, default: "rgba(128,128,128,0.2)" },
+		angle: { type: Number, default: -30 },
+		fontSize: { type: Number, default: 20 },
+		fontFamily: { type: String, default: "SimHei" },
+		subtextFontSize: { type: Number, default: 14 },
+		subtextFontFamily: { type: String, default: "Microsoft YaHei" },
 	},
 	data() {
 		return {
-
 		}
 	},
 	mounted() {
@@ -29,13 +34,13 @@ export default {
 			canvas.style.display = 'none'
 			//绘制文字
 			var text = canvas.getContext('2d')
-			text.rotate(-45 * Math.PI / 180)
+			text.rotate(this.angle * Math.PI / 180)
 			text.translate(-75, 25)
 			text.fillStyle = this.color
-			text.font = "bold 20px SimHei"
+			text.font = `bold ${this.fontSize}px ${this.fontFamily}`
 			text.textAlign = "center"
 			text.fillText(this.text, canvas.width / 2, canvas.height / 2)
-			text.font = "14px Microsoft YaHei"
+			text.font = `${this.subtextFontSize}px ${this.subtextFontFamily}`
 			text.fillText(this.subtext, canvas.width / 2, canvas.height / 2 + 20)
 			//创建水印容器
 			var watermark = document.createElement('div')
@@ -58,4 +63,5 @@ export default {
 	display: inherit;
 	width: 100%;
 	height: 100%;
-}</style>
+}
+</style>

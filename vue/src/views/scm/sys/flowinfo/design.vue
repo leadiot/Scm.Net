@@ -14,8 +14,9 @@
 	</el-container>
 </template>
 <script>
-import scWorkflow from "@/components/scWorkflow";
 import { useRoute } from "vue-router";
+import scWorkflow from "@/components/scWorkflow";
+
 export default {
 	name: "design",
 	components: {

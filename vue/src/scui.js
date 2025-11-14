@@ -29,7 +29,7 @@ import scUpload from "./components/scUpload";
 import scUploadFile from "./components/scUpload/file";
 import scUploadMultiple from "./components/scUpload/multiple";
 import scWaterfall from "./components/scWaterfall";
-import scWaterMark from "./components/scWaterMark";
+import scWatermark from "./components/scWatermark";
 
 import scStatusIndicator from "./components/scMini/scStatusIndicator";
 import scTrend from "./components/scTrend";
@@ -73,7 +73,7 @@ export default {
 		app.component("scDialog", scDialog);
 		app.component("scTitle", scTitle);
 		app.component("scWaterfall", scWaterfall);
-		app.component("scWaterMark", scWaterMark);
+		app.component("scWatermark", scWatermark);
 		app.component("scQrCode", scQrCode);
 		app.component("scStatusIndicator", scStatusIndicator);
 		app.component("scTrend", scTrend);

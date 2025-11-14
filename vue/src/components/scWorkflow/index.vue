@@ -16,6 +16,7 @@ import nodeWrap from './nodeWrap'
 import useSelect from './select'
 
 export default {
+	name: "scWorkflow",
 	provide() {
 		return {
 			select: this.selectHandle

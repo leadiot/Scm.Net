@@ -11,7 +11,8 @@
                         title="全窗口显示">
                         <sc-icon name="sc-fullscreen" />
                     </el-button>
-                    <el-button type="default" circle @click="exitFullPage()" v-show="!fullScreen && fullPage" title="退出全窗口">
+                    <el-button type="default" circle @click="exitFullPage()" v-show="!fullScreen && fullPage"
+                        title="退出全窗口">
                         <sc-icon name="sc-fullscreen-exit" />
                     </el-button>
                     <el-button type="default" circle @click="showFullScreen()" v-show="!fullScreen" title="全屏幕显示">
@@ -35,7 +36,7 @@
     </div>
     <el-drawer v-model="drawer" title="提示" direction="btt">
         <div class="panel-drawer">
-            <span>{{ remark }}</span>
+            <span>{{ description }}</span>
         </div>
     </el-drawer>
 </template>
@@ -51,7 +52,7 @@ export default {
     },
     props: {
         title: { type: String, default: '卡片标题' },
-        remark: { type: String, default: '这是工具说明！' },
+        description: { type: String, default: '这是工具说明！' },
     },
     methods: {
         showDrawer() {
@@ -76,7 +77,7 @@ export default {
     }
 }
 </script>
-  
+
 <style scoped>
 .sc-panel {
     height: 100%;

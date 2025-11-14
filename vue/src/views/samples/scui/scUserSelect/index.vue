@@ -1,0 +1,48 @@
+<template>
+    <el-container>
+        <el-main>
+            <el-card>
+                <h1>Select User 人员选择器组件</h1>
+                <p>Select User 组件用于选择人员的展示。</p>
+                <sc-code lang="html" :code="code1" title="基础用法" desc="Select User 组件默认使用示例。">
+                    <sc-select-user ref="selectUser" v-model:selectOpen="isOpenUser"
+                        @onSelect="selectUserRes"></sc-select-user>
+                </sc-code>
+            </el-card>
+        </el-main>
+    </el-container>
+</template>
+<script>
+import scCode from '@/components/scCode';
+import scSelectUser from '@/components/scSelectUser';
+
+export default {
+    name: 'scui_select_user',
+    components: {
+        scCode,
+        scSelectUser,
+    },
+    data() {
+        return {
+            isOpenUser: false,
+            code1: `<sc-select-user ref="selectUser" v-model:selectOpen="isOpenUser"
+                        @onSelect="selectUserRes"></sc-select-user>`,
+        };
+    },
+    methods: {
+        selectUserRes(users) {
+            this.isOpenUser = false;
+            if (!users || users.length < 1) {
+                return;
+            }
+        }
+    }
+}
+</script>
+
+<style scoped>
+.el-card {
+    max-width: 960px;
+    margin: 0 auto;
+}
+</style>

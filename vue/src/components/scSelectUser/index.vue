@@ -15,7 +15,8 @@
 		<div class="select-user">
 			<div class="org-user">
 				<div class="search">
-					<el-input v-model="param.key" placeholder="关键字" :maxlength="30" show-word-limit clearable></el-input>
+					<el-input v-model="param.key" placeholder="关键字" :maxlength="30" show-word-limit
+						clearable></el-input>
 					<el-button type="primary" icon="el-icon-search" @click="search">搜索</el-button>
 				</div>
 				<div class="org-user-box">

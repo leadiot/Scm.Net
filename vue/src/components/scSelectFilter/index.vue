@@ -3,32 +3,15 @@
 		<div v-if="data.length <= 0" class="sc-select-filter__no-data">
 			暂无数据
 		</div>
-		<div
-			v-for="item in data"
-			:key="item.key"
-			class="sc-select-filter__item"
-		>
-			<div
-				class="sc-select-filter__item-title"
-				:style="{ width: labelWidth + 'px' }"
-			>
+		<div v-for="item in data" :key="item.key" class="sc-select-filter__item">
+			<div class="sc-select-filter__item-title" :style="{ width: labelWidth + 'px' }">
 				<label>{{ item.title }}：</label>
 			</div>
 			<div class="sc-select-filter__item-options">
 				<ul>
-					<li
-						:class="{
-							active:
-								selected[item.key] &&
-								selected[item.key].includes(option.value),
-						}"
-						v-for="option in item.options"
-						:key="option.value"
-						@click="select(option, item)"
-					>
-						<el-icon v-if="option.icon"
-							><component :is="option.icon"
-						/></el-icon>
+					<li :class="{ active: selected[item.key] && selected[item.key].includes(option.value) }"
+						v-for="option in item.options" :key="option.value" @click="select(option, item)">
+						<sc-icon v-if="option.icon" :name="option.icon"></sc-icon>
 						<span>{{ option.label }}</span>
 					</li>
 				</ul>
@@ -60,7 +43,7 @@ export default {
 			val.forEach((item) => {
 				this.selected[item.key] =
 					this.selectedValues[item.key] ||
-					(Array.isArray(item.options) && item.options.length)
+						(Array.isArray(item.options) && item.options.length)
 						? [item.options[0].value]
 						: [];
 			});
@@ -80,7 +63,7 @@ export default {
 		this.data.forEach((item) => {
 			this.selected[item.key] =
 				this.selectedValues[item.key] ||
-				(Array.isArray(item.options) && item.options.length)
+					(Array.isArray(item.options) && item.options.length)
 					? [item.options[0].value]
 					: [];
 		});
@@ -150,27 +133,33 @@ export default {
 .sc-select-filter {
 	width: 100%;
 }
+
 .sc-select-filter__item {
 	display: flex;
 }
+
 .sc-select-filter__item-title {
 	width: 80px;
 }
+
 .sc-select-filter__item-title label {
 	font-size: 14px;
 	padding-top: 13px;
 	display: inline-block;
 	color: #999;
 }
+
 .sc-select-filter__item-options {
 	flex: 1;
 	border-bottom: 1px dashed var(--el-border-color-light);
 }
+
 .sc-select-filter__item-options ul {
 	display: flex;
 	flex-wrap: wrap;
 	padding-top: 10px;
 }
+
 .sc-select-filter__item-options li {
 	list-style: none;
 	cursor: pointer;
@@ -182,18 +171,22 @@ export default {
 	align-items: center;
 	background: var(--el-color-primary-light-9);
 }
+
 .sc-select-filter__item-options li .el-icon {
 	margin-right: 3px;
 	font-size: 16px;
 }
+
 .sc-select-filter__item-options li:hover {
 	color: var(--el-color-primary);
 }
+
 .sc-select-filter__item-options li.active {
 	background: var(--el-color-primary);
 	color: #fff;
 	font-weight: bold;
 }
+
 .sc-select-filter__item:last-of-type .sc-select-filter__item-options {
 	border: 0;
 }

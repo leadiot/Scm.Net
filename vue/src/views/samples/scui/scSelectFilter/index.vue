@@ -1,6 +1,6 @@
 <template>
-    <el-container>
-        <el-main>
+    <div class="doc-content-wrapper">
+        <div class="doc-content-container">
             <el-card>
                 <h1>Select Filter 选择器组件</h1>
                 <p>Select Filter 组件用于选择器的展示。</p>
@@ -8,8 +8,8 @@
                     <sc-select-filter :data="options" :selectedValues="selectedValues"></sc-select-filter>
                 </sc-code>
             </el-card>
-        </el-main>
-    </el-container>
+        </div>
+    </div>
 </template>
 <script>
 import scCode from '@/components/scCode';
@@ -68,10 +68,3 @@ export default {
     }
 }
 </script>
-
-<style scoped>
-.el-card {
-    max-width: 960px;
-    margin: 0 auto;
-}
-</style>

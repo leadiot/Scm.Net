@@ -1,6 +1,6 @@
 <template>
-    <el-container>
-        <el-main>
+    <div class="doc-content-wrapper">
+        <div class="doc-content-container">
             <el-card>
                 <h1>FileSelect 选择文件</h1>
                 <p>FileSelect 组件用于选择文件。</p>
@@ -11,8 +11,8 @@
                     </el-dialog>
                 </sc-code>
             </el-card>
-        </el-main>
-    </el-container>
+        </div>
+    </div>
 </template>
 <script>
 import scCode from '@/components/scCode';
@@ -37,10 +37,3 @@ export default {
     }
 }
 </script>
-
-<style scoped>
-.el-card {
-    max-width: 960px;
-    margin: 0 auto;
-}
-</style>

@@ -1,6 +1,6 @@
 <template>
-    <el-container>
-        <el-main>
+    <div class="doc-content-wrapper">
+        <div class="doc-content-container">
             <el-card>
                 <h1>Form 动态表单</h1>
                 <p>Form 组件用于动态构建表单。</p>
@@ -8,8 +8,8 @@
                     <sc-dynamic-form ref="form" v-model="form" :config="config"></sc-dynamic-form>
                 </sc-code>
             </el-card>
-        </el-main>
-    </el-container>
+        </div>
+    </div>
 </template>
 <script>
 import scCode from '@/components/scCode';
@@ -77,10 +77,3 @@ export default {
     }
 }
 </script>
-
-<style scoped>
-.el-card {
-    max-width: 960px;
-    margin: 0 auto;
-}
-</style>

@@ -1,6 +1,6 @@
 <template>
-    <el-container>
-        <el-main>
+    <div class="doc-content-wrapper">
+        <div class="doc-content-container">
             <el-card>
                 <h1>Button 按钮</h1>
                 <p>sc-button 组件默认用法</p>
@@ -49,8 +49,8 @@
                     <sc-button icon="sc-user-line" type="danger" circle disabled></sc-button>
                 </sc-code>
             </el-card>
-        </el-main>
-    </el-container>
+        </div>
+    </div>
 </template>
 <script>
 import scButton from '@/components/scButton';
@@ -102,11 +102,6 @@ export default {
 </script>
 
 <style scoped>
-.el-card {
-    max-width: 960px;
-    margin: 0 auto;
-}
-
 .row {
     margin-top: 1rem;
 }

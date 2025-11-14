@@ -1,6 +1,6 @@
 <template>
-    <el-container>
-        <el-main>
+    <div class="doc-content-wrapper">
+        <div class="doc-content-container">
             <el-card>
                 <h1>Contextmenu 上下文菜单</h1>
                 <p>Contextmenu 上下文菜单用于显示上下文菜单示例。</p>
@@ -18,8 +18,8 @@
                     </sc-contextmenu>
                 </sc-code>
             </el-card>
-        </el-main>
-    </el-container>
+        </div>
+    </div>
 </template>
 <script>
 import scCode from '@/components/scCode';
@@ -65,10 +65,3 @@ export default {
     }
 }
 </script>
-
-<style scoped>
-.el-card {
-    max-width: 960px;
-    margin: 0 auto;
-}
-</style>

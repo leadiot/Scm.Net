@@ -1,6 +1,6 @@
 <template>
-    <el-container>
-        <el-main>
+    <div class="doc-content-wrapper">
+        <div class="doc-content-container">
             <el-card>
                 <h1>Comment 评论</h1>
                 <p>Comment 评论用于显示评论示例。</p>
@@ -8,8 +8,8 @@
                     <sc-comment code="appId"></sc-comment>
                 </sc-code>
             </el-card>
-        </el-main>
-    </el-container>
+        </div>
+    </div>
 </template>
 <script>
 import scCode from '@/components/scCode';
@@ -30,10 +30,3 @@ export default {
     }
 }
 </script>
-
-<style scoped>
-.el-card {
-    max-width: 960px;
-    margin: 0 auto;
-}
-</style>

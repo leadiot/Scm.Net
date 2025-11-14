@@ -1,6 +1,6 @@
 <template>
-    <el-container>
-        <el-main>
+    <div class="doc-content-wrapper">
+        <div class="doc-content-container">
             <el-card>
                 <h1>Cat 类别</h1>
                 <p>Cat 类别用于显示应用的分类。</p>
@@ -8,8 +8,8 @@
                     <sc-cat appId="00000000"></sc-cat>
                 </sc-code>
             </el-card>
-        </el-main>
-    </el-container>
+        </div>
+    </div>
 </template>
 <script>
 import scCat from '@/components/scCat';
@@ -28,10 +28,3 @@ export default {
     }
 }
 </script>
-
-<style scoped>
-.el-card {
-    max-width: 960px;
-    margin: 0 auto;
-}
-</style>

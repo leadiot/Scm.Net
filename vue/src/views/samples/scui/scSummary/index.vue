@@ -1,6 +1,6 @@
 <template>
-    <el-container>
-        <el-main>
+    <div class="doc-content-wrapper">
+        <div class="doc-content-container">
             <el-card>
                 <h1>Summary 统计组件</h1>
                 <p>Summary 组件用于展示统计数据。</p>
@@ -8,8 +8,8 @@
                     <sc-summary ref="summary" image="/img/logo.png" title="统计" summary="这是一个统计组件"></sc-summary>
                 </sc-code>
             </el-card>
-        </el-main>
-    </el-container>
+        </div>
+    </div>
 </template>
 <script>
 import scCode from '@/components/scCode';
@@ -30,10 +30,3 @@ export default {
     }
 }
 </script>
-
-<style scoped>
-.el-card {
-    max-width: 960px;
-    margin: 0 auto;
-}
-</style>

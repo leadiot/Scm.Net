@@ -1,22 +1,29 @@
 <template>
-    <el-card shadow="never" header="数据报表">
-        <scCharts height="300px" :option="option"></scCharts>
-    </el-card>
+    <el-container>
+        <el-main>
+            <el-card>
+                <h1>Charts 图表</h1>
+                <p>Charts 组件用于显示图表示例。</p>
+                <sc-code lang="html" :code="code1" title="基础用法" desc="Charts 组件默认使用示例。">
+                    <sc-charts :option="optionCharts" height="400px"></sc-charts>
+                </sc-code>
+            </el-card>
+        </el-main>
+    </el-container>
 </template>
-
 <script>
+import scCode from '@/components/scCode';
 import scCharts from "@/components/scCharts";
 
 export default {
+    name: 'scui_charts',
     components: {
-        scCharts
-    },
-    props: {
-        title: { type: String, default: "我的卡片" },
+        scCode,
+        scCharts,
     },
     data() {
         return {
-            option: {
+            optionCharts: {
                 tooltip: {
                     trigger: 'axis',
                     axisPointer: { type: 'cross' }
@@ -34,49 +41,46 @@ export default {
                 yAxis: [
                     {
                         type: 'value',
-                        name: '降水量',
-                        min: 0,
-                        max: 250,
+                        name: 'PV数量',
                         position: 'right',
                         axisLabel: {
-                            formatter: '{value} ml'
+                            formatter: '{value}'
                         }
                     },
                     {
                         type: 'value',
-                        name: '温度',
-                        min: 0,
-                        max: 25,
+                        name: 'UV数量',
                         position: 'left',
                         axisLabel: {
-                            formatter: '{value} °C'
+                            formatter: '{value}'
                         }
                     }
                 ],
                 series: [
                     {
-                        name: '降水量',
+                        name: 'PV数量',
                         type: 'bar',
                         yAxisIndex: 0,
-                        data: []
+                        data: [20, 32, 33, 40, 200, 323, 422, 450]
                     },
                     {
-                        name: '温度',
+                        name: 'UV数量',
                         type: 'line',
                         smooth: true,
                         yAxisIndex: 1,
-                        data: []
+                        data: [17, 22, 23, 30, 32, 33, 42, 45]
                     }
                 ]
-            }
-        }
-    },
-    methods: {
-        formatTime(row) {
-            return this.$TOOL.dateTimeFormat(row.create_time);
-        }
+            },
+            code1: `<sc-charts :option="optionCharts" height="400px"></sc-charts>`,
+        };
     }
 }
 </script>
 
-<style></style>
+<style scoped>
+.el-card {
+    max-width: 960px;
+    margin: 0 auto;
+}
+</style>

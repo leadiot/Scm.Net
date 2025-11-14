@@ -23,7 +23,7 @@ import scCode from '@/components/scCode';
 import scDialog from "@/components/scDialog";
 
 export default {
-    name: 'scui_button',
+    name: 'scui_dialog',
     components: {
         scCode,
         scDialog,

@@ -16,7 +16,7 @@ import scCode from '@/components/scCode';
 import scCron from "@/components/scCron";
 
 export default {
-    name: 'scui_button',
+    name: 'scui_cron',
     components: {
         scCode,
         scCron,

@@ -1,18 +1,18 @@
 <template>
 	<el-card shadow="hover" header="CPU使用率" v-loading="loading">
-		<scEcharts ref="c1" height="300px" :option="option"></scEcharts>
+		<scCharts ref="c1" height="300px" :option="option"></scCharts>
 	</el-card>
 </template>
 
 <script>
-	import scEcharts from '@/components/scEcharts';
+	import scCharts from '@/components/scCharts';
 
 	export default {
 		title: "CPU使用率",
 		icon: "el-icon-stopwatch",
 		description: "服务器CPU使用状态",
 		components: {
-			scEcharts
+			scCharts
 		},
 		data() {
 			return {

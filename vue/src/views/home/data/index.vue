@@ -25,7 +25,7 @@
         <el-row>
             <el-col>
                 <el-card shadow="never" header="数据报表">
-                    <scEcharts height="300px" :option="optionCharts"></scEcharts>
+                    <scCharts height="300px" :option="optionCharts"></scCharts>
                 </el-card>
             </el-col>
         </el-row>
@@ -55,14 +55,14 @@
 <script>
 import myCard from './components/myCard';
 import myTask from './components/myTask';
-import scEcharts from "@/components/scEcharts";
+import scCharts from "@/components/scCharts";
 
 export default {
     name: "home_data",
     components: {
         myCard,
         myTask,
-        scEcharts
+        scCharts
     },
     data() {
         return {

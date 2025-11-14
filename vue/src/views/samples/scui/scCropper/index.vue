@@ -16,7 +16,7 @@ import scCode from '@/components/scCode';
 import scCropper from "@/components/scCropper";
 
 export default {
-    name: 'scui_button',
+    name: 'scui_cropper',
     components: {
         scCode,
         scCropper,

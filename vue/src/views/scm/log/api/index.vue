@@ -22,7 +22,7 @@
 						</div>
 					</el-header>
 					<el-header style="height: 200px">
-						<scEcharts height="100%" :option="logsChartOption"></scEcharts>
+						<scCharts height="100%" :option="logsChartOption"></scCharts>
 					</el-header>
 					<el-main class="nopadding">
 						<scTable ref="table" :table-name="tableName" :apiObj="apiObj" stripe :column="column"
@@ -60,13 +60,13 @@
 
 <script>
 import info from "./info";
-import scEcharts from "@/components/scEcharts";
+import scCharts from "@/components/scCharts";
 
 export default {
 	name: 'log_api',
 	components: {
 		info,
-		scEcharts,
+		scCharts,
 	},
 	data() {
 		return {

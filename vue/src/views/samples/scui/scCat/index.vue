@@ -16,7 +16,7 @@ import scCat from '@/components/scCat';
 import scCode from '@/components/scCode';
 
 export default {
-    name: 'scui_button',
+    name: 'scui_cat',
     components: {
         scCat,
         scCode,

@@ -27,7 +27,7 @@ import scContextmenu from "@/components/scContextmenu";
 import scContextmenuItem from "@/components/scContextmenu/item";
 
 export default {
-    name: 'scui_button',
+    name: 'scui_contextmenu',
     components: {
         scCode,
         scContextmenu,

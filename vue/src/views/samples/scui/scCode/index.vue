@@ -15,7 +15,7 @@
 import scCode from '@/components/scCode';
 
 export default {
-    name: 'scui_button',
+    name: 'scui_code',
     components: {
         scCode,
     },

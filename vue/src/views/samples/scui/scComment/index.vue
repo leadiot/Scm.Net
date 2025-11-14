@@ -16,15 +16,15 @@ import scCode from '@/components/scCode';
 import scComment from '@/components/scComment';
 
 export default {
-    name: 'scui_button',
+    name: 'scui_comment',
     components: {
         scCode,
         scComment,
     },
     data() {
         return {
-            title: 'sc-code',
-            desc: 'sc-code 组件使用示例',
+            title: 'sc-comment',
+            desc: 'sc-comment 组件使用示例',
             code1: `<sc-comment code="appId"></sc-comment>`,
         };
     }

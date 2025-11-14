@@ -3,22 +3,22 @@
 		<el-row :gutter="10">
 			<el-col :md="6" :sm="24">
 				<el-card class="box-card">
-					<scEcharts height="300px" :option="optionCpu"></scEcharts>
+					<scCharts height="300px" :option="optionCpu"></scCharts>
 				</el-card>
 			</el-col>
 			<el-col :md="6" :sm="24">
 				<el-card class="box-card">
-					<scEcharts height="300px" :option="optionMemory"></scEcharts>
+					<scCharts height="300px" :option="optionMemory"></scCharts>
 				</el-card>
 			</el-col>
 			<el-col :md="6" :sm="24">
 				<el-card class="box-card">
-					<scEcharts height="300px" :option="optionDisk"></scEcharts>
+					<scCharts height="300px" :option="optionDisk"></scCharts>
 				</el-card>
 			</el-col>
 			<el-col :md="6" :sm="24">
 				<el-card class="box-card">
-					<scEcharts height="300px" :option="optionNetwork"></scEcharts>
+					<scCharts height="300px" :option="optionNetwork"></scCharts>
 				</el-card>
 			</el-col>
 		</el-row>
@@ -83,11 +83,11 @@
 	</el-main>
 </template>
 <script>
-import scEcharts from "@/components/scEcharts";
+import scCharts from "@/components/scCharts";
 export default {
 	name: "chart",
 	components: {
-		scEcharts,
+		scCharts,
 	},
 	data() {
 		return {

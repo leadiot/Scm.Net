@@ -34,10 +34,10 @@ export default {
     props: {
         title: { type: String, default: '' },
         desc: { type: String, default: '' },
-        warning: { type: String, default: '' },
-        tips: { type: String, default: '' },
         lang: { type: String, default: 'JavaScript' },
         code: { type: String, default: '' },
+        warning: { type: String, default: '' },
+        tips: { type: String, default: '' },
     },
     data() {
         return {

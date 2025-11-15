@@ -12,8 +12,8 @@ export default {
 	...echarts,
 	name: "scCharts",
 	props: {
-		height: { type: String, default: "100%" },
 		width: { type: String, default: "100%" },
+		height: { type: String, default: "100%" },
 		nodata: { type: Boolean, default: false },
 		option: { type: Object, default: () => { } }
 	},

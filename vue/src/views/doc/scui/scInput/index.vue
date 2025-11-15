@@ -16,7 +16,7 @@ import scCode from '@/components/scCode';
 import scInput from '@/components/scInput';
 
 export default {
-    name: 'scui_icon_select',
+    name: 'scui_input',
     components: {
         scCode,
         scInput,
@@ -24,7 +24,7 @@ export default {
     data() {
         return {
             list: [{ value: 'vue', link: 'https://github.com/vuejs/vue' }, { value: '22', link: 'https://github.com/vuejs/vue' }],
-            code1: `<sc-icon-select ref="iconSelect"></sc-icon-select>`,
+            code1: `<sc-input ref="input" :data="list"></sc-input>`,
         };
     },
     methods: {

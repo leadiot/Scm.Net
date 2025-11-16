@@ -48,7 +48,6 @@
 </template>
 
 <script>
-import "@/assets/code.scss";
 import scCode from "@/components/scCode";
 
 export default {

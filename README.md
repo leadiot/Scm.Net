@@ -3,7 +3,7 @@
 # Scm.Net
 
 ## 项目介绍
-一款基于 **.Net 9** 及 **Vue 3** 构架、适用于企业中后台管理系统的快速开发框架。   
+一款基于 **.Net 10.0** 及 **Vue 3.0** 构架、适用于企业中后台管理系统的快速开发框架。   
 
 笔者多年从事供应链系统及企业信息化系统的产品与研发，经常面对异构应用场景需求，在梳理之前多种项目经验的过程中，特开发此项目以期帮助各位同仁位快速搭建一个完整的开发框架，并满足多场景下的异构应用场景需求。  
 
@@ -13,9 +13,9 @@
 
 ## 软件架构
 1. 采用前后端分离模式；  
-2. 后端基于 **.Net 9** 开发，可直接编译输出 .Net6/7/8/9 的运行时；  
+2. 后端基于 **.Net 10.0** 开发，可直接编译输出 .Net6/7/8/9/10 的运行时；  
 3. 后端仅依赖几个常用的三方类库：**[SqlSugarCore](https://www.donet5.com/Home/Doc)**(ORM工具）、**[Newtonsoft.Json](https://www.newtonsoft.com/json)**（JSON工具）、**[ImageSharp](https://github.com/SixLabors/ImageSharp)**（跨平台图像工具）；  
-4. 前端基于 **[Vue 3](https://vuejs.org)** 及 **[Element Plus](https://element-plus.gitee.io)** 开发；  
+4. 前端基于 **[Vue 3.0](https://vuejs.org)** 及 **[Element Plus](https://element-plus.gitee.io)** 开发；  
 5. 前端仅依赖几个常用的三方组件：**[Axios](https://axios-http.com/)**（HTTP工具），良好支持i18n（多语言）；  
 6. 系统无平台依赖，可直接在多平台（**Windows**、**MacOS**、**Linux**、**HarmonyOS**等）开发与运行；  
 7. 响应式布局，支持多种设备终端（**电脑**、**平板**、**手机**）等。  
@@ -84,8 +84,8 @@
 | **Linux**   | 支持          | 支持          | N/A                   | N/A                | N/A            | N/A           |
 
 ## 开发环境搭建
-1. 安装 .Net SDK（.Net6或以上）[官方网址](https://dotnet.microsoft.com)
-2. 安装 Visual Studio（2022或以上）[官方网址](https://visualstudio.microsoft.com)
+1. 安装 .Net SDK（10.0或以上）[官方网址](https://dotnet.microsoft.com)
+2. 安装 Visual Studio（2026或以上）[官方网址](https://visualstudio.microsoft.com)
 3. 安装 MariaDB（10.3或上）[官方网址](https://mariadb.org)
 4. 获取项目代码：[Scm.NET](https://gitee.com/openscm/scm.net)
 5. 环境搭建教程：[详细说明](https://gitee.com/openscm/scm.net/wikis/%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA%E6%95%99%E7%A8%8B)

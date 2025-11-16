@@ -45,8 +45,11 @@ export default {
                 code: `<sc-input ref="input" :data="list"></sc-input>`,
             },
             fieldTable: [
-                { name: 'modelValue', type: 'String', desc: 'Cron 表达式', val: '', def: '* * * * * ?' },
-                { name: 'shortcuts', type: 'Array', desc: '快捷选项，格式：{name: "快捷选项名称", value: "快捷选项值"}', val: '', def: '[]' },
+                { name: 'apiObj', type: 'Object', desc: '接口对象', val: '', def: '{}' },
+                { name: 'data', type: 'Array', desc: '数据列表，格式：{name: "快捷选项名称", value: "快捷选项值"}', val: '', def: '[]' },
+                { name: 'prepend', type: 'String', desc: '前置内容', val: '', def: '' },
+                { name: 'append', type: 'String', desc: '后置内容', val: '', def: '' },
+                { name: 'params', type: 'Object', desc: '接口参数', val: '', def: '{}' },
             ],
             eventTable: [
             ]

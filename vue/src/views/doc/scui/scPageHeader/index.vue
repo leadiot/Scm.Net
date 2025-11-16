@@ -48,8 +48,9 @@ description="这是一段描述文本"
 />`,
             },
             fieldTable: [
-                { name: 'modelValue', type: 'String', desc: 'Cron 表达式', val: '', def: '* * * * * ?' },
-                { name: 'shortcuts', type: 'Array', desc: '快捷选项，格式：{name: "快捷选项名称", value: "快捷选项值"}', val: '', def: '[]' },
+                { name: 'title', type: 'String', desc: '页面标题', val: '', def: '' },
+                { name: 'description', type: 'String', desc: '页面描述', val: '', def: '' },
+                { name: 'icon', type: 'String', desc: '页面图标', val: '', def: '' },
             ],
             eventTable: [
             ]

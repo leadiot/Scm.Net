@@ -44,8 +44,14 @@ export default {
                 code: `<sc-qr-code text="https://www.baidu.com" :size="200"></sc-qr-code>`,
             },
             fieldTable: [
-                { name: 'modelValue', type: 'String', desc: '二维码内容', val: '', def: '' },
-                { name: 'size', type: 'Number', desc: '二维码大小', val: '', def: '200' },
+                { name: 'text', type: 'String', desc: '二维码内容', val: '', def: '' },
+                { name: 'size', type: 'Number', desc: '二维码大小', val: '', def: '100' },
+                { name: 'logo', type: 'String', desc: '二维码图标', val: '', def: '' },
+                { name: 'logoSize', type: 'Number', desc: '二维码图标大小', val: '', def: '30' },
+                { name: 'logoPadding', type: 'Number', desc: '二维码图标间距', val: '', def: '5' },
+                { name: 'colorDark', type: 'String', desc: '二维码深色颜色', val: '', def: '#000000' },
+                { name: 'colorLight', type: 'String', desc: '二维码浅色颜色', val: '', def: '#ffffff' },
+                { name: 'correctLevel', type: 'Number', desc: '二维码纠错级别', val: '', def: '2' },
             ],
             eventTable: [
             ]

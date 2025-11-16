@@ -44,8 +44,8 @@ export default {
                 code: `<sc-icon-select ref="iconSelect"></sc-icon-select>`,
             },
             fieldTable: [
-                { name: 'modelValue', type: 'String', desc: 'Cron 表达式', val: '', def: '* * * * * ?' },
-                { name: 'shortcuts', type: 'Array', desc: '快捷选项，格式：{name: "快捷选项名称", value: "快捷选项值"}', val: '', def: '[]' },
+                { name: 'modelValue', type: 'String', desc: '选中的图标名称', val: '', def: '' },
+                { name: 'disabled', type: 'Boolean', desc: '是否禁用', val: '', def: 'false' },
             ],
             eventTable: [
             ]

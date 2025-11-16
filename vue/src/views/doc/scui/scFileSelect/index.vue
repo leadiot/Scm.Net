@@ -48,8 +48,12 @@ export default {
                 code: `<sc-file-select ref="fileSelect"></sc-file-select>`,
             },
             fieldTable: [
-                { name: 'modelValue', type: 'String', desc: 'Cron 表达式', val: '', def: '* * * * * ?' },
-                { name: 'shortcuts', type: 'Array', desc: '快捷选项，格式：{name: "快捷选项名称", value: "快捷选项值"}', val: '', def: '[]' },
+                { name: 'modelValue', type: 'Object', desc: '选中的文件路径', val: '', def: '' },
+                { name: 'hideUpload', type: 'Boolean', desc: '是否隐藏上传按钮', val: '', def: 'false' },
+                { name: 'multiple', type: 'Boolean', desc: '是否支持多选', val: '', def: 'false' },
+                { name: 'max', type: 'Number', desc: '最大选择文件数', val: '', def: '' },
+                { name: 'onlyImage', type: 'Boolean', desc: '是否只接受图片文件', val: '', def: 'false' },
+                { name: 'maxSize', type: 'Number', desc: '最大文件大小（单位：字节）', val: '', def: '' },
             ],
             eventTable: [
             ]

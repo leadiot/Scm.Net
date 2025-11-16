@@ -44,8 +44,17 @@ export default {
                 code: `<sc-file-import ref="fileImport"></sc-file-import>`,
             },
             fieldTable: [
-                { name: 'modelValue', type: 'String', desc: 'Cron 表达式', val: '', def: '* * * * * ?' },
-                { name: 'shortcuts', type: 'Array', desc: '快捷选项，格式：{name: "快捷选项名称", value: "快捷选项值"}', val: '', def: '[]' },
+                { name: 'apiObj', type: 'Object', desc: '导入数据的 API 对象', val: '', def: '{}' },
+                { name: 'data', type: 'Object', desc: '导入数据', val: '', def: '{}' },
+                { name: 'accept', type: 'String', desc: '导入文件类型', val: '', def: 'xls,xlsx' },
+                { name: 'maxSize', type: 'Number', desc: '导入文件最大大小（单位：字节）', val: '', def: '10MB' },
+                { name: 'maxRows', type: 'Number', desc: '导入文件最大行数', val: '', def: '2000' },
+                { name: 'tip', type: 'String', desc: '导入文件提示信息', val: '', def: '' },
+                { name: 'templateUrl', type: 'String', desc: '导入数据模板 URL', val: '', def: '' },
+                { name: 'errorUrl', type: 'String', desc: '导入数据错误提示 URL', val: '', def: '' },
+                { name: 'autoUpload', type: 'Boolean', desc: '是否自动上传导入数据', val: '', def: 'true' },
+                { name: 'text', type: 'String', desc: '导入按钮文本', val: '', def: '导入' },
+                { name: 'title', type: 'String', desc: '导入窗口标题', val: '', def: '导入' },
             ],
             eventTable: [
             ]

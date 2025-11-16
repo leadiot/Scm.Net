@@ -46,8 +46,11 @@ export default {
 <sc-icon name="sc-user-line" color="red" :size="24"></sc-icon>`,
             },
             fieldTable: [
-                { name: 'modelValue', type: 'String', desc: 'Cron 表达式', val: '', def: '* * * * * ?' },
-                { name: 'shortcuts', type: 'Array', desc: '快捷选项，格式：{name: "快捷选项名称", value: "快捷选项值"}', val: '', def: '[]' },
+                { name: 'name', type: 'String', desc: '图标名称', val: '', def: '' },
+                { name: 'size', type: 'Number', desc: '图标大小', val: '', def: '24' },
+                { name: 'color', type: 'String', desc: '图标颜色', val: '', def: '' },
+                { name: 'title', type: 'String', desc: '图标提示', val: '', def: '' },
+                { name: 'type', type: 'String', desc: '图标风格', val: 'Filled、Outlined、Round、Sharp', def: 'Outlined' },
             ],
             eventTable: [
             ]

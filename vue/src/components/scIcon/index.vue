@@ -8,9 +8,9 @@ export default {
     props: {
         name: { type: String, default: '' },//图标名称
         size: { type: Number, default: 16 },//图标大小
-        type: { type: String, default: 'Outlined' },//风格：Filled、Outlined、Round、Sharp
         color: { type: String, default: '' },//颜色
         title: { type: String, default: '' },//提示
+        type: { type: String, default: 'Outlined' },//风格：Filled、Outlined、Round、Sharp
     },
     data() {
         return {

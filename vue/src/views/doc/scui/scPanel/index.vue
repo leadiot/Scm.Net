@@ -48,8 +48,8 @@ export default {
 </sc-panel>`,
             },
             fieldTable: [
-                { name: 'modelValue', type: 'String', desc: 'Cron 表达式', val: '', def: '* * * * * ?' },
-                { name: 'shortcuts', type: 'Array', desc: '快捷选项，格式：{name: "快捷选项名称", value: "快捷选项值"}', val: '', def: '[]' },
+                { name: 'title', type: 'String', desc: '面板标题', val: '', def: '' },
+                { name: 'description', type: 'String', desc: '面板描述', val: '', def: '' },
             ],
             eventTable: [
             ]

@@ -43,16 +43,16 @@
 <script>
 export default {
     name: "ScPanel",
+    props: {
+        title: { type: String, default: '卡片标题' },
+        description: { type: String, default: '这是工具说明！' },
+    },
     data() {
         return {
             fullPage: false,
             fullScreen: false,
             drawer: false,
         }
-    },
-    props: {
-        title: { type: String, default: '卡片标题' },
-        description: { type: String, default: '这是工具说明！' },
     },
     methods: {
         showDrawer() {

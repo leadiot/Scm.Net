@@ -73,10 +73,10 @@ export default {
 		maxRows: { type: Number, default: 2000 },
 		tip: { type: String, default: "" },
 		templateUrl: { type: String, default: "" },
-		text: { type: String, default: "导入" },
-		title: { type: String, default: "导入" },
 		errorUrl: { type: String, default: "" },
 		autoUpload: { type: Boolean, default: false },
+		text: { type: String, default: "导入" },
+		title: { type: String, default: "导入" },
 	},
 	data() {
 		return {

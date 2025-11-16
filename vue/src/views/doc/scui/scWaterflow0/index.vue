@@ -2,12 +2,9 @@
     <div class="doc-content">
         <div class="doc-content__body">
             <el-card>
-                <h1>WaterMark 水印组件</h1>
-                <p>WaterMark 组件用于添加水印。</p>
-                <sc-code lang="html" :code="example1.code" title="基础用法" desc="WaterMark 组件默认使用示例。">
-                    <sc-watermark ref="watermark" text="水印文字">
-                        <div style="width: 100%; height: 400px;"></div>
-                    </sc-watermark>
+                <h1>Waterflow 工作流组件</h1>
+                <p>Waterflow 组件用于添加工作流。</p>
+                <sc-code lang="html" :code="example1.code" title="基础用法" desc="Waterflow 组件默认使用示例。">
                 </sc-code>
 
                 <h2>属性</h2>
@@ -30,20 +27,20 @@
 </template>
 <script>
 import scCode from '@/components/scCode';
-import scWatermark from '@/components/scWatermark';
+import scWaterflow from '@/components/scWaterflow';
 
 export default {
-    name: 'scui_watermark',
+    name: 'scui_waterflow',
     components: {
         scCode,
-        scWatermark,
+        scWaterflow,
     },
     data() {
         return {
             example1: {
-                code: `<sc-watermark ref="watermark" text="水印文字">
+                code: `<sc-waterflow ref="waterflow" text="水印文字">
     <div style="width: 100%; height: 400px;"></div>
-</sc-watermark>`,
+</sc-waterflow>`,
             },
             fieldTable: [
                 { name: 'text', type: 'String', desc: '水印文字', val: '', def: '' },

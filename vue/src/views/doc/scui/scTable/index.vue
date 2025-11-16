@@ -1,6 +1,6 @@
 <template>
-    <div class="doc-content-wrapper">
-        <div class="doc-content-container">
+    <div class="doc-content">
+        <div class="doc-content__body">
             <el-card>
                 <h1>Table 表格组件</h1>
                 <p>Table 组件用于展示列表数据。</p>

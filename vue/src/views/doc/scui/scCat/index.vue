@@ -1,6 +1,6 @@
 <template>
-    <div class="doc-content-wrapper">
-        <div class="doc-content-container">
+    <div class="doc-content">
+        <div class="doc-content__body">
             <el-card>
                 <h1>Cat 类别</h1>
                 <p>Cat 类别用于显示应用的分类。</p>

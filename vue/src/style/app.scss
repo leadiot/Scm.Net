@@ -116,3 +116,83 @@ a,button,input,textarea{-webkit-tap-highlight-color:rgba(0,0,0,0);box-sizing: bo
 .scmui-item-node .opt i:hover {color: #333;}
 .scmui-item-node:hover .code {display: none;}
 .scmui-item-node:hover .opt {display: inline-block;}
+
+.doc-content {
+	--doc-content-width: 800px;
+}
+
+.doc-content__body {
+	padding: 2rem 0;
+}
+
+@media screen and (min-width: 768px) {
+	.doc-content {
+		padding: 0rem;
+	}
+}
+
+@media screen and (min-width: 960px) {
+	.doc-content {
+		padding: 0.5rem;
+	}
+
+	.doc-content__body {
+		width: var(--doc-content-width);
+		margin: 0 auto;
+	}
+}
+
+@media screen and (min-width: 1080px) {
+	.doc-content {
+		padding: 1rem;
+	}
+
+	.doc-content__body {
+		width: var(--doc-content-width);
+		margin: 0 auto;
+	}
+}
+
+.doc-content h1,
+.doc-content h2,
+.doc-content h3,
+.doc-content h4,
+.doc-content h5,
+.doc-content h6 {
+	margin: 0;
+	line-height: 1.25;
+	color: var(--el-text-color-regular);
+	font-weight: 600;
+	display: flex;
+	align-items: center;
+	position: relative;
+}
+
+.doc-content h1 .el-tag,
+.doc-content h1 .vp-tag,
+.doc-content h2 .el-tag,
+.doc-content h2 .vp-tag,
+.doc-content h3 .el-tag,
+.doc-content h3 .vp-tag,
+.doc-content h4 .el-tag,
+.doc-content h4 .vp-tag,
+.doc-content h5 .el-tag,
+.doc-content h5 .vp-tag,
+.doc-content h6 .el-tag,
+.doc-content h6 .vp-tag {
+	margin-left: 8px;
+}
+
+.doc-content h1 {
+	margin-top: 1.5rem;
+	margin-bottom: 2rem;
+	font-size: 1.9rem;
+}
+
+.doc-content h2 {
+	margin-top: 2.25rem;
+	margin-bottom: 1.25rem;
+	padding-bottom: 0.3rem;
+	line-height: 1.25;
+	font-size: 1.65rem;
+}

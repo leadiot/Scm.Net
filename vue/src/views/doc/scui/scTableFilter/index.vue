@@ -1,31 +1,29 @@
 <template>
-    <div class="doc-content-wrapper">
-        <div class="doc-content-container">
-            <div class="doc-content">
-                <el-card>
-                    <h1>TableFilter 表格过滤组件</h1>
-                    <p>TableFilter 组件用于过滤表格数据。</p>
-                    <sc-code lang="html" :code="example1.code" title="基础用法" desc="TableFilter 组件默认使用示例。">
-                        <sc-table-filter ref="tableFilter" :column="example1.column" :filter-name="example1.filterName"
-                            :show-operator="example1.showOperator" />
-                    </sc-code>
+    <div class="doc-content">
+        <div class="doc-content__body">
+            <el-card>
+                <h1>TableFilter 表格过滤组件</h1>
+                <p>TableFilter 组件用于过滤表格数据。</p>
+                <sc-code lang="html" :code="example1.code" title="基础用法" desc="TableFilter 组件默认使用示例。">
+                    <sc-table-filter ref="tableFilter" :column="example1.column" :filter-name="example1.filterName"
+                        :show-operator="example1.showOperator" />
+                </sc-code>
 
-                    <h2>属性</h2>
-                    <el-table :data="fieldTable" style="width: 100%">
-                        <el-table-column prop="name" label="属性名" width="120" />
-                        <el-table-column prop="desc" label="说明" />
-                        <el-table-column prop="type" label="类型" width="80" />
-                        <el-table-column prop="val" label="可选值" width="120" />
-                        <el-table-column prop="def" label="默认值" width="120" />
-                    </el-table>
-                    <h2>事件</h2>
-                    <el-table :data="eventTable" style="width: 100%">
-                        <el-table-column prop="name" label="事件名" width="120" />
-                        <el-table-column prop="desc" label="说明" />
-                        <el-table-column prop="args" label="回调参数" width="120" />
-                    </el-table>
-                </el-card>
-            </div>
+                <h2>属性</h2>
+                <el-table :data="fieldTable" style="width: 100%">
+                    <el-table-column prop="name" label="属性名" width="120" />
+                    <el-table-column prop="desc" label="说明" />
+                    <el-table-column prop="type" label="类型" width="80" />
+                    <el-table-column prop="val" label="可选值" width="120" />
+                    <el-table-column prop="def" label="默认值" width="120" />
+                </el-table>
+                <h2>事件</h2>
+                <el-table :data="eventTable" style="width: 100%">
+                    <el-table-column prop="name" label="事件名" width="120" />
+                    <el-table-column prop="desc" label="说明" />
+                    <el-table-column prop="args" label="回调参数" width="120" />
+                </el-table>
+            </el-card>
         </div>
     </div>
 </template>

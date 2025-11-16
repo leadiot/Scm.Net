@@ -44,8 +44,9 @@ export default {
                 code: `<sc-cropper ref="cropper" src="/img/logo.png"></sc-cropper>`,
             },
             fieldTable: [
-                { name: 'modelValue', type: 'String', desc: 'Cron 表达式', val: '', def: '* * * * * ?' },
-                { name: 'shortcuts', type: 'Array', desc: '快捷选项，格式：{name: "快捷选项名称", value: "快捷选项值"}', val: '', def: '[]' },
+                { name: 'src', type: 'String', desc: '图片路径', val: '', def: '' },
+                { name: 'compress', type: 'Number', desc: '压缩比例', val: '', def: '1' },
+                { name: 'aspectRatio', type: 'Number', desc: '裁剪比例', val: '', def: '' },
             ],
             eventTable: [
             ]

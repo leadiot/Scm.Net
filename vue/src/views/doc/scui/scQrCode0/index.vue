@@ -1,13 +1,30 @@
 <template>
     <div class="doc-content-wrapper">
         <div class="doc-content-container">
-            <el-card>
-                <h1>QrCode 二维码组件</h1>
-                <p>QrCode 组件用于二维码的展示。</p>
-                <sc-code lang="html" :code="example1.code" title="基础用法" desc="QrCode 组件默认使用示例。">
-                    <sc-qr-code text="https://www.baidu.com" :size="200"></sc-qr-code>
-                </sc-code>
-            </el-card>
+            <div class="doc-content">
+                <el-card>
+                    <h1>QrCode 二维码组件</h1>
+                    <p>QrCode 组件用于二维码的展示。</p>
+                    <sc-code lang="html" :code="example1.code" title="基础用法" desc="QrCode 组件默认使用示例。">
+                        <sc-qr-code text="https://www.baidu.com" :size="200"></sc-qr-code>
+                    </sc-code>
+
+                    <h2>属性</h2>
+                    <el-table :data="fieldTable" style="width: 100%">
+                        <el-table-column prop="name" label="属性名" width="120" />
+                        <el-table-column prop="desc" label="说明" />
+                        <el-table-column prop="type" label="类型" width="80" />
+                        <el-table-column prop="val" label="可选值" width="120" />
+                        <el-table-column prop="def" label="默认值" width="120" />
+                    </el-table>
+                    <h2>事件</h2>
+                    <el-table :data="eventTable" style="width: 100%">
+                        <el-table-column prop="name" label="事件名" width="120" />
+                        <el-table-column prop="desc" label="说明" />
+                        <el-table-column prop="args" label="回调参数" width="120" />
+                    </el-table>
+                </el-card>
+            </div>
         </div>
     </div>
 </template>
@@ -25,7 +42,13 @@ export default {
         return {
             example1: {
                 code: `<sc-qr-code text="https://www.baidu.com" :size="200"></sc-qr-code>`,
-            }
+            },
+            fieldTable: [
+                { name: 'modelValue', type: 'String', desc: '二维码内容', val: '', def: '' },
+                { name: 'size', type: 'Number', desc: '二维码大小', val: '', def: '200' },
+            ],
+            eventTable: [
+            ]
         };
     },
     methods: {

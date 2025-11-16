@@ -1,13 +1,35 @@
 <template>
     <div class="doc-content-wrapper">
         <div class="doc-content-container">
-            <el-card>
-                <h1>Form 动态表单</h1>
-                <p>Form 组件用于动态构建表单。</p>
-                <sc-code lang="html" :code="example1.code" title="基础用法" desc="Form 组件默认使用示例。">
-                    <sc-dynamic-form ref="form" v-model="example1.form" :config="example1.config"></sc-dynamic-form>
-                </sc-code>
-            </el-card>
+            <div class="doc-content">
+                <el-card>
+                    <h1>Form 动态表单</h1>
+                    <p>Form 组件用于动态构建表单。</p>
+                    <sc-code lang="html" :code="example1.code" title="基础用法" desc="Form 组件默认使用示例。">
+                        <sc-dynamic-form ref="form" v-model="example1.form" :config="example1.config"></sc-dynamic-form>
+                    </sc-code>
+
+                    <h2>属性</h2>
+                    <el-table :data="fieldTable" style="width: 100%">
+                        <el-table-column prop="name" label="属性名" width="120" />
+                        <el-table-column prop="desc" label="说明" />
+                        <el-table-column prop="type" label="类型" width="80" />
+                        <el-table-column prop="val" label="可选值" width="120" />
+                        <el-table-column prop="def" label="默认值" width="120" />
+                    </el-table>
+                    <h2>事件</h2>
+                    <el-table :data="eventTable" style="width: 100%">
+                        <el-table-column prop="name" label="事件名" width="120" />
+                        <el-table-column prop="desc" label="说明" />
+                        <el-table-column prop="args" label="回调参数" width="120" />
+                    </el-table>
+                    <h2>组件类型</h2>
+                    <el-table :data="typeTable" style="width: 100%">
+                        <el-table-column prop="name" label="类型名" width="120" />
+                        <el-table-column prop="desc" label="说明" />
+                    </el-table>
+                </el-card>
+            </div>
         </div>
     </div>
 </template>
@@ -69,6 +91,27 @@ export default {
                 },
                 code: `<sc-dynamic-form ref="form" v-model="form" :config="config"></sc-dynamic-form>`,
             },
+            fieldTable: [
+                { name: 'modelValue', type: 'Object', desc: '动态表单数据', val: '', def: '' },
+                { name: 'config', type: 'Object', desc: '动态表单配置，格式：{component: "组件类型", label: "组件标签", tips: "组件提示", name: "组件名称", message: "组件验证消息", options: {}}', val: '', def: '[]' },
+                { name: 'loading', type: 'Boolean', desc: '动态表单是否显示加载状态', val: '', def: 'false' },
+            ],
+            eventTable: [
+            ],
+            typeTable: [
+                { name: 'switch', type: '开关', desc: '开关组件' },
+                { name: 'checkbox', type: '多选', desc: '多选组件' },
+                { name: 'checkboxGroup', type: '多选组合', desc: '多选组合组件' },
+                { name: 'select', type: '选择框', desc: '选择框组件' },
+                { name: 'cascader', type: '级联选择框', desc: '级联选择框组件' },
+                { name: 'date', type: '日期选择框', desc: '日期选择框组件' },
+                { name: 'color', type: '颜色选择框', desc: '颜色选择框组件' },
+                { name: 'rate', type: '评分选择框', desc: '评分选择框组件' },
+                { name: 'slider', type: '滑块选择框', desc: '滑块选择框组件' },
+                { name: 'tableselect', type: '表格选择框', desc: '表格选择框组件' },
+                { name: 'upload', type: '文件上传', desc: '文件上传组件' },
+                { name: 'editor', type: '编辑器', desc: '编辑器组件' },
+            ]
         };
     },
     methods: {

@@ -44,10 +44,12 @@ export default {
                 code: `<sc-summary ref="summary" image="/img/logo.png" title="统计" summary="这是一个统计组件"></sc-summary>`,
             },
             fieldTable: [
-                { name: 'modelValue', type: 'String', desc: '统计值', val: '', def: '' },
-                { name: 'image', type: 'String', desc: '统计图标', val: '', def: '' },
-                { name: 'title', type: 'String', desc: '统计标题', val: '', def: '' },
-                { name: 'summary', type: 'String', desc: '统计描述', val: '', def: '' },
+                { name: 'title', type: 'String', desc: '标题', val: '', def: '' },
+                { name: 'summary', type: 'String', desc: '摘要', val: '', def: '' },
+                { name: 'image', type: 'String', desc: '显示图标', val: '', def: '' },
+                { name: 'imageSize', type: 'Number', desc: '图标大小', val: '', def: '50' },
+                { name: 'checkBox', type: 'Boolean', desc: '是否显示复选框', val: '', def: 'false' },
+                { name: 'checked', type: 'Boolean', desc: '是否选中', val: '', def: 'false' },
             ],
             eventTable: [
             ]

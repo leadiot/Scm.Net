@@ -6,8 +6,8 @@
                     <h1>Select User 人员选择器组件</h1>
                     <p>Select User 组件用于选择人员的展示。</p>
                     <sc-code lang="html" :code="example1.code" title="基础用法" desc="Select User 组件默认使用示例。">
-                        <sc-select-user ref="selectUser" v-model:selectOpen="example1.isOpenUser"
-                            @onSelect="selectUserRes"></sc-select-user>
+                        <sc-user-select ref="selectUser" v-model:selectOpen="example1.isOpenUser"
+                            @onSelect="selectUserRes"></sc-user-select>
                     </sc-code>
 
                     <h2>属性</h2>
@@ -31,24 +31,31 @@
 </template>
 <script>
 import scCode from '@/components/scCode';
-import scSelectUser from '@/components/scSelectUser';
+import scUserSelect from '@/components/scUserSelect';
 
 export default {
     name: 'scui_select_user',
     components: {
         scCode,
-        scSelectUser,
+        scUserSelect,
     },
     data() {
         return {
             example1: {
                 isOpenUser: false,
-                code: `<sc-select-user ref="selectUser" v-model:selectOpen="isOpenUser"
-                        @onSelect="selectUserRes"></sc-select-user>`,
+                code: `<sc-user-select ref="selectUser" v-model:selectOpen="isOpenUser"
+                        @onSelect="selectUserRes"></sc-user-select>`,
             },
             fieldTable: [
                 { name: 'modelValue', type: 'Array', desc: '选中的人员', val: '', def: '' },
+                { name: 'multiple', type: 'Boolean', desc: '是否支持多选', val: '', def: 'true' },
+                { name: 'multipleLimit', type: 'Number', desc: '多选限制数量', val: '', def: '0' },
+                { name: 'placeholder', type: 'String', desc: '占位符', val: '', def: '请选择' },
+                { name: 'width', type: 'Number', desc: '选择器宽度', val: '', def: '750' },
+                { name: 'hideInput', type: 'Boolean', desc: '是否隐藏输入框', val: '', def: 'false' },
                 { name: 'selectOpen', type: 'Boolean', desc: '选择器是否打开', val: '', def: 'false' },
+                { name: 'defaultValue', type: 'Array', desc: '默认选中的人员', val: '', def: '[]' },
+                { name: 'ignore', type: 'Array', desc: '忽略的人员', val: '', def: '[]' },
             ],
             eventTable: [
                 { name: 'onSelect', type: 'Function', desc: '选择人员事件', val: '', def: '' },

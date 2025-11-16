@@ -55,10 +55,12 @@ export default {
                 code: `<sc-select v-model="value" :options="options"></sc-select>`,
             },
             fieldTable: [
-                { name: 'modelValue', type: 'String', desc: '选中值', val: '', def: '' },
-                { name: 'options', type: 'Array', desc: '选项列表，格式：{label: "选项名称", value: "选项值"}', val: '', def: '[]' },
+                { name: 'apiObj', type: 'Object', desc: '数据查询 API 对象', val: '', def: '{}' },
+                { name: 'data', type: 'Object', desc: '选项列表，格式：{label: "选项名称", value: "选项值"}', val: '', def: '[]' },
+                { name: 'params', type: 'Object', desc: '查询参数', val: '', def: '{}' },
             ],
             eventTable: [
+                { name: 'change', type: 'Function', desc: '选中值改变时触发', val: '', def: '' },
             ]
         };
     },

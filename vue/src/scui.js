@@ -17,7 +17,7 @@ import scIcon from "./components/scIcon";
 import scList from "./components/scList";
 import scPageHeader from "./components/scPageHeader";
 import scPanel from "./components/scPanel";
-import scQrCode from "./components/scQrCode";
+import scQrcode from "./components/scQrcode";
 import scSearch from "./components/scSearch";
 import scSelect from "./components/scSelect";
 import scSelectFilter from "./components/scSelectFilter";
@@ -71,7 +71,7 @@ export default {
 		app.component("scTitle", scTitle);
 		app.component("scWaterfall", scWaterfall);
 		app.component("scWatermark", scWatermark);
-		app.component("scQrCode", scQrCode);
+		app.component("scQrcode", scQrcode);
 		app.component("scSelectFilter", scSelectFilter);
 		app.component("scFileImport", scFileImport);
 		app.component("scList", scList);

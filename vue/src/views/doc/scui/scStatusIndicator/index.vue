@@ -55,8 +55,9 @@ export default {
 <sc-status-indicator type="danger" pulse></sc-status-indicator>`,
             },
             fieldTable: [
-                { name: 'modelValue', type: 'String', desc: '状态类型', val: '', def: '' },
+                { name: 'type', type: 'String', desc: '状态类型', val: 'default, primary, success, info, warning, danger', def: 'default' },
                 { name: 'pulse', type: 'Boolean', desc: '是否脉冲', val: '', def: 'false' },
+                { name: 'size', type: 'Number', desc: '状态指示器大小', val: '', def: '8' },
             ],
             eventTable: [
             ]

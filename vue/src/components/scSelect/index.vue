@@ -1,7 +1,7 @@
 <template>
 	<el-select v-bind="$attrs" :loading="loading">
-		<el-option v-for="item in options" :key="item[props.value]" :label="item[props.label]" :value="item[props.value]"
-			:disabled="item.disabled">
+		<el-option v-for="item in options" :key="item[props.value]" :label="item[props.label]"
+			:value="item[props.value]" :disabled="item.disabled">
 			<slot name="option" :data="item"></slot>
 		</el-option>
 	</el-select>
@@ -13,8 +13,8 @@ import config from "@/config/select";
 export default {
 	props: {
 		apiObj: { type: Object, default: () => { } },
+		params: { type: Object, default: () => ({}) },
 		data: { type: Object, default: () => { } },
-		params: { type: Object, default: () => ({}) }
 	},
 	data() {
 		return {
@@ -34,7 +34,7 @@ export default {
 		//获取数据
 		async getRemoteData() {
 			this.loading = true;
-			let res = await this.apiObj.get();
+			let res = await this.apiObj.get(this.params);
 			this.options = res.data;
 			this.loading = false;
 		}

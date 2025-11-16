@@ -22,10 +22,10 @@ export default {
     },
     //获取子组件传过来的激活tab
     props: {
-        image: { type: String, default: null },
-        imageSize: { type: Number, default: 50 },
         title: { type: String, default: "" },
         summary: { type: String, default: "" },
+        image: { type: String, default: null },
+        imageSize: { type: Number, default: 50 },
         checkBox: { type: Boolean, default: false },
         checked: { type: Boolean, default: false }
     },

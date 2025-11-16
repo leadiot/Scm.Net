@@ -21,9 +21,9 @@ import config from "@/config/upload";
 export default {
 	props: {
 		modelValue: { type: [String, Array], default: "" },
+		apiObj: { type: Object, default: () => { } },
 		tip: { type: String, default: "" },
 		action: { type: String, default: "" },
-		apiObj: { type: Object, default: () => { } },
 		name: { type: String, default: config.filename },
 		data: { type: Object, default: () => { } },
 		accept: { type: String, default: "" },

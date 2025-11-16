@@ -10,8 +10,8 @@ export default {
 	props: {
 		text: { type: String, required: true, default: "" },
 		subtext: { type: String, default: "" },
-		color: { type: String, default: "rgba(128,128,128,0.2)" },
 		angle: { type: Number, default: -30 },
+		color: { type: String, default: "rgba(128,128,128,0.2)" },
 		fontSize: { type: Number, default: 20 },
 		fontFamily: { type: String, default: "SimHei" },
 		subtextFontSize: { type: Number, default: 14 },

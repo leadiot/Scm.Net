@@ -54,12 +54,12 @@ import config from "@/config/upload";
 export default {
 	props: {
 		modelValue: { type: String, default: "" },
-		height: { type: Number, default: 148 },
+		apiObj: { type: Object, default: () => { } },
+		action: { type: String, default: "" },
 		width: { type: Number, default: 148 },
+		height: { type: Number, default: 148 },
 		title: { type: String, default: "" },
 		icon: { type: String, default: "el-icon-plus" },
-		action: { type: String, default: "" },
-		apiObj: { type: Object, default: () => { } },
 		name: { type: String, default: config.filename },
 		data: { type: Object, default: () => { } },
 		accept: { type: String, default: "image/gif, image/jpeg, image/png" },

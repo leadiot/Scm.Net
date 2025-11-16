@@ -44,7 +44,6 @@ export default {
                 code: `<sc-title ref="title" title="这是一个标题" />`,
             },
             fieldTable: [
-                { name: 'modelValue', type: 'String', desc: '标题内容', val: '', def: '' },
                 { name: 'title', type: 'String', desc: '标题文本', val: '', def: '' },
             ],
             eventTable: [

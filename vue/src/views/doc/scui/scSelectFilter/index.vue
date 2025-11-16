@@ -83,8 +83,10 @@ export default {
                 code: `<sc-select-filter :data="options" :selectedValues="selectedValues"></sc-select-filter>`,
             },
             fieldTable: [
-                { name: 'modelValue', type: 'String', desc: '选中值', val: '', def: '' },
-                { name: 'options', type: 'Array', desc: '选项列表，格式：{title: "选项组名称", key: "选项组键值", options: [{icon: "图标类名", label: "选项名称", value: "选项值"}]}', val: '', def: '[]' },
+                { name: 'data', type: 'Array', desc: '选项列表，格式：{title: "选项组名称", key: "选项组键值", options: [{icon: "图标类名", label: "选项名称", value: "选项值"}]}', val: '', def: '[]' },
+                { name: 'selectedValues', type: 'Object', desc: '选中值，格式：{key: ["value1", "value2"]}', val: '', def: '{}' },
+                { name: 'labelWidth', type: 'Number', desc: '选项组标题宽度', val: '', def: '80' },
+                { name: 'outputValueTypeToArray', type: 'Boolean', desc: '是否将选中值转换为数组', val: '', def: 'false' },
             ],
             eventTable: [
             ]

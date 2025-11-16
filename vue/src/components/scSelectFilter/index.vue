@@ -24,12 +24,7 @@
 export default {
 	props: {
 		data: { type: Array, default: () => [] },
-		selectedValues: {
-			type: Object,
-			default: () => {
-				return {};
-			},
-		},
+		selectedValues: { type: Object, default: () => { } },
 		labelWidth: { type: Number, default: 80 },
 		outputValueTypeToArray: { type: Boolean, default: false },
 	},

@@ -48,7 +48,16 @@ export default {
 </sc-watermark>`,
             },
             fieldTable: [
-                { name: 'modelValue', type: 'String', desc: '水印文字', val: '', def: '' },
+                { name: 'text', type: 'String', desc: '水印文字', val: '', def: '' },
+                { name: 'subtext', type: 'String', desc: '水印子文字', val: '', def: '' },
+                { name: 'angle', type: 'Number', desc: '水印旋转角度', val: '', def: '-30' },
+                { name: 'color', type: 'String', desc: '水印字体颜色', val: '', def: 'rgba(128,128,128,0.2)' },
+                { name: 'fontSize', type: 'Number', desc: '水印字体大小', val: '', def: '20' },
+                { name: 'subtextFontSize', type: 'Number', desc: '水印子字体大小', val: '', def: '14' }, 
+                { name: 'fontFamily', type: 'String', desc: '水印字体', val: '', def: 'SimHei' },
+                { name: 'subtextFontFamily', type: 'String', desc: '水印子字体', val: '', def: 'Microsoft YaHei' },
+                // { name: 'fontWeight', type: 'String', desc: '水印字体粗细', val: '', def: 'normal' },
+                // { name: 'fontStyle', type: 'String', desc: '水印字体样式', val: '', def: 'normal' },
             ],
             eventTable: [
             ]

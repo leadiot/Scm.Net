@@ -63,12 +63,12 @@
 export default {
 	emits: ["onSelect", 'selectOpen', 'defaultValue'],
 	props: {
+		modelValue: null,
 		multiple: { type: Boolean, default: true },
 		multipleLimit: { type: Number, default: 0 },
 		placeholder: { type: String, default: "请选择" },
 		width: { type: Number, default: 750 },
 		hideInput: { type: Boolean, default: false },
-		modelValue: null,
 		selectOpen: { type: Boolean, default: false },
 		defaultValue: { type: Array, default: () => [] },
 		ignore: { type: Array, default: () => [] },

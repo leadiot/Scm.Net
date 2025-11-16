@@ -57,10 +57,10 @@ export default {
                 code: `<sc-table-filter ref="tableFilter" :column="column" :filter-name="filterName" :show-operator="showOperator" />`,
             },
             fieldTable: [
-                { name: 'modelValue', type: 'String', desc: '过滤值', val: '', def: '' },
                 { name: 'column', type: 'Array', desc: '表格列配置', val: '', def: '[]' },
-                { name: 'filterName', type: 'String', desc: '过滤名称', val: '', def: '' },
+                { name: 'filterName', type: 'String', desc: '过滤器名称', val: '', def: '' },
                 { name: 'showOperator', type: 'Boolean', desc: '是否显示操作符', val: '', def: 'false' },
+                { name: 'options', type: 'Array', desc: '过滤选项', val: '', def: '[]' },
             ],
             eventTable: [
             ]

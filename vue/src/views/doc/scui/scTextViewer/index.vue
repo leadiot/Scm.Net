@@ -45,8 +45,9 @@ export default {
                 code: `<sc-text-viewer ref="textViewer" :uri="uri"/>`,
             },
             fieldTable: [
-                { name: 'modelValue', type: 'String', desc: '文本内容', val: '', def: '' },
                 { name: 'uri', type: 'String', desc: '文本 URI', val: '', def: '' },
+                // { name: 'Name', type: 'String', desc: '标题', val: '', def: '' },
+                // { name: 'Data', type: 'String', desc: '数据', val: '', def: '600' },
             ],
             eventTable: [
             ]

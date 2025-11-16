@@ -48,6 +48,7 @@ export default {
                 { name: 'modelValue', type: 'Number', desc: '趋势值', val: '', def: '' },
                 { name: 'prefix', type: 'String', desc: '前缀文本', val: '', def: '' },
                 { name: 'suffix', type: 'String', desc: '后缀文本', val: '', def: '' },
+                { name: 'reverse', type: 'Boolean', desc: '是否反向', val: 'true/false', def: 'false' },
             ],
             eventTable: [
             ]

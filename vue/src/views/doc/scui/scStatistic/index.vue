@@ -46,12 +46,13 @@ export default {
  tips="当前的人流量统计"></sc-statistic>`,
             },
             fieldTable: [
-                { name: 'modelValue', type: 'String', desc: '统计值', val: '', def: '' },
                 { name: 'title', type: 'String', desc: '统计标题', val: '', def: '' },
-                { name: 'description', type: 'String', desc: '统计描述', val: '', def: '' },
+                { name: 'value', type: 'String', desc: '统计数据', val: '', def: '' },
                 { name: 'prefix', type: 'String', desc: '统计值前缀', val: '', def: '' },
                 { name: 'suffix', type: 'String', desc: '统计值后缀', val: '', def: '' },
+                { name: 'description', type: 'String', desc: '统计描述', val: '', def: '' },
                 { name: 'tips', type: 'String', desc: '统计提示', val: '', def: '' },
+                { name: 'groupSeparator', type: 'Boolean', desc: '是否显示组分隔符', val: '', def: 'false' },
             ],
             eventTable: [
             ]

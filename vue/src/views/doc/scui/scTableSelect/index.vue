@@ -47,6 +47,18 @@ export default {
             fieldTable: [
                 { name: 'modelValue', type: 'String', desc: '选择值', val: '', def: '' },
                 { name: 'apiObj', type: 'Object', desc: 'API 配置', val: '', def: '{}' },
+                { name: 'params', type: 'Array', desc: 'API 参数', val: '', def: '[]' },
+                { name: 'placeholder', type: 'String', desc: '占位符', val: '', def: '' },
+                { name: 'size', type: 'String', desc: '组件大小', val: 'small, medium, large', def: 'default' },
+                { name: 'clearable', type: 'Boolean', desc: '是否可清空', val: '', def: 'false' },
+                { name: 'multiple', type: 'Boolean', desc: '是否多选', val: '', def: 'false' },
+                { name: 'filterable', type: 'Boolean', desc: '是否可过滤', val: '', def: 'false' },
+                { name: 'collapseTags', type: 'Boolean', desc: '是否折叠标签', val: '', def: 'false' },
+                { name: 'collapseTagsTooltip', type: 'Boolean', desc: '是否折叠标签时显示 tooltip', val: '', def: 'false' },
+                { name: 'disabled', type: 'Boolean', desc: '是否禁用', val: '', def: 'false' },
+                { name: 'tableWidth', type: 'Number', desc: '表格宽度', val: '', def: '400' },
+                { name: 'mode', type: 'String', desc: '弹出模式', val: 'popover, dropdown', def: 'popover' },
+                { name: 'props', type: 'Object', desc: '表格列配置', val: '', def: '{}' },
             ],
             eventTable: [
             ]

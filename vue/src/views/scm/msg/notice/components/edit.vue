@@ -35,7 +35,7 @@
 <script>
 import { defineAsyncComponent } from "vue";
 const scEditor = defineAsyncComponent(() => import("@/components/scEditor"));
-const selectUser = defineAsyncComponent(() => import("@/components/scSelectUser"));
+const selectUser = defineAsyncComponent(() => import("@/components/scUserSelect"));
 
 export default {
 	components: {

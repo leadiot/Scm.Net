@@ -6,8 +6,8 @@
 <script>
 export default {
 	props: {
-		type: { type: String, default: "primary" },
-		pulse: { type: Boolean, default: false },
+		type: { type: String, default: "default" },
+		c: { type: Boolean, default: false },
 		size: { type: Number, default: 8 }
 	}
 }

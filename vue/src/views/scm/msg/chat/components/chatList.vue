@@ -32,7 +32,7 @@ import { defineAsyncComponent } from "vue";
 export default {
     emits: ['chatUser'],
     components: {
-        selectUser: defineAsyncComponent(() => import("@/components/scSelectUser")),
+        selectUser: defineAsyncComponent(() => import("@/components/scUserSelect")),
         chatPage: defineAsyncComponent(() => import("./chatPage")),
     },
     data() {

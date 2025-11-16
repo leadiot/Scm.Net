@@ -4,7 +4,7 @@
             <el-card>
                 <h1>FileImport 导入数据</h1>
                 <p>FileImport 组件用于导入数据文件。</p>
-                <sc-code lang="html" :code="code1" title="基础用法" desc="FileImport 组件默认使用示例。">
+                <sc-code lang="html" :code="example1.code" title="基础用法" desc="FileImport 组件默认使用示例。">
                     <sc-file-import ref="fileImport"></sc-file-import>
                 </sc-code>
             </el-card>
@@ -23,7 +23,9 @@ export default {
     },
     data() {
         return {
-            code1: `<sc-file-import ref="fileImport"></sc-file-import>`,
+            example1: {
+                code: `<sc-file-import ref="fileImport"></sc-file-import>`,
+            },
         };
     }
 }

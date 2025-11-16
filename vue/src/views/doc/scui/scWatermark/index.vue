@@ -5,7 +5,7 @@
                 <el-card>
                     <h1>WaterMark 水印组件</h1>
                     <p>WaterMark 组件用于添加水印。</p>
-                    <sc-code lang="html" :code="code1" title="基础用法" desc="WaterMark 组件默认使用示例。">
+                    <sc-code lang="html" :code="example1.code" title="基础用法" desc="WaterMark 组件默认使用示例。">
                         <sc-watermark ref="watermark" text="水印文字">
                             <div style="width: 100%; height: 400px;"></div>
                         </sc-watermark>
@@ -27,10 +27,11 @@ export default {
     },
     data() {
         return {
-            src: '',
-            code1: `<sc-watermark ref="watermark" text="水印文字">
+            example1: {
+                code: `<sc-watermark ref="watermark" text="水印文字">
     <div style="width: 100%; height: 400px;"></div>
 </sc-watermark>`,
+            },
         };
     },
     methods: {

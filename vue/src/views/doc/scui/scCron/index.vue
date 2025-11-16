@@ -5,8 +5,8 @@
                 <el-card>
                     <h1>Cron 表达式</h1>
                     <p>Cron 表达式用于定时任务表达式示例。</p>
-                    <sc-code lang="html" :code="code1" title="基础用法" desc="Cron 组件默认显示上下文菜单示例。">
-                        <sc-cron ref="cron" v-model="myCronValue" style="width: 200px"></sc-cron>
+                    <sc-code lang="html" :code="example1.code" title="基础用法" desc="Cron 组件默认显示上下文菜单示例。">
+                        <sc-cron ref="cron" v-model="example1.myCronValue" style="width: 200px"></sc-cron>
                     </sc-code>
 
                     <h2>属性</h2>
@@ -40,8 +40,10 @@ export default {
     },
     data() {
         return {
-            myCronValue: '* * * * * ?',
-            code1: `<sc-cron ref="cron" v-model="myCronValue"></sc-cron>`,
+            example1: {
+                myCronValue: '* * * * * ?',
+                code: `<sc-cron ref="cron" v-model="myCronValue"></sc-cron>`,
+            },
             fieldTable: [
                 { name: 'modelValue', type: 'String', desc: 'Cron 表达式', val: '', def: '* * * * * ?' },
                 { name: 'shortcuts', type: 'Array', desc: '快捷选项，格式：{name: "快捷选项名称", value: "快捷选项值"}', val: '', def: '[]' },

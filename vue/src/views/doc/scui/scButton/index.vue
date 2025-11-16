@@ -5,7 +5,7 @@
                 <el-card>
                     <h1>Button 按钮</h1>
                     <p>sc-button 组件默认用法</p>
-                    <sc-code lang="html" :code="code1" title="默认用法" desc="默认用法">
+                    <sc-code lang="html" :code="example1.code" title="默认用法" desc="默认用法">
                         <sc-button>Default</sc-button>
                         <sc-button type="primary">Primary</sc-button>
                         <sc-button type="info">Info</sc-button>
@@ -14,7 +14,7 @@
                         <sc-button type="danger">Danger</sc-button>
                     </sc-code>
 
-                    <sc-code lang="html" :code="code2" title="外观风格" desc="使用plain、round、circle属性">
+                    <sc-code lang="html" :code="example2.code" title="外观风格" desc="使用plain、round、circle属性">
                         <div>
                             <sc-button plain>Default</sc-button>
                             <sc-button type="primary" plain>Primary</sc-button>
@@ -41,7 +41,7 @@
                         </div>
                     </sc-code>
 
-                    <sc-code lang="html" :code="code3" title="禁用状态" desc="使用disabled属性">
+                    <sc-code lang="html" :code="example3.code" title="禁用状态" desc="使用disabled属性">
                         <sc-button icon="sc-user-line" type="default" disabled>Default</sc-button>
                         <sc-button icon="sc-user-line" type="primary" disabled>Primary</sc-button>
                         <sc-button icon="sc-user-line" type="info" disabled>Info</sc-button>
@@ -49,7 +49,7 @@
                         <sc-button icon="sc-user-line" type="warning" round disabled>Warning</sc-button>
                         <sc-button icon="sc-user-line" type="danger" circle disabled></sc-button>
                     </sc-code>
-                    
+
                     <h2>属性</h2>
                     <el-table :data="fieldTable" style="width: 100%">
                         <el-table-column prop="name" label="属性名" width="120" />
@@ -81,13 +81,16 @@ export default {
     },
     data() {
         return {
-            code1: `<sc-button>Default</sc-button>
+            example1: {
+                code: `<sc-button>Default</sc-button>
 <sc-button type="primary">Primary</sc-button>
 <sc-button type="info">Info</sc-button>
 <sc-button type="success">Success</sc-button>
 <sc-button type="warning">Warning</sc-button>
 <sc-button type="danger">Danger</sc-button>`,
-            code2: `<sc-button plain>Default</sc-button>
+            },
+            example2: {
+                code: `<sc-button plain>Default</sc-button>
 <sc-button type="primary" plain>Primary</sc-button>
 <sc-button type="info" plain>Info</sc-button>
 <sc-button type="success" plain>Success</sc-button>
@@ -107,12 +110,15 @@ export default {
 <sc-button icon="sc-user-line" type="success" circle></sc-button>
 <sc-button icon="sc-user-line" type="warning" circle></sc-button>
 <sc-button icon="sc-user-line" type="danger" circle></sc-button>`,
-            code3: `<sc-button icon="sc-user-line" type="default" disabled>Default</sc-button>
+            },
+            example3: {
+                code: `<sc-button icon="sc-user-line" type="default" disabled>Default</sc-button>
 <sc-button icon="sc-user-line" type="primary" disabled>Primary</sc-button>
 <sc-button icon="sc-user-line" type="info" disabled>Info</sc-button>
 <sc-button icon="sc-user-line" type="success" plain disabled>Success</sc-button>
 <sc-button icon="sc-user-line" type="warning" round disabled>Warning</sc-button>
 <sc-button icon="sc-user-line" type="danger" circle disabled></sc-button>`,
+            },
             fieldTable: [
                 { name: 'icon', type: 'String', desc: '图标', val: '', def: '' },
                 { name: 'size', type: 'Number', desc: '图标大小', val: '', def: '32' },

@@ -4,7 +4,7 @@
             <el-card>
                 <h1>QrCode 二维码组件</h1>
                 <p>QrCode 组件用于二维码的展示。</p>
-                <sc-code lang="html" :code="code1" title="基础用法" desc="QrCode 组件默认使用示例。">
+                <sc-code lang="html" :code="example1.code" title="基础用法" desc="QrCode 组件默认使用示例。">
                     <sc-qr-code text="https://www.baidu.com" :size="200"></sc-qr-code>
                 </sc-code>
             </el-card>
@@ -23,7 +23,9 @@ export default {
     },
     data() {
         return {
-            code1: `<sc-qr-code text="https://www.baidu.com" :size="200"></sc-qr-code>`,
+            example1: {
+                code: `<sc-qr-code text="https://www.baidu.com" :size="200"></sc-qr-code>`,
+            }
         };
     },
     methods: {

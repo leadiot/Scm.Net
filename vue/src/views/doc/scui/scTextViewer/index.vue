@@ -5,8 +5,8 @@
                 <el-card>
                     <h1>TextViewer 文本查看组件</h1>
                     <p>TextViewer 组件用于查看文本内容。</p>
-                    <sc-code lang="html" :code="code1" title="基础用法" desc="TextViewer 组件默认使用示例。">
-                        <sc-text-viewer ref="textViewer" :uri="uri" />
+                    <sc-code lang="html" :code="example1.code" title="基础用法" desc="TextViewer 组件默认使用示例。">
+                        <sc-text-viewer ref="textViewer" :uri="example1.uri" />
                     </sc-code>
                 </el-card>
             </div>
@@ -25,8 +25,10 @@ export default {
     },
     data() {
         return {
-            uri: 'https://www.baidu.com',
-            code1: `<sc-text-viewer ref="textViewer" :uri="uri"/>`,
+            example1: {
+                uri: 'https://www.baidu.com',
+                code: `<sc-text-viewer ref="textViewer" :uri="uri"/>`,
+            },
         };
     },
     methods: {

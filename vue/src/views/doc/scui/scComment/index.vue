@@ -5,7 +5,7 @@
                 <el-card>
                     <h1>Comment 评论</h1>
                     <p>Comment 评论用于显示评论示例。</p>
-                    <sc-code lang="html" :code="code1" title="基础用法" desc="Comment 组件默认显示评论示例。">
+                    <sc-code lang="html" :code="example1.code" title="基础用法" desc="Comment 组件默认显示评论示例。">
                         <sc-comment code="appId"></sc-comment>
                     </sc-code>
 
@@ -40,9 +40,9 @@ export default {
     },
     data() {
         return {
-            title: 'sc-comment',
-            desc: 'sc-comment 组件使用示例',
-            code1: `<sc-comment code="yourCode" showReply="false"></sc-comment>`,
+            example1: {
+                code: `<sc-comment code="yourCode" showReply="false"></sc-comment>`,
+            },
             fieldTable: [
                 { name: 'code', type: 'String', desc: '功能代码，用于展示指定功能的评论内容', val: '', def: '' },
                 { name: 'showReply', type: 'Boolean', desc: '是否显示回复按钮', val: '', def: 'false' },

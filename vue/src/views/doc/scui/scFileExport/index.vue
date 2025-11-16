@@ -4,7 +4,7 @@
             <el-card>
                 <h1>FileExport 导出数据</h1>
                 <p>FileExport 组件用于导出数据文件。</p>
-                <sc-code lang="html" :code="code1" title="基础用法" desc="FileExport 组件默认使用示例。">
+                <sc-code lang="html" :code="example1.code" title="基础用法" desc="FileExport 组件默认使用示例。">
                     <sc-file-export ref="fileExport"></sc-file-export>
                 </sc-code>
             </el-card>
@@ -23,7 +23,9 @@ export default {
     },
     data() {
         return {
-            code1: `<sc-file-export ref="fileExport"></sc-file-export>`,
+            example1: {
+                code: `<sc-file-export ref="fileExport"></sc-file-export>`,
+            },
         };
     }
 }

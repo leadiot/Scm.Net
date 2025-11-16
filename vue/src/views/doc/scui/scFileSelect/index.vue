@@ -4,9 +4,9 @@
             <el-card>
                 <h1>FileSelect 选择文件</h1>
                 <p>FileSelect 组件用于选择文件。</p>
-                <sc-code lang="html" :code="code1" title="基础用法" desc="FileSelect 组件默认使用示例。">
+                <sc-code lang="html" :code="example1.code" title="基础用法" desc="FileSelect 组件默认使用示例。">
                     <el-button type="primary" @click="handleClick">选择文件</el-button>
-                    <el-dialog title="选择文件" v-model="visible" width="640px" height="480px">
+                    <el-dialog title="选择文件" v-model="example1.visible" width="640px" height="480px">
                         <sc-file-select ref="fileSelect"></sc-file-select>
                     </el-dialog>
                 </sc-code>
@@ -26,13 +26,15 @@ export default {
     },
     data() {
         return {
-            visible: false,
-            code1: `<sc-file-select ref="fileSelect"></sc-file-select>`,
+            example1: {
+                visible: false,
+                code: `<sc-file-select ref="fileSelect"></sc-file-select>`,
+            },
         };
     },
     methods: {
         handleClick() {
-            this.visible = true;
+            this.example1.visible = true;
         }
     }
 }

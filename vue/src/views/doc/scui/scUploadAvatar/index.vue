@@ -5,7 +5,7 @@
                 <el-card>
                     <h1>UploadAvatar 上传头像组件</h1>
                     <p>UploadAvatar 组件用于上传头像。</p>
-                    <sc-code lang="html" :code="code1" title="基础用法" desc="UploadAvatar 组件默认使用示例。">
+                    <sc-code lang="html" :code="example1.code" title="基础用法" desc="UploadAvatar 组件默认使用示例。">
                         <sc-upload-avatar ref="uploadAvatar" />
                     </sc-code>
                 </el-card>
@@ -25,8 +25,9 @@ export default {
     },
     data() {
         return {
-            value: 1,
-            code1: `<sc-upload-avatar ref="uploadAvatar" />`,
+            example1: {
+                code: `<sc-upload-avatar ref="uploadAvatar" />`,
+            },
         };
     },
     methods: {

@@ -5,8 +5,8 @@
                 <el-card>
                     <h1>TableSelect 表格选择组件</h1>
                     <p>TableSelect 组件用于选择表格数据。</p>
-                    <sc-code lang="html" :code="code1" title="基础用法" desc="TableSelect 组件默认使用示例。">
-                        <sc-table-select ref="tableSelect" :api-obj="apiObj" />
+                    <sc-code lang="html" :code="example1.code" title="基础用法" desc="TableSelect 组件默认使用示例。">
+                        <sc-table-select ref="tableSelect" :api-obj="example1.apiObj" />
                     </sc-code>
                 </el-card>
             </div>
@@ -25,8 +25,10 @@ export default {
     },
     data() {
         return {
-            apiObj: this.$API.scmurgroup.list,
-            code1: `<sc-table-select ref="tableSelect" :api-obj="apiObj"/>`,
+            example1: {
+                apiObj: this.$API.scmurgroup.list,
+                code: `<sc-table-select ref="tableSelect" :api-obj="apiObj"/>`,
+            },
         };
     },
     methods: {

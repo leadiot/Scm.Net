@@ -4,7 +4,7 @@
             <el-card>
                 <h1>Icon 组件</h1>
                 <p>Icon 组件用于显示图标。</p>
-                <sc-code lang="html" :code="code1" title="基础用法" desc="Icon 组件默认使用示例。">
+                <sc-code lang="html" :code="example1.code" title="基础用法" desc="Icon 组件默认使用示例。">
                     <sc-icon name="sc-user-line"></sc-icon>
                     <sc-icon name="sc-user-line" color="red"></sc-icon>
                     <sc-icon name="sc-user-line" color="red" :size="24"></sc-icon>
@@ -23,9 +23,11 @@ export default {
     },
     data() {
         return {
-            code1: `<sc-icon name="sc-user-line"></sc-icon>
+            example1: {
+                code: `<sc-icon name="sc-user-line"></sc-icon>
 <sc-icon name="sc-user-line" color="red"></sc-icon>
 <sc-icon name="sc-user-line" color="red" :size="24"></sc-icon>`,
+            },
         };
     },
     methods: {

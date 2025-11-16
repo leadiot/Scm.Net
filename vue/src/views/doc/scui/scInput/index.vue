@@ -4,8 +4,8 @@
             <el-card>
                 <h1>Input 输入框</h1>
                 <p>Input 组件用于输入文本。</p>
-                <sc-code lang="html" :code="code1" title="基础用法" desc="Input 组件默认使用示例。">
-                    <sc-input ref="input" :data="list"></sc-input>
+                <sc-code lang="html" :code="example1.code" title="基础用法" desc="Input 组件默认使用示例。">
+                    <sc-input ref="input" :data="example1.list"></sc-input>
                 </sc-code>
             </el-card>
         </div>
@@ -23,8 +23,10 @@ export default {
     },
     data() {
         return {
-            list: [{ value: 'vue', link: 'https://github.com/vuejs/vue' }, { value: '22', link: 'https://github.com/vuejs/vue' }],
-            code1: `<sc-input ref="input" :data="list"></sc-input>`,
+            example1: {
+                list: [{ value: 'vue', link: 'https://github.com/vuejs/vue' }, { value: '22', link: 'https://github.com/vuejs/vue' }],
+                code: `<sc-input ref="input" :data="list"></sc-input>`,
+            },
         };
     },
     methods: {

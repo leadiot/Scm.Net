@@ -5,7 +5,7 @@
                 <el-card>
                     <h1>Upload 上传组件</h1>
                     <p>Upload 组件用于上传文件。</p>
-                    <sc-code lang="html" :code="code1" title="基础用法" desc="Upload 组件默认使用示例。">
+                    <sc-code lang="html" :code="example1.code" title="基础用法" desc="Upload 组件默认使用示例。">
                         <el-button type="primary" @click="uploadClick">点击上传</el-button>
                         <sc-upload ref="upload" @change="uploadChange" />
                     </sc-code>
@@ -26,9 +26,10 @@ export default {
     },
     data() {
         return {
-            value: 1,
-            code1: `<el-button type="primary" @click="uploadClick">点击上传</el-button>
+            example1: {
+                code: `<el-button type="primary" @click="uploadClick">点击上传</el-button>
 <sc-upload ref="upload" @change="uploadChange" />`,
+            },
         };
     },
     methods: {

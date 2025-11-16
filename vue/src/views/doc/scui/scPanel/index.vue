@@ -4,7 +4,7 @@
             <el-card>
                 <h1>Panel 面板组件</h1>
                 <p>Panel 组件用于页面内容的展示。</p>
-                <sc-code lang="html" :code="code1" title="基础用法" desc="Panel 组件默认使用示例。">
+                <sc-code lang="html" :code="example1.code" title="基础用法" desc="Panel 组件默认使用示例。">
                     <sc-panel ref="panel" title="面板标题" description="这是一段描述文本">
                         <p>这是一段描述文本</p>
                     </sc-panel>
@@ -25,10 +25,11 @@ export default {
     },
     data() {
         return {
-            data: 10,
-            code1: `<sc-panel ref="panel" title="面板标题" description="这是一段描述文本">
+            example1: {
+                code: `<sc-panel ref="panel" title="面板标题" description="这是一段描述文本">
     <p>这是一段描述文本</p>
 </sc-panel>`,
+            }
         };
     },
     methods: {

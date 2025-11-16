@@ -5,7 +5,7 @@
                 <el-card>
                     <h1>Contextmenu 上下文菜单</h1>
                     <p>Contextmenu 上下文菜单用于显示上下文菜单示例。</p>
-                    <sc-code lang="html" :code="code1" title="基础用法" desc="Contextmenu 组件默认显示上下文菜单示例。">
+                    <sc-code lang="html" :code="example1.code" title="基础用法" desc="Contextmenu 组件默认显示上下文菜单示例。">
                         <el-button type="primary" @click="cm">点击显示弹出菜单</el-button>
                         <sc-contextmenu ref="contextmenu">
                             <sc-contextmenu-item title="全选"></sc-contextmenu-item>
@@ -55,7 +55,8 @@ export default {
             visible: false,
             top: 0,
             left: 0,
-            code1: `<sc-contextmenu ref="contextmenu">
+            example1: {
+                code: `<sc-contextmenu ref="contextmenu">
     <sc-contextmenu-item title="全选"></sc-contextmenu-item>
     <sc-contextmenu-item title="复制"></sc-contextmenu-item>
     <sc-contextmenu-item title="粘贴"></sc-contextmenu-item>
@@ -70,6 +71,7 @@ export default {
         this.$refs.contextmenu.openMenu(e);
     }
 &lt;/script>`.replaceAll('&lt;', '<'),
+            },
             fieldTable: [
             ],
             eventTable: [

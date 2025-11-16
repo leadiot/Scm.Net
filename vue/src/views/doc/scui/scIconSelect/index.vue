@@ -4,7 +4,7 @@
             <el-card>
                 <h1>IconSelect 图标选择器</h1>
                 <p>IconSelect 组件用于选择图标。</p>
-                <sc-code lang="html" :code="code1" title="基础用法" desc="IconSelect 组件默认使用示例。">
+                <sc-code lang="html" :code="example1.code" title="基础用法" desc="IconSelect 组件默认使用示例。">
                     <sc-icon-select ref="iconSelect"></sc-icon-select>
                 </sc-code>
             </el-card>
@@ -23,7 +23,9 @@ export default {
     },
     data() {
         return {
-            code1: `<sc-icon-select ref="iconSelect"></sc-icon-select>`,
+            example1: {
+                code: `<sc-icon-select ref="iconSelect"></sc-icon-select>`,
+            },
         };
     },
     methods: {

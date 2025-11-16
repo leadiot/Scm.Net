@@ -4,8 +4,8 @@
             <el-card>
                 <h1>FormTable 动态表格</h1>
                 <p>FormTable 组件用于动态构建表格。</p>
-                <sc-code lang="html" :code="code1" title="基础用法" desc="FormTable 组件默认使用示例。">
-                    <sc-dynamic-table ref="formTable" v-model="list" :addTemplate="addTemplate">
+                <sc-code lang="html" :code="example1.code" title="基础用法" desc="FormTable 组件默认使用示例。">
+                    <sc-dynamic-table ref="formTable" v-model="example1.list" :addTemplate="example1.addTemplate">
                         <el-table-column label="姓名" prop="name">
                             <template #default="scope">
                                 <el-input v-model="scope.row.name" placeholder="请输入姓名"></el-input>
@@ -43,14 +43,15 @@ export default {
     },
     data() {
         return {
-            list: [],
-            addTemplate:
-            {
-                name: '',
-                age: 0,
-                score: 'A',
-            },
-            code1: `<sc-dynamic-table ref="formTable" v-model="list" :addTemplate="addTemplate">
+            example1: {
+                list: [],
+                addTemplate:
+                {
+                    name: '',
+                    age: 0,
+                    score: 'A',
+                },
+                code: `<sc-dynamic-table ref="formTable" v-model="list" :addTemplate="addTemplate">
     <el-table-column label="姓名" prop="name">
         <template #default="scope">
             <el-input v-model="scope.row.name" placeholder="请输入姓名"></el-input>
@@ -71,12 +72,10 @@ export default {
         </template>
     </el-table-column>
 </sc-dynamic-table>`,
+            }
         };
     },
     methods: {
-        handleClick() {
-            this.visible = true;
-        }
     }
 }
 </script>

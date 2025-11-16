@@ -38,11 +38,11 @@ export default {
     },
     data() {
         return {
-            title: 'sc-code',
-            desc: 'sc-code 组件使用示例',
-            code1: `<sc-code title="your title" desc="your desc" code="your code">
+            example1: {
+                code: `<sc-code title="your title" desc="your desc" code="your code">
     <el-button>测试</el-button>
 </sc-code>`,
+            },
             fieldTable: [
                 { name: 'title', type: 'String', desc: '标题', val: '', def: '' },
                 { name: 'desc', type: 'String', desc: '描述', val: '', def: '' },

@@ -4,8 +4,8 @@
             <el-card>
                 <h1>Select Filter 选择器组件</h1>
                 <p>Select Filter 组件用于选择器的展示。</p>
-                <sc-code lang="html" :code="code1" title="基础用法" desc="Select Filter 组件默认使用示例。">
-                    <sc-select-filter :data="options" :selectedValues="selectedValues"></sc-select-filter>
+                <sc-code lang="html" :code="example1.code" title="基础用法" desc="Select Filter 组件默认使用示例。">
+                    <sc-select-filter :data="example1.options" :selectedValues="example1.selectedValues"></sc-select-filter>
                 </sc-code>
             </el-card>
         </div>
@@ -23,45 +23,47 @@ export default {
     },
     data() {
         return {
-            options: [
-                {
-                    title: '选项1',
-                    key: 'key1',
-                    options: [
-                        {
-                            icon: 'sc-user-line',
-                            label: '选项1-1',
-                            value: '11'
-                        },
-                        {
-                            icon: 'sc-user-line',
-                            label: '选项1-2',
-                            value: '12'
-                        }
-                    ]
+            example1: {
+                options: [
+                    {
+                        title: '选项1',
+                        key: 'key1',
+                        options: [
+                            {
+                                icon: 'sc-user-line',
+                                label: '选项1-1',
+                                value: '11'
+                            },
+                            {
+                                icon: 'sc-user-line',
+                                label: '选项1-2',
+                                value: '12'
+                            }
+                        ]
+                    },
+                    {
+                        title: '选项2',
+                        key: 'key2',
+                        options: [
+                            {
+                                icon: 'sc-user-line',
+                                label: '选项2-1',
+                                value: '21'
+                            },
+                            {
+                                icon: 'sc-user-line',
+                                label: '选项2-2',
+                                value: '22'
+                            }
+                        ]
+                    }
+                ],
+                selectedValues: {
+                    'key1': ['11'],
+                    'key2': ['22'],
                 },
-                {
-                    title: '选项2',
-                    key: 'key2',
-                    options: [
-                        {
-                            icon: 'sc-user-line',
-                            label: '选项2-1',
-                            value: '21'
-                        },
-                        {
-                            icon: 'sc-user-line',
-                            label: '选项2-2',
-                            value: '22'
-                        }
-                    ]
-                }
-            ],
-            selectedValues: {
-                'key1': ['11'],
-                'key2': ['22'],
-            },
-            code1: `<sc-select v-model="value" :options="options"></sc-select>`,
+                code: `<sc-select-filter :data="options" :selectedValues="selectedValues"></sc-select-filter>`,
+            }
         };
     },
     methods: {

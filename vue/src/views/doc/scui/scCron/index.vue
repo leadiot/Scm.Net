@@ -2,8 +2,8 @@
     <div class="doc-content">
         <div class="doc-content__body">
             <el-card>
-                <h1>Cron 表达式</h1>
-                <p>Cron 表达式用于定时任务表达式示例。</p>
+                <h1>Cron 表达式组件</h1>
+                <p>Cron 表达式组件用于定时任务表达式示例。</p>
                 <sc-code lang="html" :code="example1.code" title="基础用法" desc="Cron 组件默认显示上下文菜单示例。">
                     <sc-cron ref="cron" v-model="example1.myCronValue" style="width: 200px"></sc-cron>
                 </sc-code>

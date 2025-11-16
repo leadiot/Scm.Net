@@ -3,7 +3,7 @@
         <div class="doc-content__body">
             <el-card>
                 <h1>Select Filter 选择器组件</h1>
-                <p>Select Filter 组件用于选择器的展示。</p>
+                <p>Select Filter 选择器组件用于选择器的展示。</p>
                 <sc-code lang="html" :code="example1.code" title="基础用法" desc="Select Filter 组件默认使用示例。">
                     <sc-select-filter :data="example1.options"
                         :selectedValues="example1.selectedValues"></sc-select-filter>

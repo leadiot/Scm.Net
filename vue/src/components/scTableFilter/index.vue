@@ -87,8 +87,8 @@
 
 			<template #footer>
 				<span class="dialog-footer">
-					<el-button type="primary" @click="Ok">确定</el-button>
 					<el-button @click="dialog = false">取消</el-button>
+					<el-button type="primary" @click="Ok">确定</el-button>
 				</span>
 			</template>
 		</el-dialog>

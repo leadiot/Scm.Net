@@ -27,7 +27,7 @@
 </template>
 <script>
 import scCode from '@/components/scCode';
-import scWaterflow from '@/components/scWaterflow';
+import scWaterflow from '@/components/scWaterfall';
 
 export default {
     name: 'scui_waterflow',

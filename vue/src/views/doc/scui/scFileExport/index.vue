@@ -2,7 +2,7 @@
     <div class="doc-content">
         <div class="doc-content__body">
             <el-card>
-                <h1>FileExport 导出数据</h1>
+                <h1>FileExport 导出数据组件</h1>
                 <p>FileExport 组件用于导出数据文件。</p>
                 <sc-code lang="html" :code="example1.code" title="基础用法" desc="FileExport 组件默认使用示例。">
                     <sc-file-export ref="fileExport"></sc-file-export>

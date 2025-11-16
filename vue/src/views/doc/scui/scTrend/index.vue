@@ -5,7 +5,9 @@
                 <h1>Trend 趋势组件</h1>
                 <p>Trend 组件用于显示趋势。</p>
                 <sc-code lang="html" :code="example1.code" title="基础用法" desc="Trend 组件默认使用示例。">
-                    <sc-trend ref="trend" v-model="example1.value" prefix="前缀" suffix="后缀" />
+                    <sc-trend ref="trend" v-model="example1.value1" prefix="前缀" suffix="后缀" />
+                    <sc-trend ref="trend" v-model="example1.value2" prefix="前缀" suffix="后缀" />
+                    <sc-trend ref="trend" v-model="example1.value3" prefix="前缀" suffix="后缀" />
                 </sc-code>
 
                 <h2>属性</h2>
@@ -39,8 +41,12 @@ export default {
     data() {
         return {
             example1: {
-                value: 1,
-                code: `<sc-trend ref="trend" v-model="value" prefix="前缀" suffix="后缀" />`,
+                value1: 1,
+                value2: 0,
+                value3: -32,
+                code: `<sc-trend ref="trend" v-model="example1.value1" prefix="前缀" suffix="后缀" />
+<sc-trend ref="trend" v-model="example1.value2" prefix="前缀" suffix="后缀" />
+<sc-trend ref="trend" v-model="example1.value3" prefix="前缀" suffix="后缀" />`,
             },
             fieldTable: [
                 { name: 'modelValue', type: 'Number', desc: '趋势值', val: '', def: '' },

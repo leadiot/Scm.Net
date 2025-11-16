@@ -3,7 +3,7 @@
         <div class="doc-content__body">
             <el-card>
                 <h1>QrCode 二维码组件</h1>
-                <p>QrCode 组件用于二维码的展示。</p>
+                <p>QrCode 二维码组件用于二维码的展示。</p>
                 <sc-code lang="html" :code="example1.code" title="基础用法" desc="Qrcode 组件默认使用示例。">
                     <sc-qrcode text="https://www.baidu.com" :size="200"></sc-qrcode>
                 </sc-code>

@@ -2,7 +2,7 @@
     <div class="doc-content">
         <div class="doc-content__body">
             <el-card>
-                <h1>Form 动态表单</h1>
+                <h1>Form 动态表单组件</h1>
                 <p>Form 组件用于动态构建表单。</p>
                 <sc-code lang="html" :code="example1.code" title="基础用法" desc="Form 组件默认使用示例。">
                     <sc-dynamic-form ref="form" v-model="example1.form" :config="example1.config"></sc-dynamic-form>

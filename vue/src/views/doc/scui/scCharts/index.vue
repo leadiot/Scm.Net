@@ -2,8 +2,8 @@
     <div class="doc-content">
         <div class="doc-content__body">
             <el-card>
-                <h1>Charts 图表</h1>
-                <p>Charts 组件用于显示图表示例。</p>
+                <h1>Charts 图表组件</h1>
+                <p>Charts 图表组件用于显示图表示例。</p>
                 <sc-code lang="html" :code="example1.code" title="基础用法" desc="Charts 组件默认使用示例。">
                     <sc-charts :option="example1.optionCharts" height="400px"></sc-charts>
                 </sc-code>

@@ -2,7 +2,7 @@
     <div class="doc-content">
         <div class="doc-content__body">
             <el-card>
-                <h1>FileSelect 选择文件</h1>
+                <h1>FileSelect 选择文件组件</h1>
                 <p>FileSelect 组件用于选择文件。</p>
                 <sc-code lang="html" :code="example1.code" title="基础用法" desc="FileSelect 组件默认使用示例。">
                     <el-button type="primary" @click="handleClick">选择文件</el-button>

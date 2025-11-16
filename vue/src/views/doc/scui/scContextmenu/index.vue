@@ -2,8 +2,8 @@
     <div class="doc-content">
         <div class="doc-content__body">
             <el-card>
-                <h1>Contextmenu 上下文菜单</h1>
-                <p>Contextmenu 上下文菜单用于显示上下文菜单示例。</p>
+                <h1>Contextmenu 上下文菜单组件</h1>
+                <p>Contextmenu 上下文菜单组件用于显示上下文菜单示例。</p>
                 <sc-code lang="html" :code="example1.code" title="基础用法" desc="Contextmenu 组件默认显示上下文菜单示例。">
                     <el-button type="primary" @click="cm">点击显示弹出菜单</el-button>
                     <sc-contextmenu ref="contextmenu">

@@ -2,7 +2,7 @@
     <div class="doc-content">
         <div class="doc-content__body">
             <el-card>
-                <h1>IconSelect 图标选择器</h1>
+                <h1>IconSelect 图标选择器组件</h1>
                 <p>IconSelect 组件用于选择图标。</p>
                 <sc-code lang="html" :code="example1.code" title="基础用法" desc="IconSelect 组件默认使用示例。">
                     <sc-icon-select ref="iconSelect"></sc-icon-select>

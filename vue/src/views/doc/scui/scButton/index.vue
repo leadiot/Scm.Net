@@ -2,8 +2,8 @@
     <div class="doc-content">
         <div class="doc-content__body">
             <el-card>
-                <h1>Button 按钮</h1>
-                <p>Button 组件默认用法</p>
+                <h1>Button 按钮组件</h1>
+                <p>Button 按钮组件默认用法</p>
                 <sc-code lang="html" :code="example1.code" title="默认用法" desc="默认用法">
                     <sc-button>Default</sc-button>
                     <sc-button type="primary">Primary</sc-button>

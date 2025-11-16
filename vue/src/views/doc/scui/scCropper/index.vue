@@ -2,7 +2,7 @@
     <div class="doc-content">
         <div class="doc-content__body">
             <el-card>
-                <h1>Cropper 图片裁剪</h1>
+                <h1>Cropper 图片裁剪组件</h1>
                 <p>Cropper 组件用于图片裁剪示例。</p>
                 <sc-code lang="html" :code="example1.code" title="基础用法" desc="Cropper 组件默认使用示例。">
                     <sc-cropper ref="cropper" src="/img/logo.png"></sc-cropper>

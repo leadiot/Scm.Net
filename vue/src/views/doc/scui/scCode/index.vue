@@ -3,8 +3,8 @@
         <div class="doc-content__body">
             <el-card>
                 <h1>Code 代码组件</h1>
-                <p>Code 组件用于显示代码示例。</p>
-                <sc-code lang="html" title="基础用法" desc="Code 组件默认显示代码示例。">
+                <p>Code 代码组件用于显示代码示例。</p>
+                <sc-code lang="html" :code="example1.code" title="基础用法" desc="Code 组件默认显示代码示例。">
                     <el-button>测试</el-button>
                 </sc-code>
 
@@ -37,7 +37,7 @@ export default {
     data() {
         return {
             example1: {
-                code: `<sc-code title="your title" desc="your desc" code="your code">
+                code: `<sc-code lang="html" title="基础用法" desc="Code 组件默认显示代码示例。">
     <el-button>测试</el-button>
 </sc-code>`,
             },

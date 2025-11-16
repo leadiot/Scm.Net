@@ -2,7 +2,7 @@
     <div class="doc-content">
         <div class="doc-content__body">
             <el-card>
-                <h1>FormTable 动态表格</h1>
+                <h1>FormTable 动态表格组件</h1>
                 <p>FormTable 组件用于动态构建表格。</p>
                 <sc-code lang="html" :code="example1.code" title="基础用法" desc="FormTable 组件默认使用示例。">
                     <sc-dynamic-table ref="formTable" v-model="example1.list" :addTemplate="example1.addTemplate">

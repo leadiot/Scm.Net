@@ -2,8 +2,8 @@
     <div class="doc-content">
         <div class="doc-content__body">
             <el-card>
-                <h1>Input 输入框</h1>
-                <p>Input 组件用于输入文本。</p>
+                <h1>Input 输入框组件</h1>
+                <p>Input 输入框组件用于输入文本。</p>
                 <sc-code lang="html" :code="example1.code" title="基础用法" desc="Input 组件默认使用示例。">
                     <sc-input ref="input" :data="example1.list"></sc-input>
                 </sc-code>

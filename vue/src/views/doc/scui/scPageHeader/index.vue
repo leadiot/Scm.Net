@@ -2,8 +2,8 @@
     <div class="doc-content">
         <div class="doc-content__body">
             <el-card>
-                <h1>PageHeader 页面标题</h1>
-                <p>PageHeader 组件用于页面标题。</p>
+                <h1>PageHeader 页面标题组件</h1>
+                <p>PageHeader 页面标题组件用于页面标题。</p>
                 <sc-code lang="html" :code="example1.code" title="基础用法" desc="Page Header 组件默认使用示例。">
                     <sc-page-header ref="pageHeader" icon="sc-user-line" title="页面标题" description="这是一段描述文本" />
                 </sc-code>

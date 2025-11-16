@@ -3,7 +3,7 @@
         <div class="doc-content__body">
             <el-card>
                 <h1>PasswordStrength 密码强度组件</h1>
-                <p>PasswordStrength 组件用于密码强度的展示。</p>
+                <p>PasswordStrength 密码强度组件用于密码强度的展示。</p>
                 <sc-code lang="html" :code="example1.code" title="基础用法" desc="PasswordStrength 组件默认使用示例。">
                     <el-form>
                         <el-form-item label="登录密码" prop="password">

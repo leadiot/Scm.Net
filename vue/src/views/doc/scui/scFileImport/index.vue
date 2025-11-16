@@ -2,7 +2,7 @@
     <div class="doc-content">
         <div class="doc-content__body">
             <el-card>
-                <h1>FileImport 导入数据</h1>
+                <h1>FileImport 导入数据组件</h1>
                 <p>FileImport 组件用于导入数据文件。</p>
                 <sc-code lang="html" :code="example1.code" title="基础用法" desc="FileImport 组件默认使用示例。">
                     <sc-file-import ref="fileImport"></sc-file-import>

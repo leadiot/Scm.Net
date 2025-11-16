@@ -2,8 +2,8 @@
     <div class="doc-content">
         <div class="doc-content__body">
             <el-card>
-                <h1>Comment 评论</h1>
-                <p>Comment 评论用于显示评论示例。</p>
+                <h1>Comment 评论组件</h1>
+                <p>Comment 评论组件用于显示评论示例。</p>
                 <sc-code lang="html" :code="example1.code" title="基础用法" desc="Comment 组件默认显示评论示例。">
                     <sc-comment code="appId"></sc-comment>
                 </sc-code>

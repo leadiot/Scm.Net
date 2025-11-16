@@ -2,7 +2,7 @@
     <div class="doc-content">
         <div class="doc-content__body">
             <el-card>
-                <h1>Dialog 对话框</h1>
+                <h1>Dialog 对话框组件</h1>
                 <p>Dialog 组件用于显示对话框示例。</p>
                 <sc-code lang="html" :code="example1.code" title="基础用法" desc="Dialog 组件默认使用示例。">
                     <el-button type="danger" @click="example1.visible = true">显示对话框</el-button>

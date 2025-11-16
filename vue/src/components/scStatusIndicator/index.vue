@@ -7,7 +7,7 @@
 export default {
 	props: {
 		type: { type: String, default: "default" },
-		c: { type: Boolean, default: false },
+		pulse: { type: Boolean, default: false },
 		size: { type: Number, default: 8 }
 	}
 }

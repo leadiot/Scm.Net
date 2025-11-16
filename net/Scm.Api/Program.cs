@@ -150,6 +150,8 @@ namespace Com.Scm.Api
 
             var app = builder.Build();
 
+            AppUtils.ServiceProvider = app.Services;
+
             if (app.Environment.IsDevelopment())
             {
                 app.UseSwaggerSetup(swaggerConfig);

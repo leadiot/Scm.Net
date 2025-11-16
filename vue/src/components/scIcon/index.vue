@@ -1,5 +1,5 @@
 <template>
-    <i :class="getScClass()" :style="{ 'color': color }" v-if="isSc()"></i>
+    <i :class="getScClass()" :style="{ 'fontSize': size + 'px', 'color': color }" v-if="isSc()"></i>
     <i :class="getMsClass()" :style="{ 'fontSize': size + 'px', 'color': color }" v-else>{{ getMsName() }}</i>
 </template>
 

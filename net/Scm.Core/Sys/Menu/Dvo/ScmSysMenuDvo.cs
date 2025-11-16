@@ -6,7 +6,7 @@ namespace Com.Scm.Sys.Menu.Dvo
     /// <summary>
     /// 
     /// </summary>
-    public class SysMenuDvo : ScmDataDvo
+    public class ScmSysMenuDvo : ScmDataDvo
     {
         /// <summary>
         /// 菜单类型

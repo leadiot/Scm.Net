@@ -7,7 +7,7 @@
                 <sc-code lang="html" :code="example1.code" title="基础用法" desc="Icon 组件默认使用示例。">
                     <sc-icon name="sc-user-line"></sc-icon>
                     <sc-icon name="sc-user-line" color="red"></sc-icon>
-                    <sc-icon name="sc-user-line" color="red" :size="24"></sc-icon>
+                    <sc-icon name="sc-user-line" color="#FF00FF" :size="24"></sc-icon>
                 </sc-code>
 
                 <h2>属性</h2>

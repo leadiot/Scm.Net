@@ -27,8 +27,8 @@
 						<!-- radio -->
 						<template v-else-if="item.component == 'radio'">
 							<el-radio-group v-model="form[item.name]">
-								<el-radio v-for="_item in item.options.items" :key="_item.value"
-									:value="_item.value">{{ _item.label }}</el-radio>
+								<el-radio v-for="_item in item.options.items" :key="_item.value" :value="_item.value">{{
+									_item.label }}</el-radio>
 							</el-radio-group>
 						</template>
 						<!-- switch -->
@@ -125,7 +125,7 @@ import http from "@/utils/request"
 
 import { defineAsyncComponent } from 'vue'
 const tableselectRender = defineAsyncComponent(() => import('./items/tableselect'))
-const scEditor = defineAsyncComponent(() => import('@/components/scEditor'))
+const scEditor = defineAsyncComponent(() => import('@/components/scEditor/rich.vue'))
 
 export default {
 	props: {

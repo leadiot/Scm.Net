@@ -1,3 +1,6 @@
+/**
+* 纯文本编辑器
+*/
 <template>
 	<el-container class="notepad">
 		<el-header class="notepad-toolbar">

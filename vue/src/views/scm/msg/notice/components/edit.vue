@@ -15,8 +15,8 @@
 		</div>
 
 		<div class="notice-file">
-			<sc-upload-file v-model="formData.files" :apiObj="uploadApi" :limit="3" :maxSize="100" :onSuccess="upSuccess"
-				tip="最多上传3个文件,单个文件不要超过100M">
+			<sc-upload-file v-model="formData.files" :apiObj="uploadApi" :limit="3" :maxSize="100"
+				:onSuccess="upSuccess" tip="最多上传3个文件,单个文件不要超过100M">
 				<el-button type="primary" icon="el-icon-upload">上传附件</el-button>
 			</sc-upload-file>
 		</div>
@@ -34,7 +34,7 @@
 </template>
 <script>
 import { defineAsyncComponent } from "vue";
-const scEditor = defineAsyncComponent(() => import("@/components/scEditor"));
+const scEditor = defineAsyncComponent(() => import("@/components/scEditor/rich.vue"));
 const selectUser = defineAsyncComponent(() => import("@/components/scUserSelect"));
 
 export default {

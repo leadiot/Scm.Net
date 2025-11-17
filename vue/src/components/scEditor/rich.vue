@@ -3,17 +3,21 @@
 * 基于 quill.js 实现
 */
 <template>
-    <slot name="toolbar"></slot>
-    <div ref="editor">{{ content }}</div>
+    <div :style="{ height: height > 30 ? (height - 80) + 'px' : 'auto', width: width > 0 ? width + 'px' : '100%' }">
+        <slot name="toolbar"></slot>
+        <div ref="editor">{{ modelValue }}</div>
+    </div>
 </template>
 
 <script>
 export default {
     name: 'scEditor',
     props: {
-        content: { type: String, default: '' },
+        modelValue: { type: String, default: '' },
         placeholder: { type: String, default: '请输入文本 ...' },
         toolbar: { type: String, default: null },
+        height: { type: Number, default: 0 },
+        width: { type: Number, default: 0 },
         disabled: { type: Boolean, default: false },
         readOnly: { type: Boolean, default: false },
         options: { type: Object, required: false, default: () => { } },
@@ -22,7 +26,7 @@ export default {
     data() {
         return {
             quill: null,
-            editorContent: '',
+            editorContent: this.modelValue,
             editorOptions: {},
             defaultOptions: {
                 theme: 'snow',
@@ -66,15 +70,11 @@ export default {
         delete this.quill;
     },
     watch: {
-        content(newVal) {
-            if (this.quill) {
-                if (newVal && newVal !== this.editorContent) {
-                    this.editorContent = newVal;
-                    // this.quill.setContents(newVal);
-                } else if (!newVal) {
-                    // this.quill.setText('\n');
-                }
-            }
+        modelValue(newVal) {
+            this.editorContent = newVal;
+        },
+        editorContent(val) {
+            this.$emit('update:modelValue', val);
         },
         disabled(newVal) {
             if (this.quill) {
@@ -84,8 +84,8 @@ export default {
     },
     methods: {
         initialize() {
-            // if (this.content) {
-            //     this.editorContent = this.content + '\n';
+            // if (this.modelValue) {
+            //     this.editorContent = this.modelValue + '\n';
             //     this.$refs.editor.innerHTML = this.editorContent;
             // }
             this.editorOptions = Object.assign({}, this.defaultOptions, this.globalOptions, this.options);

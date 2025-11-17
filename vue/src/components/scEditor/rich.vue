@@ -3,9 +3,12 @@
 * 基于 quill.js 实现
 */
 <template>
-    <div :style="{ height: height > 30 ? (height - 80) + 'px' : 'auto', width: width > 0 ? width + 'px' : '100%' }">
+    <div style="width: 100%;">
         <slot name="toolbar"></slot>
-        <div ref="editor">{{ modelValue }}</div>
+        <div ref="editor"
+            :style="{ height: height > 0 ? height + 'px' : 'auto', width: width > 0 ? width + 'px' : '100%' }">
+            {{ modelValue }}
+        </div>
     </div>
 </template>
 

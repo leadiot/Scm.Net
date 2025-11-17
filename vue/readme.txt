@@ -19,7 +19,7 @@ VUE_APP_API_BASEURL = http://api.c-scm.net
 3、src/config/index.js；
 
 【待办事项】
-1、富文本编辑功能；
+1、富文本编辑功能；--已完成 2025-11-17
 2、大屏展示功能；
 3、短信配置功能；
 4、邮件配置功能；

@@ -91,7 +91,7 @@
 						</template>
 						<!-- editor -->
 						<template v-else-if="item.component == 'editor'">
-							<sc-editor v-model="form[item.name]" placeholder="请输入" :height="400"></sc-editor>
+							<sc-editor v-model="form[item.name]" placeholder="请输入" :height="200"></sc-editor>
 						</template>
 						<!-- upload -->
 						<template v-else-if="item.component == 'upload'">

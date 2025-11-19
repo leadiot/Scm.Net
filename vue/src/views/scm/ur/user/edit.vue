@@ -198,10 +198,11 @@ export default {
 				email: "",
 				status: true,
 				remark: "",
-				avatar: undefined,
+				avatar: this.$SCM.get_avatar(),
 				organize_list: [],
 				position_list: [],
 				role_list: [],
+				last_time: 0,
 				login_count: 0,
 			};
 		},
@@ -246,8 +247,6 @@ export default {
 				this.mode = "edit";
 				var res = await this.$API.scmuruser.edit.get(row.id);
 				res.data.avatar = this.$SCM.get_avatar(res.data.avatar);
-				console.log(res.data.avatar)
-				// res.data.sex = '' + res.data.sex;
 				this.formData = res.data;
 			}
 			this.visible = true;
@@ -256,15 +255,10 @@ export default {
 			this.$refs.formRef.validate(async (valid) => {
 				if (valid) {
 					if (this.formData.avatar) {
-						this.formData.avatar = this.formData.avatar.replace(
-							this.$CONFIG.SERVER_URL,
-							""
-						);
+						this.formData.avatar = this.formData.avatar.replace(this.$CONFIG.SERVER_URL, "").replace("/data/avatar/", "");
 					}
 
-					this.formData.pass = this.$CRYPTO.MD5(
-						this.formData.pass
-					);
+					this.formData.pass = this.$CRYPTO.SHA(this.formData.pass);
 					this.isSaveing = true;
 					let res = null;
 					if (this.$SCM.is_valid_id(this.formData.id)) {

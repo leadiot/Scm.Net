@@ -100,7 +100,6 @@ import { defineAsyncComponent } from "vue";
 export default {
 	name: 'scui_scicon',
 	components: {
-		copy: defineAsyncComponent(() => import("./copy")),
 		edit: defineAsyncComponent(() => import("./edit")),
 	},
 	data() {

@@ -10,7 +10,7 @@ const T = {
 	'grid': {
 		'left': '3%',
 		'right': '3%',
-		'bottom': '10',
+		'bottom': '40',
 		'top': '40',
 		'containLabel': true
 	},

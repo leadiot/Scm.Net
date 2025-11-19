@@ -402,10 +402,10 @@ namespace Com.Scm.Login.Otp.Email
             var file = "";
 
             // 加载消息模板
-            OtpDao resSmsDao = null;
+            ScmResOtpDao resSmsDao = null;
             if (!string.IsNullOrWhiteSpace(templateCode))
             {
-                resSmsDao = _SqlClient.Queryable<OtpDao>()
+                resSmsDao = _SqlClient.Queryable<ScmResOtpDao>()
                     .Where(a => a.codec == templateCode && a.types == OtpTypesEnum.Email && a.row_status == ScmRowStatusEnum.Enabled)
                     .First();
             }
@@ -456,10 +456,10 @@ namespace Com.Scm.Login.Otp.Email
             var file = "";
 
             // 加载消息模板
-            OtpDao resSmsDao = null;
+            ScmResOtpDao resSmsDao = null;
             if (!string.IsNullOrWhiteSpace(templateCode))
             {
-                resSmsDao = await _SqlClient.Queryable<OtpDao>()
+                resSmsDao = await _SqlClient.Queryable<ScmResOtpDao>()
                     .Where(a => a.codec == templateCode && a.types == OtpTypesEnum.Email && a.row_status == ScmRowStatusEnum.Enabled)
                     .FirstAsync();
             }

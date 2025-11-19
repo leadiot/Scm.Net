@@ -100,7 +100,6 @@ import { defineAsyncComponent } from "vue";
 export default {
 	name: 'scui_scicon',
 	components: {
-		copy: defineAsyncComponent(() => import("./copy")),
 		edit: defineAsyncComponent(() => import("./edit")),
 	},
 	data() {
@@ -135,16 +134,16 @@ export default {
 	},
 	methods: {
 		async status_item(e, row) {
-			this.$SCM.status_item(this, this.$API.scmurgroup.status, row, row.row_status);
+			this.$SCM.status_item(this, this.$API.scmdevicon.status, row, row.row_status);
 		},
 		status_list(status) {
-			this.$SCM.status_list(this, this.$API.scmurgroup.status, this.selection, status);
+			this.$SCM.status_list(this, this.$API.scmdevicon.status, this.selection, status);
 		},
 		async delete_item(row) {
-			this.$SCM.delete_item(this, this.$API.scmurgroup.delete, row);
+			this.$SCM.delete_item(this, this.$API.scmdevicon.delete, row);
 		},
 		delete_list() {
-			this.$SCM.delete_list(this, this.$API.scmurgroup.delete, this.selection);
+			this.$SCM.delete_list(this, this.$API.scmdevicon.delete, this.selection);
 		},
 		show_search() {
 			this.$refs.search.open(this.param.key);
@@ -153,11 +152,11 @@ export default {
 			this.$refs.edit.open(row);
 		},
 		listSet() {
-			this.$SCM.list_option(this.set_list, this.$API.scmresiconcat.option, {}, false);
+			this.$SCM.list_option(this.set_list, this.$API.scmdeviconcat.option, {}, false);
 		},
 		async changeSet() {
 			this.cat = '';
-			var catRes = await this.$API.scmresiconcat.list.get({ 'pid': this.param.set_id });
+			var catRes = await this.$API.scmdeviconcat.list.get({ 'pid': this.param.set_id });
 			if (!catRes || catRes.code != 200) {
 				return;
 			}
@@ -172,7 +171,7 @@ export default {
 			this.search();
 		},
 		async search() {
-			var iconRes = await this.$API.scmresicon.list.get(this.param);
+			var iconRes = await this.$API.scmdevicon.list.get(this.param);
 			if (!iconRes || iconRes.code != 200) {
 				return;
 			}

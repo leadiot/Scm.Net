@@ -15,15 +15,15 @@ namespace Com.Scm.Dev.Sql
     [ApiExplorerSettings(GroupName = "Dev")]
     public class ScmDevSqlService : ApiService
     {
-        private readonly SugarRepository<SqlDao> _thisRepository;
-        private readonly SugarRepository<DbDao> _dbRepository;
+        private readonly SugarRepository<ScmDevSqlDao> _thisRepository;
+        private readonly SugarRepository<ScmDevDbDao> _dbRepository;
 
         /// <summary>
         /// 
         /// </summary>
         /// <param name="thisRepository"></param>
         /// <param name="dbRepository"></param>
-        public ScmDevSqlService(SugarRepository<SqlDao> thisRepository, SugarRepository<DbDao> dbRepository)
+        public ScmDevSqlService(SugarRepository<ScmDevSqlDao> thisRepository, SugarRepository<ScmDevDbDao> dbRepository)
         {
             _thisRepository = thisRepository;
             _dbRepository = dbRepository;
@@ -62,9 +62,9 @@ namespace Com.Scm.Dev.Sql
         /// </summary>
         /// <param name="model"></param>
         /// <returns></returns>
-        public async Task<bool> AddAsync(DevSqlDto model)
+        public async Task<bool> AddAsync(ScmDevSqlDto model)
         {
-            var dao = model.Adapt<SqlDao>();
+            var dao = model.Adapt<ScmDevSqlDao>();
             return await _thisRepository.InsertAsync(dao);
         }
 
@@ -73,7 +73,7 @@ namespace Com.Scm.Dev.Sql
         /// </summary>
         /// <param name="model"></param>
         /// <returns></returns>
-        public async Task UpdateAsync(DevSqlDto model)
+        public async Task UpdateAsync(ScmDevSqlDto model)
         {
             var dao = await _thisRepository.GetByIdAsync(model.id);
             if (dao == null)

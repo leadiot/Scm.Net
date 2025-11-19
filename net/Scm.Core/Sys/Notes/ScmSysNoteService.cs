@@ -148,7 +148,7 @@ namespace Com.Scm.Sys.Notes
             var dao = model.Adapt<NoteDao>();
             if (IsValidId(dao.cat_id))
             {
-                dao.cat_id = CatDto.SYS_ID;
+                dao.cat_id = ScmResCatDto.SYS_ID;
             }
 
             dao.files = model.IsTooLong() ? 1 : 0;
@@ -223,7 +223,7 @@ namespace Com.Scm.Sys.Notes
             dao = model.Adapt(dao);
             if (!IsValidId(dao.cat_id))
             {
-                dao.cat_id = CatDto.SYS_ID;
+                dao.cat_id = ScmResCatDto.SYS_ID;
             }
 
             dao.files = model.IsTooLong() ? 1 : 0;

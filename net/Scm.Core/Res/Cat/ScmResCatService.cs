@@ -15,13 +15,13 @@ namespace Com.Scm.Res.Cat
     [ApiExplorerSettings(GroupName = "Res")]
     public class ScmResCatService : ApiService
     {
-        private readonly SugarRepository<CatDao> _thisRepository;
+        private readonly SugarRepository<ScmResCatDao> _thisRepository;
 
         /// <summary>
         /// 
         /// </summary>
         /// <param name="thisRepository"></param>
-        public ScmResCatService(SugarRepository<CatDao> thisRepository)
+        public ScmResCatService(SugarRepository<ScmResCatDao> thisRepository)
         {
             _thisRepository = thisRepository;
         }
@@ -79,12 +79,12 @@ namespace Com.Scm.Res.Cat
         /// <param name="pid"></param>
         /// <returns></returns>
         [HttpGet("{id}")]
-        public async Task<List<CatDto>> GetListByPidAsync(long pid)
+        public async Task<List<ScmResCatDto>> GetListByPidAsync(long pid)
         {
             var list = await _thisRepository.AsQueryable()
                 .Where(a => a.pid == pid)
                 .OrderBy(m => m.od, OrderByType.Asc).ToListAsync();
-            return list.Adapt<List<CatDto>>();
+            return list.Adapt<List<ScmResCatDto>>();
         }
 
         /// <summary>
@@ -93,12 +93,12 @@ namespace Com.Scm.Res.Cat
         /// <param name="id"></param>
         /// <returns></returns>
         [HttpGet("{id}")]
-        public async Task<CatDto> GetAsync(long id)
+        public async Task<ScmResCatDto> GetAsync(long id)
         {
             return await _thisRepository
                 .AsQueryable()
                 .Where(a => a.id == id)
-                .Select<CatDto>()
+                .Select<ScmResCatDto>()
                 .FirstAsync();
         }
 
@@ -108,12 +108,12 @@ namespace Com.Scm.Res.Cat
         /// <param name="id"></param>
         /// <returns></returns>
         [HttpGet("{id}")]
-        public async Task<CatDto> GetEditAsync(long id)
+        public async Task<ScmResCatDto> GetEditAsync(long id)
         {
             return await _thisRepository
                 .AsQueryable()
                 .Where(a => a.id == id)
-                .Select<CatDto>()
+                .Select<ScmResCatDto>()
                 .FirstAsync();
         }
 
@@ -136,7 +136,7 @@ namespace Com.Scm.Res.Cat
         /// </summary>
         /// <param name="model"></param>
         /// <returns></returns>
-        public async Task<bool> AddAsync(CatDto model)
+        public async Task<bool> AddAsync(ScmResCatDto model)
         {
             var dao = await _thisRepository.GetFirstAsync(a => a.app == model.app && a.pid == model.pid && a.namec == model.namec);
             if (dao != null)
@@ -144,7 +144,7 @@ namespace Com.Scm.Res.Cat
                 return false;
             }
 
-            dao = model.Adapt<CatDao>();
+            dao = model.Adapt<ScmResCatDao>();
             if (IsValidId(dao.pid))
             {
                 var parent = await _thisRepository.GetByIdAsync(dao.pid);
@@ -170,7 +170,7 @@ namespace Com.Scm.Res.Cat
         /// </summary>
         /// <param name="model"></param>
         /// <returns></returns>
-        public async Task<bool> UpdateAsync(CatDto model)
+        public async Task<bool> UpdateAsync(ScmResCatDto model)
         {
             var dao = await _thisRepository.GetFirstAsync(a => a.app == model.app && a.pid == model.pid && a.namec == model.namec && a.id != model.id);
             if (dao != null)

@@ -91,7 +91,7 @@
 			</el-container>
 		</el-main>
 	</el-container>
-	<edit ref="edit" />
+	<copy ref="copy" />
 </template>
 
 <script>
@@ -101,7 +101,6 @@ export default {
 	name: 'scui_scicon',
 	components: {
 		copy: defineAsyncComponent(() => import("./copy")),
-		edit: defineAsyncComponent(() => import("./edit")),
 	},
 	data() {
 		return {
@@ -150,12 +149,6 @@ export default {
 			this.$refs.search.open(this.param.key);
 		},
 		open_dialog(row) {
-			if (!row) {
-				row = {};
-				row.set_id = this.param.set_id;
-				row.cat_id = this.param.cat_id;
-				row.type = this.param.type;
-			}
 			this.$refs.edit.open(row);
 		},
 		listSet() {
@@ -218,7 +211,7 @@ export default {
 			return 'scfont ' + this.getName(icon);
 		},
 		copyCode(icon) {
-			this.$refs.edit.open(icon);
+			this.$refs.copy.open(this.getName(icon), this.color, this.size);
 		}
 	},
 };

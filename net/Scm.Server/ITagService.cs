@@ -4,12 +4,12 @@ namespace Com.Scm
 {
     public interface ITagService
     {
-        TagDao GetById(long id);
+        ScmResTagDao GetById(long id);
 
-        Task<TagDao> GetByIdAsync(long id);
+        Task<ScmResTagDao> GetByIdAsync(long id);
 
-        TagDao GetByName(long appId, string name);
+        ScmResTagDao GetByName(long appId, string name);
 
-        Task<TagDao> GetByNameAsync(long appId, string name);
+        Task<ScmResTagDao> GetByNameAsync(long appId, string name);
     }
 }

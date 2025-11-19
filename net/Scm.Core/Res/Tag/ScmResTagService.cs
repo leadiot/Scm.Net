@@ -14,13 +14,13 @@ namespace Com.Scm.Res.Tag
     [ApiExplorerSettings(GroupName = "Res")]
     public class ScmResTagService : ApiService
     {
-        private readonly SugarRepository<TagDao> _thisRepository;
+        private readonly SugarRepository<ScmResTagDao> _thisRepository;
 
         /// <summary>
         /// 
         /// </summary>
         /// <param name="thisRepository"></param>
-        public ScmResTagService(SugarRepository<TagDao> thisRepository)
+        public ScmResTagService(SugarRepository<ScmResTagDao> thisRepository)
         {
             _thisRepository = thisRepository;
         }
@@ -73,11 +73,11 @@ namespace Com.Scm.Res.Tag
         /// <param name="id"></param>
         /// <returns></returns>
         [HttpGet("{id}")]
-        public async Task<TagDto> GetEditAsync(long id)
+        public async Task<ScmResTagDto> GetEditAsync(long id)
         {
             return await _thisRepository
                 .AsQueryable()
-                .Select<TagDto>()
+                .Select<ScmResTagDto>()
                 .FirstAsync(m => m.id == id);
         }
 
@@ -100,7 +100,7 @@ namespace Com.Scm.Res.Tag
         /// </summary>
         /// <param name="model"></param>
         /// <returns></returns>
-        public async Task<bool> AddAsync(TagDto model)
+        public async Task<bool> AddAsync(ScmResTagDto model)
         {
             var dao = await _thisRepository.GetFirstAsync(a => a.app == model.app && a.label == model.label);
             if (dao != null)
@@ -108,7 +108,7 @@ namespace Com.Scm.Res.Tag
                 return false;
             }
 
-            dao = model.Adapt<TagDao>();
+            dao = model.Adapt<ScmResTagDao>();
             dao.qty = 1;
             await _thisRepository.InsertAsync(dao);
             return true;
@@ -119,7 +119,7 @@ namespace Com.Scm.Res.Tag
         /// </summary>
         /// <param name="model"></param>
         /// <returns></returns>
-        public async Task<bool> UpdateAsync(TagDto model)
+        public async Task<bool> UpdateAsync(ScmResTagDto model)
         {
             var dao = await _thisRepository.GetFirstAsync(a => a.app == model.app && a.label == model.label && a.id != model.id);
             if (dao != null)
@@ -137,7 +137,7 @@ namespace Com.Scm.Res.Tag
         /// <param name="model"></param>
         /// <returns></returns>
         [HttpPost]
-        public async Task<bool> SaveAsync(TagDto model)
+        public async Task<bool> SaveAsync(ScmResTagDto model)
         {
             var dao = await _thisRepository.GetFirstAsync(a => a.app == model.app && a.label == model.label);
             if (dao != null)
@@ -155,7 +155,7 @@ namespace Com.Scm.Res.Tag
                 return await _thisRepository.UpdateAsync(dao);
             }
 
-            dao = model.Adapt<TagDao>();
+            dao = model.Adapt<ScmResTagDao>();
             dao.qty = 1;
             await _thisRepository.InsertAsync(dao);
             return true;

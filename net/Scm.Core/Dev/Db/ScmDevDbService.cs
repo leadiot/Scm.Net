@@ -13,14 +13,14 @@ namespace Com.Scm.Dev.Db
     [ApiExplorerSettings(GroupName = "Dev")]
     public class ScmDevDbService : ApiService
     {
-        private readonly SugarRepository<DbDao> _thisRepository;
+        private readonly SugarRepository<ScmDevDbDao> _thisRepository;
 
         /// <summary>
         /// 
         /// </summary>
         /// <param name="thisRepository"></param>
         /// <param name="userRepository"></param>
-        public ScmDevDbService(SugarRepository<DbDao> thisRepository, IUserService userService)
+        public ScmDevDbService(SugarRepository<ScmDevDbDao> thisRepository, IUserService userService)
         {
             _thisRepository = thisRepository;
             _UserService = userService;
@@ -85,11 +85,11 @@ namespace Com.Scm.Dev.Db
         /// <param name="id"></param>
         /// <returns></returns>
         [HttpGet("{id}")]
-        public async Task<DevDbDto> GetAsync(long id)
+        public async Task<ScmDevDbDto> GetAsync(long id)
         {
             return await _thisRepository.AsQueryable()
                 .Where(a => a.id == id)
-                .Select<DevDbDto>()
+                .Select<ScmDevDbDto>()
                 .FirstAsync();
         }
 
@@ -113,11 +113,11 @@ namespace Com.Scm.Dev.Db
         /// <param name="id"></param>
         /// <returns></returns>
         [HttpGet("{id}")]
-        public async Task<DevDbDto> GetViewAsync(long id)
+        public async Task<ScmDevDbDto> GetViewAsync(long id)
         {
             return await _thisRepository
                 .AsQueryable()
-                .Select<DevDbDto>()
+                .Select<ScmDevDbDto>()
                 .FirstAsync(m => m.id == id);
         }
 
@@ -126,9 +126,9 @@ namespace Com.Scm.Dev.Db
         /// </summary>
         /// <param name="model"></param>
         /// <returns></returns>
-        public async Task<bool> AddAsync(DevDbDto model)
+        public async Task<bool> AddAsync(ScmDevDbDto model)
         {
-            return await _thisRepository.InsertAsync(model.Adapt<DbDao>());
+            return await _thisRepository.InsertAsync(model.Adapt<ScmDevDbDao>());
         }
 
         /// <summary>
@@ -136,7 +136,7 @@ namespace Com.Scm.Dev.Db
         /// </summary>
         /// <param name="model"></param>
         /// <returns></returns>
-        public async Task UpdateAsync(DevDbDto model)
+        public async Task UpdateAsync(ScmDevDbDto model)
         {
             var dao = await _thisRepository.GetByIdAsync(model.id);
             if (dao == null)

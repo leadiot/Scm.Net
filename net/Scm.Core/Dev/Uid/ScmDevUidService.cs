@@ -14,7 +14,7 @@ namespace Com.Scm.Dev.Uid
     [ApiExplorerSettings(GroupName = "Dev")]
     public class ScmDevUidService : ApiService
     {
-        private readonly SugarRepository<UidDao> _thisRepository;
+        private readonly SugarRepository<ScmDevUidDao> _thisRepository;
         
         /// <summary>
         /// 
@@ -22,7 +22,7 @@ namespace Com.Scm.Dev.Uid
         /// <param name="thisRepository"></param>
         /// <param name="userRepository"></param>
         /// <returns></returns>
-        public ScmDevUidService(SugarRepository<UidDao> thisRepository, IUserService userService)
+        public ScmDevUidService(SugarRepository<ScmDevUidDao> thisRepository, IUserService userService)
         {
             _thisRepository = thisRepository;
             _UserService = userService;
@@ -68,12 +68,12 @@ namespace Com.Scm.Dev.Uid
         /// <param name="id"></param>
         /// <returns></returns>
         [HttpGet("{id}")]
-        public async Task<DevUidDto> GetAsync(long id)
+        public async Task<ScmDevUidDto> GetAsync(long id)
         {
             return await _thisRepository
                 .AsQueryable()
                 .Where(a => a.id == id)
-                .Select<DevUidDto>()
+                .Select<ScmDevUidDto>()
                 .FirstAsync();
         }
 
@@ -83,12 +83,12 @@ namespace Com.Scm.Dev.Uid
         /// <param name="id"></param>
         /// <returns></returns>
         [HttpGet("{id}")]
-        public async Task<DevUidDto> GetEditAsync(long id)
+        public async Task<ScmDevUidDto> GetEditAsync(long id)
         {
             return await _thisRepository
                 .AsQueryable()
                 .Where(a => a.id == id)
-                .Select<DevUidDto>()
+                .Select<ScmDevUidDto>()
                 .FirstAsync();
         }
 
@@ -112,7 +112,7 @@ namespace Com.Scm.Dev.Uid
         /// </summary>
         /// <param name="model"></param>
         /// <returns></returns>
-        public async Task<bool> AddAsync(DevUidDto model)
+        public async Task<bool> AddAsync(ScmDevUidDto model)
         {
             var dao = await _thisRepository.GetFirstAsync(a => a.k == model.k);
             if (dao != null)
@@ -120,7 +120,7 @@ namespace Com.Scm.Dev.Uid
                 throw new BusinessException($"已存在编码为{model.k}的！");
             }
 
-            return await _thisRepository.InsertAsync(model.Adapt<UidDao>());
+            return await _thisRepository.InsertAsync(model.Adapt<ScmDevUidDao>());
         }
 
         /// <summary>
@@ -128,7 +128,7 @@ namespace Com.Scm.Dev.Uid
         /// </summary>
         /// <param name="model"></param>
         /// <returns></returns>
-        public async Task UpdateAsync(DevUidDto model)
+        public async Task UpdateAsync(ScmDevUidDto model)
         {
             var dao = await _thisRepository.GetFirstAsync(a => a.k == model.k && a.id != model.id);
             if (dao != null)

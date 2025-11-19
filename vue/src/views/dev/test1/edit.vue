@@ -4,7 +4,7 @@
             <div class="icon">
                 <sc-icon :name="formData.name" :size="64" />
             </div>
-            <el-form ref="formRef" label-width="100px" :model="formData" :rules="rules">
+            <el-form ref="formRef" label-width="100px" :model="formData" :rules="rules" style="width:400px;">
                 <el-form-item label="图标名称" prop="name">
                     <el-input v-model="formData.name" placeholder="请输入图标名称" :maxlength="32" show-word-limit
                         clearable></el-input>
@@ -47,14 +47,18 @@ export default {
         def_data() {
             return {
                 id: this.$SCM.DEF_ID,
+                set_id: this.$SCM.ID_ONE,
+                cat_id: this.$SCM.ID_ONE,
+                type: '',
                 name: '',
                 desc: '',
                 od: 0,
             }
         },
         async open(row) {
-            if (!row || !row.id) {
+            if (!row.id) {
                 this.mode = "add";
+                this.formData = row;
             } else {
                 this.mode = "edit";
                 var res = await this.$API.scmdevicon.model.get(row.id);
@@ -67,6 +71,7 @@ export default {
                 if (valid) {
                     this.isSaveing = true;
                     let res = null;
+                    this.formData.key = this.formData.name;
                     if (this.formData.id === '0') {
                         res = await this.$API.scmdevicon.add.post(this.formData);
                     } else {
@@ -92,10 +97,6 @@ export default {
 };
 </script>
 <style scoped>
-.el-input-number {
-    width: 100%;
-}
-
 .icon_panel {
     display: flex;
     flex-direction: row;

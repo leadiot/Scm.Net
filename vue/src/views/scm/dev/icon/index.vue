@@ -1,27 +1,64 @@
 <template>
+	<sc-search ref="search" @search="search">
+		<template #search>
+			<el-form ref="formRef" label-width="80px" :model="param">
+				<el-form-item label="图标格式" prop="type">
+					<sc-select v-model="param.type" :data="type_list" @change="changeSet()"
+						style="width: 120px;"></sc-select>
+				</el-form-item>
+				<el-form-item label="图标颜色" prop="color">
+					<el-color-picker v-model="color" :predefine="predefineColors" />
+				</el-form-item>
+				<el-form-item label="数据状态" prop="row_status">
+					<sc-select v-model="param.row_status" clearable placeholder="请选择" :data="row_status_list" />
+				</el-form-item>
+				<el-form-item label="创建时间" prop="create_time">
+					<el-date-picker v-model="param.create_time" type="datetimerange" range-separator="至"
+						start-placeholder="开始日期" end-placeholder="结束日期">
+					</el-date-picker>
+				</el-form-item>
+				<el-form-item label="搜索内容">
+					<el-input v-model="param.key" clearable placeholder="关键字" />
+				</el-form-item>
+			</el-form>
+		</template>
+	</sc-search>
 	<el-container>
 		<el-header>
 			<div class="left-panel">
-				<label>图集：</label>
-				<sc-select v-model="param.set_id" :data="set_list" @change="changeSet()"
-					style="width: 120px;"></sc-select>
-				<label>图标格式：</label>
-				<sc-select v-model="param.type" :data="type_list" @change="changeSet()"
-					style="width: 120px;"></sc-select>
-				<label>图标颜色：</label>
-				<el-color-picker v-model="color" :predefine="predefineColors" />
+				<el-button type="primary" @click="open_dialog()"><sc-icon name="sc-plus" /></el-button>
+				<el-divider direction="vertical"></el-divider>
+				<el-button-group>
+					<el-tooltip content="启用">
+						<el-button type="primary" plain :disabled="selection.length == 0" @click="status_list(1)">
+							<sc-icon name="sc-check-circle-line" />
+						</el-button>
+					</el-tooltip>
+					<el-tooltip content="停用">
+						<el-button type="primary" plain :disabled="selection.length == 0" @click="status_list(2)">
+							<sc-icon name="sc-pause-circle-line" />
+						</el-button>
+					</el-tooltip>
+					<el-tooltip content="删除">
+						<el-button type="danger" plain :disabled="selection.length == 0" @click="delete_list">
+							<sc-icon name="sc-close-circle-line" />
+						</el-button>
+					</el-tooltip>
+				</el-button-group>
 			</div>
 			<div class="right-panel">
 				<el-input v-model="param.key" clearable placeholder="关键字" @keyup.enter="search()">
 					<template #append>
-						<el-button type="primary" @click="search"><sc-icon name="sc-search" /></el-button>
+						<el-button type="primary" @click="search()"><sc-icon name="sc-search" /></el-button>
 					</template>
 				</el-input>
+				<el-button @click="show_search">高级</el-button>
 			</div>
 		</el-header>
 		<el-main class="nopadding">
 			<el-container>
 				<el-aside style="width: 240px;">
+					<sc-select v-model="param.set_id" :data="set_list" @change="changeSet()"></sc-select>
 					<sc-list v-model="param.cat_id" :data="cat_list" @change="changeCat">
 						<template #item="{ item }">
 							{{ item.name }}
@@ -54,7 +91,7 @@
 			</el-container>
 		</el-main>
 	</el-container>
-	<copy ref="copy" />
+	<edit ref="edit" />
 </template>
 
 <script>
@@ -64,22 +101,27 @@ export default {
 	name: 'scui_scicon',
 	components: {
 		copy: defineAsyncComponent(() => import("./copy")),
+		edit: defineAsyncComponent(() => import("./edit")),
 	},
 	data() {
 		return {
 			param: {
-				set_id: this.$API.ID_ONE_INT,
-				cat_id: '',
+				set_id: this.$SCM.ID_ONE,
+				cat_id: this.$SCM.ID_ONE,
 				type: '',
+				row_status: this.$SCM.DEF_STATUS,
+				create_time: '',
 				key: ''
 			},
+			selection: [],
 			size: 32,
 			color: '#1a2947',
 			predefineColors: this.$CONFIG.PREDEFINE_COLORS,
-			set_list: [],
-			cat_list: [],
+			set_list: [this.$SCM.OPTION_ONE],
+			cat_list: [this.$SCM.OPTION_ONE],
 			type_list: [{ 'id': 1, 'label': '线型', 'value': 1 }, { 'id': 2, 'label': '填充', 'value': '2' }, { 'id': 3, 'label': '圆角', 'value': '3' }, { 'id': 4, 'label': '方形', 'value': '4' }],
-			data: []
+			data: [],
+			row_status_list: [this.$SCM.OPTION_ALL_INT],
 		};
 	},
 	watch: {
@@ -88,9 +130,28 @@ export default {
 		},
 	},
 	mounted() {
+		this.$SCM.list_status(this.row_status_list, true);
 		this.listSet();
 	},
 	methods: {
+		async status_item(e, row) {
+			this.$SCM.status_item(this, this.$API.scmurgroup.status, row, row.row_status);
+		},
+		status_list(status) {
+			this.$SCM.status_list(this, this.$API.scmurgroup.status, this.selection, status);
+		},
+		async delete_item(row) {
+			this.$SCM.delete_item(this, this.$API.scmurgroup.delete, row);
+		},
+		delete_list() {
+			this.$SCM.delete_list(this, this.$API.scmurgroup.delete, this.selection);
+		},
+		show_search() {
+			this.$refs.search.open(this.param.key);
+		},
+		open_dialog(row) {
+			this.$refs.edit.open(row);
+		},
 		listSet() {
 			this.$SCM.list_option(this.set_list, this.$API.scmresiconcat.option, {}, false);
 		},
@@ -151,7 +212,7 @@ export default {
 			return 'scfont ' + this.getName(icon);
 		},
 		copyCode(icon) {
-			this.$refs.copy.open(this.getName(icon), this.color, this.size);
+			this.$refs.edit.open(icon);
 		}
 	},
 };

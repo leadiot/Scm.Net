@@ -14,7 +14,7 @@ namespace Com.Scm.Res.Otp
     [ApiExplorerSettings(GroupName = "res")]
     public class ScmResOtpService : ApiService
     {
-        private readonly SugarRepository<OtpDao> _thisRepository;
+        private readonly SugarRepository<ScmResOtpDao> _thisRepository;
 
         /// <summary>
         /// 
@@ -22,7 +22,7 @@ namespace Com.Scm.Res.Otp
         /// <param name="thisRepository"></param>
         /// <param name="userService"></param>
         /// <returns></returns>
-        public ScmResOtpService(SugarRepository<OtpDao> thisRepository, IUserService userService)
+        public ScmResOtpService(SugarRepository<ScmResOtpDao> thisRepository, IUserService userService)
         {
             _thisRepository = thisRepository;
             _UserService = userService;
@@ -71,10 +71,10 @@ namespace Com.Scm.Res.Otp
         /// <param name="id"></param>
         /// <returns></returns>
         [HttpGet("{id}")]
-        public async Task<OtpDto> GetAsync(long id)
+        public async Task<ScmResOtpDto> GetAsync(long id)
         {
             var model = await _thisRepository.GetByIdAsync(id);
-            return model.Adapt<OtpDto>();
+            return model.Adapt<ScmResOtpDto>();
         }
 
         /// <summary>
@@ -83,11 +83,11 @@ namespace Com.Scm.Res.Otp
         /// <param name="id"></param>
         /// <returns></returns>
         [HttpGet("{id}")]
-        public async Task<OtpDto> GetEditAsync(long id)
+        public async Task<ScmResOtpDto> GetEditAsync(long id)
         {
             return await _thisRepository
                 .AsQueryable()
-                .Select<OtpDto>()
+                .Select<ScmResOtpDto>()
                 .FirstAsync(m => m.id == id);
         }
 
@@ -110,7 +110,7 @@ namespace Com.Scm.Res.Otp
         /// </summary>
         /// <param name="model"></param>
         /// <returns></returns>
-        public async Task<bool> AddAsync(OtpDto model)
+        public async Task<bool> AddAsync(ScmResOtpDto model)
         {
             //var dao = await _thisRepository.GetFirstAsync(a => a.codec == model.codec);
             //if (dao != null)
@@ -128,7 +128,7 @@ namespace Com.Scm.Res.Otp
             //    throw new BusinessException($"已存在简称为{model.names}的消息模板！");
             //}
 
-            return await _thisRepository.InsertAsync(model.Adapt<OtpDao>());
+            return await _thisRepository.InsertAsync(model.Adapt<ScmResOtpDao>());
         }
 
         /// <summary>
@@ -136,7 +136,7 @@ namespace Com.Scm.Res.Otp
         /// </summary>
         /// <param name="model"></param>
         /// <returns></returns>
-        public async Task UpdateAsync(OtpDto model)
+        public async Task UpdateAsync(ScmResOtpDto model)
         {
             //var dao = await _thisRepository.GetFirstAsync(a => a.codec == model.codec && a.id != model.id);
             //if (dao != null)

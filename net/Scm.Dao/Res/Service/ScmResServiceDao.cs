@@ -7,7 +7,7 @@ namespace Com.Scm.Res.Service
     /// 
     /// </summary>
     [SqlSugar.SugarTable("scm_res_service")]
-    public class ServiceDao : ScmDataDao
+    public class ScmResServiceDao : ScmDataDao
     {
         /// <summary>
         /// 
@@ -59,6 +59,6 @@ namespace Com.Scm.Res.Service
         /// 
         /// </summary>
         [SqlSugar.SugarColumn(IsIgnore = true)]
-        public List<ServiceImageDao> images { get; set; }
+        public List<ScmResServiceImageDao> images { get; set; }
     }
 }

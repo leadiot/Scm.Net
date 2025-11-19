@@ -9,7 +9,7 @@ namespace Com.Scm.Dev
     /// 升级日志信息
     /// </summary>
     [SugarTable("scm_sys_ver_header")]
-    public class VerHeaderDao : ScmDataDao
+    public class ScmDevVerHeaderDao : ScmDataDao
     {
         /// <summary>
         /// 应用

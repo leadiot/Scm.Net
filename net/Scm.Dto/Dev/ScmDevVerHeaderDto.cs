@@ -7,7 +7,7 @@ namespace Com.Scm.Dev
     /// <summary>
     /// 
     /// </summary>
-    public class DevVerHeaderDto : ScmDataDto
+    public class ScmDevVerHeaderDto : ScmDataDto
     {
         /// <summary>
         /// 系统
@@ -74,6 +74,6 @@ namespace Com.Scm.Dev
         [StringLength(1024)]
         public string remark { get; set; }
 
-        public List<DevVerDetailDto> details { get; set; }
+        public List<ScmDevVerDetailDto> details { get; set; }
     }
 }

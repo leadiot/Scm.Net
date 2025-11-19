@@ -1,12 +1,12 @@
 ﻿using Com.Scm.Dto;
 using System.ComponentModel.DataAnnotations;
 
-namespace Com.Scm.Res.Product
+namespace Com.Scm.Res.Service
 {
     /// <summary>
     /// 
     /// </summary>
-    public class ProductDto : ScmDataDto
+    public class ScmResServiceDto : ScmDataDto
     {
         /// <summary>
         /// 
@@ -43,18 +43,6 @@ namespace Com.Scm.Res.Product
         public int od { get; set; }
 
         /// <summary>
-        /// 默认图像
-        /// </summary>
-        [StringLength(32)]
-        public string image { get; set; }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        [StringLength(32)]
-        public string barcode { get; set; }
-
-        /// <summary>
         /// 
         /// </summary>
         [StringLength(1024)]
@@ -63,6 +51,6 @@ namespace Com.Scm.Res.Product
         /// <summary>
         /// 
         /// </summary>
-        public List<ProductImageDto> images { get; set; }
+        public List<ScmResServiceImageDto> images { get; set; }
     }
 }

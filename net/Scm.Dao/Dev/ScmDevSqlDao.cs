@@ -8,7 +8,7 @@ namespace Com.Scm.Dev
     /// SQL
     /// </summary>
     [SugarTable("scm_dev_sql")]
-    public class SqlDao : ScmUserDataDao
+    public class ScmDevSqlDao : ScmUserDataDao
     {
         /// <summary>
         /// 数据库

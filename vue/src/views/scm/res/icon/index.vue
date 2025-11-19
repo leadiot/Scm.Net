@@ -91,7 +91,7 @@
 			</el-container>
 		</el-main>
 	</el-container>
-	<edit ref="edit" />
+	<copy ref="copy" />
 </template>
 
 <script>
@@ -101,7 +101,6 @@ export default {
 	name: 'scui_scicon',
 	components: {
 		copy: defineAsyncComponent(() => import("./copy")),
-		edit: defineAsyncComponent(() => import("./edit")),
 	},
 	data() {
 		return {
@@ -212,7 +211,7 @@ export default {
 			return 'scfont ' + this.getName(icon);
 		},
 		copyCode(icon) {
-			this.$refs.edit.open(icon);
+			this.$refs.copy.open(this.getName(icon), this.color, this.size);
 		}
 	},
 };

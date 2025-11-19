@@ -7,7 +7,7 @@ namespace Com.Scm.Res.Product
     /// 
     /// </summary>
     [SqlSugar.SugarTable("scm_res_product_image")]
-    public class ProductImageDao : ScmDataDao
+    public class ScmResProductImageDao : ScmDataDao
     {
         /// <summary>
         /// 

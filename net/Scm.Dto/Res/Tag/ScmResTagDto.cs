@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Com.Scm.Res.Tag
 {
-    public class TagDto : ScmDataDto
+    public class ScmResTagDto : ScmDataDto
     {
         /// <summary>
         /// 应用标识

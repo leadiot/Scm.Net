@@ -1,6 +1,5 @@
-﻿using Com.Scm.Dao;
+using Com.Scm.Dto;
 using Com.Scm.Log;
-using SqlSugar;
 using System.ComponentModel.DataAnnotations;
 
 namespace Com.Scm.Res.Otp
@@ -8,8 +7,7 @@ namespace Com.Scm.Res.Otp
     /// <summary>
     /// 消息模板
     /// </summary>
-    [SugarTable("scm_res_otp")]
-    public class OtpDao : ScmDataDao
+    public class ScmResOtpDto : ScmDataDto
     {
         /// <summary>
         /// 模板类型
@@ -51,5 +49,7 @@ namespace Com.Scm.Res.Otp
         /// </summary>
         [StringLength(64)]
         public string file { get; set; }
+
+
     }
 }

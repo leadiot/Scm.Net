@@ -5,9 +5,9 @@ namespace Com.Scm.Service
 {
     public class ScmCatService : ApiService, ICatService
     {
-        private readonly SugarRepository<CatDao> _thisRepository;
+        private readonly SugarRepository<ScmResCatDao> _thisRepository;
 
-        public ScmCatService(SugarRepository<CatDao> thisRepository)
+        public ScmCatService(SugarRepository<ScmResCatDao> thisRepository)
         {
             _thisRepository = thisRepository;
         }

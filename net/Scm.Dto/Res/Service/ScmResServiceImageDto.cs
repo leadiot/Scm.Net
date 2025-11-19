@@ -1,4 +1,4 @@
-﻿using Com.Scm.Dao;
+﻿using Com.Scm.Dto;
 using System.ComponentModel.DataAnnotations;
 
 namespace Com.Scm.Res.Service
@@ -6,8 +6,7 @@ namespace Com.Scm.Res.Service
     /// <summary>
     /// 
     /// </summary>
-    [SqlSugar.SugarTable("scm_res_service_image")]
-    public class ServiceImageDao : ScmDataDao
+    public class ScmResServiceImageDto : ScmDataDto
     {
         /// <summary>
         /// 

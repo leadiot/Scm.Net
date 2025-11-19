@@ -13,14 +13,14 @@ namespace Com.Scm.Dev.Version
     [ApiExplorerSettings(GroupName = "Dev")]
     public class ScmDevVersionService : ApiService
     {
-        private readonly SugarRepository<VerHeaderDao> _thisRepository;
-        private readonly SugarRepository<AppDao> _appRepository;
+        private readonly SugarRepository<ScmDevVerHeaderDao> _thisRepository;
+        private readonly SugarRepository<ScmDevAppDao> _appRepository;
 
         /// <summary>
         /// 
         /// </summary>
         /// <param name="thisRepository"></param>
-        public ScmDevVersionService(SugarRepository<VerHeaderDao> thisRepository, SugarRepository<AppDao> appRepository)
+        public ScmDevVersionService(SugarRepository<ScmDevVerHeaderDao> thisRepository, SugarRepository<ScmDevAppDao> appRepository)
         {
             _thisRepository = thisRepository;
             _appRepository = appRepository;
@@ -51,7 +51,7 @@ namespace Com.Scm.Dev.Version
         /// <returns></returns>
         public async Task<List<VerHeaderDvo>> GetListAsync(string code)
         {
-            var appId = DevAppDto.NET_ID;
+            var appId = ScmDevAppDto.NET_ID;
             if (!string.IsNullOrWhiteSpace(code))
             {
                 var appDao = await _appRepository.AsQueryable()
@@ -90,12 +90,12 @@ namespace Com.Scm.Dev.Version
         /// <param name="id"></param>
         /// <returns></returns>
         [HttpGet("{id}")]
-        public async Task<DevVerHeaderDto> GetAsync(long id)
+        public async Task<ScmDevVerHeaderDto> GetAsync(long id)
         {
             return await _thisRepository
                 .AsQueryable()
                 .Where(a => a.id == id)
-                .Select<DevVerHeaderDto>()
+                .Select<ScmDevVerHeaderDto>()
                 .FirstAsync();
         }
 
@@ -105,12 +105,12 @@ namespace Com.Scm.Dev.Version
         /// <param name="id"></param>
         /// <returns></returns>
         [HttpGet("{id}")]
-        public async Task<DevVerHeaderDto> GetEditAsync(long id)
+        public async Task<ScmDevVerHeaderDto> GetEditAsync(long id)
         {
             return await _thisRepository
                 .AsQueryable()
                 .Where(a => a.id == id)
-                .Select<DevVerHeaderDto>()
+                .Select<ScmDevVerHeaderDto>()
                 .FirstAsync();
         }
 
@@ -120,12 +120,12 @@ namespace Com.Scm.Dev.Version
         /// <param name="id"></param>
         /// <returns></returns>
         [HttpGet("{id}")]
-        public async Task<DevVerHeaderDto> GetViewAsync(long id)
+        public async Task<ScmDevVerHeaderDto> GetViewAsync(long id)
         {
             return await _thisRepository
                 .AsQueryable()
                 .Where(a => a.id == id)
-                .Select<DevVerHeaderDto>()
+                .Select<ScmDevVerHeaderDto>()
                 .FirstAsync();
         }
 
@@ -134,9 +134,9 @@ namespace Com.Scm.Dev.Version
         /// </summary>
         /// <param name="model"></param>
         /// <returns></returns>
-        public async Task<bool> AddAsync(DevVerHeaderDto model)
+        public async Task<bool> AddAsync(ScmDevVerHeaderDto model)
         {
-            var versionDao = model.Adapt<VerHeaderDao>();
+            var versionDao = model.Adapt<ScmDevVerHeaderDao>();
             return await _thisRepository.InsertAsync(versionDao);
         }
 
@@ -145,7 +145,7 @@ namespace Com.Scm.Dev.Version
         /// </summary>
         /// <param name="model"></param>
         /// <returns></returns>
-        public async Task UpdateAsync(DevVerHeaderDto model)
+        public async Task UpdateAsync(ScmDevVerHeaderDto model)
         {
             var dao = await _thisRepository.GetByIdAsync(model.id);
             if (dao == null)
@@ -191,7 +191,7 @@ namespace Com.Scm.Dev.Version
 
             if (headerDto != null)
             {
-                var detailList = await _thisRepository.Change<VerDetailDao>().AsQueryable()
+                var detailList = await _thisRepository.Change<ScmDevVerDetailDao>().AsQueryable()
                     .Where(a => a.ver_id == headerDto.id)
                     .Select<VerDetailDvo>()
                     .ToListAsync();

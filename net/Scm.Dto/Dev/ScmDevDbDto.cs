@@ -1,14 +1,12 @@
-using Com.Scm.Dao.User;
-using SqlSugar;
+using Com.Scm.Dto;
 using System.ComponentModel.DataAnnotations;
 
 namespace Com.Scm.Dev
 {
     /// <summary>
-    /// 数据库
+    /// 
     /// </summary>
-    [SugarTable("scm_dev_db")]
-    public class DbDao : ScmUserDataDao
+    public class ScmDevDbDto : ScmDataDto
     {
         /// <summary>
         /// 名称
@@ -30,6 +28,7 @@ namespace Com.Scm.Dev
         /// <summary>
         /// 数据库
         /// </summary>
+        [StringLength(128)]
         public string schame { get; set; }
 
         /// <summary>
@@ -39,14 +38,9 @@ namespace Com.Scm.Dev
         public string user { get; set; }
 
         /// <summary>
-        /// 密码
-        /// </summary>
-        [StringLength(256)]
-        public string pass { get; set; }
-
-        /// <summary>
         /// 字符集
         /// </summary>
+        [StringLength(32)]
         public string charset { get; set; }
 
         /// <summary>

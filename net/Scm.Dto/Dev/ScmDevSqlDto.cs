@@ -6,7 +6,7 @@ namespace Com.Scm.Dev
     /// <summary>
     /// 
     /// </summary>
-    public class DevSqlDto : ScmDataDto
+    public class ScmDevSqlDto : ScmDataDto
     {
         /// <summary>
         /// 

@@ -1,12 +1,13 @@
-﻿using Com.Scm.Dto;
+﻿using Com.Scm.Dao;
 using System.ComponentModel.DataAnnotations;
 
-namespace Com.Scm.Res.Service
+namespace Com.Scm.Res.Product
 {
     /// <summary>
     /// 
     /// </summary>
-    public class ServiceDto : ScmDataDto
+    [SqlSugar.SugarTable("scm_res_product")]
+    public class ScmResProductDao : ScmDataDao
     {
         /// <summary>
         /// 
@@ -43,6 +44,18 @@ namespace Com.Scm.Res.Service
         public int od { get; set; }
 
         /// <summary>
+        /// 默认图像
+        /// </summary>
+        [StringLength(32)]
+        public string image { get; set; }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        [StringLength(32)]
+        public string barcode { get; set; }
+
+        /// <summary>
         /// 
         /// </summary>
         [StringLength(1024)]
@@ -51,6 +64,7 @@ namespace Com.Scm.Res.Service
         /// <summary>
         /// 
         /// </summary>
-        public List<ServiceImageDto> images { get; set; }
+        [SqlSugar.SugarColumn(IsIgnore = true)]
+        public List<ScmResProductImageDao> images { get; set; }
     }
 }

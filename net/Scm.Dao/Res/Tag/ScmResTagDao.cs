@@ -8,7 +8,7 @@ namespace Com.Scm.Res.Tag
     /// 标签
     /// </summary>
     [SugarTable("scm_res_tag")]
-    public class TagDao : ScmDataDao
+    public class ScmResTagDao : ScmDataDao
     {
         /// <summary>
         /// 应用标识

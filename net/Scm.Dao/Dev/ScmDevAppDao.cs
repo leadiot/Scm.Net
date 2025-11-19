@@ -1,27 +1,24 @@
-﻿using Com.Scm.Dto;
+﻿using Com.Scm.Dao;
 using System.ComponentModel.DataAnnotations;
 
 namespace Com.Scm.Dev
 {
     /// <summary>
-    /// 
+    /// App信息
     /// </summary>
-    public class DevAppDto : ScmDto
+    [SqlSugar.SugarTable("scm_sys_app")]
+    public class ScmDevAppDao : ScmDataDao
     {
-        /// <summary>
-        /// 系统默认ID
-        /// </summary>
-        public const long SYS_ID = 1000000000000000001L;
-        /// <summary>
-        /// Scm.Net ID
-        /// </summary>
-        public const long NET_ID = 1000000000000001001L;
-
         /// <summary>
         /// 应用类型
         /// </summary>
         [Required]
         public int types { get; set; }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public int od { get; set; }
 
         /// <summary>
         /// 应用代码

@@ -6,7 +6,7 @@ namespace Com.Scm.Res.Cat
     /// <summary>
     /// 类别
     /// </summary>
-    public class CatDto : ScmDataDto
+    public class ScmResCatDto : ScmDataDto
     {
         /// <summary>
         /// 

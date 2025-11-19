@@ -12,14 +12,14 @@ namespace Com.Scm.Sys.App
     [ApiExplorerSettings(GroupName = "Sys")]
     public class ScmSysAppService : ApiService
     {
-        private readonly SugarRepository<AppDao> _thisRepository;
+        private readonly SugarRepository<ScmDevAppDao> _thisRepository;
 
         /// <summary>
         /// 
         /// </summary>
         /// <param name="thisRepository"></param>
         /// <param name="userRepository"></param>
-        public ScmSysAppService(SugarRepository<AppDao> thisRepository, EnvConfig envConfig)
+        public ScmSysAppService(SugarRepository<ScmDevAppDao> thisRepository, EnvConfig envConfig)
         {
             _thisRepository = thisRepository;
             _EnvConfig = envConfig;

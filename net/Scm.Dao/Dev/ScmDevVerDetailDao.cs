@@ -1,10 +1,14 @@
-﻿using Com.Scm.Dto;
+﻿using Com.Scm.Dao;
 using Com.Scm.Enums;
 using System.ComponentModel.DataAnnotations;
 
 namespace Com.Scm.Dev
 {
-    public class DevVerDetailDto : ScmDataDto
+    /// <summary>
+    /// 更新明细
+    /// </summary>
+    [SqlSugar.SugarTable("scm_sys_ver_detail")]
+    public class ScmDevVerDetailDao : ScmDataDao
     {
         /// <summary>
         /// 

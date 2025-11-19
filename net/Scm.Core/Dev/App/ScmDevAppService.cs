@@ -16,14 +16,14 @@ namespace Com.Scm.Dev.App
     [ApiExplorerSettings(GroupName = "Dev")]
     public class ScmDevAppService : ApiService
     {
-        private readonly SugarRepository<AppDao> _thisRepository;
+        private readonly SugarRepository<ScmDevAppDao> _thisRepository;
 
         /// <summary>
         /// 
         /// </summary>
         /// <param name="thisRepository"></param>
         /// <param name="userService"></param>
-        public ScmDevAppService(SugarRepository<AppDao> thisRepository, IUserService userService)
+        public ScmDevAppService(SugarRepository<ScmDevAppDao> thisRepository, IUserService userService)
         {
             _thisRepository = thisRepository;
             _UserService = userService;
@@ -87,10 +87,10 @@ namespace Com.Scm.Dev.App
         /// <param name="id"></param>
         /// <returns></returns>
         [HttpGet("{id}")]
-        public async Task<DevAppDto> GetAsync(long id)
+        public async Task<ScmDevAppDto> GetAsync(long id)
         {
             var model = await _thisRepository.GetByIdAsync(id);
-            return model.Adapt<DevAppDto>();
+            return model.Adapt<ScmDevAppDto>();
         }
 
         /// <summary>
@@ -99,11 +99,11 @@ namespace Com.Scm.Dev.App
         /// <param name="id"></param>
         /// <returns></returns>
         [HttpGet("{id}")]
-        public async Task<DevAppDto> GetEditAsync(long id)
+        public async Task<ScmDevAppDto> GetEditAsync(long id)
         {
             return await _thisRepository
                 .AsQueryable()
-                .Select<DevAppDto>()
+                .Select<ScmDevAppDto>()
                 .FirstAsync(m => m.id == id);
         }
 
@@ -126,7 +126,7 @@ namespace Com.Scm.Dev.App
         /// </summary>
         /// <param name="model"></param>
         /// <returns></returns>
-        public async Task<bool> AddAsync(DevAppDto model)
+        public async Task<bool> AddAsync(ScmDevAppDto model)
         {
             var dao = await _thisRepository.GetFirstAsync(a => a.code == model.code);
             if (dao != null)
@@ -140,7 +140,7 @@ namespace Com.Scm.Dev.App
                 throw new BusinessException($"已存在简称为{model.name}的应用！");
             }
 
-            dao = model.Adapt<AppDao>();
+            dao = model.Adapt<ScmDevAppDao>();
             return await _thisRepository.InsertAsync(dao);
         }
 
@@ -149,7 +149,7 @@ namespace Com.Scm.Dev.App
         /// </summary>
         /// <param name="model"></param>
         /// <returns></returns>
-        public async Task UpdateAsync(DevAppDto model)
+        public async Task UpdateAsync(ScmDevAppDto model)
         {
             var dao = await _thisRepository.GetFirstAsync(a => a.code == model.code && a.id != model.id);
             if (dao != null)

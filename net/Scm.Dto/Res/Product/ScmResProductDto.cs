@@ -1,4 +1,4 @@
-﻿using Com.Scm.Dao;
+﻿using Com.Scm.Dto;
 using System.ComponentModel.DataAnnotations;
 
 namespace Com.Scm.Res.Product
@@ -6,8 +6,7 @@ namespace Com.Scm.Res.Product
     /// <summary>
     /// 
     /// </summary>
-    [SqlSugar.SugarTable("scm_res_product")]
-    public class ProductDao : ScmDataDao
+    public class ScmResProductDto : ScmDataDto
     {
         /// <summary>
         /// 
@@ -64,7 +63,6 @@ namespace Com.Scm.Res.Product
         /// <summary>
         /// 
         /// </summary>
-        [SqlSugar.SugarColumn(IsIgnore = true)]
-        public List<ProductImageDao> images { get; set; }
+        public List<ScmResProductImageDto> images { get; set; }
     }
 }

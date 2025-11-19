@@ -1,5 +1,4 @@
-using Com.Scm.Dao;
-using SqlSugar;
+using Com.Scm.Dto;
 using System.ComponentModel.DataAnnotations;
 
 namespace Com.Scm.Dev
@@ -7,8 +6,7 @@ namespace Com.Scm.Dev
     /// <summary>
     /// 
     /// </summary>
-    [SugarTable("scm_sys_uid")]
-    public class UidDao : ScmDao
+    public class ScmDevUidDto : ScmDto
     {
         /// <summary>
         /// 键
@@ -40,12 +38,6 @@ namespace Com.Scm.Dev
         /// </summary>
         [Required]
         public int l { get; set; } = 0;
-
-        /// <summary>
-        /// 
-        /// </summary>
-        [Required]
-        public long t { get; set; }
 
         /// <summary>
         /// 前置掩码

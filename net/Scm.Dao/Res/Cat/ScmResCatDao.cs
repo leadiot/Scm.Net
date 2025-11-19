@@ -8,7 +8,7 @@ namespace Com.Scm.Res.Cat
     /// 类别
     /// </summary>
     [SugarTable("scm_res_cat")]
-    public class CatDao : ScmDataDao
+    public class ScmResCatDao : ScmDataDao
     {
         /// <summary>
         /// 应用标识

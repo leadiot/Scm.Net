@@ -1,11 +1,11 @@
-# [material-symbols](https://github.com/marella/material-symbols/tree/main/material-symbols)
+# [@material-symbols/font-400](https://github.com/marella/material-symbols/tree/main/font/400)
 
-Latest variable icon fonts and CSS for Material Symbols.
+Latest variable icon fonts with weight 400 for Material Symbols.
 
 > This package is automatically updated, so it will always have the latest icons from Google.
 
-> For fonts with fewer variations, see [`@material-symbols/font-400`](https://www.npmjs.com/package/@material-symbols/font-400)
->
+> This package [![install size](https://packagephobia.com/badge?p=@material-symbols/font-400)](https://packagephobia.com/result?p=@material-symbols/font-400) includes only fonts with grade (`GRAD`) 0 and optical size (`opsz`) 48px. For other variations, see [`material-symbols`](https://www.npmjs.com/package/material-symbols) [![install size](https://packagephobia.com/badge?p=material-symbols)](https://packagephobia.com/result?p=material-symbols).
+
 > For SVGs, see [`@material-symbols/svg-400`](https://www.npmjs.com/package/@material-symbols/svg-400)
 
 - [Installation](#installation)
@@ -17,27 +17,44 @@ Latest variable icon fonts and CSS for Material Symbols.
 Install the [latest version][releases] using:
 
 ```sh
-npm install material-symbols@latest
+npm install @material-symbols/font-400@latest
 ```
+
+The package `@material-symbols/font-400` includes only fonts with weight 400. To use a different weight, replace `400` in the package name with the desired weight.
+
+<details>
+<summary><strong>Show all packages</strong></summary><br>
+
+| Package                                                                                  | Weight |
+| :--------------------------------------------------------------------------------------- | :----- |
+| [`@material-symbols/font-100`](https://www.npmjs.com/package/@material-symbols/font-100) | 100    |
+| [`@material-symbols/font-200`](https://www.npmjs.com/package/@material-symbols/font-200) | 200    |
+| [`@material-symbols/font-300`](https://www.npmjs.com/package/@material-symbols/font-300) | 300    |
+| [`@material-symbols/font-400`](https://www.npmjs.com/package/@material-symbols/font-400) | 400    |
+| [`@material-symbols/font-500`](https://www.npmjs.com/package/@material-symbols/font-500) | 500    |
+| [`@material-symbols/font-600`](https://www.npmjs.com/package/@material-symbols/font-600) | 600    |
+| [`@material-symbols/font-700`](https://www.npmjs.com/package/@material-symbols/font-700) | 700    |
+
+</details>
 
 ## Usage
 
 Import in JS (example: `src/index.js` in Create React App, `src/main.js` in Vue CLI):
 
 ```js
-import 'material-symbols';
+import '@material-symbols/font-400';
 ```
 
 or import in CSS (example: `src/styles.css` in Angular CLI):
 
 ```css
-@import 'material-symbols';
+@import '@material-symbols/font-400';
 ```
 
 or import in HTML:
 
 ```html
-<link href="/path/to/material-symbols/index.css" rel="stylesheet">
+<link href="/path/to/@material-symbols/font-400/index.css" rel="stylesheet">
 ```
 
 To display an icon, use one of the following:
@@ -48,11 +65,11 @@ To display an icon, use one of the following:
 <span class="material-symbols-sharp">face</span>    <!-- Sharp -->
 ```
 
-To customize the variable font axes (fill, weight, grade, and optical size), use:
+To customize the variable font axes (fill), use:
 
 ```css
 .material-symbols-outlined {
-  font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 48;
+  font-variation-settings: 'FILL' 0;
 }
 ```
 
@@ -61,8 +78,8 @@ To customize the variable font axes (fill, weight, grade, and optical size), use
 The default `index.css` includes CSS for all fonts. This may cause build tools such as webpack to copy all fonts to the build directory even if you are not using all of them. To reduce the build size, import only the styles you need. For example, if you only need outlined icons, import `outlined.css` instead of the default `index.css`:
 
 ```diff
--import 'material-symbols';
-+import 'material-symbols/outlined.css';
+-import '@material-symbols/font-400';
++import '@material-symbols/font-400/outlined.css';
 ```
 
 <details>
@@ -81,13 +98,13 @@ Sharp | sharp.css | sharp.scss
 Import in Sass (example: `src/styles.scss` in Angular CLI):
 
 ```scss
-@import 'material-symbols';
+@import '@material-symbols/font-400';
 ```
 
 If you are getting errors with webpack or Vue CLI, add this line before importing:
 
 ```scss
-$material-symbols-font-path: '~material-symbols/';
+$material-symbols-font-path: '~@material-symbols/font-400/';
 ```
 
 ### Using Angular `mat-icon`
@@ -112,5 +129,5 @@ Material Symbols are created by [Google](https://github.com/google/material-desi
 We'd love attribution in your app's *about* screen, but it's not required.
 
 [releases]: https://github.com/marella/material-symbols/releases
-[license]: https://github.com/marella/material-symbols/blob/main/material-symbols/LICENSE
+[license]: https://github.com/marella/material-symbols/blob/main/font/400/LICENSE
 [demo]: https://marella.github.io/material-symbols/demo/

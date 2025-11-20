@@ -1,7 +1,7 @@
 {
-  "name": "material-symbols",
-  "version": "0.14.3",
-  "description": "Latest variable icon fonts and CSS for Material Symbols.",
+  "name": "@material-symbols/font-400",
+  "version": "0.39.4",
+  "description": "Latest variable icon fonts with weight 400 for Material Symbols.",
   "main": "index.css",
   "sass": "index.scss",
   "types": "index.d.ts",
@@ -9,17 +9,11 @@
     "index.d.ts",
     "*.{css,scss,woff2}"
   ],
-  "scripts": {
-    "build": "sass --no-source-map --no-error-css ."
-  },
-  "devDependencies": {
-    "sass": "1.56.1"
-  },
   "license": "Apache-2.0",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/marella/material-symbols.git",
-    "directory": "material-symbols"
+    "directory": "font/400"
   },
   "bugs": {
     "url": "https://github.com/marella/material-symbols/issues"

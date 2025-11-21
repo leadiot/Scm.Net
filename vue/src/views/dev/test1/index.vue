@@ -91,7 +91,7 @@
 			</el-container>
 		</el-main>
 	</el-container>
-	<edit ref="edit" />
+	<edit ref="edit" @complete="complete" />
 </template>
 
 <script>
@@ -100,7 +100,6 @@ import { defineAsyncComponent } from "vue";
 export default {
 	name: 'scui_scicon',
 	components: {
-		copy: defineAsyncComponent(() => import("./copy")),
 		edit: defineAsyncComponent(() => import("./edit")),
 	},
 	data() {
@@ -134,17 +133,28 @@ export default {
 		this.listSet();
 	},
 	methods: {
+		complete() {
+			this.search();
+		},
+		async search() {
+			var iconRes = await this.$API.scmresicon.list.get(this.param);
+			if (!iconRes || iconRes.code != 200) {
+				return;
+			}
+
+			this.data = iconRes.data;
+		},
 		async status_item(e, row) {
-			this.$SCM.status_item(this, this.$API.scmdevicon.status, row, row.row_status);
+			this.$SCM.status_item(this, this.$API.scmresicon.status, row, row.row_status);
 		},
 		status_list(status) {
-			this.$SCM.status_list(this, this.$API.scmdevicon.status, this.selection, status);
+			this.$SCM.status_list(this, this.$API.scmresicon.status, this.selection, status);
 		},
 		async delete_item(row) {
-			this.$SCM.delete_item(this, this.$API.scmdevicon.delete, row);
+			this.$SCM.delete_item(this, this.$API.scmresicon.delete, row);
 		},
 		delete_list() {
-			this.$SCM.delete_list(this, this.$API.scmdevicon.delete, this.selection);
+			this.$SCM.delete_list(this, this.$API.scmresicon.delete, this.selection);
 		},
 		show_search() {
 			this.$refs.search.open(this.param.key);
@@ -154,16 +164,14 @@ export default {
 				row = {};
 				row.set_id = this.param.set_id;
 				row.cat_id = this.param.cat_id;
-				row.type = this.param.type;
 			}
 			this.$refs.edit.open(row);
 		},
 		listSet() {
-			this.$SCM.list_option(this.set_list, this.$API.scmdeviconcat.option, {}, false);
+			this.$SCM.list_option(this.set_list, this.$API.scmresiconcat.option, {}, false);
 		},
 		async changeSet() {
-			this.cat = '';
-			var catRes = await this.$API.scmdeviconcat.list.get({ 'pid': this.param.set_id });
+			var catRes = await this.$API.scmresiconcat.list.get({ 'pid': this.param.set_id });
 			if (!catRes || catRes.code != 200) {
 				return;
 			}
@@ -176,14 +184,6 @@ export default {
 
 			this.param.cat_id = row.id;
 			this.search();
-		},
-		async search() {
-			var iconRes = await this.$API.scmdevicon.list.get(this.param);
-			if (!iconRes || iconRes.code != 200) {
-				return;
-			}
-
-			this.data = iconRes.data;
 		},
 		hasIcons() {
 			return this.data && this.data.length > 0;
@@ -218,7 +218,7 @@ export default {
 			return 'scfont ' + this.getName(icon);
 		},
 		copyCode(icon) {
-			this.$refs.edit.open(icon);
+			this.$refs.edit.open(icon, this.cat_list);
 		}
 	},
 };

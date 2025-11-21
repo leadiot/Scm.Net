@@ -54,6 +54,9 @@
 												<el-tab-pane :label="$t('login.accountLogin')" lazy v-if="hasMode(10)">
 													<pass-form></pass-form>
 												</el-tab-pane>
+												<el-tab-pane :label="$t('login.otpLogin')" lazy v-if="hasMode(20)">
+													<otp-form></otp-form>
+												</el-tab-pane>
 												<el-tab-pane :label="$t('login.phoneLogin')" lazy v-if="hasMode(21)">
 													<phone-form></phone-form>
 												</el-tab-pane>
@@ -87,6 +90,7 @@
 
 <script>
 import passForm from "./components/passForm";
+import otpForm from "./components/otpForm";
 import phoneForm from "./components/phoneForm";
 import emailForm from "./components/emailForm";
 import oidcForm from "./components/oidcForm";
@@ -95,6 +99,7 @@ export default {
 	name: 'login',
 	components: {
 		passForm,
+		otpForm,
 		phoneForm,
 		emailForm,
 		oidcForm,

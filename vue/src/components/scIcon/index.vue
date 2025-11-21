@@ -1,8 +1,10 @@
 <template>
     <i :class="getScClass()" :style="{ 'fontSize': size + 'px', 'color': color }" v-if="isSc()"></i>
-    <i :class="getMsClass()" :style="{ 'fontSize': size + 'px', 'color': color }" v-else-if="isMs()">{{ getMsName() }}</i>
-    <i :class="getMiClass()" :style="{ 'fontSize': size + 'px', 'color': color }" v-else-if="isMi()">{{ getMiName() }}</i>
-    <i :class="getMdiClass()" :style="{ 'fontSize': size + 'px', 'color': color }" v-else-if="isMdi()">{{ getMdiName() }}</i>    
+    <i :class="getMsClass()" :style="{ 'fontSize': size + 'px', 'color': color }" v-else-if="isMs()">{{ getMsName()
+        }}</i>
+    <i :class="getMiClass()" :style="{ 'fontSize': size + 'px', 'color': color }" v-else-if="isMi()">{{ getMiName()
+        }}</i>
+    <i :class="getMdiClass()" :style="{ 'fontSize': size + 'px', 'color': color }" v-else-if="isMdi()"></i>
 </template>
 
 <script>
@@ -73,6 +75,13 @@ export default {
          * @returns {string} 图标名称
          */
         getMsName() {
+            return this.name.substring(3);
+        },
+        /**
+         * 获取Material Icons图标名称
+         * @returns {string} 图标名称
+         */
+        getMiName() {
             return this.name.substring(3);
         },
         /**

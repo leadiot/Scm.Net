@@ -4,7 +4,10 @@
             <div class="icon">
                 <sc-icon :name="formData.name" :size="64" />
             </div>
-            <el-form ref="formRef" label-width="100px" :model="formData" :rules="rules" style="width:400px;">
+            <el-form ref="formRef" label-width="100px" :model="formData" :rules="rules" style="width: 360px;">
+                <el-form-item label="图标分类" prop="cat_id">
+                    <sc-select v-model="formData.cat_id" :data="cat_list" placeholder="请输入图标分类"></sc-select>
+                </el-form-item>
                 <el-form-item label="图标名称" prop="name">
                     <el-input v-model="formData.name" placeholder="请输入图标名称" :maxlength="32" show-word-limit
                         clearable></el-input>
@@ -14,7 +17,7 @@
                         show-word-limit clearable></el-input>
                 </el-form-item>
                 <el-form-item label="显示排序" prop="od">
-                    <el-input-number v-model="formData.od" :min="1" :max="1024" placeholder="请输入显示排序" />
+                    <el-input-number v-model="formData.od" :min="0" :max="1024" placeholder="请输入显示排序" />
                 </el-form-item>
             </el-form>
         </div>
@@ -39,6 +42,7 @@ export default {
             rules: {
                 name: [{ required: true, trigger: "blur", message: "请输入图标名称" }]
             },
+            cat_list: [],
         };
     },
     mounted() {
@@ -47,18 +51,27 @@ export default {
         def_data() {
             return {
                 id: this.$SCM.DEF_ID,
-                set_id: this.$SCM.ID_ONE,
-                cat_id: this.$SCM.ID_ONE,
-                type: '',
+                set_id: this.$SCM.DEF_ID,
+                cat_id: this.$SCM.DEF_ID,
                 name: '',
                 desc: '',
                 od: 0,
             }
         },
-        async open(row) {
+        async open(row, catList) {
+            this.cat_list = [];
+            if (catList && catList.length > 0) {
+                this.cat_list = catList.map(item => ({
+                    label: item.name,
+                    value: item.id,
+                    id: item.id
+                }));
+            }
+
             if (!row.id) {
                 this.mode = "add";
-                this.formData = row;
+                this.formData.set_id = row.set_id;
+                this.formData.cat_id = row.cat_id;
             } else {
                 this.mode = "edit";
                 var res = await this.$API.scmdevicon.model.get(row.id);
@@ -97,6 +110,10 @@ export default {
 };
 </script>
 <style scoped>
+.el-input-number {
+    width: 100%;
+}
+
 .icon_panel {
     display: flex;
     flex-direction: row;

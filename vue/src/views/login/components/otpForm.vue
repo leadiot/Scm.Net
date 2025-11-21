@@ -1,36 +1,45 @@
 <template>
     <el-form ref="loginForm" :model="form" :rules="rules" label-width="0" size="large">
-        <el-form-item prop="email">
-            <el-radio-group v-model="form.type" @change="changeType" style="width: 100%;" size="small">
-                <el-radio-button :value="21">手机号码</el-radio-button>
-                <el-radio-button :value="22">电子邮件</el-radio-button>
-                <el-radio-button :value="23">随机口令</el-radio-button>
-            </el-radio-group>
+        <el-form-item prop="type">
+            <el-segmented v-model="form.mode" :options="type_list" block style="width: 100%;"></el-segmented>
         </el-form-item>
-        <el-form-item prop="phone" v-if="form.type == 21">
+        <el-form-item prop="phone" v-if="form.mode == 21">
             <el-input v-model="form.phone" prefix-icon="el-icon-iphone" clearable
                 :placeholder="$t('login.phonePlaceholder')">
-                <template #prepend>+86</template>
+                <!-- <template #prepend>+86</template> -->
             </el-input>
         </el-form-item>
-        <el-form-item prop="email" v-else-if="form.type == 22">
+        <el-form-item prop="code" v-if="form.mode == 21">
+            <div class="login-msg-yzm">
+                <el-input v-model="form.code" prefix-icon="el-icon-unlock" clearable
+                    :placeholder="$t('login.smsPlaceholder')"></el-input>
+                <el-button @click="getSms" :disabled="disabled">
+                    {{ this.$t('login.smsGet') }}<span v-if="disabled">({{ time }})</span>
+                </el-button>
+            </div>
+        </el-form-item>
+        <el-form-item prop="email" v-if="form.mode == 22">
             <el-input v-model="form.email" prefix-icon="el-icon-message" clearable
                 :placeholder="$t('login.emailPlaceholder')">
             </el-input>
         </el-form-item>
-        <el-form-item prop="user" v-else-if="form.type == 23">
+        <el-form-item prop="code" v-if="form.mode == 22">
+            <div class="login-msg-yzm">
+                <el-input v-model="form.code" prefix-icon="el-icon-unlock" clearable
+                    :placeholder="$t('login.msgPlaceholder')"></el-input>
+                <el-button @click="getMsg" :disabled="disabled">
+                    {{ this.$t('login.msgGet') }}<span v-if="disabled">({{ time }})</span>
+                </el-button>
+            </div>
+        </el-form-item>
+        <el-form-item prop="user" v-if="form.mode == 23">
             <el-input v-model="form.user" prefix-icon="el-icon-user" clearable
                 :placeholder="$t('login.userPlaceholder')">
             </el-input>
         </el-form-item>
-        <el-form-item prop="code" style="margin-bottom: 35px;">
-            <div class="login-msg-yzm">
-                <el-input v-model="form.code" prefix-icon="el-icon-unlock" clearable
-                    :placeholder="$t('login.msgPlaceholder')"></el-input>
-                <el-button @click="getYzm" :disabled="disabled">
-                    {{ this.$t('login.msgGet') }}<span v-if="disabled">({{ time }})</span>
-                </el-button>
-            </div>
+        <el-form-item prop="code" v-if="form.mode == 23">
+            <el-input v-model="form.code" prefix-icon="el-icon-unlock" clearable
+                :placeholder="$t('login.otpPlaceholder')"></el-input>
         </el-form-item>
         <el-form-item>
             <el-button type="primary" style="width: 100%;" :loading="islogin" round @click="login">
@@ -48,16 +57,23 @@ export default {
     data() {
         return {
             form: {
-                type: 21,
-                mode: 30,
+                type: this.$CONFIG.DEF_LOGIN_TYPE,
+                mode: 21,
                 unit: this.$CONFIG.DEF_LOGIN_UNIT,
+                phone: '',
                 email: '',
                 code: '',
                 key: '',
                 req: '',
                 auto: true
             },
+            type_list: [
+                { label: "手机号码", value: 21, },
+                { label: "电子邮件", value: 22, },
+                { label: "随机口令", value: 23, },
+            ],
             rules: {
+                phone: [{ required: true, message: this.$t('login.phoneError') }],
                 email: [{ required: true, message: this.$t('login.emailError') }],
                 code: [{ required: true, message: this.$t('login.msgError') }]
             },
@@ -72,16 +88,50 @@ export default {
     },
     methods: {
         init() {
-            var req = this.$SCM.read_cache('scm_login_email', '');
+            var req = this.$SCM.read_cache('scm_login_otp', '');
             if (!req) {
                 req = this.$TOOL.uuid();
             }
             this.form.req = req;
         },
-        changeType() {
-            console.log(typeof (this.type) + ":" + this.type);
+        async getSms() {
+            this.form.key = '';
+
+            var validate = await this.$refs.loginForm.validateField("phone").catch(() => { })
+            if (!validate) { return false }
+
+            this.$message.success(this.$t('login.smsSent'))
+            this.disabled = true
+            this.time = 60
+            var t = setInterval(() => {
+                this.time -= 1
+                if (this.time < 1) {
+                    clearInterval(t)
+                    this.disabled = false
+                    this.time = 0
+                }
+            }, 1000);
+
+            var data = {
+                mode: this.form.mode,
+                code: this.form.phone,
+                req: this.form.req,
+            };
+            var userRes = await this.$API.operator.sendOtp.post(data);
+            if (userRes.code != 200) {
+                this.$message.warning(userRes.message);
+                return false;
+            }
+            data = userRes.data;
+            if (!data.success) {
+                {
+                    this.$message.warning(data.message);
+                    return false;
+                }
+            }
+            this.form.key = data.key;
         },
-        async getYzm() {
+        async getMsg() {
             this.form.key = '';
 
             var validate = await this.$refs.loginForm.validateField("email").catch(() => { })
@@ -123,8 +173,12 @@ export default {
             if (!validate) { return false }
 
             if (!this.form.key || this.form.key.length != 32) {
-                this.$message.warning('请先获取验证码！');
-                return false;
+                if (this.form.mode == 23) {
+                    this.form.key = '00000000000000000000000000000000';
+                } else {
+                    this.$message.warning('请先获取验证码！');
+                    return false;
+                }
             }
 
             this.islogin = true;

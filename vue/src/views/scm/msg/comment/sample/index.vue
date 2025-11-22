@@ -44,7 +44,7 @@
 export default {
 	data() {
 		return {
-			img: 'http://localhost:2800/img/bg1.jpg',
+			img: '/img/bg1.jpg',
 			time: '',//当前时间
 			date: '',//当前日期
 			fontName: '',

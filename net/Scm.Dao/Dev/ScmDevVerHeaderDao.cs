@@ -72,6 +72,11 @@ namespace Com.Scm.Dev
         public bool current { get; set; }
 
         /// <summary>
+        /// 应用路径（首页、下载等）
+        /// </summary>
+        public string url { get; set; }
+
+        /// <summary>
         /// 升级说明(简介)
         /// </summary>
         [StringLength(1024)]

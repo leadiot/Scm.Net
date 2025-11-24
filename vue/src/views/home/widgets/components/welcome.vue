@@ -86,7 +86,7 @@ export default {
 	},
 	methods: {
 		goDoc() {
-			window.open("http://c-scm.net/");
+			window.open("https://c-scm.net/");
 		},
 		goUrl(m) {
 			this.$router.replace({

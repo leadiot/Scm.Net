@@ -1,6 +1,6 @@
 {
-  "name": "c-scm",
-  "version": "9.5.9",
+  "name": "scm.net",
+  "version": "10.6.16",
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",

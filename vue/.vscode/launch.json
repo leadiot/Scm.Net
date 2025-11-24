@@ -8,24 +8,18 @@
 			"request": "launch"
 		},
 		{
-			"name": "启动程序: Firefox",
-			"request": "launch",
-			"type": "firefox",
-			"url": "http://localhost:2800",
-			"webRoot": "${workspaceFolder}/vue",
-			"pathMappings": [
-				{
-					"url": "webpack://c-scm",
-					"path": "${workspaceFolder}"
-				}
-			]
-		},
-		{
 			"name": "启动程序：Chrome",
 			"request": "launch",
 			"type": "chrome",
 			"url": "http://localhost:2800",
-			"webRoot": "${workspaceFolder}"
+			"webRoot": "${workspaceFolder}/vue"
+		},
+		{
+			"name": "启动程序: Firefox",
+			"request": "launch",
+			"type": "firefox",
+			"url": "http://localhost:2800",
+			"webRoot": "${workspaceFolder}/vue"
 		},
 		{
 			"name": "启动程序：Edge",

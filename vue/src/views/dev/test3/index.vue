@@ -14,69 +14,63 @@
                 <div class="desktop-platforms">
                     <!-- Windows平台 -->
                     <el-card class="platform-card" aria-labelledby="windows-title">
-                        <div class="platform-icon windows-icon" aria-hidden="true"></div>
+                        <div class="platform-icon" aria-hidden="true">
+                            <el-avatar src="/downloads/harmonyos-icon.png" :size="80" />
+                        </div>
                         <h3 class="platform-name" id="windows-title">Windows</h3>
                         <p class="platform-desc">适用于Windows 7/8/10/11</p>
                         <div class="download-buttons">
                             <el-button type="primary" size="large" @click="handleDownload('windows')"
                                 :loading="downloading === 'windows'" :disabled="downloading === 'windows'"
                                 aria-label="下载Windows版本">
-                                <el-icon>
-                                    <Download />
-                                </el-icon>
+                                <sc-icon name="ms-download" />
                                 Windows版本 (.exe)
                             </el-button>
                             <el-button type="default" size="large" @click="showVersionInfo('windows')"
                                 aria-label="查看Windows版本说明">
-                                <el-icon>
-                                    <Document />
-                                </el-icon>
+                                <sc-icon name="ms-docs" />
                                 版本说明
                             </el-button>
                         </div>
                     </el-card>
                     <!-- MacOS平台 -->
                     <el-card class="platform-card" aria-labelledby="mac-title">
-                        <div class="platform-icon mac-icon" aria-hidden="true"></div>
+                        <div class="platform-icon" aria-hidden="true">
+                            <el-avatar src="/downloads/harmonyos-icon.png" :size="80" />
+                        </div>
                         <h3 class="platform-name" id="mac-title">Mac</h3>
                         <p class="platform-desc">适用于macOS 10.13及以上版本</p>
                         <div class="download-buttons">
                             <el-button type="primary" size="large" @click="handleDownload('macos')"
                                 :loading="downloading === 'macos'" :disabled="downloading === 'macos'"
                                 aria-label="下载MacOS版本">
-                                <el-icon>
-                                    <Download />
-                                </el-icon>
+                                <sc-icon name="ms-download" />
                                 MacOS版本 (.dmg)
                             </el-button>
                             <el-button type="default" size="large" @click="showVersionInfo('macos')"
                                 aria-label="查看MacOS版本说明">
-                                <el-icon>
-                                    <Document />
-                                </el-icon>
+                                <sc-icon name="ms-docs" />
                                 版本说明
                             </el-button>
                         </div>
                     </el-card>
                     <!-- Linux平台 -->
                     <el-card class="platform-card" aria-labelledby="linux-title">
-                        <div class="platform-icon linux-icon" aria-hidden="true"></div>
+                        <div class="platform-icon" aria-hidden="true">
+                            <el-avatar src="/downloads/harmonyos-icon.png" :size="80" />
+                        </div>
                         <h3 class="platform-name" id="linux-title">Linux</h3>
                         <p class="platform-desc">适用于大多数Linux发行版</p>
                         <div class="download-buttons">
                             <el-button type="primary" size="large" @click="handleDownload('linux')"
                                 :loading="downloading === 'linux'" :disabled="downloading === 'linux'"
                                 aria-label="下载Linux版本">
-                                <el-icon>
-                                    <Download />
-                                </el-icon>
+                                <sc-icon name="ms-download" />
                                 Linux版本 (.deb/.rpm)
                             </el-button>
                             <el-button type="default" size="large" @click="showVersionInfo('linux')"
                                 aria-label="查看Linux版本说明">
-                                <el-icon>
-                                    <Document />
-                                </el-icon>
+                                <sc-icon name="ms-docs" />
                                 版本说明
                             </el-button>
                         </div>
@@ -90,68 +84,62 @@
                 <div class="mobile-platforms">
                     <!-- Android平台 -->
                     <el-card class="platform-card" aria-labelledby="android-title">
-                        <div class="platform-icon android-icon" aria-hidden="true"></div>
+                        <div class="platform-icon" aria-hidden="true">
+                            <el-avatar src="/downloads/harmonyos-icon.png" :size="80" />
+                        </div>
                         <h3 class="platform-name" id="android-title">Android</h3>
                         <p class="platform-desc">适用于Android 5.0及以上版本</p>
                         <div class="download-buttons">
                             <el-button type="primary" size="large" @click="handleDownload('android')"
                                 :loading="downloading === 'android'" :disabled="downloading === 'android'"
                                 aria-label="下载Android版本">
-                                <el-icon>
-                                    <Download />
-                                </el-icon>
+                                <sc-icon name="ms-download" />
                                 Android版本 (.apk)
                             </el-button>
                             <el-button type="default" size="large" @click="showVersionInfo('android')"
                                 aria-label="查看Android版本说明">
-                                <el-icon>
-                                    <Document />
-                                </el-icon>
+                                <sc-icon name="ms-docs" />
                                 版本说明
                             </el-button>
                         </div>
                     </el-card>
                     <!-- iOS平台 -->
                     <el-card class="platform-card" aria-labelledby="ios-title">
-                        <div class="platform-icon ios-icon" aria-hidden="true"></div>
+                        <div class="platform-icon" aria-hidden="true">
+                            <el-avatar src="/downloads/harmonyos-icon.png" :size="80" />
+                        </div>
                         <h3 class="platform-name" id="ios-title">iOS</h3>
                         <p class="platform-desc">适用于iOS 13及以上版本</p>
                         <div class="download-buttons">
                             <el-button type="primary" size="large" @click="handleDownload('ios')"
                                 :loading="downloading === 'ios'" :disabled="downloading === 'ios'" aria-label="下载iOS版本">
-                                <el-icon>
-                                    <Download />
-                                </el-icon>
+                                <sc-icon name="ms-download" />
                                 iOS版本 (.ipa)
                             </el-button>
                             <el-button type="default" size="large" @click="showVersionInfo('ios')"
                                 aria-label="查看iOS版本说明">
-                                <el-icon>
-                                    <Document />
-                                </el-icon>
+                                <sc-icon name="ms-docs" />
                                 版本说明
                             </el-button>
                         </div>
                     </el-card>
                     <!-- HarmonyOS平台 -->
                     <el-card class="platform-card" aria-labelledby="harmonyos-title">
-                        <div class="platform-icon harmonyos-icon" aria-hidden="true"></div>
+                        <div class="platform-icon" aria-hidden="true">
+                            <el-avatar src="/downloads/harmonyos-icon.png" :size="80" />
+                        </div>
                         <h3 class="platform-name" id="harmonyos-title">HarmonyOS</h3>
                         <p class="platform-desc">适用于HarmonyOS 2.0及以上版本</p>
                         <div class="download-buttons">
                             <el-button type="primary" size="large" @click="handleDownload('harmonyos')"
                                 :loading="downloading === 'harmonyos'" :disabled="downloading === 'harmonyos'"
                                 aria-label="下载HarmonyOS版本">
-                                <el-icon>
-                                    <Download />
-                                </el-icon>
+                                <sc-icon name="ms-download" />
                                 HarmonyOS版本 (.hap)
                             </el-button>
                             <el-button type="default" size="large" @click="showVersionInfo('harmonyos')"
                                 aria-label="查看HarmonyOS版本说明">
-                                <el-icon>
-                                    <Document />
-                                </el-icon>
+                                <sc-icon name="ms-docs" />
                                 版本说明
                             </el-button>
                         </div>
@@ -165,69 +153,63 @@
                 <div class="mobile-platforms">
                     <!-- Chrome浏览器 -->
                     <el-card class="platform-card" aria-labelledby="chrome-title">
-                        <div class="platform-icon chrome-icon" aria-hidden="true"></div>
+                        <div class="platform-icon" aria-hidden="true">
+                            <el-avatar src="/downloads/harmonyos-icon.png" :size="80" />
+                        </div>
                         <h3 class="platform-name" id="chrome-title">Chrome浏览器</h3>
                         <p class="platform-desc">适用于Chrome浏览器 80及以上版本</p>
                         <div class="download-buttons">
                             <el-button type="primary" size="large" @click="handleDownload('chrome')"
                                 :loading="downloading === 'chrome'" :disabled="downloading === 'chrome'"
                                 aria-label="下载Chrome版本">
-                                <el-icon>
-                                    <Download />
-                                </el-icon>
+                                <sc-icon name="ms-download" />
                                 Chrome版本 (.crx)
                             </el-button>
                             <el-button type="default" size="large" @click="showVersionInfo('chrome')"
                                 aria-label="查看Chrome版本说明">
-                                <el-icon>
-                                    <Document />
-                                </el-icon>
+                                <sc-icon name="ms-docs" />
                                 版本说明
                             </el-button>
                         </div>
                     </el-card>
                     <!-- Edge浏览器 -->
                     <el-card class="platform-card" aria-labelledby="edge-title">
-                        <div class="platform-icon edge-icon" aria-hidden="true"></div>
+                        <div class="platform-icon" aria-hidden="true">
+                            <el-avatar src="/downloads/harmonyos-icon.png" :size="80" />
+                        </div>
                         <h3 class="platform-name" id="edge-title">Edge浏览器</h3>
                         <p class="platform-desc">适用于Edge浏览器 80及以上版本</p>
                         <div class="download-buttons">
                             <el-button type="primary" size="large" @click="handleDownload('edge')"
                                 :loading="downloading === 'edge'" :disabled="downloading === 'edge'"
                                 aria-label="下载Edge版本">
-                                <el-icon>
-                                    <Download />
-                                </el-icon>
+                                <sc-icon name="ms-download" />
                                 Edge版本 (.crx)
                             </el-button>
                             <el-button type="default" size="large" @click="showVersionInfo('edge')"
                                 aria-label="查看Edge版本说明">
-                                <el-icon>
-                                    <Document />
-                                </el-icon>
+                                <sc-icon name="ms-docs" />
                                 版本说明
                             </el-button>
                         </div>
                     </el-card>
                     <!-- Firefox浏览器 -->
                     <el-card class="platform-card" aria-labelledby="firefox-title">
-                        <div class="platform-icon firefox-icon" aria-hidden="true"></div>
+                        <div class="platform-icon" aria-hidden="true">
+                            <el-avatar src="/downloads/harmonyos-icon.png" :size="80" />
+                        </div>
                         <h3 class="platform-name" id="firefox-title">Firefox浏览器</h3>
                         <p class="platform-desc">适用于Firefox浏览器 80及以上版本</p>
                         <div class="download-buttons">
                             <el-button type="primary" size="large" @click="handleDownload('firefox')"
                                 :loading="downloading === 'firefox'" :disabled="downloading === 'firefox'"
                                 aria-label="下载Firefox版本">
-                                <el-icon>
-                                    <Download />
-                                </el-icon>
+                                <sc-icon name="ms-download" />
                                 Firefox版本 (.crx)
                             </el-button>
                             <el-button type="default" size="large" @click="showVersionInfo('firefox')"
                                 aria-label="查看Firefox版本说明">
-                                <el-icon>
-                                    <Document />
-                                </el-icon>
+                                <sc-icon name="ms-docs" />
                                 版本说明
                             </el-button>
                         </div>
@@ -236,35 +218,37 @@
             </div>
 
             <!-- 返回顶部按钮 -->
-            <el-backtop target="#top" :bottom="40" :right="40" class="back-to-top">
-                <el-icon class="arrow-icon">
-                    <ArrowUp />
-                </el-icon>
+            <el-backtop target="#top" :bottom="40" :right="40">
             </el-backtop>
         </el-card>
     </div>
+    <el-dialog title="版本说明" v-model="versionDialogVisible" width="480px" :close-on-click-modal="false"
+        :close-on-press-escape="false" :show-close="false">
+        <div class="version-dialog-content">
+            <p><strong>版本号：</strong>${info.version}</p>
+            <p><strong>文件大小：</strong>${info.size}</p>
+            <p><strong>系统要求：</strong>${info.requirements}</p>
+            <p><strong>主要特性：</strong></p>
+            <ul>
+                ${info.features.map(feature => `<li>${feature}</li>`).join('')}
+            </ul>
+            <p><strong>下载次数：</strong>${this.formatNumber(this.downloadStats[platform])} 次</p>
+        </div>
+        <div class="dialog-footer">
+            <el-button type="primary" @click="versionDialogVisible = false">关闭</el-button>
+        </div>
+    </el-dialog>
 </template>
 
 <script>
-import { Download, Document, Smartphone, ChatDotRound, Phone, Mail, ArrowUp } from '@element-plus/icons-vue'
-
 export default {
     name: 'DownloadPage',
-    components: {
-        Download,
-        Document,
-        Smartphone,
-        ChatDotRound,
-        Phone,
-        Mail,
-        ArrowUp
-    },
     data() {
         return {
             // 当前正在下载的平台
             downloading: null,
             // 下载链接数据（实际项目中应替换为真实链接）
-            downloadLinks: {
+            urls: {
                 windows: '/downloads/app-windows-v1.0.0.exe',
                 macos: '/downloads/app-macos-v1.0.0.dmg',
                 linux: '/downloads/app-linux-v1.0.0.AppImage',
@@ -277,6 +261,8 @@ export default {
                 ios: 'https://apps.apple.com/cn/app/id1668832000',
                 harmony: 'https://appgallery.huawei.com/'
             },
+            versionDialogVisible: false,
+            info: {},
             // 版本信息
             versionInfo: {
                 currentVersion: 'v1.0.0',
@@ -327,16 +313,6 @@ export default {
         }
     },
     mounted() {
-        // 组件挂载后可以添加一些初始化逻辑
-        console.log('下载页面已加载');
-    },
-    computed: {
-        /**
-         * 计算总下载量
-         */
-        totalDownloads() {
-            return this.formatNumber(Object.values(this.downloadStats).reduce((sum, count) => sum + count, 0));
-        }
     },
     methods: {
         /**
@@ -355,7 +331,7 @@ export default {
                 try {
                     // 创建下载链接
                     const link = document.createElement('a');
-                    link.href = this.downloadLinks[platform];
+                    link.href = this.urls[platform];
                     link.download = `app-${platform}-${this.versionInfo.currentVersion}${this.getFileExtension(platform)}`;
                     document.body.appendChild(link);
 
@@ -428,23 +404,7 @@ export default {
         showVersionInfo(platform) {
             const info = this.versionInfo.platforms[platform];
             if (info) {
-                this.$dialog.alert({
-                    title: `${this.getPlatformName(platform)} 版本信息`,
-                    message: `
-            <div class="version-dialog-content">
-              <p><strong>版本号：</strong>${info.version}</p>
-              <p><strong>文件大小：</strong>${info.size}</p>
-              <p><strong>系统要求：</strong>${info.requirements}</p>
-              <p><strong>主要特性：</strong></p>
-              <ul>
-                ${info.features.map(feature => `<li>${feature}</li>`).join('')}
-              </ul>
-              <p><strong>下载次数：</strong>${this.formatNumber(this.downloadStats[platform])} 次</p>
-            </div>
-          `,
-                    dangerouslyUseHTMLString: true,
-                    confirmButtonText: '确定'
-                });
+                this.versionDialogVisible = true;
             }
         },
 
@@ -602,32 +562,6 @@ export default {
     color: white;
 }
 
-.windows-icon {
-    background-color: #0078d4;
-    background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cGF0aCBkPSJNODguNDUgMjkuMzNMMC4zMiAxOS44NGEzLjM3IDMuMzcgMCAwIDEgMC01Ljk0bDk5Ljc0LTI0Ljk1YTQuNCA0LjQgMCAwIDEgNi4xIDBsMjkuODggMjkuODhhNC4zNiA0LjM2IDAgMCAxIDAgNi4xTDEuMjcgMTUuNzNhMy4zNyAzLjM3IDAgMCAxIDAtNS45NGw5OS43NC0yNC45NUE0LjQgNC40IDAgMCAxIDk2LjU1IDBsMjkuODggMjkuODhhNC4zNiA0LjM2IDAgMCAxIDAgNi4xTDguNDUgMjkuMzNhMy4zNyAzLjM3IDAgMCAxIDAtNS45NHoiIGZpbGw9Im5vbmUiIHN0cm9rZT0iI2ZmZmZmZiIgc3Ryb2tlLXdpZHRoPSIyIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiLz48cGF0aCBkPSJNNDkuODggMzIuMDlhNCA0IDAgMCAwLTUuNzIgMCBMOS40NSAzOC42M2ExLjY3IDEuNjcgMCAwIDEtMS4xOCAyLjgyTDQwLjEyIDUxLjQxYTEuNjcgMS42NyAwIDAgMSAwIDIuODJsLTQuMzcgNC4zN2EyLjE0IDIuMTQgMCAwIDEtMy4wMyAwTDUuNCA1NC4yM2EyLjEyIDIuMTIgMCAwIDEgMC0zLjAxTDM1LjI1IDM4LjZhMS42NyAxLjY3IDAgMCAxIDIuODItMS4xOGw0MC45Ny0xMC4yYTQuNCA0IDAgMCAwIDAgLTguNjZsLTM1LjM0IDguODNhMS42NyAxLjY3IDAgMCAxLTIuODItMS4xOEw1LjQgMzMuNjNBMi4xMyAyLjEzIDAgMCAxIDUuNCAzMCAxLjY3IDEuNjcgMCAwIDEgNi41OCAyN0wzNC45OCA5Ljk3YTEuNjggMS42OCAwIDAgMSAyLjg0IDBsNDkuOTYgMTIuNDlhNC40IDQuNCAwIDAgMCAwIDguNjZsLTM1LjM0LTguODNhMS42NyAxLjY3IDAgMCAxLTIuODIgMS4xOE00OS44OCA0OC43M2E0IDQgMCAwIDAtNS43MiAwTDkuNDUgNTUuMmExLjY3IDEuNjcgMCAwIDEtMS4xOCAyLjgyTDQwLjEyIDY4LjNhMS42NyAxLjY3IDAgMCAxIDAgMi44MmwtNC4zNyA0LjM3YTIuMTQgMi4xNCAwIDAgMS0zLjAzIDBMMTUuNDQgNzEuOWEyLjEyIDIuMTIgMCAwIDEgMC0zLjAxTDM1LjI1IDU2LjZhMS42NyAxLjY3IDAgMCAxIDIuODItMS4xOGw0MC45Ny0xMC4yYTQuNCA0IDAgMCAwIDAtOC42Nkw4MC43NyA0OC43M2ExLjY3IDEuNjcgMCAwIDEtMS4xOCAyLjgybC0zMC4xNyAzMC4xN2ExLjY3IDEuNjcgMCAwIDEtMi44MiAwTDQ5Ljg4IDQ4LjczWiIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjZmZmZmZmIiBzdHJva2Utd2lkdGg9IjIiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIvPjxwYXRoIGQ9Ik00OS44OCA2NS4zOWE0IDQgMCAwIDAtNS43MiAwTDkuNDUgNzEuODNhMS42NyAxLjY3IDAgMCAxLTEuMTggMi44Mkw0MC4xMiA4NC40MWExLjY3IDEuNjcgMCAwIDEgMCAyLjgybC00LjM3IDQuMzdhMi4xNCAyLjE0IDAgMCAxLTMuMDMgMEwxNS40NCA5MC4yM2EyLjEyIDIuMTIgMCAwIDEgMC0zLjAxTDM1LjI1IDc0LjZhMS42NyAxLjY3IDAgMCAxIDIuODItMS4xOGw0MC45Ny0xMC4yYTQuNCA0IDAgMCAwIDAtOC42Nkw4MC43NyA2NS4zOWExLjY3IDEuNjcgMCAwIDEtMS4xOCAyLjgybC0zMC4xNyAzMC4xN2ExLjY3IDEuNjcgMCAwIDEtMi44MiAwTDQ5Ljg4IDY1LjM5WiIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjZmZmZmZmIiBzdHJva2Utd2lkdGg9IjIiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIvPjwvc3ZnPg==');
-}
-
-.mac-icon {
-    background-color: #ffffff;
-    background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cGF0aCBkPSJNODUuNDQgMTYuMjZDODIuNDQgMTQuNjMgNzguNTcgMTMuNCA3NC42NyAxMy40QzcwLjggMTMuNCA2Ny4wNyAxNC42MyA2NC4zMyAxNi4yNkM2NC4xOCAxMC41OCA1OS44NiA2LjI2IDU0LjE3IDYuMjZDNDguNDcgNi4yNiA0NC4xNSAxMC41OCA0NC4wIDU0LjE3QzcwLjY1IDUyLjYgODUuNDQgMzcuOCA4NS40NCAxNi4yNnptLTI3LjIzIDI1LjQxYzQuNDQgMCA4LjEtMy42NiA4LjEtOC4xcy0zLjY2LTguMS04LjEtOC4xcy04LjEgMy42Ni04LjEgOC4xczMuNjYgOC4xIDguMSA4LjF6IiBmaWxsPSIj0v9w4fA0P81IyIvPjwvc3ZnPg==');
-    border: 2px solid #e0e0e0;
-}
-
-.linux-icon {
-    background-color: #fcc624;
-    background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cGF0aCBkPSJNMTggMTJjNi42MyAwIDEyIDUuMzcgMTIgMTJoNmMtNi42MyAwLTEyLTUuMzctMTItMTJoLTZ6bTAgMjhjNi42MyAwIDEyIDUuMzcgMTIgMTJoNmMtNi42MyAwLTEyLTUuMzctMTItMTJoLTZ6bTAgMjhjNi42MyAwIDEyIDUuMzcgMTIgMTJoNmMtNi42MyAwLTEyLTUuMzctMTItMTJoLTZ6bTQyLTY4YzUuNTIgMCAxMCA0LjQ4IDEwIDEwaDYtNS41MiAwLTEwLTQuNDgtMTAtMTBoLTZ6bTAgMjhjNS41MiAwIDEwIDQuNDggMTAgMTBoNi01LjUyIDAtMTAtNC40OC0xMC0xMGgtNnoiIGZpbGw9Im5vbmUiIHN0cm9rZT0iIzg4NGI3NSIgc3Ryb2tlLXdpZHRoPSI0Ii8+PHBhdGggZD0iTTQ4IDEyYzYuNjMgMCAxMiA1LjM3IDEyIDEyaDYtNi42MyAwLTEyLTUuMzctMTItMTJoLTZ6bTAgMjhjNi42MyAwIDEyIDUuMzcgMTIgMTJoNi02LjYzIDAtMTItNS4zNy0xMi0xMmgtNnoiIGZpbGw9Im5vbmUiIHN0cm9rZT0iIzg4NGI3NSIgc3Ryb2tlLXdpZHRoPSI0Ii8+PHBhdGggZD0iTTQ4IDY0YzYuNjMgMCAxMiA1LjM3IDEyIDEyaDYtNi42MyAwLTEyLTUuMzctMTItMTJoLTZ6IiBmaWxsPSJub25lIiBzdHJva2U9IiM4ODRiNzUiIHN0cm9rZS13aWR0aD0iNCIvPjwvc3ZnPg==');
-}
-
-.android-icon {
-    background-color: #3ddc84;
-    background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cGF0aCBkPSJNODkuMTIgNDcuNjFjMi4yMi0xLjUgNC4xMi0zLjUyIDUuNjQtNS43NUw3Ni44OSAyMi4yQzc1LjMxIDIwLjczIDczLjUgMTkuNzcgNzEuNzYgMTkuMzdDNjYuNDQgMTcuOTUgNjEuMTIgMTcuOTUgNTUuOCAxOS4zN0w0Mi42OSAyNS44N0MxOC45OSA0NC41Mi0yLjA2IDc4LjcyIDAgODBjMi4xNCAxLjc4IDQuOTkgMi42NyA3LjkgMi42N2MxLjI4IDAgMi41NS0uMjUgMy43NS0uNzRsMS40OS0uNDljMy45Ni0xLjUgNy43NS0zLjczIDEuMy0yMy4xMy0zLjQ2IDcuNjQtNi45MiAxNS4yOS0xMC4zNyAyMi45My0zLjQ2IDcuNjQtNi45MiAxNS4yOS0xMC4zOCAyMi45My00LjY0IDIwLjQtOC4yIDE3LjkyLTEyLjE4IDE3LjkyLTIuNTQgMC0zLjggMS41Mi0zLjggMy43NHYzNy4zN2MwIDIuMjIgMS4xNCA0LjIgMy4wMyA1LjQ0TDQwLjE4IDc0Ljc1YzAuNTcuNDQgMS4yNS42NSAxLjk2LjY1IDEuNzYgMCAzLjItMS40NCAzLjItMy4yVjU4Ljg0YzAgMS4xMi0uOSAyLjAyLTEuOTYgMi4wMmgtMi42NmMtMS4wNyAwLTIuMDItLjktMi4wMi0yLjAydjE1Ljk0Yy0xLjc2IDAtMy4yIDEuNDQtMy4yIDMuMlY1NC44MmMzLjAyIDE2LjUgOS45MyAyNi41OCAxNi45OSAyOC4zMiAxMS4xOCAyLjgzIDIwLjA2LTE0LjQzIDIwLjA2LTE0LjQzQzkzLjgzIDY5LjY5IDk3LjI3IDU5LjQ1IDg5LjEyIDQ3LjYxeiIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjZmZmZmZmIiBzdHJva2Utd2lkdGg9IjIiLz48cGF0aCBkPSJNMzkuMDUgMTcuMTFjMS4zNi0uNDUgMi43OC0uMDkgMy45Ni44N0w1MC4wOSAyNS43Yy43OC41NiAxLjM3IDEuNDQgMS4zNyAyLjM2IDAgMS43Ni0xLjQ0IDMuMi0zLjIgMy4ycy0zLjItMS40NC0zLjItMy4yYzAtLjI4LjA1LS41Ni4xMy0uODJsLTYuMTctNS4zN2MtLjY0LS41Ni0uNDMtMS42NS41Ny0yLjA0YzEuMDItLjM5IDIuMTEuMTcgMi41NyAxLjE5bC42OSAxLjM4YzMuMzYgNi43Mi0yLjMgMTIuODktNy41NiAxMi44OS0xLjUgMC0yLjctMS4yMi0yLjctMi43N3MxLjItMi43NyAyLjctMi43N2M1LjI2IDAgMTAuOTktNi4xOCA3LjU2LTEyLjg5bC42OS0xLjM4eiIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjZmZmZmZmIiBzdHJva2Utd2lkdGg9IjIiLz48L3N2Zz4=');
-}
-
-.harmony-icon {
-    background-color: #ff3b30;
-    background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cGF0aCBkPSJNODIuMjIgMzAuNjNhMy42NiAzLjY2IDAgMCAwLTIuNi0uOTRsLTQuMTMtNC4xM2MtLjgtLjgtMi4wNi0xLjIzLTMuMzYtMS4yM2MtMS4zIDAtMi41Ni40My0zLjM2IDEuMjNsLTQuMTMgNC4xM2MtLjguOC0xLjIzIDIuMDYtMS4yMyAzLjM2IDAgMS4zLjQzIDIuNTYgMS4yMyAzLjM2bDEyLjQwIDEyLjQwYzAuODkuODkgMi4xNSAxLjMyIDMuNDEgMS4zMnMxLjUyLS40MyAyLjQxLTEuMjNsNC4xMy00LjEzYy44LS44IDEuMjMtMi4wNiAxLjIzLTMuMzYgMC0xLjMtLjQzLTIuNTYtMS4yMy0zLjM2bC0xMi40LTEyLjQwYy0uODktLjg5LTIuMTUtMS4zMi0zLjQxLTEuMzJ6TTE3Ljc4IDMwLjYzYTMuNjYgMy42NiAwIDAgMCAtMi42LS45NGwtNC4xMy00LjEzYy0uOC0uOC0yLjA2LTEuMjMtMy4zNi0xLjIzYy0xLjMgMC0yLjU2LjQzLTMuMzYuMjNsLTQuMTMgNC4xM2MtLjguOC0xLjIzIDIuMDYtMS4yMyAzLjM2IDAgMS4zLjQzIDIuNTYgMS4yMyAzLjM2bDEyLjQgMTIuNDBjLjg5Ljg5IDIuMTUgMS4zMiAzLjQxIDEuMzJzMS41Mi0uNDMgMi40MS0xLjIzTDI0LjkgMzQuOTFjLjgtLjggMS4yMy0yLjA2IDEuMjMtMy4zNiAwLTEuMy0uNDQtMi41Ni0xLjI0LTMuMzZsLTEyLjQtMTIuNDBjLS44OS0uODktMi4xNS0xLjMyLTMuNDEtMS4zMnptNDAgNGEzLjY2IDMuNjYgMCAwIDEtMi42LS45NGwtNC4xMy00LjEzYy0uOC0uOC0yLjA2LTEuMjMtMy4zNi0xLjIzYy0xLjMgMC0yLjU2LjQzLTMuMzYuMjNsLTQuMTMgNC4xM2MtLjguOC0xLjIzIDIuMDYtMS4yMyAzLjM2IDAgMS4zLjQzIDIuNTYgMS4yMyAzLjM2bDEyLjQgMTIuNDBjLjg5Ljg5IDIuMTUgMS4zMiAzLjQxIDEuMzJzMS41Mi0uNDMgMi40MS0xLjIzTDY0LjkgNzQuOTFjLjgtLjggMS4yMy0yLjA2IDEuMjMtMy4zNiAwLTEuMy0uNDQtMi41Ni0xLjI0LTMuMzZsLTEyLjQtMTIuNDBjLS44OS0uODktMi4xNS0xLjMyLTMuNDEtMS4zMnptNDAgMGEzLjY2IDMuNjYgMCAwIDEtMi42LS45NGwtNC4xMy00LjEzYy0uOC0uOC0yLjA2LTEuMjMtMy4zNi0xLjIzYy0xLjMgMC0yLjU2LjQzLTMuMzYuMjNsLTQuMTMgNC4xM2MtLjguOC0xLjIzIDIuMDYtMS4yMyAzLjM2IDAgMS4zLjQzIDIuNTYgMS4yMyAzLjM2bDEyLjQgMTIuNDBjLjg5Ljg5IDIuMTUgMS4zMiAzLjQxIDEuMzJzMS41Mi0uNDMgMi40MS0xLjIzTDg0LjkgMzQuOTFjLjgtLjggMS4yMy0yLjA2IDEuMjMtMy4zNiAwLTEuMy0uNDQtMi41Ni0xLjI0LTMuMzZsLTEyLjQtMTIuNDBjLS44OS0uODktMi4xNS0xLjMyLTMuNDEtMS4zMnptLTQwIDQwYTMuNjYgMy42NiAwIDAgMS0yLjYtLjk0bC00LjEzLTQuMTNjLS44LS44LTIuMDYtMS4yMy0zLjM2LTEuMjNjLTEuMyAwLTIuNTYuNDMtMy4zNi4yM2wtNC4xMyA0LjEzYy0uOC44LTEuMjMgMi4wNi0xLjIzIDMuMzYgMCAxLjMuNDMgMi41NiAxLjIzIDMuMzZsMTIuNCAxMi40MGMuODkuODkgMi4xNSAxLjMyIDMuNDEgMS4zMnMxLjUyLS40MyAyLjQxLTEuMjNMNDIuOSA3NC45MWMuOC0uOCAxLjIzLTIuMDYgMS4yMy0zLjM2IDAtMS4zLS40NC0yLjU2LTEuMjQtMy4zNmwtMTIuNC0xMi40Yy0uODktLjg5LTIuMTUtMS4zMi0zLjQxLTEuMzJ6IiBmaWxsPSJub25lIiBzdHJva2U9IiNmZmZmZmYiIHN0cm9rZS13aWR0aD0iMiIvPjwvc3ZnPg==');
-}
-
 .platform-name {
     font-size: 22px;
     font-weight: 600;
@@ -649,6 +583,11 @@ export default {
     align-items: center;
     gap: 12px;
     padding: 20px 30px;
+
+    .el-button {
+        width: 100%;
+        margin: 0px;
+    }
 }
 
 .version-info,

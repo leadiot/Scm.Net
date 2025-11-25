@@ -10,7 +10,7 @@ namespace Com.Scm.Sys.Ver
     /// <summary>
     /// 版本管理
     /// </summary>
-    [ApiExplorerSettings(GroupName = "Dev")]
+    [ApiExplorerSettings(GroupName = "Sys")]
     public class ScmSysVersionService : ApiService
     {
         private readonly SugarRepository<ScmSysVerHeaderDao> _thisRepository;

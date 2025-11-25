@@ -1,15 +1,19 @@
 ﻿using Com.Scm.Enums;
 
-namespace Com.Scm.Dev.Version.Dvo
+namespace Com.Scm.Dev.Ver.Dvo
 {
     /// <summary>
     /// 
     /// </summary>
-    public class SearchRequest : ScmSearchPageRequest
+    public class GetVerRequest
     {
         /// <summary>
         /// 
         /// </summary>
         public ScmClientTypeEnum client { get; set; }
+        /// <summary>
+        /// 
+        /// </summary>
+        public long app_id { get; set; }
     }
 }

@@ -1,11 +1,11 @@
-using Com.Scm.Dev.Version.Dvo;
+using Com.Scm.Dev.Ver.Dvo;
 using Com.Scm.Dsa;
 using Com.Scm.Service;
 using Com.Scm.Utils;
 
 using Microsoft.AspNetCore.Mvc;
 
-namespace Com.Scm.Dev.Version
+namespace Com.Scm.Dev.Ver
 {
     /// <summary>
     /// 版本管理
@@ -31,13 +31,13 @@ namespace Com.Scm.Dev.Version
         /// </summary>
         /// <param name="request"></param>
         /// <returns></returns>
-        public async Task<ScmSearchPageResponse<VerHeaderDvo>> GetPagesAsync(SearchRequest request)
+        public async Task<ScmSearchPageResponse<ScmDevVerHeaderDvo>> GetPagesAsync(SearchRequest request)
         {
             var result = await _thisRepository.AsQueryable()
                 .WhereIF(!request.IsAllStatus(), a => a.row_status == request.row_status)
                 .WhereIF(request.client != Enums.ScmClientTypeEnum.None, a => a.client == request.client)
                 .OrderByDescending(m => m.id)
-                .Select<VerHeaderDvo>()
+                .Select<ScmDevVerHeaderDvo>()
                 .ToPageAsync(request.page, request.limit);
 
             Prepare(result.Items);
@@ -49,7 +49,7 @@ namespace Com.Scm.Dev.Version
         /// </summary>
         /// <param name="code"></param>
         /// <returns></returns>
-        public async Task<List<VerHeaderDvo>> GetListAsync(string code)
+        public async Task<List<ScmDevVerHeaderDvo>> GetListAsync(string code)
         {
             var appId = ScmDevAppDto.NET_ID;
             if (!string.IsNullOrWhiteSpace(code))
@@ -68,14 +68,14 @@ namespace Com.Scm.Dev.Version
             var list = await _thisRepository.AsQueryable()
                 .Where(a => a.app_id == appId && a.row_status == Enums.ScmRowStatusEnum.Enabled)
                 .OrderByDescending(a => a.id)
-                .Select<VerHeaderDvo>()
+                .Select<ScmDevVerHeaderDvo>()
                 .ToListAsync();
 
             Prepare(list);
             return list;
         }
 
-        private void Prepare(List<VerHeaderDvo> list)
+        private void Prepare(List<ScmDevVerHeaderDvo> list)
         {
             foreach (var item in list)
             {
@@ -182,18 +182,18 @@ namespace Com.Scm.Dev.Version
         /// </summary>
         /// <param name="request"></param>
         /// <returns></returns>
-        public async Task<VerHeaderDvo> GetVerAsync(GetVerRequest request)
+        public async Task<ScmDevVerHeaderDvo> GetVerAsync(GetVerRequest request)
         {
             var headerDto = await _thisRepository.AsQueryable()
                 .Where(a => a.client == request.client && a.app_id == request.app_id && a.current == true)
-                .Select<VerHeaderDvo>()
+                .Select<ScmDevVerHeaderDvo>()
                 .FirstAsync();
 
             if (headerDto != null)
             {
                 var detailList = await _thisRepository.Change<ScmDevVerDetailDao>().AsQueryable()
                     .Where(a => a.ver_id == headerDto.id)
-                    .Select<VerDetailDvo>()
+                    .Select<ScmDevVerDetailDvo>()
                     .ToListAsync();
                 headerDto.details = detailList;
             }

@@ -1,12 +1,12 @@
 ﻿using Com.Scm.Dvo;
 using Com.Scm.Enums;
 
-namespace Com.Scm.Dev.Version.Dvo
+namespace Com.Scm.Sys.Ver.Dvo
 {
     /// <summary>
     /// 
     /// </summary>
-    public class VerHeaderDvo : ScmDataDvo
+    public class ScmSysVerHeaderDvo : ScmDataDvo
     {
         /// <summary>
         /// 
@@ -75,6 +75,6 @@ namespace Com.Scm.Dev.Version.Dvo
         /// <summary>
         /// 
         /// </summary>
-        public List<VerDetailDvo> details { get; set; }
+        public List<ScmSysVerDetailDvo> details { get; set; }
     }
 }

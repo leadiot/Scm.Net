@@ -108,16 +108,16 @@
 
 ## 项目截图
 电脑端页面   
-![后台首页](https://gitee.com/openscm/scm.net/raw/master/pc-home.png)  
-![接口日志](https://gitee.com/openscm/scm.net/raw/master/pc-logapi.png)  
-![在线SQL](https://gitee.com/openscm/scm.net/raw/master/pc-sql.png)  
-![任务调度](https://gitee.com/openscm/scm.net/raw/master/pc-task.png)  
-![系统监控](https://gitee.com/openscm/scm.net/raw/master/pc-monitor.png)  
+![后台首页](https://gitee.com/openscm/scm.net/raw/master/screenshots/pc-home.png)  
+![接口日志](https://gitee.com/openscm/scm.net/raw/master/screenshots/pc-logapi.png)  
+![在线SQL](https://gitee.com/openscm/scm.net/raw/master/screenshots/pc-sql.png)  
+![任务调度](https://gitee.com/openscm/scm.net/raw/master/screenshots/pc-task.png)  
+![系统监控](https://gitee.com/openscm/scm.net/raw/master/screenshots/pc-monitor.png)  
 
 手机端页面   
-![用户登录](https://gitee.com/openscm/scm.net/raw/master/mp-login.jpg)  
-![用户首页](https://gitee.com/openscm/scm.net/raw/master/mp-home.jpg)  
-![系统菜单](https://gitee.com/openscm/scm.net/raw/master/mp-menu.jpg)  
+![用户登录](https://gitee.com/openscm/scm.net/raw/master/screenshots/mp-login.jpg)  
+![用户首页](https://gitee.com/openscm/scm.net/raw/master/screenshots/mp-home.jpg)  
+![系统菜单](https://gitee.com/openscm/scm.net/raw/master/screenshots/mp-menu.jpg)  
 
 更多截图请点击 [查看文档](https://gitee.com/openscm/scm.net/wikis) 查看项目截图小节  
 

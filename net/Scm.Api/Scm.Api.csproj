@@ -12,9 +12,9 @@
     <Compile Remove="dev\**" />
     <Compile Remove="logs\**" />
     <Compile Remove="Publish\**" />
-    <EmbeddedResource Remove="dev\**" />
-    <EmbeddedResource Remove="logs\**" />
-    <EmbeddedResource Remove="Publish\**" />
+    <Content Remove="dev\**" />
+    <Content Remove="logs\**" />
+    <Content Remove="Publish\**" />
     <None Remove="dev\**" />
     <None Remove="logs\**" />
     <None Remove="Publish\**" />

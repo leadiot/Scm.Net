@@ -1,19 +1,16 @@
-﻿using Com.Scm.Dto;
-using System.ComponentModel.DataAnnotations;
+﻿using Com.Scm.Dvo;
 
-namespace Com.Scm.Quartz.Dto
+namespace Com.Scm.Quartz.Dvo
 {
-    public class QuartzTaskLogDto : ScmDto
+    public class QuartzTaskLogDvo : ScmDvo
     {
         /// <summary>
         /// 任务名
         /// </summary>
-        [StringLength(128)]
         public string task { get; set; }
         /// <summary>
         /// 分组名
         /// </summary>
-        [StringLength(128)]
         public string group { get; set; }
         /// <summary>
         /// 任务开始时间
@@ -33,7 +30,6 @@ namespace Com.Scm.Quartz.Dto
         /// <summary>
         /// 
         /// </summary>
-        [StringLength(2048)]
         public string remark { get; set; }
     }
 }

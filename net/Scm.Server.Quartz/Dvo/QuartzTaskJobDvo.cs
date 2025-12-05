@@ -3,7 +3,7 @@ using Com.Scm.Quartz.Enums;
 
 namespace Com.Scm.Quartz.Dvo
 {
-    public class QuartzTaskJobDvo : ScmDataDvo
+    public class QuartzTaskJobDvo : ScmDvo
     {
         /// <summary>
         /// 任务名

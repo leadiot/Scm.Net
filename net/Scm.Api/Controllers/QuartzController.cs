@@ -48,7 +48,7 @@ namespace Com.Scm.Api.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpPost]
-        public async Task<IActionResult> Post([FromBody] QuarzTaskDao model)
+        public async Task<IActionResult> Post([FromBody] QuarzTaskJobDao model)
         {
             var data = await _jobService.AddJob(model);
             model.handle = JobHandleEnum.Paused;
@@ -60,7 +60,7 @@ namespace Com.Scm.Api.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpPut("start")]
-        public async Task<IActionResult> PutStartJob([FromBody] QuarzTaskDao model)
+        public async Task<IActionResult> PutStartJob([FromBody] QuarzTaskJobDao model)
         {
             var data = await _jobService.Start(model);
             return Ok(data);
@@ -71,7 +71,7 @@ namespace Com.Scm.Api.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpPut("pause")]
-        public async Task<IActionResult> PutPauseJob([FromBody] QuarzTaskDao model)
+        public async Task<IActionResult> PutPauseJob([FromBody] QuarzTaskJobDao model)
         {
             var data = await _jobService.Pause(model);
             return Ok(data);
@@ -82,7 +82,7 @@ namespace Com.Scm.Api.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpPut("run")]
-        public async Task<IActionResult> PutRunJob([FromBody] QuarzTaskDao model)
+        public async Task<IActionResult> PutRunJob([FromBody] QuarzTaskJobDao model)
         {
             var data = await _jobService.Run(model);
             return Ok(data);
@@ -93,7 +93,7 @@ namespace Com.Scm.Api.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpPut]
-        public async Task<IActionResult> Put([FromBody] QuarzTaskDao model)
+        public async Task<IActionResult> Put([FromBody] QuarzTaskJobDao model)
         {
             var data = await _jobService.Update(model);
             return Ok(data);
@@ -104,7 +104,7 @@ namespace Com.Scm.Api.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpPut("delete")]
-        public async Task<IActionResult> PutDelete([FromBody] QuarzTaskDao model)
+        public async Task<IActionResult> PutDelete([FromBody] QuarzTaskJobDao model)
         {
             var date = await _jobService.Remove(model);
             return Ok(date);

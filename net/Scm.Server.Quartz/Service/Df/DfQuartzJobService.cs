@@ -16,14 +16,14 @@ namespace Com.Scm.Quartz.Service.Df
             _Helper = helper;
         }
 
-        public Task<JobResult> AddJob(QuarzTaskDao model)
+        public Task<JobResult> AddJob(QuarzTaskJobDao model)
         {
             return Task.Run(() =>
              {
                  var list = _Helper.GetJobs();
                  if (list == null)
                  {
-                     list = new List<QuarzTaskDao>();
+                     list = new List<QuarzTaskJobDao>();
                  }
 
                  model.PrepareCreate(0);
@@ -34,7 +34,7 @@ namespace Com.Scm.Quartz.Service.Df
              });
         }
 
-        public Task<List<QuarzTaskDao>> GetJobs(Expression<Func<QuarzTaskDao, bool>> where = null)
+        public Task<List<QuarzTaskJobDao>> GetJobs(Expression<Func<QuarzTaskJobDao, bool>> where = null)
         {
             return Task.Run(() =>
             {
@@ -42,7 +42,7 @@ namespace Com.Scm.Quartz.Service.Df
             });
         }
 
-        public Task<JobResult> Pause(QuarzTaskDao model)
+        public Task<JobResult> Pause(QuarzTaskJobDao model)
         {
             //throw new NotImplementedException();
             return Task.Run(() =>
@@ -60,7 +60,7 @@ namespace Com.Scm.Quartz.Service.Df
             });
         }
 
-        public Task<JobResult> Remove(QuarzTaskDao model)
+        public Task<JobResult> Remove(QuarzTaskJobDao model)
         {
             return Task.Run(() =>
             {
@@ -88,7 +88,7 @@ namespace Com.Scm.Quartz.Service.Df
         //    });
         //}
 
-        public Task<JobResult> Start(QuarzTaskDao model)
+        public Task<JobResult> Start(QuarzTaskJobDao model)
         {
             return Task.Run(() =>
             {
@@ -105,7 +105,7 @@ namespace Com.Scm.Quartz.Service.Df
             });
         }
 
-        public Task<JobResult> Update(QuarzTaskDao model)
+        public Task<JobResult> Update(QuarzTaskJobDao model)
         {
             return Task.Run(() =>
             {

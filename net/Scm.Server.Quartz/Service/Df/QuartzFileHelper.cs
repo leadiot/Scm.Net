@@ -21,9 +21,9 @@ namespace Com.Scm.Quartz.Service.Df
         /// </summary>
         /// <param name="where"></param>
         /// <returns></returns>
-        public List<QuarzTaskDao> GetJobs(Expression<Func<QuarzTaskDao, bool>> where = null)
+        public List<QuarzTaskJobDao> GetJobs(Expression<Func<QuarzTaskJobDao, bool>> where = null)
         {
-            List<QuarzTaskDao> list = new List<QuarzTaskDao>();
+            List<QuarzTaskJobDao> list = new List<QuarzTaskJobDao>();
 
             string path = _Config.JobFile;
             if (!File.Exists(path))
@@ -37,7 +37,7 @@ namespace Com.Scm.Quartz.Service.Df
                 return null;
             }
 
-            var _taskList = tasks.AsJsonObject<List<QuarzTaskDao>>();
+            var _taskList = tasks.AsJsonObject<List<QuarzTaskJobDao>>();
             if (where == null)
             {
                 return _taskList;
@@ -85,7 +85,7 @@ namespace Com.Scm.Quartz.Service.Df
         /// 写入任务(全量)
         /// </summary>
         /// <param name="taskList"></param>
-        public void WriteJobConfig(List<QuarzTaskDao> taskList)
+        public void WriteJobConfig(List<QuarzTaskJobDao> taskList)
         {
             string jobs = taskList.ToJsonString();
             //写入配置文件

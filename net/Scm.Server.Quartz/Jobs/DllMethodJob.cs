@@ -36,7 +36,7 @@ namespace Com.Scm.Quartz.Jobs
             string httpMessage = "";
             AbstractTrigger trigger = (context as JobExecutionContextImpl).Trigger as AbstractTrigger;
 
-            QuarzTaskDao taskOptions = (await _quartzService.GetJobs(a => a.names == trigger.Name && a.group == trigger.Group)).FirstOrDefault();
+            QuarzTaskJobDao taskOptions = (await _quartzService.GetJobs(a => a.names == trigger.Name && a.group == trigger.Group)).FirstOrDefault();
             if (taskOptions == null)
             {
                 taskOptions = (await _quartzService.GetJobs(a => a.names == trigger.JobName && a.group == trigger.JobGroup)).FirstOrDefault();
@@ -60,7 +60,7 @@ namespace Com.Scm.Quartz.Jobs
 
             try
             {
-                var services = _serviceProvider.GetServices<INativeJobService>();
+                var services = _serviceProvider.GetServices<ICustomJob>();
                 var service = services.Where(a => a.GetType().FullName == taskOptions.dll_uri).FirstOrDefault();
                 if (service != null)
                 {

@@ -16,30 +16,27 @@ namespace Com.Scm.Quartz.Service.Db
             _Client = client;
         }
 
-        public async Task<JobResult> AddJob(QuarzTaskDao model)
+        public async Task<JobResult> AddJob(QuarzTaskJobDao model)
         {
-            var result = new JobResult { status = false, message = "" };
-
             var date = await _Client.Insertable(model).ExecuteCommandAsync();
             if (date > 0)
             {
-                result.status = true;
-                result.message = "数据库添加成功!";
+                JobResult.Success("数据库添加成功！");
             }
 
-            return result;
+            return JobResult.Failure("数据加添加异常！");
         }
 
-        public async Task<List<QuarzTaskDao>> GetJobs(Expression<Func<QuarzTaskDao, bool>> where = null)
+        public async Task<List<QuarzTaskJobDao>> GetJobs(Expression<Func<QuarzTaskJobDao, bool>> where = null)
         {
-            return await _Client.Queryable<QuarzTaskDao>().Where(where).ToListAsync();
+            return await _Client.Queryable<QuarzTaskJobDao>().Where(where).ToListAsync();
         }
 
-        public async Task<JobResult> Remove(QuarzTaskDao model)
+        public async Task<JobResult> Remove(QuarzTaskJobDao model)
         {
             var result = new JobResult { status = false, message = "" };
 
-            var date = await _Client.Deleteable<QuarzTaskDao>().Where(m => m.id == model.id).ExecuteCommandAsync();
+            var date = await _Client.Deleteable<QuarzTaskJobDao>().Where(m => m.id == model.id).ExecuteCommandAsync();
             if (date > 0)
             {
                 result.status = true;
@@ -49,7 +46,7 @@ namespace Com.Scm.Quartz.Service.Db
             return result;
         }
 
-        public async Task<JobResult> Update(QuarzTaskDao model)
+        public async Task<JobResult> Update(QuarzTaskJobDao model)
         {
             var result = new JobResult { status = false, message = "" };
 

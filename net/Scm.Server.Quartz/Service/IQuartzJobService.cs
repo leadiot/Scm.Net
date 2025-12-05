@@ -12,21 +12,21 @@ namespace Com.Scm.Quartz.Service
         /// 获取所有作业
         /// </summary>
         /// <returns></returns>
-        Task<List<QuarzTaskDao>> GetJobs(Expression<Func<QuarzTaskDao, bool>> where = null);
+        Task<List<QuarzTaskJobDao>> GetJobs(Expression<Func<QuarzTaskJobDao, bool>> where = null);
 
         /// <summary>
         /// 添加任务
         /// </summary>
         /// <param name="model"></param>
         /// <returns></returns>
-        Task<JobResult> AddJob(QuarzTaskDao model);
+        Task<JobResult> AddJob(QuarzTaskJobDao model);
 
         /// <summary>
         /// 删除任务
         /// </summary>
         /// <param name="model"></param>
         /// <returns></returns>
-        Task<JobResult> Remove(QuarzTaskDao model);
+        Task<JobResult> Remove(QuarzTaskJobDao model);
 
         /// <summary>
         /// 更新任务
@@ -34,6 +34,6 @@ namespace Com.Scm.Quartz.Service
         /// <param name="model"></param>
         /// <returns></returns>
 
-        Task<JobResult> Update(QuarzTaskDao model);
+        Task<JobResult> Update(QuarzTaskJobDao model);
     }
 }

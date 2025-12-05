@@ -31,7 +31,7 @@ public class ScmSysQuartzService : IApiService
     /// 获取任务列表
     /// </summary>
     /// <returns></returns>
-    public async Task<List<QuarzTaskDao>> GetPagesAsync(SearchRequest request)
+    public async Task<List<QuarzTaskJobDao>> GetPagesAsync(SearchRequest request)
     {
         return await _quartzHandle.GetJobs();
     }
@@ -40,7 +40,7 @@ public class ScmSysQuartzService : IApiService
     /// 新建任务
     /// </summary>
     /// <returns></returns>
-    public async Task<JobResult> AddAsync([FromBody] QuarzTaskDao model)
+    public async Task<JobResult> AddAsync([FromBody] QuarzTaskJobDao model)
     {
         var date = await _quartzHandle.AddJob(model);
         model.handle = JobHandleEnum.Paused;
@@ -52,7 +52,7 @@ public class ScmSysQuartzService : IApiService
     /// </summary>
     /// <returns></returns>
     [HttpPut]
-    public async Task<JobResult> PutPauseJob([FromBody] QuarzTaskDao model) =>
+    public async Task<JobResult> PutPauseJob([FromBody] QuarzTaskJobDao model) =>
         await _quartzHandle.Pause(model);
 
     /// <summary>
@@ -60,7 +60,7 @@ public class ScmSysQuartzService : IApiService
     /// </summary>
     /// <returns></returns>
     [HttpPut]
-    public async Task<JobResult> PutStartJob([FromBody] QuarzTaskDao model) =>
+    public async Task<JobResult> PutStartJob([FromBody] QuarzTaskJobDao model) =>
         await _quartzHandle.Start(model);
 
     /// <summary>
@@ -68,7 +68,7 @@ public class ScmSysQuartzService : IApiService
     /// </summary>
     /// <returns></returns>
     [HttpPut]
-    public async Task<JobResult> PutRunJob([FromBody] QuarzTaskDao model) =>
+    public async Task<JobResult> PutRunJob([FromBody] QuarzTaskJobDao model) =>
         await _quartzHandle.Run(model);
 
     /// <summary>
@@ -76,7 +76,7 @@ public class ScmSysQuartzService : IApiService
     /// </summary>
     /// <returns></returns>
     [HttpPut]
-    public async Task<JobResult> Put([FromBody] QuarzTaskDao model) =>
+    public async Task<JobResult> Put([FromBody] QuarzTaskJobDao model) =>
         await _quartzHandle.Update(model);
 
     /// <summary>
@@ -84,7 +84,7 @@ public class ScmSysQuartzService : IApiService
     /// </summary>
     /// <returns></returns>
     [HttpDelete]
-    public async Task<JobResult> Delete([FromBody] QuarzTaskDao model) =>
+    public async Task<JobResult> Delete([FromBody] QuarzTaskJobDao model) =>
         await _quartzHandle.Remove(model);
 
     /// <summary>

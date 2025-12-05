@@ -3,7 +3,6 @@ using Com.Scm.Quartz.Jobs;
 using Com.Scm.Quartz.Service;
 using Com.Scm.Quartz.Service.Db;
 using Com.Scm.Quartz.Service.Df;
-using Com.Scm.Quartz.Tools;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using Quartz;
@@ -15,7 +14,7 @@ namespace Com.Scm.Quartz
 {
     public static class QuartzExtension
     {
-        public static IServiceCollection AddQuartz(this IServiceCollection services, QuartzConfig config)
+        public static IServiceCollection QuartzSetup(this IServiceCollection services, QuartzConfig config)
         {
             if (config == null)
             {
@@ -49,7 +48,7 @@ namespace Com.Scm.Quartz
         /// <returns></returns>
         public static IServiceCollection AddQuartzClassJobs(this IServiceCollection services)
         {
-            var baseType = typeof(INativeJobService);
+            var baseType = typeof(ICustomJob);
             var path = AppDomain.CurrentDomain.RelativeSearchPath ?? AppDomain.CurrentDomain.BaseDirectory;
             var referencedAssemblies = Directory.GetFiles(path, "*.dll");
             List<Type> typelist = new List<Type>();

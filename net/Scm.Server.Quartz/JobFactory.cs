@@ -2,7 +2,7 @@
 using Quartz;
 using Quartz.Spi;
 
-namespace Com.Scm.Quartz.Tools
+namespace Com.Scm.Quartz
 {
     public class JobFactory : IJobFactory
     {

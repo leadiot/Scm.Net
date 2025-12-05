@@ -33,9 +33,9 @@ namespace Com.Scm.Quartz
         /// </summary>
         /// <param name="schedulerFactory"></param>
         /// <returns></returns>
-        public async Task<List<QuarzTaskDao>> GetJobs()
+        public async Task<List<QuarzTaskJobDao>> GetJobs()
         {
-            List<QuarzTaskDao> list = new List<QuarzTaskDao>();
+            List<QuarzTaskJobDao> list = new List<QuarzTaskJobDao>();
             try
             {
                 list = await _quartzJobService.GetJobs();
@@ -45,7 +45,7 @@ namespace Com.Scm.Quartz
                 {
                     foreach (var jobKey in await scheduler.GetJobKeys(GroupMatcher<JobKey>.GroupEquals(groupName)))
                     {
-                        QuarzTaskDao taskOption = list.Where(x => x.group == jobKey.Group && x.names == jobKey.Name)
+                        QuarzTaskJobDao taskOption = list.Where(x => x.group == jobKey.Group && x.names == jobKey.Name)
                             .FirstOrDefault();
                         if (taskOption == null)
                         {
@@ -157,7 +157,7 @@ namespace Com.Scm.Quartz
         /// <param name="taskOptions"></param>
         /// <param name="schedulerFactory"></param>
         /// <returns></returns>
-        public async Task<JobResult> AddJob(QuarzTaskDao taskOptions)
+        public async Task<JobResult> AddJob(QuarzTaskJobDao taskOptions)
         {
             JobResult result = null;
             try
@@ -256,7 +256,7 @@ namespace Com.Scm.Quartz
         /// <param name="taskName"></param>
         /// <param name="groupName"></param>
         /// <returns></returns>
-        public async Task<JobResult> Remove(QuarzTaskDao taskOptions)
+        public async Task<JobResult> Remove(QuarzTaskJobDao taskOptions)
         {
             var isjob = await IsQuartzJob(taskOptions.names, taskOptions.group);
             var taskmodle = (await _quartzJobService.GetJobs(a => a.names == taskOptions.names && a.group == taskOptions.group)).FirstOrDefault();
@@ -294,7 +294,7 @@ namespace Com.Scm.Quartz
         /// <param name="schedulerFactory"></param>
         /// <param name="taskOptions"></param>
         /// <returns></returns>
-        public async Task<JobResult> Update(QuarzTaskDao taskOptions)
+        public async Task<JobResult> Update(QuarzTaskJobDao taskOptions)
         {
             var isjob = await IsQuartzJob(taskOptions.names, taskOptions.group);
             var taskmodle = (await _quartzJobService.GetJobs(a => a.id == taskOptions.id)).FirstOrDefault();
@@ -370,7 +370,7 @@ namespace Com.Scm.Quartz
         /// <param name="schedulerFactory"></param>
         /// <param name="taskOptions"></param>
         /// <returns></returns>
-        public async Task<JobResult> Pause(QuarzTaskDao taskOptions)
+        public async Task<JobResult> Pause(QuarzTaskJobDao taskOptions)
         {
             try
             {
@@ -411,7 +411,7 @@ namespace Com.Scm.Quartz
         /// <param name="schedulerFactory"></param>
         /// <param name="taskOptions"></param>
         /// <returns></returns>
-        public async Task<JobResult> Start(QuarzTaskDao taskOptions)
+        public async Task<JobResult> Start(QuarzTaskJobDao taskOptions)
         {
             try
             {
@@ -474,7 +474,7 @@ namespace Com.Scm.Quartz
         /// <param name="schedulerFactory"></param>
         /// <param name="taskOptions"></param>
         /// <returns></returns>
-        public async Task<JobResult> Run(QuarzTaskDao taskOptions)
+        public async Task<JobResult> Run(QuarzTaskJobDao taskOptions)
         {
             try
             {

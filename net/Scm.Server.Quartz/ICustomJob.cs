@@ -1,9 +1,9 @@
 ﻿namespace Com.Scm.Quartz
 {
     /// <summary>
-    /// 本地服务
+    /// 定制服务
     /// </summary>
-    public interface INativeJobService
+    public interface ICustomJob
     {
         string ExecuteService(string parameter);
     }

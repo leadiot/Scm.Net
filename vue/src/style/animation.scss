@@ -1,0 +1,137 @@
+/* 基础闪烁动画 */
+.blink-basic {
+    animation: blink-basic 2s infinite;
+}
+
+/* 渐变闪烁 */
+.blink-fade {
+    animation: blink-fade 2s infinite;
+}
+
+/* 颜色变化闪烁 */
+.blink-color {
+    animation: blink-color 10s infinite;
+}
+
+/* 脉冲闪烁 */
+.blink-pulse {
+    animation: blink-pulse 3s infinite;
+}
+
+/* 边框闪烁 */
+.blink-border {
+    animation: blink-border 1s infinite;
+}
+
+/* 阴影闪烁 */
+.blink-shadow {
+    animation: blink-shadow 3s infinite;
+}
+
+/* 呼吸灯效果 */
+.breathing {
+    animation: breathing 3s infinite ease-in-out;
+}
+
+
+/* 动画关键帧定义 */
+@keyframes blink-basic {
+
+    0%,
+    50%,
+    100% {
+        opacity: 1;
+    }
+
+    25%,
+    75% {
+        opacity: 0;
+    }
+}
+
+@keyframes blink-fade {
+
+    0%,
+    100% {
+        opacity: 1;
+    }
+
+    50% {
+        opacity: 0.2;
+    }
+}
+
+@keyframes blink-color {
+    0% {
+        background-color: #3b82f6;
+    }
+
+    25% {
+        background-color: #ef4444;
+    }
+
+    50% {
+        background-color: #10b981;
+    }
+
+    75% {
+        background-color: #f59e0b;
+    }
+
+    100% {
+        background-color: #3b82f6;
+    }
+}
+
+@keyframes blink-pulse {
+
+    0%,
+    100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+
+    50% {
+        transform: scale(2);
+        opacity: 0.7;
+    }
+}
+
+@keyframes blink-border {
+
+    0%,
+    100% {
+        border-color: transparent;
+    }
+
+    50% {
+        border-color: #ef4444;
+        border-width: 3px;
+    }
+}
+
+@keyframes blink-shadow {
+
+    0%,
+    100% {
+        box-shadow: 0 0 5px rgba(59, 130, 246, 05);
+    }
+
+    50% {
+        box-shadow: 0 0 20px rgba(59, 130, 246, 08);
+    }
+}
+
+@keyframes breathing {
+
+    0%,
+    100% {
+        opacity: 0.3;
+        transform: scale(1);
+    }
+
+    50% {
+        opacity: 1;
+        transform: scale(2);
+    }
+}

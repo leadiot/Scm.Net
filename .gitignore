@@ -29,3 +29,4 @@ PublishProfiles/
 
 /net/Scm.Api/data/scm.db
 /net/Scm.Api/data/scm.uid
+/release/Scm.Api/dev

@@ -1,0 +1,58 @@
+<div class="scm">
+    <div class="email">
+        <div class="logo"><img src="http://www.c-scm.net/logo/email.png" alt="Logo"/></div>
+        <div class="panel">
+            <div class="panel-head">{email_head}</div>
+            <div class="panel-body">{email_body}</div>
+        </div>
+        <div class="foot"><a href="http://www.c-scm.net" target="_blank">@C-SCM.Net</a></div>
+    </div>
+</div>
+<style type="text/css">
+    .scm {
+        color: #40485B;
+        font-size: 14px;
+        font-family: -apple-system, "Helvetica Neue", Helvetica, "Nimbus Sans L", "Segoe UI", Arial, "Liberation Sans", "PingFang SC", "Microsoft YaHei", "Hiragino Sans GB", "Wenquanyi Micro Hei", "WenQuanYi Zen Hei", "ST Heiti", SimHei, "WenQuanYi Zen Hei Sharp", sans-serif;
+        background: #fafafa;
+        padding: 20px;
+      }
+
+      .email {
+        width: 100%;
+        max-width: 600px;
+        margin: 0 auto;
+      }
+
+    .logo {
+        text-align: center;
+        margin-bottom: 20px;
+    }
+
+    .panel {
+        background: #fff;
+        border: 1px solid #E3E9ED;
+        border-radius: 10px;
+        margin-bottom: 10px;
+    }
+
+    .panel-head {
+        font-size: 18px;
+        line-height: 30px;
+        padding: 10px 20px;
+        background: #fcfcfc;
+        border-bottom: 1px solid #E3E9ED;
+        border-radius: 10px 10px 0 0;
+    }
+
+    .panel-body {
+        padding: 20px;
+        line-height: 1.7;
+        border-radius: 0 0 10px 10px;
+    }
+
+    .foot {
+        color: #9B9B9B;
+        font-size: 12px;
+        margin-top: 20px;
+    }
+</style>

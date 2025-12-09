@@ -1,0 +1,13 @@
+using Com.Scm.Dvo;
+using System;
+
+namespace Com.Scm.{NameSpace}
+{
+	/// <summary>
+	/// {TableNameDescribe}
+	/// </summary>
+	public class {TableName}Dvo : ScmDataDvo
+	{
+		{AttributeList}
+	}
+}

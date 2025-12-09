@@ -1,0 +1,144 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <Nullable>disable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <RootNamespace>Com.Scm.Api</RootNamespace>
+    <StartupObject>Com.Scm.Api.Program</StartupObject>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="dev\**" />
+    <Compile Remove="logs\**" />
+    <Compile Remove="Publish\**" />
+    <Content Remove="dev\**" />
+    <Content Remove="logs\**" />
+    <Content Remove="Publish\**" />
+    <None Remove="dev\**" />
+    <None Remove="logs\**" />
+    <None Remove="Publish\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="data\scm.db" />
+    <None Remove="data\scm.uid" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Mapster" Version="7.4.0" />
+    <PackageReference Include="Mapster.DependencyInjection" Version="1.0.1" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="10.0.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="10.0.0" />
+    <PackageReference Include="Quartz" Version="3.15.1" />
+    <PackageReference Include="Quartz.AspNetCore" Version="3.15.1" />
+    <PackageReference Include="Serilog" Version="4.3.0" />
+    <PackageReference Include="Serilog.Extensions.Logging" Version="9.0.2" />
+    <PackageReference Include="Serilog.Settings.Configuration" Version="9.0.0" />
+    <PackageReference Include="Serilog.Sinks.Async" Version="2.1.0" />
+    <PackageReference Include="Serilog.Sinks.Console" Version="6.1.1" />
+    <PackageReference Include="Serilog.Sinks.File" Version="7.0.0" />
+    <PackageReference Include="SqlSugarCore" Version="5.1.4.207" />
+    <PackageReference Include="Swashbuckle.AspNetCore.Swagger" Version="10.0.1" />
+    <PackageReference Include="Swashbuckle.AspNetCore.SwaggerGen" Version="10.0.1" />
+    <PackageReference Include="Swashbuckle.AspNetCore.SwaggerUI" Version="10.0.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Samples.Server\Samples.Server.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="Scm.Cache">
+      <HintPath>..\Libs\net10.0\Scm.Cache.dll</HintPath>
+    </Reference>
+    <Reference Include="Scm.Cache.Dictionary">
+      <HintPath>..\Libs\net10.0\Scm.Cache.Dictionary.dll</HintPath>
+    </Reference>
+    <Reference Include="Scm.Common">
+      <HintPath>..\Libs\netstandard2.0\Scm.Common.dll</HintPath>
+    </Reference>
+    <Reference Include="Scm.Common.Dto">
+      <HintPath>..\Libs\netstandard2.0\Scm.Common.Dto.dll</HintPath>
+    </Reference>
+    <Reference Include="Scm.Common.Http">
+      <HintPath>..\Libs\netstandard2.0\Scm.Common.Http.dll</HintPath>
+    </Reference>
+    <Reference Include="Scm.Common.Log">
+      <HintPath>..\Libs\netstandard2.0\Scm.Common.Log.dll</HintPath>
+    </Reference>
+    <Reference Include="Scm.Common.Otp">
+      <HintPath>..\Libs\netstandard2.0\Scm.Common.Otp.dll</HintPath>
+    </Reference>
+    <Reference Include="Scm.Common.Text">
+      <HintPath>..\Libs\netstandard2.0\Scm.Common.Text.dll</HintPath>
+    </Reference>
+    <Reference Include="Scm.Common.Time">
+      <HintPath>..\Libs\netstandard2.0\Scm.Common.Time.dll</HintPath>
+    </Reference>
+    <Reference Include="Scm.Core">
+      <HintPath>..\Libs\net10.0\Scm.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Scm.Dao">
+      <HintPath>..\Libs\net10.0\Scm.Dao.dll</HintPath>
+    </Reference>
+    <Reference Include="Scm.Dsa.Dba.Sugar">
+      <HintPath>..\Libs\net10.0\Scm.Dsa.Dba.Sugar.dll</HintPath>
+    </Reference>
+    <Reference Include="Scm.Dto">
+      <HintPath>..\Libs\net10.0\Scm.Dto.dll</HintPath>
+    </Reference>
+    <Reference Include="Scm.Email">
+      <HintPath>..\Libs\net10.0\Scm.Email.dll</HintPath>
+    </Reference>
+    <Reference Include="Scm.Generator">
+      <HintPath>..\Libs\net10.0\Scm.Generator.dll</HintPath>
+    </Reference>
+    <Reference Include="Scm.Phone">
+      <HintPath>..\Libs\net10.0\Scm.Phone.dll</HintPath>
+    </Reference>
+    <Reference Include="Scm.Plugin">
+      <HintPath>..\Libs\net10.0\Scm.Plugin.dll</HintPath>
+    </Reference>
+    <Reference Include="Scm.Plugin.Image">
+      <HintPath>..\Libs\net10.0\Scm.Plugin.Image.dll</HintPath>
+    </Reference>
+    <Reference Include="Scm.Plugin.Image.SkiaSharp">
+      <HintPath>..\Libs\net10.0\Scm.Plugin.Image.SkiaSharp.dll</HintPath>
+    </Reference>
+    <Reference Include="Scm.Server">
+      <HintPath>..\Libs\net10.0\Scm.Server.dll</HintPath>
+    </Reference>
+    <Reference Include="Scm.Server.Aiml">
+      <HintPath>..\Libs\net10.0\Scm.Server.Aiml.dll</HintPath>
+    </Reference>
+    <Reference Include="Scm.Server.Api">
+      <HintPath>..\Libs\net10.0\Scm.Server.Api.dll</HintPath>
+    </Reference>
+    <Reference Include="Scm.Server.Cache">
+      <HintPath>..\Libs\net10.0\Scm.Server.Cache.dll</HintPath>
+    </Reference>
+    <Reference Include="Scm.Server.Dao">
+      <HintPath>..\Libs\net10.0\Scm.Server.Dao.dll</HintPath>
+    </Reference>
+    <Reference Include="Scm.Server.Quartz">
+      <HintPath>..\Libs\net10.0\Scm.Server.Quartz.dll</HintPath>
+    </Reference>
+    <Reference Include="Scm.Server.Service">
+      <HintPath>..\Libs\net10.0\Scm.Server.Service.dll</HintPath>
+    </Reference>
+    <Reference Include="Scm.Server.SignalR">
+      <HintPath>..\Libs\net10.0\Scm.Server.SignalR.dll</HintPath>
+    </Reference>
+    <Reference Include="Scm.Server.SqlSugar">
+      <HintPath>..\Libs\net10.0\Scm.Server.SqlSugar.dll</HintPath>
+    </Reference>
+    <Reference Include="Scm.Server.Swagger">
+      <HintPath>..\Libs\net10.0\Scm.Server.Swagger.dll</HintPath>
+    </Reference>
+    <Reference Include="Scm.Uid">
+      <HintPath>..\Libs\net10.0\Scm.Uid.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+</Project>

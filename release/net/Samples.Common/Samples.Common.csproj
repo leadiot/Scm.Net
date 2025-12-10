@@ -1,0 +1,27 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>disable</Nullable>
+    <RootNamespace>Com.Scm.Samples</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Folder Include="Demo\" />
+    <Folder Include="Demo\" />
+    <Folder Include="PoDetail\" />
+    <Folder Include="Demo\" />
+    <Folder Include="PoDetail\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="Scm.Common">
+      <HintPath>..\Libs\netstandard2.0\Scm.Common.dll</HintPath>
+    </Reference>
+    <Reference Include="Scm.Common.Text">
+      <HintPath>..\Libs\netstandard2.0\Scm.Common.Text.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+</Project>

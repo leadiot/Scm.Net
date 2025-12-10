@@ -1,0 +1,5 @@
+<p>&nbsp;&nbsp;&nbsp;&nbsp;网站是基于.Net 8.0和Vue 3.0构建的企业资源管理系统。</p>
+<p>&nbsp;</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;Scm.Net框架是基于此网站进行抽取并剥离出来的开源的企业后台快速开发框架。</p>
+<p>&nbsp;</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;如果您对此网站有好的意见或建议，欢迎与我们联系。</p>

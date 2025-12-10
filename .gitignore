@@ -22,10 +22,12 @@ PublishProfiles/
 [Gg]enerated/
 
 # 需要特殊处理的文件
-/net/Scm.Api/logs/
+/net/Scm.Api/data/scm.db
+/net/Scm.Api/data/scm.uid
 /net/Scm.Api/dev/
+/net/Scm.Api/logs/
 /net/Scm.Api/quartz/settings/logs/
 /net/Scm.Api/Properties/PublishProfiles/
 
-/net/Scm.Api/data/scm.db
-/net/Scm.Api/data/scm.uid
+
+/release/Scm.Api/dev

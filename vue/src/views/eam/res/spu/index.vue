@@ -62,6 +62,10 @@
 						</el-popconfirm>
 					</template>
 				</el-table-column>
+				<template #image="scope">
+					<el-image :src="scope.row.image" fit="fill" :preview-src-list="[scope.row.image]"
+						@click="preview(scope.row)" />
+				</template>
 				<template #row_status="scope">
 					<el-tooltip :content="scope.row.row_status ? '正常' : '停用'" placement="right">
 						<el-switch v-model="scope.row.row_status" :active-value="1" :inactive-value="2"
@@ -72,19 +76,21 @@
 			</scTable>
 		</el-main>
 		<edit ref="edit" @complete="complete" />
+		<spuImage ref="image" @complete="complete" />
 	</el-container>
 </template>
 <script>
 import { defineAsyncComponent } from "vue";
 export default {
-	name: 'eam_res_reader',
+	name: 'eam_res_spu',
 	components: {
 		edit: defineAsyncComponent(() => import("./edit")),
+		spuImage: defineAsyncComponent(() => import("./image")),
 	},
 	data() {
 		return {
-			tableName: 'eam_res_reader',
-			apiObj: this.$API.eamresreader.page,
+			tableName: 'eam_res_spu',
+			apiObj: this.$API.eamresspu.page,
 			list: [],
 			param: {
 				option_id: this.$SCM.ID_ALL,
@@ -96,10 +102,10 @@ export default {
 			column: [
 				{ label: "id", prop: "id", hide: true },
 				{ prop: 'codes', label: '系统编码', width: 100 },
-				{ prop: 'codec', label: '设备代码', width: 100 },
-				{ prop: 'names', label: '设备简称', width: 100, align: 'left' },
-				{ prop: 'namec', label: '设备全称', minWidth: 140, align: 'left' },
-				{ prop: 'dir', label: '行动方向', width: 100 },
+				{ prop: 'codec', label: '商品编码', width: 100 },
+				{ prop: 'names', label: '商品简称', width: 100, align: 'left' },
+				{ prop: 'namec', label: '商品全称', minWidth: 140, align: 'left' },
+				{ prop: 'image', label: '图片', width: 100 },
 				{ prop: "row_status", label: "数据状态", width: 80, },
 				{ prop: "update_names", label: "更新人员", width: 100, },
 				{ prop: "update_time", label: "更新时间", width: 160, formatter: this.$TOOL.dateTimeFormat },
@@ -121,16 +127,16 @@ export default {
 			this.$refs.table.upData(this.param);
 		},
 		async status_item(e, row) {
-			this.$SCM.status_item(this, this.$API.eamresreader.status, row, row.row_status);
+			this.$SCM.status_item(this, this.$API.eamresspu.status, row, row.row_status);
 		},
 		status_list(status) {
-			this.$SCM.status_list(this, this.$API.eamresreader.status, this.selection, status);
+			this.$SCM.status_list(this, this.$API.eamresspu.status, this.selection, status);
 		},
 		async delete_item(row) {
-			this.$SCM.delete_item(this, this.$API.eamresreader.delete, row);
+			this.$SCM.delete_item(this, this.$API.eamresspu.delete, row);
 		},
 		delete_list() {
-			this.$SCM.delete_list(this, this.$API.eamresreader.delete, this.selection);
+			this.$SCM.delete_list(this, this.$API.eamresspu.delete, this.selection);
 		},
 		show_search() {
 			this.$refs.search.open(this.param.key);
@@ -154,6 +160,9 @@ export default {
 				this.delete_item(obj.row);
 				return;
 			}
+		},
+		preview(row) {
+			this.$refs.image.open(row);
 		},
 	},
 };

@@ -6,7 +6,7 @@
 					<sc-select v-model="param.option_id" placeholder="请选择" :data="option_list" />
 				</el-form-item>
 				<el-form-item label="数据状态" prop="row_status">
-					<sc-select v-model="param.row_status" placeholder="请选择" :data="row_status_list" />
+					<sc-select v-model="param.row_status" placeholder="请选择" :data="row_status_list"/>
 				</el-form-item>
 				<el-form-item label="创建时间" prop="create_time">
 					<el-date-picker v-model="param.create_time" type="datetimerange" range-separator="至"
@@ -45,8 +45,8 @@
 			</div>
 		</el-header>
 		<el-main class="nopadding">
-			<scTable ref="table" :table-name="tableName" :api-obj="apiObj" :column="column" row-key="id"
-				@menu-handle="menuHandle" @selection-change="selectionChange">
+			<scTable ref="table" :table-name="tableName" :api-obj="apiObj" :column="column" row-key="id" @menu-handle="menuHandle"
+				@selection-change="selectionChange">
 				<el-table-column align="center" fixed type="selection" width="60" />
 				<el-table-column label="#" type="index" width="50"></el-table-column>
 				<el-table-column label="操作" align="center" fixed="right" width="140">
@@ -77,29 +77,31 @@
 <script>
 import { defineAsyncComponent } from "vue";
 export default {
-	name: 'eam_res_reader',
+	name: 'eamlogsn',
 	components: {
 		edit: defineAsyncComponent(() => import("./edit")),
 	},
 	data() {
 		return {
-			tableName: 'eam_res_reader',
-			apiObj: this.$API.eamresreader.page,
+			tableName: 'eamlogsn',
+			apiObj: this.$API.eamlogsn.page,
 			list: [],
-			param: {
+            param:{
 				option_id: this.$SCM.ID_ALL,
-				row_status: this.$SCM.DEF_STATUS,
+                row_status: this.$SCM.DEF_STATUS,
 				create_time: '',
 				key: ''
-			},
+            },
 			selection: [],
 			column: [
 				{ label: "id", prop: "id", hide: true },
-				{ prop: 'codes', label: '系统编码', width: 100 },
-				{ prop: 'codec', label: '设备代码', width: 100 },
-				{ prop: 'names', label: '设备简称', width: 100, align: 'left' },
-				{ prop: 'namec', label: '设备全称', minWidth: 140, align: 'left' },
-				{ prop: 'dir', label: '行动方向', width: 100 },
+                { prop: 'sn_id', label: '单件ID', width: 100 },
+                { prop: 'reader_id', label: '采集器', width: 100 },
+                { prop: 'time', label: '采集时间', width: 100 },
+                { prop: 'dir', label: '行动方向', width: 100 },
+                { prop: 'create_time', label: '创建时间', width: 100 },
+                { prop: 'create_user', label: '创建人员', width: 100 },
+
 				{ prop: "row_status", label: "数据状态", width: 80, },
 				{ prop: "update_names", label: "更新人员", width: 100, },
 				{ prop: "update_time", label: "更新时间", width: 160, formatter: this.$TOOL.dateTimeFormat },
@@ -117,20 +119,20 @@ export default {
 		complete() {
 			this.$refs.table.refresh();
 		},
-		search() {
-			this.$refs.table.upData(this.param);
-		},
+        search(){
+            this.$refs.table.upData(this.param);
+        },
 		async status_item(e, row) {
-			this.$SCM.status_item(this, this.$API.eamresreader.status, row, row.row_status);
+			this.$SCM.status_item(this, this.$API.eamlogsn.status, row, row.row_status);
 		},
 		status_list(status) {
-			this.$SCM.status_list(this, this.$API.eamresreader.status, this.selection, status);
+			this.$SCM.status_list(this, this.$API.eamlogsn.status, this.selection, status);
 		},
 		async delete_item(row) {
-			this.$SCM.delete_item(this, this.$API.eamresreader.delete, row);
+			this.$SCM.delete_item(this, this.$API.eamlogsn.delete, row);
 		},
 		delete_list() {
-			this.$SCM.delete_list(this, this.$API.eamresreader.delete, this.selection);
+			this.$SCM.delete_list(this, this.$API.eamlogsn.delete, this.selection);
 		},
 		show_search() {
 			this.$refs.search.open(this.param.key);

@@ -55,6 +55,10 @@
 							编辑
 						</el-button>
 						<el-divider direction="vertical" />
+						<el-button text type="primary" size="small" @click="open_attr_dialog(scope.row)">
+							属性
+						</el-button>
+						<el-divider direction="vertical" />
 						<el-popconfirm title="确定删除吗？" @confirm="table_del(scope.row, scope.$index)">
 							<template #reference>
 								<el-button text type="primary" size="small">删除</el-button>
@@ -63,8 +67,8 @@
 					</template>
 				</el-table-column>
 				<template #image="scope">
-					<el-image :src="scope.row.image" fit="fill" :preview-src-list="[scope.row.image]"
-						@click="preview(scope.row)" />
+					<el-image :src="getSpuImage(scope.row)" fit="fill" @click="preview(scope.row)"
+						style="width: 48px; height: 48px" />
 				</template>
 				<template #row_status="scope">
 					<el-tooltip :content="scope.row.row_status ? '正常' : '停用'" placement="right">
@@ -76,6 +80,7 @@
 			</scTable>
 		</el-main>
 		<edit ref="edit" @complete="complete" />
+		<attr ref="attr" @complete="complete" />
 		<spuImage ref="image" @complete="complete" />
 	</el-container>
 </template>
@@ -85,13 +90,13 @@ export default {
 	name: 'eam_res_spu',
 	components: {
 		edit: defineAsyncComponent(() => import("./edit")),
+		attr: defineAsyncComponent(() => import("./attr")),
 		spuImage: defineAsyncComponent(() => import("./image")),
 	},
 	data() {
 		return {
 			tableName: 'eam_res_spu',
 			apiObj: this.$API.eamresspu.page,
-			list: [],
 			param: {
 				option_id: this.$SCM.ID_ALL,
 				row_status: this.$SCM.DEF_STATUS,
@@ -164,6 +169,16 @@ export default {
 		preview(row) {
 			this.$refs.image.open(row);
 		},
+		open_attr_dialog(row) {
+			this.$refs.attr.open(row);
+		},
+		getSpuImage(row) {
+			var image = '/data/eam/spu/0.png';
+			if (row && row.image) {
+				image = row.image;
+			}
+			return this.$CONFIG.SERVER_URL + image;
+		}
 	},
 };
 </script>

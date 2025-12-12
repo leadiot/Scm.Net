@@ -1,5 +1,5 @@
 <template>
-	<sc-dialog v-model="visible" show-fullscreen destroy-on-close :title="titleMap[mode]" width="750px" @close="close">
+	<sc-dialog v-model="visible" show-fullscreen destroy-on-close :title="titleMap[mode]" width="450px" @close="close">
 		<el-form ref="formRef" label-width="100px" :model="formData" :rules="rules">
 			<el-form-item label="商品编码" prop="codec">
 				<el-input v-model="formData.codec" placeholder="请输入商品编码" :maxlength="32" show-word-limit
@@ -13,12 +13,11 @@
 				<el-input v-model="formData.names" placeholder="请输入商品简称" :maxlength="32" show-word-limit
 					clearable></el-input>
 			</el-form-item>
-			<el-form-item label="分类ID" prop="cat_id">
-				<el-input v-model="formData.cat_id" placeholder="请输入分类ID" :maxlength="20" show-word-limit
-					clearable></el-input>
+			<el-form-item label="商品分类" prop="cat_id">
+				<el-input v-model="formData.cat_id" placeholder="请输入商品分类"></el-input>
 			</el-form-item>
 			<el-form-item label="说明" prop="description">
-				<el-input v-model="formData.description" type="textarea" placeholder="请输入说明" :maxlength="1024"
+				<el-input v-model="formData.description" type="textarea" placeholder="请输入说明" :maxlength="1024" :rows="4"
 					show-word-limit clearable></el-input>
 			</el-form-item>
 		</el-form>
@@ -42,12 +41,15 @@ export default {
 			formData: this.def_data(),
 			rules: {
 				codec: [
-					{ required: true, trigger: "blur", message: "编码不能为空" },
-					{ required: true, trigger: "blur", message: "编码应4至32个字符", pattern: this.$SCM.REGEX_CODEC },
+					{ required: true, trigger: "blur", message: "商品编码不能为空" },
+					{ required: true, trigger: "blur", message: "商品编码应4至32个字符", pattern: this.$SCM.REGEX_CODEC },
 				],
 				namec: [
-					{ required: true, trigger: "blur", message: "名称不能为空" },
-					{ required: true, trigger: "blur", message: "名称应4至64个字符", pattern: this.$SCM.REGEX_NAMEC },
+					{ required: true, trigger: "blur", message: "商品名称不能为空" },
+					{ required: true, trigger: "blur", message: "商品名称应4至64个字符", pattern: this.$SCM.REGEX_NAMEC },
+				],
+				cat_id: [
+					{ required: true, trigger: "change", message: "请选择商品分类" },
 				],
 			},
 		};

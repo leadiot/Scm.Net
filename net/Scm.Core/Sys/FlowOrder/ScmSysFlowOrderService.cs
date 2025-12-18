@@ -1,5 +1,6 @@
 using Com.Scm.Dsa;
 using Com.Scm.Dvo;
+using Com.Scm.Enums;
 using Com.Scm.Exceptions;
 using Com.Scm.Service;
 using Com.Scm.Utils;
@@ -70,7 +71,7 @@ namespace Com.Scm.Flow
         public async Task<List<ResOptionDvo>> GetOptionAsync(ScmSearchRequest request)
         {
             var result = await _thisRepository.AsQueryable()
-                .Where(a => a.row_status == Scm.Enums.ScmRowStatusEnum.Enabled)
+                .Where(a => a.row_status == ScmRowStatusEnum.Enabled)
                 .OrderBy(a => a.id)
                 .Select(a => new ResOptionDvo { id = a.id, label = a.namec, value = a.id })
                 .ToListAsync();

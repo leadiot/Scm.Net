@@ -62,7 +62,7 @@ namespace Com.Scm.Sys.Notes
         public async Task<List<NoteBasicDvo>> GetListAsync(NoteSearchRequest request)
         {
             var result = await _thisRepository.AsQueryable()
-                .Where(a => a.row_status == Scm.Enums.ScmRowStatusEnum.Enabled)
+                .Where(a => a.row_status == ScmRowStatusEnum.Enabled)
                 .WhereIF(IsValidId(request.cat_id), a => a.cat_id == request.cat_id)
                 .WhereIF(!string.IsNullOrEmpty(request.key), a => a.title.Contains(request.key))
                 .WhereIF(request.types != Enums.NoteTypesEnum.None, a => a.types == request.types)

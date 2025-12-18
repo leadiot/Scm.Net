@@ -1,6 +1,6 @@
+using Com.Scm.Utils;
 using Microsoft.AspNetCore.Http;
 using System.Net;
-using System.Text.Json;
 
 namespace Com.Scm.Api.Configure.Middleware
 {
@@ -28,13 +28,13 @@ namespace Com.Scm.Api.Configure.Middleware
         private async Task ExceptionHandlerAsync(HttpContext context, Exception ex)
         {
             context.Response.ContentType = "application/json";
-            var result = JsonSerializer.Serialize(new ScmApiResponse()
+            var result = new ScmApiResponse()
             {
                 Code = (int)HttpStatusCode.InternalServerError,
                 Message = ex.Message
-            });
+            };
 
-            await context.Response.WriteAsync(result.ToLower());
+            await context.Response.WriteAsync(result.ToJsonString());
         }
     }
 }

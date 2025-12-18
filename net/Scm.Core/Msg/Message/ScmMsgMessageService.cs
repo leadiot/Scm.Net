@@ -41,7 +41,7 @@ public class ScmMsgMessageService : ApiService
         SugarRepository<MessageTagDao> tagRepository,
         JwtContextHolder jwtHolder,
         ITagService tagService,
-        Scm.Cache.ICacheService cacheService,
+        Cache.ICacheService cacheService,
         IHubContext<ScmHub> hubContext)
     {
         _thisRepository = thisRepository;

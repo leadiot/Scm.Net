@@ -21,6 +21,23 @@ namespace Com.Scm.Api.Configure.Middleware
             _next = next;
         }
 
+        private bool IsIgnoreApi(string url)
+        {
+            if (url == null)
+            {
+                return false;
+            }
+
+            foreach (var item in _ignoreUrl)
+            {
+                if (url.Contains(item))
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
         public Task Invoke(HttpContext context)
         {
             var jwtContextHolder = AppUtils.GetService<JwtContextHolder>();
@@ -33,12 +50,7 @@ namespace Com.Scm.Api.Configure.Middleware
 
                 //过滤，不要验证token的url
                 var path = context.Request.Path.Value?.ToLower();
-                var isIgnore = false;
-                foreach (var item in _ignoreUrl.Where(item => path != null && path.Contains(item)))
-                {
-                    isIgnore = true;
-                }
-                if (isIgnore)
+                if (IsIgnoreApi(path))
                 {
                     return _next(context);
                 }

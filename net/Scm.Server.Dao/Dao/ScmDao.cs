@@ -1,5 +1,4 @@
-﻿using Com.Scm.Dto;
-using Com.Scm.Utils;
+﻿using Com.Scm.Utils;
 using SqlSugar;
 
 namespace Com.Scm.Dao
@@ -63,7 +62,7 @@ namespace Com.Scm.Dao
                 return false;
             }
 
-            var dto = obj as ScmDto;
+            var dto = obj as ScmDao;
             return dto != null && dto.id == id;
         }
     }

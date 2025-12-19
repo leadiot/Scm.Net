@@ -76,7 +76,7 @@ namespace Com.Scm.Adm.Terminal
         /// </summary>
         public string mac { get; set; }
 
-        public bool IsExpred()
+        public bool IsExpired()
         {
             return TimeUtils.GetUnixTime(DateTime.UtcNow) > expires;
         }

@@ -63,8 +63,12 @@ namespace Com.Scm.Terminal
             return tokenInfo;
         }
 
-        public void Remote(ScmTerminalToken dao)
+        public void Remote(string token)
         {
+            if (token != null)
+            {
+                _TerminalList.Remove(token, out _);
+            }
         }
 
         public void Clear()

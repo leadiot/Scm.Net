@@ -124,7 +124,7 @@ public static class SwaggerExtension
     }
 
     // 从配置中获取 RoutePrefix（如果没有则返回 null）
-    private static string? GetRoutePrefix(SwaggerConfig config)
+    private static string GetRoutePrefix(SwaggerConfig config)
     {
         // 如果将来需要在 SwaggerConfig 添加 RoutePrefix 字段，可在此读取并返回
         return null;

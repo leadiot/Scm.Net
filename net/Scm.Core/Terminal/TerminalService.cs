@@ -51,7 +51,7 @@ namespace Com.Scm.Terminal
                 throw new BusinessException("设备已经绑定到其它终端！");
             }
 
-            terminalDao.access_token = TextUtils.GuidString();
+            terminalDao.access_token = TextUtils.RandomString(16);
             terminalDao.refresh_token = TextUtils.RandomString(16);
             terminalDao.expires = TimeUtils.GetUnixTime(DateTime.UtcNow.AddMonths(1));
             terminalDao.os = request.os;
@@ -93,12 +93,12 @@ namespace Com.Scm.Terminal
                 throw new BusinessException("无效的授权信息！");
             }
 
-            if (terminalDao.IsExpred())
+            if (terminalDao.IsExpired())
             {
                 throw new BusinessException("无效的授权信息！");
             }
 
-            terminalDao.access_token = TextUtils.GuidString();
+            terminalDao.access_token = TextUtils.RandomString(16);
             terminalDao.refresh_token = TextUtils.RandomString(16);
             terminalDao.expires = TimeUtils.GetUnixTime(DateTime.UtcNow.AddMonths(1));
             await _SqlClient.UpdateAsync(terminalDao);

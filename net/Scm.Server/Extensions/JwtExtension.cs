@@ -11,14 +11,14 @@ namespace Com.Scm
 {
     public static class JwtExtension
     {
-        public static void SetupJwt(this IServiceCollection services)
+        public static void SetupJwt(this IServiceCollection services, EnvConfig envConfig)
         {
             services.AddScoped(typeof(JwtContextHolder));
 
             var section = AppUtils.Configuration.GetSection(JwtConfig.Name);
             services.Configure<JwtConfig>(section);
             var token = section.Get<JwtConfig>();
-            token.Prepare(null);
+            token.Prepare(envConfig);
 
             services.AddAuthentication(x =>
             {

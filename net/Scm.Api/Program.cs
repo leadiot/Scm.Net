@@ -14,6 +14,7 @@ using Com.Scm.Quartz.Config;
 using Com.Scm.Samples;
 using Com.Scm.Server;
 using Com.Scm.Service;
+using Com.Scm.Terminal;
 using Com.Scm.Uid.Config;
 using Com.Scm.Utils;
 using Microsoft.Extensions.FileProviders;
@@ -118,6 +119,7 @@ namespace Com.Scm.Api
             services.AddScoped<ICatService, ScmCatService>();
             services.AddScoped<ITagService, ScmTagService>();
             services.AddScoped<IFlowService, ScmFlowService>();
+            services.AddScoped<ITerminalHolder, ScmTerminalHolder>();
 
             // 自定义服务
             SamplesServerUtils.Setup(services);
@@ -137,7 +139,7 @@ namespace Com.Scm.Api
             services.RegisterServices(apiConfig);
 
             // Jwt Config
-            services.SetupJwt();
+            services.SetupJwt(envConfig);
 
             // 跨域访问
             services.CorsSetup(corsConfig);

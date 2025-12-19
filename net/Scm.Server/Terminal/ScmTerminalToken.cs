@@ -1,41 +1,26 @@
-using Com.Scm.Dao.User;
-using Com.Scm.Enums;
+﻿using Com.Scm.Enums;
 using Com.Scm.Utils;
-using SqlSugar;
-using System.ComponentModel.DataAnnotations;
 
-namespace Com.Scm.Ur
+namespace Com.Scm.Terminal
 {
-    /// <summary>
-    /// 终端
-    /// </summary>
-    [SugarTable("scm_ur_terminal")]
-    public class ScmUrTerminalDao : ScmUserDataDao
+    public class ScmTerminalToken
     {
+        public long id { get; set; }
+
         /// <summary>
         /// 终端类型
         /// </summary>
-        [Required]
         public ScmClientTypeEnum types { get; set; }
 
         /// <summary>
         /// 终端代码
         /// </summary>
-        [Required]
-        [StringLength(16)]
         public string codes { get; set; }
 
         /// <summary>
         /// 终端名称
         /// </summary>
-        [StringLength(32)]
         public string names { get; set; }
-
-        /// <summary>
-        /// 终端口令
-        /// </summary>
-        [StringLength(16)]
-        public string pass { get; set; }
 
         /// <summary>
         /// 绑定状态
@@ -45,15 +30,11 @@ namespace Com.Scm.Ur
         /// <summary>
         /// 终端授权
         /// </summary>
-        [Required]
-        [StringLength(32)]
         public string access_token { get; set; }
 
         /// <summary>
         /// 刷新授权
         /// </summary>
-        [Required]
-        [StringLength(32)]
         public string refresh_token { get; set; }
 
         /// <summary>
@@ -62,20 +43,37 @@ namespace Com.Scm.Ur
         public long expires { get; set; }
 
         /// <summary>
+        /// MAC地址
+        /// </summary>
+        public string mac { get; set; }
+
+        /// <summary>
         /// 系统名称
         /// </summary>
         public string os { get; set; }
 
         /// <summary>
-        /// MAC地址
+        /// 用户ID
         /// </summary>
-        public string mac { get; set; }
+        public long user_id { get; set; }
 
-        public override void PrepareCreate(long userId)
+        /// <summary>
+        /// 用户编码
+        /// </summary>
+        public string user_codes { get; set; }
+
+        /// <summary>
+        /// 用户名称
+        /// </summary>
+        public string user_names { get; set; }
+
+        /// <summary>
+        /// 是否过期
+        /// </summary>
+        /// <returns></returns>
+        public bool IsExpreid()
         {
-            base.PrepareCreate(userId);
-
-            this.codes = UidUtils.NextCodes("scm_ur_terminal", (int)this.types);
+            return TimeUtils.GetUnixTime() > 0;
         }
     }
 }

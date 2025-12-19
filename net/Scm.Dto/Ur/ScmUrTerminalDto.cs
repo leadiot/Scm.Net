@@ -2,7 +2,7 @@ using Com.Scm.Dto;
 using Com.Scm.Enums;
 using System.ComponentModel.DataAnnotations;
 
-namespace Com.Scm.Scm.Ur
+namespace Com.Scm.Ur
 {
     /// <summary>
     /// 终端

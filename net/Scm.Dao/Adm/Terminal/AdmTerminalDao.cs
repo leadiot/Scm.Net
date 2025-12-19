@@ -1,17 +1,22 @@
-using Com.Scm.Dao.User;
+﻿using Com.Scm.Dao;
 using Com.Scm.Enums;
 using Com.Scm.Utils;
 using SqlSugar;
 using System.ComponentModel.DataAnnotations;
 
-namespace Com.Scm.Ur
+namespace Com.Scm.Adm.Terminal
 {
     /// <summary>
     /// 终端
     /// </summary>
     [SugarTable("scm_ur_terminal")]
-    public class ScmUrTerminalDao : ScmUserDataDao
+    public class AdmTerminalDao : ScmDataDao
     {
+        /// <summary>
+        /// 
+        /// </summary>
+        public long user_id { get; set; }
+
         /// <summary>
         /// 终端类型
         /// </summary>
@@ -70,6 +75,11 @@ namespace Com.Scm.Ur
         /// MAC地址
         /// </summary>
         public string mac { get; set; }
+
+        public bool IsExpred()
+        {
+            return TimeUtils.GetUnixTime(DateTime.UtcNow) > expires;
+        }
 
         public override void PrepareCreate(long userId)
         {

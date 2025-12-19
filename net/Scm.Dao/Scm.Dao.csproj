@@ -8,6 +8,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Task\**" />
+    <EmbeddedResource Remove="Task\**" />
+    <None Remove="Task\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\Scm.Dto\Scm.Dto.csproj" />
     <ProjectReference Include="..\Scm.Server.Dao\Scm.Server.Dao.csproj" />
   </ItemGroup>
@@ -22,10 +28,6 @@
     <Reference Include="Scm.Workflow">
       <HintPath>..\Libs\net10.0\Scm.Workflow.dll</HintPath>
     </Reference>
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Task\" />
   </ItemGroup>
 
 </Project>

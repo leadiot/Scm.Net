@@ -3,9 +3,9 @@ using Com.Scm.Dvo;
 using Com.Scm.Enums;
 using Com.Scm.Exceptions;
 using Com.Scm.Service;
-using Com.Scm.Ur.Terminal.Dvo;
+using Com.Scm.Terminal;
+using Com.Scm.Ur;
 using Com.Scm.Utils;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Com.Scm.Scm.Ur
@@ -17,15 +17,16 @@ namespace Com.Scm.Scm.Ur
     public class ScmUrTerminalService : ApiService
     {
         private readonly SugarRepository<ScmUrTerminalDao> _thisRepository;
+        private readonly ITerminalHolder _terminalHolder;
 
         /// <summary>
         /// 
         /// </summary>
         /// <param name="thisRepository"></param>
-        public ScmUrTerminalService(SugarRepository<ScmUrTerminalDao> thisRepository, IUserService userService)
+        public ScmUrTerminalService(SugarRepository<ScmUrTerminalDao> thisRepository, ITerminalHolder holder)
         {
             _thisRepository = thisRepository;
-            _UserService = userService;
+            _terminalHolder = holder;
         }
 
         /// <summary>
@@ -166,6 +167,8 @@ namespace Com.Scm.Scm.Ur
                 throw new BusinessException("无效的终端！");
             }
 
+            _terminalHolder.Remote(dao.access_token);
+
             dao.names = model.names;
 
             return await _thisRepository.UpdateAsync(dao);
@@ -178,6 +181,8 @@ namespace Com.Scm.Scm.Ur
         /// <returns></returns>
         public async Task<int> StatusAsync(ScmChangeStatusRequest param)
         {
+            _terminalHolder.Clear();
+
             return await UpdateStatus(_thisRepository, param.ids, param.status);
         }
 
@@ -189,6 +194,8 @@ namespace Com.Scm.Scm.Ur
         [HttpDelete]
         public async Task<int> DeleteAsync(string ids)
         {
+            _terminalHolder.Clear();
+
             return await DeleteRecord(_thisRepository, ids.ToListLong());
         }
 
@@ -206,57 +213,13 @@ namespace Com.Scm.Scm.Ur
                 throw new BusinessException("无效的终端代码！");
             }
 
+            _terminalHolder.Remote(dao.access_token);
+
             dao.binded = ScmBoolEnum.False;
             dao.pass = TextUtils.RandomString(16);
             await _thisRepository.UpdateAsync(dao);
 
             return true;
-        }
-
-        /// <summary>
-        /// 绑定
-        /// </summary>
-        /// <param name="request"></param>
-        /// <returns></returns>
-        [HttpPost]
-        [AllowAnonymous]
-        public async Task<BindResult> BindAsync(BindRequest request)
-        {
-            var codes = request.codes;
-            if (!ScmUtils.IsValidCode(codes, 16))
-            {
-                throw new BusinessException("无效的终端代码！");
-            }
-
-            var dao = await _thisRepository
-                .AsQueryable()
-                .ClearFilter()
-                .Where(a => a.codes == request.codes && a.pass == request.pass && a.row_status == ScmRowStatusEnum.Enabled)
-                .FirstAsync();
-            if (dao == null)
-            {
-                throw new BusinessException("无效的终端代码！");
-            }
-            if (dao.binded == ScmBoolEnum.True)
-            {
-                throw new BusinessException("无效的终端代码！");
-            }
-
-            dao.binded = ScmBoolEnum.True;
-            dao.access_token = TextUtils.RandomString(32);
-            dao.refresh_token = TextUtils.RandomString(32);
-            var time = DateTime.UtcNow.AddMonths(1);
-            dao.expires = TimeUtils.GetUnixTime(time);
-            dao.mac = request.mac;
-            dao.os = request.os;
-            await _thisRepository.UpdateAsync(dao);
-
-            var result = new BindResult();
-            result.access_token = dao.access_token;
-            result.refresh_token = dao.refresh_token;
-            result.expires = dao.expires;
-
-            return result;
         }
     }
 }

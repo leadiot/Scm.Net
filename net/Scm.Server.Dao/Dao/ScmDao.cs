@@ -1,4 +1,5 @@
-﻿using Com.Scm.Utils;
+﻿using Com.Scm.Dto;
+using Com.Scm.Utils;
 using SqlSugar;
 
 namespace Com.Scm.Dao
@@ -48,6 +49,22 @@ namespace Com.Scm.Dao
         public bool IsValidId()
         {
             return id > 1000;
+        }
+
+        public override int GetHashCode()
+        {
+            return id.GetHashCode();
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (obj == null)
+            {
+                return false;
+            }
+
+            var dto = obj as ScmDto;
+            return dto != null && dto.id == id;
         }
     }
 }

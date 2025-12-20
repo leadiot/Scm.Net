@@ -22,9 +22,10 @@ namespace Com.Scm.Utils
         /// Unix时间戳，单位：毫秒
         /// </summary>
         /// <returns></returns>
-        public static long GetUnixTime()
+        public static long GetUnixTime(bool utc = false)
         {
-            return DateTimeOffset.Now.ToUnixTimeMilliseconds();
+            var now = utc ? DateTimeOffset.UtcNow : DateTimeOffset.Now;
+            return now.ToUnixTimeMilliseconds();
         }
 
         /// <summary>

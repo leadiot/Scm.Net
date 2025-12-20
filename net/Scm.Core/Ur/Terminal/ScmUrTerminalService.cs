@@ -167,7 +167,7 @@ namespace Com.Scm.Scm.Ur
                 throw new BusinessException("无效的终端！");
             }
 
-            _terminalHolder.Remote(dao.access_token);
+            _terminalHolder.Remote(dao.id);
 
             dao.names = model.names;
 
@@ -213,7 +213,7 @@ namespace Com.Scm.Scm.Ur
                 throw new BusinessException("无效的终端代码！");
             }
 
-            _terminalHolder.Remote(dao.access_token);
+            _terminalHolder.Remote(dao.id);
 
             dao.binded = ScmBoolEnum.False;
             dao.pass = TextUtils.RandomString(16);

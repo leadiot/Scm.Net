@@ -2,9 +2,9 @@
 {
     public interface ITerminalHolder
     {
-        public ScmTerminalToken GetTerminalByToken(string token);
+        public ScmTerminalToken GetTerminal(long id);
 
-        public void Remote(string token);
+        public void Remote(long id);
 
         public void Clear();
     }

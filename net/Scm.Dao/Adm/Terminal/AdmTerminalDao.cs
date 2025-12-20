@@ -64,7 +64,7 @@ namespace Com.Scm.Adm.Terminal
         /// <summary>
         /// 过期时间(UTC时间)
         /// </summary>
-        public long expires { get; set; }
+        public long expired { get; set; }
 
         /// <summary>
         /// 系统名称
@@ -78,7 +78,7 @@ namespace Com.Scm.Adm.Terminal
 
         public bool IsExpired()
         {
-            return TimeUtils.GetUnixTime(DateTime.UtcNow) > expires;
+            return TimeUtils.GetUnixTime(true) > expired;
         }
 
         public override void PrepareCreate(long userId)

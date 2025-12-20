@@ -11,30 +11,25 @@ namespace Com.Scm.Terminal
     public class ScmTerminalHolder : ITerminalHolder
     {
         private readonly ISqlSugarClient _SqlClient;
-        private static readonly ConcurrentDictionary<string, ScmTerminalToken> _TerminalList = new ConcurrentDictionary<string, ScmTerminalToken>();
+        private static readonly ConcurrentDictionary<long, ScmTerminalToken> _TerminalList = new ConcurrentDictionary<long, ScmTerminalToken>();
 
         public ScmTerminalHolder(ISqlSugarClient sqlClient)
         {
             _SqlClient = sqlClient;
         }
 
-        public ScmTerminalToken GetTerminalByToken(string token)
+        public ScmTerminalToken GetTerminal(long id)
         {
-            if (string.IsNullOrEmpty(token))
-            {
-                return null;
-            }
-
             ScmTerminalToken tokenInfo;
-            if (_TerminalList.ContainsKey(token))
+            if (_TerminalList.ContainsKey(id))
             {
-                tokenInfo = _TerminalList[token];
+                tokenInfo = _TerminalList[id];
                 return tokenInfo;
             }
 
             tokenInfo = new ScmTerminalToken();
             var terminalDao = _SqlClient.Queryable<AdmTerminalDao>()
-                .Where(a => a.access_token == token && a.row_status == Enums.ScmRowStatusEnum.Enabled)
+                .Where(a => a.id == id && a.row_status == Enums.ScmRowStatusEnum.Enabled)
                 .First();
             if (terminalDao == null)
             {
@@ -46,7 +41,7 @@ namespace Com.Scm.Terminal
             tokenInfo.codes = terminalDao.codes;
             tokenInfo.access_token = terminalDao.access_token;
             tokenInfo.refresh_token = terminalDao.refresh_token;
-            tokenInfo.expires = terminalDao.expires;
+            tokenInfo.expired = terminalDao.expired;
             tokenInfo.user_id = terminalDao.user_id;
 
             var userDao = _SqlClient.Queryable<UserDao>()
@@ -58,17 +53,14 @@ namespace Com.Scm.Terminal
                 tokenInfo.user_names = userDao.names;
             }
 
-            _TerminalList.TryAdd(token, tokenInfo);
+            _TerminalList.TryAdd(id, tokenInfo);
 
             return tokenInfo;
         }
 
-        public void Remote(string token)
+        public void Remote(long id)
         {
-            if (token != null)
-            {
-                _TerminalList.Remove(token, out _);
-            }
+            _TerminalList.Remove(id, out _);
         }
 
         public void Clear()

@@ -40,7 +40,7 @@ namespace Com.Scm.Terminal
         /// <summary>
         /// 过期时间(UTC时间)
         /// </summary>
-        public long expires { get; set; }
+        public long expired { get; set; }
 
         /// <summary>
         /// MAC地址
@@ -71,9 +71,9 @@ namespace Com.Scm.Terminal
         /// 是否过期
         /// </summary>
         /// <returns></returns>
-        public bool IsExpreid()
+        public bool IsExpired()
         {
-            return TimeUtils.GetUnixTime() > 0;
+            return TimeUtils.GetUnixTime(true) > expired;
         }
     }
 }

@@ -51,18 +51,11 @@ namespace Com.Scm.Terminal
                 throw new BusinessException("设备已经绑定到其它终端！");
             }
 
-            terminalDao.access_token = TextUtils.RandomString(16);
-            terminalDao.refresh_token = TextUtils.RandomString(16);
-            terminalDao.expires = TimeUtils.GetUnixTime(DateTime.UtcNow.AddMonths(1));
+            GenToken(terminalDao, token);
             terminalDao.os = request.os;
             terminalDao.mac = request.mac;
             terminalDao.binded = ScmBoolEnum.True;
             await _SqlClient.UpdateAsync(terminalDao);
-
-            token.terminal_id = terminalDao.id;
-            token.access_token = terminalDao.access_token;
-            token.refresh_token = terminalDao.refresh_token;
-            token.expires = terminalDao.expires;
 
             return token;
         }
@@ -98,17 +91,25 @@ namespace Com.Scm.Terminal
                 throw new BusinessException("无效的授权信息！");
             }
 
-            terminalDao.access_token = TextUtils.RandomString(16);
-            terminalDao.refresh_token = TextUtils.RandomString(16);
-            terminalDao.expires = TimeUtils.GetUnixTime(DateTime.UtcNow.AddMonths(1));
+            GenToken(terminalDao, token);
             await _SqlClient.UpdateAsync(terminalDao);
 
-            //token.terminal_id = terminalDao.id;
+            return token;
+        }
+
+        private void GenToken(AdmTerminalDao terminalDao, TokenResult token)
+        {
+            // 30天
+            var expiresIn = 60 * 60 * 24 * 30;
+
+            terminalDao.access_token = TextUtils.RandomString(16, false);
+            terminalDao.refresh_token = TextUtils.RandomString(16, false);
+            terminalDao.expired = TimeUtils.GetUnixTime(DateTime.UtcNow.AddSeconds(expiresIn));
+
+            token.terminal_id = terminalDao.id;
             token.access_token = terminalDao.access_token;
             token.refresh_token = terminalDao.refresh_token;
-            token.expires = terminalDao.expires;
-
-            return token;
+            token.expires = expiresIn;
         }
     }
 }

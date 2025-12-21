@@ -45,9 +45,9 @@ namespace Com.Scm.Terminal
             tokenInfo.user_id = terminalDao.user_id;
 
             var userDao = _SqlClient.Queryable<UserDao>()
-                .Where(a => a.id == terminalDao.id)
+                .Where(a => a.id == terminalDao.user_id)
                 .First();
-            if (userDao == null)
+            if (userDao != null)
             {
                 tokenInfo.user_codes = userDao.codes;
                 tokenInfo.user_names = userDao.names;

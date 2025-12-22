@@ -23,6 +23,11 @@ namespace Com.Scm.Terminal
         public string names { get; set; }
 
         /// <summary>
+        /// 终端路径
+        /// </summary>
+        public string path { get; set; }
+
+        /// <summary>
         /// 绑定状态
         /// </summary>
         public ScmBoolEnum binded { get; set; }
@@ -74,6 +79,11 @@ namespace Com.Scm.Terminal
         public bool IsExpired()
         {
             return TimeUtils.GetUnixTime(true) > expired;
+        }
+
+        public bool IsValid(string token)
+        {
+            return access_token == token;
         }
     }
 }

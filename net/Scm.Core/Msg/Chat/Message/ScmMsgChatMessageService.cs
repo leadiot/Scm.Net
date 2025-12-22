@@ -376,7 +376,7 @@ namespace Com.Scm.Msg.Chat.Message
                 if (!Directory.Exists(path))
                 {
                     var template = _EnvConfig.GetDataPath(_aimlConfig.Folder);
-                    FileUtils.Copyto(new DirectoryInfo(template), new DirectoryInfo(path));
+                    FileUtils.CopyDir(template, path);
                 }
                 bot = new Robot(path);
                 bot.LoadConfig();

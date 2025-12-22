@@ -49,21 +49,21 @@ namespace Com.Scm.Quartz.Config
                 BaseDir = "quartz";
             }
             BaseDir = config.GetDataPath(BaseDir);
-            FileUtils.CreateFolder(BaseDir);
+            FileUtils.CreateDir(BaseDir);
 
             if (string.IsNullOrWhiteSpace(DataDir))
             {
                 DataDir = "data";
             }
             DataDir = Path.Combine(BaseDir, DataDir);
-            FileUtils.CreateFolder(DataDir);
+            FileUtils.CreateDir(DataDir);
 
             if (string.IsNullOrWhiteSpace(LogsDir))
             {
                 LogsDir = "logs";
             }
             LogsDir = Path.Combine(BaseDir, LogsDir);
-            FileUtils.CreateFolder(LogsDir);
+            FileUtils.CreateDir(LogsDir);
 
             if (string.IsNullOrEmpty(JobFile))
             {

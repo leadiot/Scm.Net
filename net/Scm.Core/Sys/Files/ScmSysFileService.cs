@@ -107,7 +107,7 @@ public class ScmSysFileService : IApiService
         var result = new ScmUploadResult();
 
         var dstPath = _envConfig.GetDataPath(path);
-        FileUtils.CreateFolder(dstPath);
+        FileUtils.CreateDir(dstPath);
 
         var name = file.Name;
 
@@ -147,7 +147,7 @@ public class ScmSysFileService : IApiService
         }
 
         var dstPath = _envConfig.GetDataPath(request.path);
-        FileUtils.CreateFolder(dstPath);
+        FileUtils.CreateDir(dstPath);
 
         var qty = 0;
         var now = DateTime.Now.ToFileTimeUtc();
@@ -269,7 +269,7 @@ public class ScmSysFileService : IApiService
         }
 
         var basePath = _envConfig.GetDataPath(path);
-        FileUtils.DeleteFile(basePath);
+        FileUtils.DeleteDoc(basePath);
     }
 
     /// <summary>
@@ -284,7 +284,7 @@ public class ScmSysFileService : IApiService
         }
 
         var basePath = _envConfig.GetDataPath(path);
-        FileUtils.DeleteFolder(basePath);
+        FileUtils.DeleteDir(basePath);
     }
 
     private bool IsAcceptExts(string exts)

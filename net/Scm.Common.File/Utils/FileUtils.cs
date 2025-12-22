@@ -14,11 +14,10 @@ namespace Com.Scm.Utils
         /// </summary>
         /// <param name="fileName"></param>
         /// <returns></returns>
-        public static bool CreateFile(string fileName)
+        public static bool CreateDoc(string fileName)
         {
             using (var stream = File.Create(fileName))
             {
-                ;
             }
             return true;
         }
@@ -28,7 +27,7 @@ namespace Com.Scm.Utils
         /// </summary>
         /// <param name="path"></param>
         /// <returns></returns>
-        public static bool IsEmptyFile(string path)
+        public static bool IsEmptyDoc(string path)
         {
             var info = new FileInfo(path);
             return info.Length < 1;
@@ -39,7 +38,7 @@ namespace Com.Scm.Utils
         /// </summary>
         /// <param name="file"></param>
         /// <returns></returns>
-        public static long GetFileSize(string file)
+        public static long GetDocSize(string file)
         {
             var info = new FileInfo(file);
             if (!info.Exists)
@@ -56,7 +55,7 @@ namespace Com.Scm.Utils
         /// <param name="src"></param>
         /// <param name="dst"></param>
         /// <returns></returns>
-        private static bool CopyFile(string src, string dst)
+        private static bool CopyDoc(string src, string dst)
         {
             var dir = Path.GetDirectoryName(dst);
             if (!Directory.Exists(dir))
@@ -73,7 +72,7 @@ namespace Com.Scm.Utils
         /// <param name="src"></param>
         /// <param name="dst"></param>
         /// <returns></returns>
-        private static bool MoveFile(string src, string dst)
+        private static bool MoveDoc(string src, string dst)
         {
             if (File.Exists(dst))
             {
@@ -93,7 +92,7 @@ namespace Com.Scm.Utils
         /// 删除指定文件
         /// </summary>
         /// <param name="filePath">文件的绝对路径</param>
-        public static void DeleteFile(string filePath)
+        public static void DeleteDoc(string filePath)
         {
             if (File.Exists(filePath))
             {
@@ -128,28 +127,27 @@ namespace Com.Scm.Utils
         #endregion
 
         #region 目录操作
-        public static int Copyto(DirectoryInfo srcDir, DirectoryInfo dstDir)
+        public static int CopyDir(string srcPath, string dstPath)
         {
-            if (!srcDir.Exists)
+            if (!Directory.Exists(srcPath))
             {
                 return 0;
             }
 
-            if (!dstDir.Exists)
+            if (!Directory.Exists(dstPath))
             {
-                dstDir.Create();
+                Directory.CreateDirectory(dstPath);
             }
 
             var qty = 0;
-            foreach (var src in srcDir.GetDirectories())
+            foreach (var srcDir in Directory.GetDirectories(srcPath))
             {
-                var dst = new DirectoryInfo(Path.Combine(dstDir.FullName, src.Name));
-                qty += Copyto(src, dst);
+                qty += CopyDir(srcDir, Path.Combine(dstPath, Path.GetFileName(srcDir)));
             }
 
-            foreach (var srcFile in srcDir.GetFiles())
+            foreach (var srcDoc in Directory.GetFiles(srcPath))
             {
-                srcFile.CopyTo(Path.Combine(dstDir.FullName, srcFile.Name), true);
+                CopyDoc(srcDoc, Path.Combine(dstPath, Path.GetFileName(srcDoc)));
                 qty += 1;
             }
 
@@ -160,7 +158,7 @@ namespace Com.Scm.Utils
         /// 创建目录
         /// </summary>
         /// <param name="folderPath">目录的绝对路径</param>
-        public static void CreateFolder(string folderPath)
+        public static void CreateDir(string folderPath)
         {
             if (!Directory.Exists(folderPath))
             {
@@ -173,7 +171,7 @@ namespace Com.Scm.Utils
         /// </summary>
         /// <param name="path"></param>
         /// <returns></returns>
-        public static bool IsEmptyFolder(string path)
+        public static bool IsEmptyDir(string path)
         {
             var info = new DirectoryInfo(path);
             return info.GetFiles().Length < 1 && info.GetDirectories().Length < 1;
@@ -184,7 +182,7 @@ namespace Com.Scm.Utils
         /// </summary>
         /// <param name="directoryPath">文件的绝对路径</param>
         /// <param name="recursive">是否级联删除</param>
-        public static void DeleteFolder(string directoryPath, bool recursive = true)
+        public static void DeleteDir(string directoryPath, bool recursive = true)
         {
             if (Directory.Exists(directoryPath))
             {
@@ -198,7 +196,7 @@ namespace Com.Scm.Utils
         /// <param name="path"></param>
         /// <param name="file"></param>
         /// <returns></returns>
-        public static string GetFolderName(string path, string file)
+        public static string GetDirName(string path, string file)
         {
             var idx = 0;
             var tmp = "";
@@ -227,7 +225,7 @@ namespace Com.Scm.Utils
         {
             if (File.Exists(src))
             {
-                return CopyFile(src, dst);
+                return CopyDoc(src, dst);
             }
 
             if (!Directory.Exists(src))
@@ -251,7 +249,7 @@ namespace Com.Scm.Utils
             foreach (var file in files)
             {
                 var tmp = Path.Combine(dst, Path.GetFileName(file));
-                if (!CopyFile(file, tmp))
+                if (!CopyDoc(file, tmp))
                 {
                     return false;
                 }
@@ -270,7 +268,7 @@ namespace Com.Scm.Utils
         {
             if (File.Exists(src))
             {
-                return MoveFile(src, dst);
+                return MoveDoc(src, dst);
             }
 
             if (!Directory.Exists(src))
@@ -296,7 +294,7 @@ namespace Com.Scm.Utils
             foreach (var file in files)
             {
                 var tmp = Path.Combine(dst, Path.GetFileName(file));
-                if (!MoveFile(file, tmp))
+                if (!MoveDoc(file, tmp))
                 {
                     return false;
                 }
@@ -800,7 +798,7 @@ namespace Com.Scm.Utils
         /// <returns></returns>
         public static string Md5(Stream stream)
         {
-            return GetFileHash(stream, "MD5");
+            return GetDocHash(stream, "MD5");
         }
 
         /// <summary>
@@ -810,7 +808,27 @@ namespace Com.Scm.Utils
         /// <returns></returns>
         public static string Md5(string file)
         {
-            return GetFileHash(file, "MD5");
+            return GetDocHash(file, "MD5");
+        }
+
+        /// <summary>
+        /// 获取文件摘要
+        /// </summary>
+        /// <param name="stream"></param>
+        /// <returns></returns>
+        public static string Sha(Stream stream)
+        {
+            return GetDocHash(stream, "SHA256");
+        }
+
+        /// <summary>
+        /// 获取文件摘要
+        /// </summary>
+        /// <param name="file"></param>
+        /// <returns></returns>
+        public static string Sha(string file)
+        {
+            return GetDocHash(file, "SHA256");
         }
 
         /// <summary>
@@ -819,7 +837,7 @@ namespace Com.Scm.Utils
         /// <param name="file"></param>
         /// <param name="cipher"></param>
         /// <returns></returns>
-        public static string GetFileHash(string file, string cipher)
+        public static string GetDocHash(string file, string cipher)
         {
             var alg = System.Security.Cryptography.HashAlgorithm.Create(cipher);
             using (var stream = File.OpenRead(file))
@@ -835,7 +853,7 @@ namespace Com.Scm.Utils
         /// <param name="stream"></param>
         /// <param name="cipher"></param>
         /// <returns></returns>
-        public static string GetFileHash(Stream stream, string cipher)
+        public static string GetDocHash(Stream stream, string cipher)
         {
 
             var alg = System.Security.Cryptography.HashAlgorithm.Create(cipher);
@@ -845,5 +863,45 @@ namespace Com.Scm.Utils
             return TextUtils.ToHexString(result);
         }
         #endregion
+
+        /// <summary>
+        /// 文件路径合并
+        /// </summary>
+        /// <param name="paths"></param>
+        /// <returns></returns>
+        public static string Combine(params string[] paths)
+        {
+            return System.IO.Path.Combine(paths);
+        }
+
+        /// <summary>
+        /// 获取文件名称
+        /// </summary>
+        /// <param name="path"></param>
+        /// <returns></returns>
+        public static string GetFileName(string path)
+        {
+            return System.IO.Path.GetFileName(path);
+        }
+
+        public static string GetExtension(string path)
+        {
+            return System.IO.Path.GetExtension(path);
+        }
+
+        public static string GetFileNameWithoutExtension(string path)
+        {
+            return System.IO.Path.GetFileNameWithoutExtension(path);
+        }
+
+        /// <summary>
+        /// 获取目录路径
+        /// </summary>
+        /// <param name="path"></param>
+        /// <returns></returns>
+        public static string GetDir(string path)
+        {
+            return System.IO.Path.GetDirectoryName(path);
+        }
     }
 }

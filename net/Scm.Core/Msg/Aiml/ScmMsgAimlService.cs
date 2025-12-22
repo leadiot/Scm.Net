@@ -76,7 +76,7 @@ namespace Com.Scm.Msg.Aiml
                 if (!Directory.Exists(path))
                 {
                     var template = _envConfig.GetDataPath("aiml");
-                    FileUtils.Copyto(new DirectoryInfo(template), new DirectoryInfo(path));
+                    FileUtils.CopyDir(template, path);
                 }
                 bot = new Robot(path);
                 bot.LoadConfig();

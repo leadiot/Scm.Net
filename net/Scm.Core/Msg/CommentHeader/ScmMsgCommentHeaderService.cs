@@ -23,7 +23,7 @@ namespace Com.Scm.Msg.CommentHeader
         /// <param name="thisRepository"></param>
         /// <param name="userService"></param>
         /// <returns></returns>
-        public ScmMsgCommentHeaderService(SugarRepository<CommentHeaderDao> thisRepository, IUserService userService)
+        public ScmMsgCommentHeaderService(SugarRepository<CommentHeaderDao> thisRepository, IUserHolder userService)
         {
             _thisRepository = thisRepository;
             _UserService = userService;

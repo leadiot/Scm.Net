@@ -20,7 +20,7 @@ namespace Com.Scm.Dev.Db
         /// </summary>
         /// <param name="thisRepository"></param>
         /// <param name="userRepository"></param>
-        public ScmDevDbService(SugarRepository<ScmDevDbDao> thisRepository, IUserService userService)
+        public ScmDevDbService(SugarRepository<ScmDevDbDao> thisRepository, IUserHolder userService)
         {
             _thisRepository = thisRepository;
             _UserService = userService;

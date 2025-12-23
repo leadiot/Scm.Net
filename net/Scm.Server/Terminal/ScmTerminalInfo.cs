@@ -1,9 +1,10 @@
 ﻿using Com.Scm.Enums;
+using Com.Scm.Token;
 using Com.Scm.Utils;
 
 namespace Com.Scm.Terminal
 {
-    public class ScmTerminalToken
+    public class ScmTerminalInfo
     {
         public long id { get; set; }
 
@@ -81,9 +82,10 @@ namespace Com.Scm.Terminal
             return TimeUtils.GetUnixTime(true) > expired;
         }
 
-        public bool IsValid(string token)
+        public bool IsValid(ScmToken token)
         {
-            return access_token == token;
+            var text = $"{token.terminal_codes}:{token.time}";
+            return TextUtils.Md5(text) == token.digest;
         }
     }
 }

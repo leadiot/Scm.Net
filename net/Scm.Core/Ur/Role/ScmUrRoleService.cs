@@ -21,7 +21,7 @@ public class ScmUrRoleService : ApiService
     /// 
     /// </summary>
     /// <param name="thisRepository"></param>
-    public ScmUrRoleService(SugarRepository<RoleDao> thisRepository, IUserService userService)
+    public ScmUrRoleService(SugarRepository<RoleDao> thisRepository, IUserHolder userService)
     {
         _thisRepository = thisRepository;
         _UserService = userService;

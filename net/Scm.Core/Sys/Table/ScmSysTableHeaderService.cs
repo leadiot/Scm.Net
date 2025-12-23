@@ -22,7 +22,7 @@ namespace Com.Scm.Sys.Table
         /// <param name="thisRepository"></param>
         /// <param name="userService"></param>
         /// <returns></returns>
-        public ScmSysTableHeaderService(SugarRepository<SysTableHeaderDao> thisRepository, IUserService userService)
+        public ScmSysTableHeaderService(SugarRepository<SysTableHeaderDao> thisRepository, IUserHolder userService)
         {
             _thisRepository = thisRepository;
             _UserService = userService;

@@ -24,7 +24,7 @@ namespace Com.Scm.Msg.Chat.Group
         /// <param name="thisRepository"></param>
         /// <param name="userRepository"></param>
         /// <returns></returns>
-        public ScmMsgChatGroupUserService(SugarRepository<ChatGroupUserDao> thisRepository, IUserService userService)
+        public ScmMsgChatGroupUserService(SugarRepository<ChatGroupUserDao> thisRepository, IUserHolder userService)
         {
             _thisRepository = thisRepository;
             _UserService = userService;

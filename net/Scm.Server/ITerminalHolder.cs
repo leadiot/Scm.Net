@@ -1,8 +1,10 @@
-﻿namespace Com.Scm.Terminal
+﻿using Com.Scm.Terminal;
+
+namespace Com.Scm
 {
     public interface ITerminalHolder
     {
-        public ScmTerminalToken GetTerminal(long id);
+        public ScmTerminalInfo GetTerminal(long id);
 
         public void Remote(long id);
 

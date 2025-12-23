@@ -16,6 +16,7 @@ using Com.Scm.Server;
 using Com.Scm.Service;
 using Com.Scm.Terminal;
 using Com.Scm.Uid.Config;
+using Com.Scm.User;
 using Com.Scm.Utils;
 using Microsoft.Extensions.FileProviders;
 using Serilog;
@@ -111,7 +112,6 @@ namespace Com.Scm.Api
                 corsConfig.Prepare(envConfig);
             }
 
-            services.AddScoped<IUserService, ScmUserService>();
             services.AddScoped<ILogService, ScmLogService>();
             services.AddScoped<IDicService, ScmDicService>();
             services.AddScoped<ICfgService, ScmCfgService>();
@@ -119,6 +119,7 @@ namespace Com.Scm.Api
             services.AddScoped<ICatService, ScmCatService>();
             services.AddScoped<ITagService, ScmTagService>();
             services.AddScoped<IFlowService, ScmFlowService>();
+            services.AddScoped<IUserHolder, ScmUserHolder>();
             services.AddScoped<ITerminalHolder, ScmTerminalHolder>();
 
             // 自定义服务

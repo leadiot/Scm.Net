@@ -23,7 +23,7 @@ namespace Com.Scm.Dev.App
         /// </summary>
         /// <param name="thisRepository"></param>
         /// <param name="userService"></param>
-        public ScmDevAppService(SugarRepository<ScmDevAppDao> thisRepository, IUserService userService)
+        public ScmDevAppService(SugarRepository<ScmDevAppDao> thisRepository, IUserHolder userService)
         {
             _thisRepository = thisRepository;
             _UserService = userService;

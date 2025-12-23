@@ -22,7 +22,7 @@ namespace Com.Scm.Sys
         /// <param name="thisRepository"></param>
         /// <param name="userService"></param>
         /// <returns></returns>
-        public ScmSysThemeService(SugarRepository<ThemeDao> thisRepository, IUserService userService)
+        public ScmSysThemeService(SugarRepository<ThemeDao> thisRepository, IUserHolder userService)
         {
             _thisRepository = thisRepository;
             _UserService = userService;

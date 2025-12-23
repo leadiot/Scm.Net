@@ -10,7 +10,7 @@ namespace Com.Scm.Service
     {
         protected EnvConfig _EnvConfig;
         protected ISqlSugarClient _SqlClient;
-        protected IUserService _UserService;
+        protected IUserHolder _UserService;
         protected Com.Scm.Cache.ICacheService _CacheService;
 
     }

@@ -1,10 +1,10 @@
-﻿using Com.Scm.Ur;
+﻿using Com.Scm.User;
 
 namespace Com.Scm
 {
-    public interface IUserService
+    public interface IUserHolder
     {
-        UserDao GetUser(long id);
+        ScmUserInfo GetUser(long id);
 
         string GetUserNames(long id);
 

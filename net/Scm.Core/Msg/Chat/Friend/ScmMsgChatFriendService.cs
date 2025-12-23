@@ -23,7 +23,7 @@ namespace Com.Scm.Msg.Chat.Friend
         /// <param name="thisRepository"></param>
         /// <param name="userRepository"></param>
         /// <returns></returns>
-        public ScmMsgChatFriendService(SugarRepository<ChatFriendDao> thisRepository, IUserService userService)
+        public ScmMsgChatFriendService(SugarRepository<ChatFriendDao> thisRepository, IUserHolder userService)
         {
             _thisRepository = thisRepository;
             _UserService = userService;

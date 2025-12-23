@@ -21,7 +21,7 @@ namespace Com.Scm.Sys
         /// 
         /// </summary>
         /// <param name="thisRepository"></param>
-        public ScmSysUomService(SugarRepository<ScmSysUomDao> thisRepository, IUserService userService)
+        public ScmSysUomService(SugarRepository<ScmSysUomDao> thisRepository, IUserHolder userService)
         {
             _thisRepository = thisRepository;
             _UserService = userService;

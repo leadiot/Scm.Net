@@ -23,7 +23,7 @@ namespace Com.Scm.Log.OAuth
         /// <param name="thisRepository"></param>
         /// <param name="userService"></param>
         /// <returns></returns>
-        public ScmLogOauthService(SugarRepository<LogOidcDao> thisRepository, IUserService userService)
+        public ScmLogOauthService(SugarRepository<LogOidcDao> thisRepository, IUserHolder userService)
         {
             _thisRepository = thisRepository;
             _UserService = userService;

@@ -20,7 +20,7 @@ namespace Com.Scm.Adm.Feedback
         /// </summary>
         public ScmAdmFeedbackService(SugarRepository<AdmFeedbackHeaderDao> headerRespository,
             SugarRepository<AdmFeedbackDetailDao> detailRespository,
-            IUserService userService)
+            IUserHolder userService)
         {
             _headerRepository = headerRespository;
             _detailRepository = detailRespository;

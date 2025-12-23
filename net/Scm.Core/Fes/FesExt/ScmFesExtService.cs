@@ -21,7 +21,7 @@ namespace Com.Scm.Fes.FesExt
         /// 
         /// </summary>
         /// <param name="thisRepository"></param>
-        public ScmFesExtService(SugarRepository<ScmFesExtDao> thisRepository, IUserService userService, IDicService dicService)
+        public ScmFesExtService(SugarRepository<ScmFesExtDao> thisRepository, IUserHolder userService, IDicService dicService)
         {
             _thisRepository = thisRepository;
             _UserService = userService;

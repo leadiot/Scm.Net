@@ -20,7 +20,7 @@ namespace Com.Scm.Msg.CommentDetail
         /// </summary>
         /// <param name="thisRepository"></param>
         /// <param name="userService"></param>
-        public ScmMsgCommentDetailService(SugarRepository<CommentDetailDao> thisRepository, IUserService userService)
+        public ScmMsgCommentDetailService(SugarRepository<CommentDetailDao> thisRepository, IUserHolder userService)
         {
             _thisRepository = thisRepository;
             _UserService = userService;

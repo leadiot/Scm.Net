@@ -11,23 +11,23 @@ namespace Com.Scm.Terminal
     public class ScmTerminalHolder : ITerminalHolder
     {
         private readonly ISqlSugarClient _SqlClient;
-        private static readonly ConcurrentDictionary<long, ScmTerminalToken> _TerminalList = new ConcurrentDictionary<long, ScmTerminalToken>();
+        private static readonly ConcurrentDictionary<long, ScmTerminalInfo> _TerminalList = new ConcurrentDictionary<long, ScmTerminalInfo>();
 
         public ScmTerminalHolder(ISqlSugarClient sqlClient)
         {
             _SqlClient = sqlClient;
         }
 
-        public ScmTerminalToken GetTerminal(long id)
+        public ScmTerminalInfo GetTerminal(long id)
         {
-            ScmTerminalToken tokenInfo;
+            ScmTerminalInfo tokenInfo;
             if (_TerminalList.ContainsKey(id))
             {
                 tokenInfo = _TerminalList[id];
                 return tokenInfo;
             }
 
-            tokenInfo = new ScmTerminalToken();
+            tokenInfo = new ScmTerminalInfo();
             var terminalDao = _SqlClient.Queryable<AdmTerminalDao>()
                 .Where(a => a.id == id && a.row_status == Enums.ScmRowStatusEnum.Enabled)
                 .First();

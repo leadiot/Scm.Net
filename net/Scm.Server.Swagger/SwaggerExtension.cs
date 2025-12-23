@@ -65,8 +65,6 @@ public static class SwaggerExtension
             });
 
             // 3. 配置全局安全要求（让所有接口默认携带该 Authorization 头部，也可单独给接口配置）
-            //var requirement = new OpenApiSecurityRequirement();
-            //requirement.Add(new OpenApiSecuritySchemeReference(), new string[] { });
             s.AddSecurityRequirement(document => new()
             {
                 [new OpenApiSecuritySchemeReference(schemeId, document)] = []

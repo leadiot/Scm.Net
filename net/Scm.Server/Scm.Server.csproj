@@ -41,9 +41,4 @@
     </Reference>
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Token\Basic\" />
-    <Folder Include="Token\Bearer\" />
-  </ItemGroup>
-
 </Project>

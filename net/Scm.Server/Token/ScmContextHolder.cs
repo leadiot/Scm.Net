@@ -1,7 +1,7 @@
 namespace Com.Scm.Token;
 
 /// <summary>
-/// jwt上下文
+/// 上下文
 /// </summary>
 public class ScmContextHolder : IScmHolder
 {
@@ -36,7 +36,7 @@ public class ScmContextHolder : IScmHolder
     }
 
     /// <summary>
-    /// 清除tenantId
+    /// 清除
     /// </summary>
     public void Clear()
     {

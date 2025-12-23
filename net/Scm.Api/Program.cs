@@ -112,6 +112,8 @@ namespace Com.Scm.Api
                 corsConfig.Prepare(envConfig);
             }
 
+            services.AddScoped<IUserHolder, ScmUserHolder>();
+            services.AddScoped<ITerminalHolder, ScmTerminalHolder>();
             services.AddScoped<ILogService, ScmLogService>();
             services.AddScoped<IDicService, ScmDicService>();
             services.AddScoped<ICfgService, ScmCfgService>();
@@ -119,8 +121,6 @@ namespace Com.Scm.Api
             services.AddScoped<ICatService, ScmCatService>();
             services.AddScoped<ITagService, ScmTagService>();
             services.AddScoped<IFlowService, ScmFlowService>();
-            services.AddScoped<IUserHolder, ScmUserHolder>();
-            services.AddScoped<ITerminalHolder, ScmTerminalHolder>();
 
             // 自定义服务
             SamplesServerUtils.Setup(services);

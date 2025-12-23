@@ -1,12 +1,12 @@
 using Com.Scm.Config;
 using Com.Scm.Enums;
-using Com.Scm.Utils;
+using Com.Scm.Token;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 
-namespace Com.Scm.Token.Utils;
+namespace Com.Scm.Utils;
 
 public class JwtUtils
 {

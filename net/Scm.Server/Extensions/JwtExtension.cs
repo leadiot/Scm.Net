@@ -15,29 +15,39 @@ namespace Com.Scm
         {
             services.AddScoped(typeof(ScmContextHolder));
 
-            var section = AppUtils.Configuration.GetSection(JwtConfig.Name);
+            var section = AppUtils.GetConfig(JwtConfig.Name);
             services.Configure<JwtConfig>(section);
-            var token = section.Get<JwtConfig>();
-            token.Prepare(envConfig);
+            var jwtConfig = section.Get<JwtConfig>();
+            jwtConfig.Prepare(envConfig);
 
             services.AddAuthentication(x =>
             {
+                // 指定默认认证方案（必须配置，与后续中间件联动）
                 x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                // 认证失败时的默认挑战方案
                 x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
             }).AddJwtBearer(x =>
             {
                 x.RequireHttpsMetadata = false;
                 x.SaveToken = true;
+                // 验证令牌的有效性参数
                 x.TokenValidationParameters = new TokenValidationParameters
                 {
-                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(token.Security)),
-                    ValidateLifetime = true,
-                    ValidateAudience = true,
+                    // 验证签发者
                     ValidateIssuer = true,
+                    // 签发者（与令牌签发时一致）
+                    ValidIssuer = jwtConfig.Issuer,
+                    // 验证受众
+                    ValidateAudience = true,
+                    // 受众（与令牌签发时一致）
+                    ValidAudience = jwtConfig.Audience,
+                    // 验证签名密钥
                     ValidateIssuerSigningKey = true,
+                    // 签名密钥（与令牌签发时一致，必须保密）
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtConfig.Security)),
+                    // 验证令牌过期时间
+                    ValidateLifetime = true,
                     RequireExpirationTime = true,
-                    ValidIssuer = token.Issuer,
-                    ValidAudience = token.Audience,
                     /*AudienceValidator = (m, n, z) => 
                         m != null && m.FirstOrDefault()!.Equals(JwtConst.ValidAudience),*/
                 };
@@ -45,7 +55,8 @@ namespace Com.Scm
                 {
                     OnMessageReceived = context =>
                     {
-                        var values = context.Request.Headers[ScmToken.TokenName];
+                        // 令牌验证失败时的自定义逻辑（如打印日志）
+                        var values = context.Request.Headers[ScmToken.ApiToken];
                         context.Token = values.FirstOrDefault();
                         return Task.CompletedTask;
                     },

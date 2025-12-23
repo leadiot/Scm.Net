@@ -52,31 +52,25 @@ public static class SwaggerExtension
             s.CustomSchemaIds(type => type.FullName);
 
             // JWT Bearer 定义（更标准的 Bearer 形式）
-            s.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+            var schemeId = "ScmBearer";
+            s.AddSecurityDefinition(schemeId, new OpenApiSecurityScheme
             {
-                Description = "JWT Authorization header using the Bearer scheme. Example: \"Bearer {token}\"",
                 Name = "Authorization",
+                //Description = "JWT Authorization header using the Bearer scheme. Example: \"Bearer {token}\"",
+                Description = "请输入认证令牌（格式：Bearer {Token} 或直接输入Token）",
                 In = ParameterLocation.Header,
-                Type = SecuritySchemeType.Http,
-                Scheme = "bearer",
+                Type = SecuritySchemeType.ApiKey,
+                Scheme = "Bearer",
                 BearerFormat = "JWT"
             });
 
-            // 全局安全需求（会在 UI 中自动添加 Authorize 按钮）
-            //s.AddSecurityRequirement(new OpenApiSecurityRequirement
-            //{
-            //    {
-            //        new OpenApiSecurityScheme
-            //        {
-            //            Reference = new OpenApiReference
-            //            {
-            //                Type = ReferenceType.SecurityScheme,
-            //                Id = "Bearer"
-            //            }
-            //        },
-            //        new List<string>()
-            //    }
-            //});
+            // 3. 配置全局安全要求（让所有接口默认携带该 Authorization 头部，也可单独给接口配置）
+            //var requirement = new OpenApiSecurityRequirement();
+            //requirement.Add(new OpenApiSecuritySchemeReference(), new string[] { });
+            s.AddSecurityRequirement(document => new()
+            {
+                [new OpenApiSecuritySchemeReference(schemeId, document)] = []
+            });
 
             // 对有 [Authorize] 的接口，自动添加 401/403 响应和 Security 要求
             s.OperationFilter<AuthResponsesOperationFilter>();
@@ -98,10 +92,12 @@ public static class SwaggerExtension
         // Swagger UI
         app.UseSwaggerUI(c =>
         {
+            // 可选：设置 Swagger UI 为应用首页（访问根路径 "/" 直接进入 Swagger）
             // 可选：自定义路由前缀（若 config 中提供）
-            if (!string.IsNullOrWhiteSpace(GetRoutePrefix(config)))
+            var prefix = GetRoutePrefix(config);
+            if (!string.IsNullOrWhiteSpace(prefix))
             {
-                c.RoutePrefix = GetRoutePrefix(config);
+                c.RoutePrefix = prefix;
             }
 
             foreach (var doc in config.ApiDocs)
@@ -127,7 +123,7 @@ public static class SwaggerExtension
     private static string GetRoutePrefix(SwaggerConfig config)
     {
         // 如果将来需要在 SwaggerConfig 添加 RoutePrefix 字段，可在此读取并返回
-        return null;
+        return string.Empty;
     }
 
     // 为带有 [Authorize] 的操作自动添加 401/403 响应和 security requirement

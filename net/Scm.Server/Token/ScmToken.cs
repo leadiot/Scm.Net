@@ -5,9 +5,12 @@ namespace Com.Scm.Token;
 
 public class ScmToken
 {
-    public const string TokenName = "Authorization";
-    public const string KEY_BASIC = "Basic";
-    public const string KEY_BEARER = "Bearer";
+    public const string TokenName = "ScmToken";
+    public const string PRE_API = "Api ";
+    public const string PRE_APP = "App ";
+
+    public const string ApiToken = "ApiToken";
+    public const string AppToken = "AppToken";
 
     /// <summary>
     /// »á»°ID

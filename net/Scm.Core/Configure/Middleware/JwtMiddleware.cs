@@ -58,30 +58,37 @@ namespace Com.Scm.Api.Configure.Middleware
                     return _next(context);
                 }
 
+                holder = AppUtils.GetService<ScmContextHolder>();
+
                 //自动刷新token
                 var headers = context.Request.Headers;
-                string token = headers[ScmToken.TokenName];
-                holder = AppUtils.GetService<ScmContextHolder>();
-                if (string.IsNullOrEmpty(token))
+                string appToken = headers[ScmToken.AppToken];
+                if (!string.IsNullOrEmpty(appToken))
                 {
-                    holder.SetToken(new ScmToken());
+                    return AppToken(context, holder, appToken);
                 }
-                else
+
+                string apiToken = headers[ScmToken.ApiToken];
+                if (!string.IsNullOrEmpty(apiToken))
                 {
-                    if (token.StartsWith(ScmToken.KEY_BASIC))
+                    return ApiToken(context, holder, apiToken);
+                }
+
+                string scmToken = headers[ScmToken.TokenName];
+                if (!string.IsNullOrEmpty(scmToken))
+                {
+                    if (apiToken.StartsWith(ScmToken.PRE_APP))
                     {
-                        BasicToken(context, holder, token);
+                        return AppToken(context, holder, apiToken);
                     }
-                    else if (token.StartsWith(ScmToken.KEY_BEARER))
+
+                    if (apiToken.StartsWith(ScmToken.PRE_API))
                     {
-                        BearerToken(context, holder, token);
-                    }
-                    else
-                    {
-                        holder.SetToken(new ScmToken());
+                        return ApiToken(context, holder, apiToken);
                     }
                 }
 
+                holder.SetToken(new ScmToken());
                 return _next(context);
             }
             finally
@@ -90,38 +97,19 @@ namespace Com.Scm.Api.Configure.Middleware
             }
         }
 
-        private Task BasicToken(HttpContext context, ScmContextHolder holder, string token)
+        /// <summary>
+        /// 适用于网页，使用口令登录
+        /// </summary>
+        /// <param name="context"></param>
+        /// <param name="holder"></param>
+        /// <param name="token"></param>
+        /// <returns></returns>
+        private Task ApiToken(HttpContext context, ScmContextHolder holder, string token)
         {
-            token = token.Substring(ScmToken.KEY_BASIC.Length + 2);
-            var bytes = Convert.FromBase64String(token);
-            token = Encoding.UTF8.GetString(bytes);
-
-            var arr = token.Split(":");
-            var scmToken = new ScmToken();
-            if (arr.Length == 3)
+            if (token.StartsWith(ScmToken.PRE_API))
             {
-                var tmp = arr[0];
-                if (TextUtils.IsLong(tmp))
-                {
-                    scmToken.terminal_id = long.Parse(tmp);
-                }
-
-                tmp = arr[1];
-                if (TextUtils.IsLong(tmp))
-                {
-                    scmToken.time = long.Parse(tmp);
-                }
-
-                scmToken.digest = arr[2];
+                token = token.Substring(ScmToken.PRE_API.Length);
             }
-            holder.SetToken(scmToken);
-
-            return _next(context);
-        }
-
-        private Task BearerToken(HttpContext context, ScmContextHolder holder, string token)
-        {
-            token = token.Substring(ScmToken.KEY_BEARER.Length + 2);
 
             var jwtToken = JwtUtils.SerializeJwt(token);
             holder.SetToken(jwtToken);
@@ -146,6 +134,46 @@ namespace Com.Scm.Api.Configure.Middleware
                 data = jwtToken.data,
             });
             context.Response.Headers.Append("X-Refresh-Token", newToken);
+
+            return _next(context);
+        }
+
+        /// <summary>
+        /// 适用于应用，使用绑定登录
+        /// </summary>
+        /// <param name="context"></param>
+        /// <param name="holder"></param>
+        /// <param name="token"></param>
+        /// <returns></returns>
+        private Task AppToken(HttpContext context, ScmContextHolder holder, string token)
+        {
+            if (token.StartsWith(ScmToken.PRE_APP))
+            {
+                token = token.Substring(ScmToken.PRE_APP.Length);
+            }
+
+            var bytes = Convert.FromBase64String(token);
+            token = Encoding.UTF8.GetString(bytes);
+
+            var arr = token.Split(":");
+            var scmToken = new ScmToken();
+            if (arr.Length == 3)
+            {
+                var tmp = arr[0];
+                if (TextUtils.IsLong(tmp))
+                {
+                    scmToken.terminal_id = long.Parse(tmp);
+                }
+
+                tmp = arr[1];
+                if (TextUtils.IsLong(tmp))
+                {
+                    scmToken.time = long.Parse(tmp);
+                }
+
+                scmToken.digest = arr[2];
+            }
+            holder.SetToken(scmToken);
 
             return _next(context);
         }

@@ -64,7 +64,6 @@
 			</el-container>
 		</el-main>
 	</el-container>
-	<bookSelector ref="bookSelector" @complete="complete" />
 </template>
 <script>
 import { defineAsyncComponent } from "vue";

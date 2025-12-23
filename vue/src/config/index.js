@@ -39,7 +39,7 @@ const DEFAULT_CONFIG = {
 	TIMEOUT: 10000,
 
 	// TokenName
-	TOKEN_NAME: "accessToken",
+	TOKEN_NAME: "ApiToken",
 
 	// Token前缀，注意最后有个空格，如不需要需设置空字符串
 	TOKEN_PREFIX: "",

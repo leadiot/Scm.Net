@@ -14,8 +14,7 @@ axios.interceptors.request.use(
 	(config) => {
 		let token = tool.data.get("TOKEN");
 		if (token) {
-			config.headers[sysConfig.TOKEN_NAME] =
-				sysConfig.TOKEN_PREFIX + token;
+			config.headers[sysConfig.TOKEN_NAME] = sysConfig.TOKEN_PREFIX + token;
 		}
 		const timestamp = new Date().getTime();
 		config.headers["appkey"] = sysConfig.APP_KEY;

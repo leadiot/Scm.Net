@@ -1,7 +1,7 @@
 ﻿using Com.Scm.Config;
 using Com.Scm.Enums;
 using Com.Scm.Filters;
-using Com.Scm.Jwt;
+using Com.Scm.Token;
 using Com.Scm.Utils;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -29,12 +29,12 @@ namespace Com.Scm.Api.Configure.Filters
 
         private readonly SecurityConfig _Config;
         private readonly ILogService _logService;
-        private readonly JwtContextHolder _jwtContextHolder;
+        private readonly ScmContextHolder _jwtContextHolder;
         private readonly Cache.ICacheService _cacheService;
 
         public AopActionFilter(SecurityConfig config,
             ILogService logService,
-            JwtContextHolder jwtContextHolder,
+            ScmContextHolder jwtContextHolder,
             Cache.ICacheService cacheService)
         {
             _Config = config;

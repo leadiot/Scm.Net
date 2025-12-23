@@ -1,6 +1,6 @@
-using Com.Scm.Jwt;
 using Com.Scm.Service;
 using Com.Scm.Sys.VoteHeader.Dvo;
+using Com.Scm.Token;
 using Com.Scm.Utils;
 using Microsoft.AspNetCore.Mvc;
 using SqlSugar;
@@ -13,13 +13,13 @@ namespace Com.Scm.Sys.Vote;
 [ApiExplorerSettings(GroupName = "Sys")]
 public class ScmSysVoteService : ApiService
 {
-    private readonly JwtContextHolder _JwtHolder;
+    private readonly ScmContextHolder _JwtHolder;
 
     /// <summary>
     /// 
     /// </summary>
     /// <param name="sqlClient"></param>
-    public ScmSysVoteService(ISqlSugarClient sqlClient, JwtContextHolder jwtHolder)
+    public ScmSysVoteService(ISqlSugarClient sqlClient, ScmContextHolder jwtHolder)
     {
         _SqlClient = sqlClient;
         _JwtHolder = jwtHolder;

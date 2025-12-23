@@ -3,8 +3,8 @@ using Com.Scm.Adm.ConfigCat.Dvo;
 using Com.Scm.Dsa;
 using Com.Scm.Enums;
 using Com.Scm.Exceptions;
-using Com.Scm.Jwt;
 using Com.Scm.Service;
+using Com.Scm.Token;
 using Com.Scm.Utils;
 using Microsoft.AspNetCore.Mvc;
 
@@ -16,14 +16,14 @@ namespace Com.Scm.Adm.ConfigCat
     public class ScmAdmConfigCatService : ApiService
     {
         private readonly SugarRepository<AdmConfigCatDao> _thisRepository;
-        private readonly JwtContextHolder _jwtHolder;
+        private readonly ScmContextHolder _jwtHolder;
 
         /// <summary>
         /// 
         /// </summary>
         /// <param name="thisRepository"></param>
         /// <param name="jwtHolder"></param>
-        public ScmAdmConfigCatService(SugarRepository<AdmConfigCatDao> thisRepository, JwtContextHolder jwtHolder)
+        public ScmAdmConfigCatService(SugarRepository<AdmConfigCatDao> thisRepository, ScmContextHolder jwtHolder)
         {
             _thisRepository = thisRepository;
             _jwtHolder = jwtHolder;

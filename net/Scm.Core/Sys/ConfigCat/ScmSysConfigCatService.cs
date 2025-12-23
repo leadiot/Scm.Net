@@ -1,12 +1,11 @@
 ﻿using Com.Scm.Dsa;
 using Com.Scm.Enums;
 using Com.Scm.Exceptions;
-using Com.Scm.Jwt;
 using Com.Scm.Service;
 using Com.Scm.Sys.Config;
 using Com.Scm.Sys.ConfigCat.Dvo;
+using Com.Scm.Token;
 using Com.Scm.Utils;
-
 using Microsoft.AspNetCore.Mvc;
 
 namespace Com.Scm.Sys.ConfigCat
@@ -17,14 +16,14 @@ namespace Com.Scm.Sys.ConfigCat
     public class ScmSysConfigCatService : ApiService
     {
         private readonly SugarRepository<ConfigCatDao> _thisRepository;
-        private readonly JwtContextHolder _jwtHolder;
+        private readonly ScmContextHolder _jwtHolder;
 
         /// <summary>
         /// 
         /// </summary>
         /// <param name="thisRepository"></param>
         /// <param name="jwtHolder"></param>
-        public ScmSysConfigCatService(SugarRepository<ConfigCatDao> thisRepository, JwtContextHolder jwtHolder)
+        public ScmSysConfigCatService(SugarRepository<ConfigCatDao> thisRepository, ScmContextHolder jwtHolder)
         {
             _thisRepository = thisRepository;
             _jwtHolder = jwtHolder;

@@ -1,10 +1,10 @@
 ﻿using Com.Scm.Config;
 using Com.Scm.Enums;
 using Com.Scm.Exceptions;
-using Com.Scm.Jwt;
 using Com.Scm.Samples.PoHeader.Dao;
 using Com.Scm.Samples.PoHeader.Dto;
 using Com.Scm.Service;
+using Com.Scm.Token;
 using Microsoft.AspNetCore.Mvc;
 using SqlSugar;
 
@@ -13,7 +13,7 @@ namespace Com.Scm.Samples.PoHeader
     [ApiExplorerSettings(GroupName = "Samples")]
     public class SamplesPoFlowService : ApiFlowService
     {
-        public SamplesPoFlowService(ISqlSugarClient sqlClient, EnvConfig envConfig, JwtContextHolder jwtHolder)
+        public SamplesPoFlowService(ISqlSugarClient sqlClient, EnvConfig envConfig, ScmContextHolder jwtHolder)
         {
             _SqlClient = sqlClient;
             _EnvConfig = envConfig;

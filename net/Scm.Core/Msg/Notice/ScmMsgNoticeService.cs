@@ -1,9 +1,9 @@
 using Com.Scm.Dsa;
 using Com.Scm.Enums;
 using Com.Scm.Exceptions;
-using Com.Scm.Jwt;
 using Com.Scm.Msg.Notice.Dvo;
 using Com.Scm.Service;
+using Com.Scm.Token;
 using Com.Scm.Ur;
 using Com.Scm.Ur.User.Dvo;
 using Com.Scm.Utils;
@@ -24,7 +24,7 @@ public class ScmMsgNoticeService : ApiService
     private readonly SugarRepository<NoticeAttachmentDao> _attachmentRepository;
     private readonly SugarRepository<NoticeReaderDao> _readerRepository;
     private readonly SugarRepository<NoticeSenderDao> _senderRepository;
-    private readonly JwtContextHolder _jwtHolder;
+    private readonly ScmContextHolder _jwtHolder;
 
     /// <summary>
     /// 
@@ -43,7 +43,7 @@ public class ScmMsgNoticeService : ApiService
         , SugarRepository<NoticeAttachmentDao> attachmentRepository
         , SugarRepository<NoticeReaderDao> readerRepository
         , SugarRepository<NoticeSenderDao> senderRepository
-        , JwtContextHolder jwtHolder
+        , ScmContextHolder jwtHolder
         , IUserService userService)
     {
         _thisRepository = thisRepository;

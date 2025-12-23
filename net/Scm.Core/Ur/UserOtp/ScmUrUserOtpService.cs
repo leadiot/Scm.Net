@@ -1,9 +1,9 @@
 using Com.Scm.Dsa;
 using Com.Scm.Exceptions;
-using Com.Scm.Jwt;
 using Com.Scm.Login.Otp;
 using Com.Scm.Otp.Totp;
 using Com.Scm.Service;
+using Com.Scm.Token;
 using Com.Scm.Ur.UserOtp.Dvo;
 using Com.Scm.Utils;
 using Microsoft.AspNetCore.Mvc;
@@ -16,7 +16,7 @@ namespace Com.Scm.Ur.UserOtp
     [ApiExplorerSettings(GroupName = "Ur")]
     public class ScmUrUserOtpService : ApiService
     {
-        private readonly JwtContextHolder _contextHolder;
+        private readonly ScmContextHolder _contextHolder;
         private readonly SugarRepository<UserDao> _thisRepository;
         private readonly OtpConfig _otpConfig;
 
@@ -25,7 +25,7 @@ namespace Com.Scm.Ur.UserOtp
         /// </summary>
         /// <param name="userRepository"></param>
         /// <returns></returns>
-        public ScmUrUserOtpService(JwtContextHolder contextHolder,
+        public ScmUrUserOtpService(ScmContextHolder contextHolder,
             SugarRepository<UserDao> userRepository,
             OtpConfig otpConfig)
         {

@@ -3,8 +3,8 @@ using Com.Scm.Dsa;
 using Com.Scm.Dvo;
 using Com.Scm.Enums;
 using Com.Scm.Exceptions;
-using Com.Scm.Jwt;
 using Com.Scm.Service;
+using Com.Scm.Token;
 using Com.Scm.Ur.User.Dvo;
 using Com.Scm.Utils;
 using Microsoft.AspNetCore.Mvc;
@@ -18,7 +18,7 @@ namespace Com.Scm.Ur.User
     [ApiExplorerSettings(GroupName = "Ur")]
     public class ScmUrUserService : ApiService
     {
-        private readonly JwtContextHolder _jwtContextHolder;
+        private readonly ScmContextHolder _jwtContextHolder;
         private readonly SugarRepository<UserDao> _thisRepository;
 
         /// <summary>
@@ -31,7 +31,7 @@ namespace Com.Scm.Ur.User
         public ScmUrUserService(
             EnvConfig envConfig,
             ISqlSugarClient sqlClient,
-            JwtContextHolder jwtContextHolder,
+            ScmContextHolder jwtContextHolder,
             SugarRepository<UserDao> thisRepository,
             IUserService userService)
         {

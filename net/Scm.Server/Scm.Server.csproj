@@ -41,4 +41,10 @@
     </Reference>
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Jwt\" />
+    <Folder Include="Token\Basic\" />
+    <Folder Include="Token\Bearer\" />
+  </ItemGroup>
+
 </Project>

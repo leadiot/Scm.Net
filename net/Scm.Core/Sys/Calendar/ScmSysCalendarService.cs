@@ -1,10 +1,9 @@
 using Com.Scm.Dsa;
-using Com.Scm.Jwt;
 using Com.Scm.Sys.Calendar.Dvo;
+using Com.Scm.Token;
 using Com.Scm.Ur;
 using Com.Scm.Ur.User.Dvo;
 using Com.Scm.Utils;
-
 using Microsoft.AspNetCore.Mvc;
 using SqlSugar;
 
@@ -17,7 +16,7 @@ namespace Com.Scm.Sys.Calendar;
 public class ScmSysCalendarService : IApiService
 {
     private readonly SugarRepository<CalendarDao> _thisRepository;
-    private readonly JwtContextHolder _jwtContextHolder;
+    private readonly ScmContextHolder _jwtContextHolder;
     private readonly ISqlSugarClient _Client;
 
     /// <summary>
@@ -26,7 +25,7 @@ public class ScmSysCalendarService : IApiService
     /// <param name="thisRepository"></param>
     /// <param name="jwtContextHolder"></param>
     /// <param name="client"></param>
-    public ScmSysCalendarService(SugarRepository<CalendarDao> thisRepository, JwtContextHolder jwtContextHolder, ISqlSugarClient client)
+    public ScmSysCalendarService(SugarRepository<CalendarDao> thisRepository, ScmContextHolder jwtContextHolder, ISqlSugarClient client)
     {
         _thisRepository = thisRepository;
         _jwtContextHolder = jwtContextHolder;

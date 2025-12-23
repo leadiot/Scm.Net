@@ -3,7 +3,7 @@ using Com.Scm.Dsa;
 using Com.Scm.Dvo;
 using Com.Scm.Enums;
 using Com.Scm.Exceptions;
-using Com.Scm.Jwt;
+using Com.Scm.Token;
 using Com.Scm.Utils;
 using Microsoft.AspNetCore.Mvc;
 
@@ -16,13 +16,13 @@ namespace Com.Scm.Adm.Menu
     public class ScmAdmMenuService : IApiService
     {
         private readonly SugarRepository<AdmMenuDao> _thisRepository;
-        private readonly JwtContextHolder _jwtContextHolder;
+        private readonly ScmContextHolder _jwtContextHolder;
 
         /// <summary>
         /// 
         /// </summary>
         /// <param name="thisRepository"></param>
-        public ScmAdmMenuService(SugarRepository<AdmMenuDao> thisRepository, JwtContextHolder jwtContextHolder)
+        public ScmAdmMenuService(SugarRepository<AdmMenuDao> thisRepository, ScmContextHolder jwtContextHolder)
         {
             _thisRepository = thisRepository;
             _jwtContextHolder = jwtContextHolder;

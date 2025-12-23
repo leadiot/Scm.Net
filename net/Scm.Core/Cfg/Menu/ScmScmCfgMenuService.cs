@@ -1,8 +1,8 @@
 using Com.Scm.Adm.Menu;
 using Com.Scm.Dsa;
 using Com.Scm.Exceptions;
-using Com.Scm.Jwt;
 using Com.Scm.Service;
+using Com.Scm.Token;
 using Com.Scm.Utils;
 using Microsoft.AspNetCore.Mvc;
 
@@ -15,13 +15,13 @@ namespace Com.Scm.Cfg.Menu
     public class ScmScmCfgMenuService : ApiService
     {
         private readonly SugarRepository<CfgMenuDao> _thisRepository;
-        private readonly JwtContextHolder _JwtHolder;
+        private readonly ScmContextHolder _JwtHolder;
 
         /// <summary>
         /// 
         /// </summary>
         /// <param name="thisRepository"></param>
-        public ScmScmCfgMenuService(SugarRepository<CfgMenuDao> thisRepository, JwtContextHolder jwtHolder)
+        public ScmScmCfgMenuService(SugarRepository<CfgMenuDao> thisRepository, ScmContextHolder jwtHolder)
         {
             _thisRepository = thisRepository;
             _JwtHolder = jwtHolder;

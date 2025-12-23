@@ -1,5 +1,5 @@
 ﻿using Com.Scm.Config;
-using Com.Scm.Jwt;
+using Com.Scm.Token;
 using Com.Scm.Utils;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.Configuration;
@@ -13,7 +13,7 @@ namespace Com.Scm
     {
         public static void SetupJwt(this IServiceCollection services, EnvConfig envConfig)
         {
-            services.AddScoped(typeof(JwtContextHolder));
+            services.AddScoped(typeof(ScmContextHolder));
 
             var section = AppUtils.Configuration.GetSection(JwtConfig.Name);
             services.Configure<JwtConfig>(section);
@@ -45,7 +45,7 @@ namespace Com.Scm
                 {
                     OnMessageReceived = context =>
                     {
-                        var values = context.Request.Headers[JwtToken.TokenName];
+                        var values = context.Request.Headers[ScmToken.TokenName];
                         context.Token = values.FirstOrDefault();
                         return Task.CompletedTask;
                     },

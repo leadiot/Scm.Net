@@ -2,11 +2,11 @@ using Com.Scm.Config;
 using Com.Scm.Dsa;
 using Com.Scm.Enums;
 using Com.Scm.Exceptions;
-using Com.Scm.Jwt;
 using Com.Scm.Log;
 using Com.Scm.Operator.Dvo;
 using Com.Scm.Operator.Oidc;
 using Com.Scm.Service;
+using Com.Scm.Token;
 using Com.Scm.Ur.UserOAuth.Dvo;
 using Com.Scm.Utils;
 using Microsoft.AspNetCore.Mvc;
@@ -19,7 +19,7 @@ namespace Com.Scm.Ur.UserOAuth
     [ApiExplorerSettings(GroupName = "Ur")]
     public class ScmUrUserOauthService : ApiService
     {
-        private readonly JwtContextHolder _contextHolder;
+        private readonly ScmContextHolder _contextHolder;
         private readonly SugarRepository<UserOAuthDao> _thisRepository;
         private readonly SugarRepository<UserDao> _userRepository;
         private readonly SugarRepository<LogOidcDao> _logOAuthRepository;
@@ -33,7 +33,7 @@ namespace Com.Scm.Ur.UserOAuth
         /// <param name="userRepository"></param>
         /// <param name="oauthRepository"></param>
         /// <returns></returns>
-        public ScmUrUserOauthService(JwtContextHolder contextHolder,
+        public ScmUrUserOauthService(ScmContextHolder contextHolder,
             SugarRepository<UserOAuthDao> thisRepository, SugarRepository<UserDao> userRepository,
             SugarRepository<LogOidcDao> oauthRepository, OidcConfig oidcConfig)
         {

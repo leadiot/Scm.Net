@@ -1,9 +1,17 @@
-﻿namespace Com.Scm.Service
+﻿using Com.Scm.Config;
+using SqlSugar;
+
+namespace Com.Scm.Service
 {
     /// <summary>
     /// App服务
     /// </summary>
     public class AppService : IAppService
     {
+        protected EnvConfig _EnvConfig;
+        protected ISqlSugarClient _SqlClient;
+        protected IUserService _UserService;
+        protected Com.Scm.Cache.ICacheService _CacheService;
+
     }
 }

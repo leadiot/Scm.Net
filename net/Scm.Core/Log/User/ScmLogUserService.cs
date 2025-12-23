@@ -1,7 +1,7 @@
 ﻿using Com.Scm.Dsa;
-using Com.Scm.Jwt;
 using Com.Scm.Log.User.Dvo;
 using Com.Scm.Service;
+using Com.Scm.Token;
 using Com.Scm.Ur;
 using Com.Scm.Utils;
 using Microsoft.AspNetCore.Mvc;
@@ -15,7 +15,7 @@ namespace Com.Scm.Log.User
     public class ScmLogUserService : ApiService
     {
         private readonly SugarRepository<LogUserDao> _thisRepository;
-        private readonly JwtContextHolder _Holder;
+        private readonly ScmContextHolder _Holder;
         private readonly IDicService _DicService;
 
         /// <summary>
@@ -24,7 +24,7 @@ namespace Com.Scm.Log.User
         /// <param name="thisRepository"></param>
         /// <param name="userService"></param>
         /// <returns></returns>
-        public ScmLogUserService(SugarRepository<LogUserDao> thisRepository, JwtContextHolder holder, IDicService dicService)
+        public ScmLogUserService(SugarRepository<LogUserDao> thisRepository, ScmContextHolder holder, IDicService dicService)
         {
             _thisRepository = thisRepository;
             _Holder = holder;

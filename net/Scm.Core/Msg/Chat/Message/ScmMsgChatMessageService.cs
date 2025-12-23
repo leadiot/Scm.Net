@@ -4,10 +4,10 @@ using Com.Scm.Dsa;
 using Com.Scm.Enums;
 using Com.Scm.Exceptions;
 using Com.Scm.Hubs;
-using Com.Scm.Jwt;
 using Com.Scm.Msg.Aiml;
 using Com.Scm.Msg.Chat.Message.Dvo;
 using Com.Scm.Service;
+using Com.Scm.Token;
 using Com.Scm.Ur;
 using Com.Scm.Utils;
 using Microsoft.AspNetCore.Mvc;
@@ -25,7 +25,7 @@ namespace Com.Scm.Msg.Chat.Message
         private readonly SugarRepository<ChatMsgHeaderDao> _headerRepository;
         private readonly SugarRepository<ChatMsgDetailDao> _detailRepository;
         private readonly SugarRepository<ChatGroupUserDao> _groupUserRepository;
-        private readonly JwtContextHolder _contextHolder;
+        private readonly ScmContextHolder _contextHolder;
         private readonly IHubContext<ScmHub> _hubContext;
         private readonly AimlConfig _aimlConfig;
 
@@ -46,7 +46,7 @@ namespace Com.Scm.Msg.Chat.Message
             SugarRepository<ChatMsgDetailDao> detailRepository,
             SugarRepository<ChatGroupUserDao> groupUserRepository,
             IUserService userService,
-            JwtContextHolder contextHolder,
+            ScmContextHolder contextHolder,
             Cache.ICacheService cacheService,
             IHubContext<ScmHub> hubContext,
             EnvConfig envConfig,
@@ -325,7 +325,7 @@ namespace Com.Scm.Msg.Chat.Message
             return detailDao.Clone<ChatDetailDvo>();
         }
 
-        private async Task ChatRobot(ChatMsgHeaderDao headerDao, List<ChatGroupUserDao> userListDao, ChatRequest request, JwtToken token)
+        private async Task ChatRobot(ChatMsgHeaderDao headerDao, List<ChatGroupUserDao> userListDao, ChatRequest request, ScmToken token)
         {
             var bot = GetRobot(token);
             var man = GetHuman(token, bot);
@@ -362,12 +362,12 @@ namespace Com.Scm.Msg.Chat.Message
             }).Start();
         }
 
-        private void SetRobot(JwtToken token, Robot robot)
+        private void SetRobot(ScmToken token, Robot robot)
         {
             AimlObjects.SetRobot(robot);
         }
 
-        private Robot GetRobot(JwtToken token)
+        private Robot GetRobot(ScmToken token)
         {
             var bot = AimlObjects.GetRobot();
             if (bot == null)
@@ -386,12 +386,12 @@ namespace Com.Scm.Msg.Chat.Message
             return bot;
         }
 
-        private void SetHuman(JwtToken token, Human human)
+        private void SetHuman(ScmToken token, Human human)
         {
             AimlObjects.SetHuman(token.user_id, human);
         }
 
-        private Human GetHuman(JwtToken token, Robot bot)
+        private Human GetHuman(ScmToken token, Robot bot)
         {
             var man = AimlObjects.GetHuman(token.user_id);
             if (man == null)

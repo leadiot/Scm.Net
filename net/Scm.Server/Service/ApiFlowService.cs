@@ -2,8 +2,8 @@
 using Com.Scm.Dao;
 using Com.Scm.Enums;
 using Com.Scm.Flow;
-using Com.Scm.Jwt;
 using Com.Scm.Sys;
+using Com.Scm.Token;
 using Com.Scm.Ur;
 using Com.Scm.Utils;
 using Com.Scm.Workflow;
@@ -16,7 +16,7 @@ namespace Com.Scm.Service
     {
         protected EnvConfig _EnvConfig;
         protected ISqlSugarClient _SqlClient;
-        protected JwtContextHolder _JwtHolder;
+        protected ScmContextHolder _JwtHolder;
 
         /// <summary>
         /// 创建一个流程

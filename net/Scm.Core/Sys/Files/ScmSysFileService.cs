@@ -1,9 +1,9 @@
 ﻿using Com.Scm.Config;
 using Com.Scm.Filters;
 using Com.Scm.Image.SkiaSharp;
-using Com.Scm.Jwt;
 using Com.Scm.Sys.Files.Dvo;
 using Com.Scm.Sys.SysSafety;
+using Com.Scm.Token;
 using Com.Scm.Utils;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -18,7 +18,7 @@ namespace Com.Scm.Sys.Files;
 public class ScmSysFileService : IApiService
 {
     private readonly EnvConfig _envConfig;
-    private readonly JwtContextHolder _contextHolder;
+    private readonly ScmContextHolder _contextHolder;
     private readonly ScmSysSafetyService _safetyService;
     private readonly IHttpContextAccessor _httpContextAccessor;
 
@@ -30,7 +30,7 @@ public class ScmSysFileService : IApiService
     /// <param name="safetyService"></param>
     /// <param name="httpContextAccessor"></param>
     public ScmSysFileService(EnvConfig envConfig,
-        JwtContextHolder contextHolder,
+        ScmContextHolder contextHolder,
         ScmSysSafetyService safetyService,
         IHttpContextAccessor httpContextAccessor)
     {

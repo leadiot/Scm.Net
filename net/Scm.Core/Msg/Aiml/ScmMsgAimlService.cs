@@ -1,9 +1,9 @@
 ﻿using Com.Scm.Aiml;
 using Com.Scm.Config;
 using Com.Scm.Hubs;
-using Com.Scm.Jwt;
 using Com.Scm.Msg.Aiml.Dvo;
 using Com.Scm.Service;
+using Com.Scm.Token;
 using Com.Scm.Utils;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
@@ -16,7 +16,7 @@ namespace Com.Scm.Msg.Aiml
     [ApiExplorerSettings(GroupName = "Msg")]
     public class ScmMsgAimlService : ApiService
     {
-        private readonly JwtContextHolder _contextHolder;
+        private readonly ScmContextHolder _contextHolder;
         private readonly IHubContext<ScmHub> _hubContext;
         private readonly EnvConfig _envConfig;
 
@@ -27,7 +27,7 @@ namespace Com.Scm.Msg.Aiml
         /// <param name="hubContext"></param>
         /// <param name="envConfig"></param>
         /// <returns></returns>
-        public ScmMsgAimlService(JwtContextHolder contextHolder,
+        public ScmMsgAimlService(ScmContextHolder contextHolder,
             IHubContext<ScmHub> hubContext,
             EnvConfig envConfig)
         {
@@ -62,12 +62,12 @@ namespace Com.Scm.Msg.Aiml
             return response;
         }
 
-        private void SetRobot(JwtToken token, Robot robot)
+        private void SetRobot(ScmToken token, Robot robot)
         {
             AimlObjects.SetRobot(robot);
         }
 
-        private Robot GetRobot(JwtToken token)
+        private Robot GetRobot(ScmToken token)
         {
             var bot = AimlObjects.GetRobot();
             if (bot == null)
@@ -86,12 +86,12 @@ namespace Com.Scm.Msg.Aiml
             return bot;
         }
 
-        private void SetHuman(JwtToken token, Human human)
+        private void SetHuman(ScmToken token, Human human)
         {
             AimlObjects.SetHuman(token.user_id, human);
         }
 
-        private Human GetHuman(JwtToken token, Robot bot)
+        private Human GetHuman(ScmToken token, Robot bot)
         {
             var man = AimlObjects.GetHuman(token.user_id);
             if (man == null)

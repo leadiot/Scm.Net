@@ -1,6 +1,8 @@
-using Com.Scm.Jwt;
+using Com.Scm.Token;
+using Com.Scm.Token.Utils;
 using Com.Scm.Utils;
 using Microsoft.AspNetCore.Http;
+using System.Text;
 
 namespace Com.Scm.Api.Configure.Middleware
 {
@@ -40,10 +42,11 @@ namespace Com.Scm.Api.Configure.Middleware
 
         public Task Invoke(HttpContext context)
         {
-            var jwtContextHolder = AppUtils.GetService<JwtContextHolder>();
+            ScmContextHolder holder = null;
+
             try
             {
-                if (context.Request.Method == "OPTIONS")
+                if (context.Request.Method.ToUpper() == "OPTIONS")
                 {
                     return _next(context);
                 }
@@ -57,43 +60,94 @@ namespace Com.Scm.Api.Configure.Middleware
 
                 //自动刷新token
                 var headers = context.Request.Headers;
-                var token = headers[JwtToken.TokenName];
+                string token = headers[ScmToken.TokenName];
+                holder = AppUtils.GetService<ScmContextHolder>();
                 if (string.IsNullOrEmpty(token))
                 {
-                    jwtContextHolder?.SetToken(new JwtToken());
+                    holder.SetToken(new ScmToken());
                 }
                 else
                 {
-                    var jwtToken = JwtUtils.SerializeJwt(token);
-                    jwtContextHolder?.SetToken(jwtToken);
-
-                    var ts = DateTime.Now.Subtract(jwtToken.time);
-                    // 未超时
-                    if (ts.Minutes is <= 30 or >= 60)
+                    if (token.StartsWith(ScmToken.KEY_BASIC))
                     {
-                        return _next(context);
+                        BasicToken(context, holder, token);
                     }
-
-                    // Session过期
-                    var newToken = JwtUtils.IssueJwt(new JwtToken()
+                    else if (token.StartsWith(ScmToken.KEY_BEARER))
                     {
-                        id = jwtToken.id,
-                        user_id = jwtToken.user_id,
-                        user_codes = jwtToken.user_codes,
-                        user_name = jwtToken.user_name,
-                        //Role = "Admin",
-                        //RoleArray = jwtToken.RoleArray,
-                        time = DateTime.Now,
-                        data = jwtToken.data,
-                    });
-                    context.Response.Headers.Append("X-Refresh-Token", newToken);
+                        BearerToken(context, holder, token);
+                    }
+                    else
+                    {
+                        holder.SetToken(new ScmToken());
+                    }
                 }
+
                 return _next(context);
             }
             finally
             {
-                jwtContextHolder?.Clear();
+                holder?.Clear();
             }
+        }
+
+        private Task BasicToken(HttpContext context, ScmContextHolder holder, string token)
+        {
+            token = token.Substring(ScmToken.KEY_BASIC.Length + 2);
+            var bytes = Convert.FromBase64String(token);
+            token = Encoding.UTF8.GetString(bytes);
+
+            var arr = token.Split(":");
+            var scmToken = new ScmToken();
+            if (arr.Length == 3)
+            {
+                var tmp = arr[0];
+                if (TextUtils.IsLong(tmp))
+                {
+                    scmToken.terminal_id = long.Parse(tmp);
+                }
+
+                tmp = arr[1];
+                if (TextUtils.IsLong(tmp))
+                {
+                    scmToken.time = long.Parse(tmp);
+                }
+
+                scmToken.digest = arr[2];
+            }
+            holder.SetToken(scmToken);
+
+            return _next(context);
+        }
+
+        private Task BearerToken(HttpContext context, ScmContextHolder holder, string token)
+        {
+            token = token.Substring(ScmToken.KEY_BEARER.Length + 2);
+
+            var jwtToken = JwtUtils.SerializeJwt(token);
+            holder.SetToken(jwtToken);
+
+            var now = TimeUtils.GetUnixTime(true);
+            // 未超时
+            if (now - jwtToken.time <= 60 * 30 * 1000)
+            {
+                return _next(context);
+            }
+
+            // Session过期
+            var newToken = JwtUtils.IssueJwt(new ScmToken()
+            {
+                id = jwtToken.id,
+                user_id = jwtToken.user_id,
+                user_codes = jwtToken.user_codes,
+                user_name = jwtToken.user_name,
+                //Role = "Admin",
+                //RoleArray = jwtToken.RoleArray,
+                time = now,
+                data = jwtToken.data,
+            });
+            context.Response.Headers.Append("X-Refresh-Token", newToken);
+
+            return _next(context);
         }
     }
 }

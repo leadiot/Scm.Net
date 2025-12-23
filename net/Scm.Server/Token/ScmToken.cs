@@ -1,14 +1,13 @@
 using Com.Scm.Enums;
 using Com.Scm.Ur;
 
-namespace Com.Scm.Jwt;
+namespace Com.Scm.Token;
 
-public class JwtToken
+public class ScmToken
 {
-    /// <summary>
-    /// Header中的token名称
-    /// </summary>
-    public static readonly string TokenName = "accessToken";
+    public const string TokenName = "Authorization";
+    public const string KEY_BASIC = "Basic";
+    public const string KEY_BEARER = "Bearer";
 
     /// <summary>
     /// 会话ID
@@ -23,9 +22,21 @@ public class JwtToken
     public string user_name { get; set; }
 
     /// <summary>
-    /// 会话时间
+    /// 终端
     /// </summary>
-    public DateTime time { get; set; }
+    public long terminal_id { get; set; }
+    public string terminal_codes { get; set; }
+    public string terminal_name { get; set; }
+
+    /// <summary>
+    /// 摘要
+    /// </summary>
+    public string digest { get; set; }
+
+    /// <summary>
+    /// 会话时间(UTC Unix时间戳）
+    /// </summary>
+    public long time { get; set; }
 
     /// <summary>
     /// 数据权限

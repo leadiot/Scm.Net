@@ -1,6 +1,6 @@
 ﻿using Com.Scm.Enums;
 using Com.Scm.Exceptions;
-using Com.Scm.Jwt;
+using Com.Scm.Token;
 using Com.Scm.Utils;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
@@ -17,11 +17,11 @@ namespace Com.Scm.Api.Configure.Filters
     {
         readonly IWebHostEnvironment _hostEnvironment;
         private ILogService _logService;
-        private JwtContextHolder _jwtHolder;
+        private ScmContextHolder _jwtHolder;
 
         public GlobalExceptionFilter(IWebHostEnvironment hostEnvironment
             , ILogService logService
-            , JwtContextHolder jwtHolder)
+            , ScmContextHolder jwtHolder)
         {
             _hostEnvironment = hostEnvironment;
             _logService = logService;

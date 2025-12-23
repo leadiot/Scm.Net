@@ -1,20 +1,20 @@
-namespace Com.Scm.Jwt;
+namespace Com.Scm.Token;
 
 /// <summary>
 /// jwt上下文
 /// </summary>
-public class JwtContextHolder : IJwtHolder
+public class ScmContextHolder : IScmHolder
 {
     /// <summary>
     /// 支持父子线程数据传递
     /// </summary>
-    private readonly ThreadLocal<JwtToken> _threadLocalTenant = new();
+    private readonly ThreadLocal<ScmToken> _threadLocalTenant = new();
 
     /// <summary>
     /// 设置租户ID
     /// </summary>
     /// <param name="token"></param>
-    public void SetToken(JwtToken token)
+    public void SetToken(ScmToken token)
     {
         _threadLocalTenant.Value = token;
     }
@@ -23,15 +23,15 @@ public class JwtContextHolder : IJwtHolder
     /// 获取租户ID
     /// </summary>
     /// <returns></returns>
-    public JwtToken GetToken()
+    public ScmToken GetToken()
     {
         try
         {
-            return _threadLocalTenant.Value ?? new JwtToken();
+            return _threadLocalTenant.Value ?? new ScmToken();
         }
         catch
         {
-            return new JwtToken();
+            return new ScmToken();
         }
     }
 

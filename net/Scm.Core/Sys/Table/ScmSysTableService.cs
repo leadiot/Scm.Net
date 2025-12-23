@@ -1,9 +1,8 @@
 ﻿using Com.Scm.Dsa;
-using Com.Scm.Jwt;
 using Com.Scm.Service;
 using Com.Scm.Sys.Table.Dvo;
+using Com.Scm.Token;
 using Com.Scm.Utils;
-
 using Microsoft.AspNetCore.Mvc;
 
 namespace Com.Scm.Sys.Table
@@ -14,7 +13,7 @@ namespace Com.Scm.Sys.Table
     [ApiExplorerSettings(GroupName = "v1")]
     public class ScmSysTableService : ApiService
     {
-        private readonly JwtContextHolder _contextHolder;
+        private readonly ScmContextHolder _contextHolder;
         private readonly SugarRepository<SysTableHeaderDao> _headerRepository;
         private readonly SugarRepository<SysTableDetailDao> _detailRepository;
 
@@ -25,7 +24,7 @@ namespace Com.Scm.Sys.Table
         /// <param name="headerRepository"></param>
         /// <param name="detailRepository"></param>
         /// <returns></returns>
-        public ScmSysTableService(JwtContextHolder contextHolder,
+        public ScmSysTableService(ScmContextHolder contextHolder,
             SugarRepository<SysTableHeaderDao> headerRepository,
             SugarRepository<SysTableDetailDao> detailRepository)
         {

@@ -6,7 +6,6 @@ using Com.Scm.Config;
 using Com.Scm.DynamicWebApi.Attributes;
 using Com.Scm.Enums;
 using Com.Scm.Exceptions;
-using Com.Scm.Jwt;
 using Com.Scm.Log;
 using Com.Scm.Login.Otp;
 using Com.Scm.Login.Otp.Email;
@@ -19,6 +18,8 @@ using Com.Scm.Service;
 using Com.Scm.Sys.Config;
 using Com.Scm.Sys.Menu;
 using Com.Scm.Sys.Theme;
+using Com.Scm.Token;
+using Com.Scm.Token.Utils;
 using Com.Scm.Ur;
 using Com.Scm.Utils;
 using Microsoft.AspNetCore.Authorization;
@@ -51,7 +52,7 @@ public class OperatorService : ApiService
     /// </summary>
     private const string CFG_TEMPLATE_USER_DATA = "template_user_data";
 
-    private readonly JwtContextHolder _jwtContextHolder;
+    private readonly ScmContextHolder _jwtContextHolder;
     private readonly ILogService _logService;
     private readonly OidcConfig _oidcConfig;
     private readonly OtpConfig _otpConfig;
@@ -68,7 +69,7 @@ public class OperatorService : ApiService
     public OperatorService(ISqlSugarClient sqlClient
         , EnvConfig envConfig
         , Cache.ICacheService cacheService
-        , JwtContextHolder jwtContextHolder
+        , ScmContextHolder jwtContextHolder
         , ILogService logService
         , OidcConfig oidcConfig
         , OtpConfig otpConfig)
@@ -1162,13 +1163,13 @@ public class OperatorService : ApiService
         var cacheId = TextUtils.GuidString();
         _CacheService.SetCache(cacheId, code);
 
-        return JwtUtils.IssueJwt(new JwtToken()
+        return JwtUtils.IssueJwt(new ScmToken()
         {
             id = cacheId,
             user_id = userDao.id,
             user_codes = userDao.codes,
             user_name = userDao.namec,
-            time = DateTime.Now,
+            time = TimeUtils.GetUnixTime(true),
             data = userDao.data
         });
     }

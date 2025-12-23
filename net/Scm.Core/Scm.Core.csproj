@@ -21,6 +21,7 @@
     <ProjectReference Include="..\Scm.Server.Api\Scm.Server.Api.csproj" />
     <ProjectReference Include="..\Scm.Server.Quartz\Scm.Server.Quartz.csproj" />
     <ProjectReference Include="..\Scm.Server.SignalR\Scm.Server.SignalR.csproj" />
+    <ProjectReference Include="..\Scm.Server.Token\Scm.Server.Token.csproj" />
     <ProjectReference Include="..\Scm.Server\Scm.Server.csproj" />
   </ItemGroup>
 

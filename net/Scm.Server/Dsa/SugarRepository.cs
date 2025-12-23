@@ -1,7 +1,7 @@
 using Com.Scm.Dao;
 using Com.Scm.Dao.User;
 using Com.Scm.Enums;
-using Com.Scm.Jwt;
+using Com.Scm.Token;
 using Com.Scm.Utils;
 using SqlSugar;
 using System.Linq.Dynamic.Core;
@@ -29,7 +29,7 @@ namespace Com.Scm.Dsa
                 return;
             }
 
-            var contextHolder = AppUtils.GetService<JwtContextHolder>();
+            var contextHolder = AppUtils.GetService<ScmContextHolder>();
             var token = contextHolder.GetToken();
 
             #region 处理数据过滤
@@ -99,7 +99,7 @@ namespace Com.Scm.Dsa
         /// </summary>
         /// <param name="token"></param>
         /// <param name="subType"></param>
-        private void GenUserLimitFilter(JwtToken token, Type subType)
+        private void GenUserLimitFilter(ScmToken token, Type subType)
         {
             if (token.data == ScmUserDataEnum.All)
             {
@@ -134,7 +134,7 @@ namespace Com.Scm.Dsa
             GenLimitFilter(token, subType, sql + "=0");
         }
 
-        private void GenLimitFilter(JwtToken token, Type subType, string subSql)
+        private void GenLimitFilter(ScmToken token, Type subType, string subSql)
         {
             var lambda = DynamicExpressionParser.ParseLambda([Expression.Parameter(subType, "it")], typeof(bool), subSql, false);
             Context.QueryFilter.Add(new TableFilterItem<T>(subType, lambda, true));

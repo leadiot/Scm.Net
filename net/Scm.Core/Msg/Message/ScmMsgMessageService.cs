@@ -1,9 +1,9 @@
 using Com.Scm.Dsa;
 using Com.Scm.Dvo;
 using Com.Scm.Hubs;
-using Com.Scm.Jwt;
 using Com.Scm.Msg.Message.Dvo;
 using Com.Scm.Service;
+using Com.Scm.Token;
 using Com.Scm.Utils;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
@@ -24,7 +24,7 @@ public class ScmMsgMessageService : ApiService
 
     private readonly SugarRepository<MessageDao> _thisRepository;
     private readonly SugarRepository<MessageTagDao> _tagRepository;
-    private readonly JwtContextHolder _jwtHolder;
+    private readonly ScmContextHolder _jwtHolder;
     private readonly ITagService _tagService;
     private readonly IHubContext<ScmHub> _hubContext;
 
@@ -39,7 +39,7 @@ public class ScmMsgMessageService : ApiService
     /// <param name="hubContext"></param>
     public ScmMsgMessageService(SugarRepository<MessageDao> thisRepository,
         SugarRepository<MessageTagDao> tagRepository,
-        JwtContextHolder jwtHolder,
+        ScmContextHolder jwtHolder,
         ITagService tagService,
         Cache.ICacheService cacheService,
         IHubContext<ScmHub> hubContext)

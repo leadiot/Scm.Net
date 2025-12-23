@@ -1,8 +1,8 @@
 ﻿using Com.Scm.Dsa;
 using Com.Scm.Filters;
-using Com.Scm.Jwt;
 using Com.Scm.Service;
 using Com.Scm.Sys.Pv.Dvo;
+using Com.Scm.Token;
 using Com.Scm.Utils;
 using Microsoft.AspNetCore.Mvc;
 
@@ -16,14 +16,14 @@ namespace Com.Scm.Sys.Pv
     {
         private readonly SugarRepository<PvHeaderDao> _headerRepository;
         private readonly SugarRepository<PvDetailDao> _detailRepository;
-        private readonly JwtContextHolder _jwtContextHolder;
+        private readonly ScmContextHolder _jwtContextHolder;
 
         /// <summary>
         /// 
         /// </summary>
         public ScmSysPvService(SugarRepository<PvHeaderDao> headerRepository,
             SugarRepository<PvDetailDao> detailRepository,
-            JwtContextHolder contextHolder)
+            ScmContextHolder contextHolder)
         {
             _headerRepository = headerRepository;
             _detailRepository = detailRepository;

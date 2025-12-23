@@ -1,7 +1,7 @@
-﻿using Com.Scm.Jwt;
-using Com.Scm.Service;
+﻿using Com.Scm.Service;
 using Com.Scm.Sys.FlowData.Dvo;
 using Com.Scm.Sys.FlowData.Rnr;
+using Com.Scm.Token;
 using Com.Scm.Utils;
 using Microsoft.AspNetCore.Mvc;
 using SqlSugar;
@@ -11,13 +11,13 @@ namespace Com.Scm.Sys.FlowData
     [ApiExplorerSettings(GroupName = "Sys")]
     public class ScmSysFlowDataService : ApiService
     {
-        private readonly JwtContextHolder _jwtHolder;
+        private readonly ScmContextHolder _jwtHolder;
 
         /// <summary>
         /// 
         /// </summary>
         /// <param name="sqlClient"></param>
-        public ScmSysFlowDataService(ISqlSugarClient sqlClient, IUserService userService, JwtContextHolder jwtHolder)
+        public ScmSysFlowDataService(ISqlSugarClient sqlClient, IUserService userService, ScmContextHolder jwtHolder)
         {
             _SqlClient = sqlClient;
             _UserService = userService;

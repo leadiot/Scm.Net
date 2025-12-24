@@ -102,6 +102,7 @@ namespace Com.Scm.Utils
         {
             return new ScmApiResponse
             {
+                Success = true,
                 Code = (int)HttpStatusCode.OK
             };
         }
@@ -110,6 +111,7 @@ namespace Com.Scm.Utils
         {
             return new ScmApiDataResponse<T>
             {
+                Success = true,
                 Code = (int)HttpStatusCode.OK,
                 Data = resultData
             };

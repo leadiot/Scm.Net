@@ -30,6 +30,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Reference Include="Scm.Common.File">
+      <HintPath>..\Libs\netstandard2.0\Scm.Common.File.dll</HintPath>
+    </Reference>
     <Reference Include="Scm.Common.Http">
       <HintPath>..\Libs\netstandard2.0\Scm.Common.Http.dll</HintPath>
     </Reference>

@@ -4,6 +4,7 @@ namespace Com.Scm.Enums
 {
     public enum ScmHandleEnum
     {
+        [Description("默认")]
         None = 0,
         /// <summary>
         /// 初始化

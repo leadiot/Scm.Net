@@ -14,7 +14,8 @@ namespace Com.Scm.Utils
             {
                 Items = isMapper ? items.Adapt<List<T>>() : items,
                 TotalItems = totalItems,
-                TotalPages = totalPages
+                TotalPages = totalPages,
+                Success = true
             };
         }
 

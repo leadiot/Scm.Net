@@ -1,32 +1,39 @@
 ﻿using Com.Scm.Controllers;
-using Com.Scm.Utils;
+using Com.Scm.Token;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Com.Scm.Api.Controllers
 {
     [ApiExplorerSettings(GroupName = "Scm")]
-    [AllowAnonymous]
     public class TestController : ApiController
     {
-        public TestController()
+        private ScmContextHolder _ScmHolder;
+
+        public TestController(ScmContextHolder scmHolder)
         {
+            _ScmHolder = scmHolder;
         }
 
-        [HttpGet("Test")]
-        public object Test()
+        [HttpGet("Echo")]
+        public ScmApiResponse GetEcho(string id)
         {
-            var id = UidUtils.NextId();
-            var code = UidUtils.NextCodes("samples_demo");
-            return new { id, code };
+            var token = _ScmHolder.GetToken();
+            var response = new ScmApiResponse();
+            response.SetSuccess();
+
+            return response;
         }
 
-        [HttpGet("Demo")]
-        public object Demo()
+        [HttpPost("Echo")]
+        public ScmApiResponse PostEcho(ScmRequest request)
         {
-            var id = UidUtils.NextId();
-            var code = UidUtils.NextCodes("samples_demo");
-            return new { id, code };
+            var token = _ScmHolder.GetToken();
+            var response = new ScmApiDataResponse<long>();
+            response.Data = token.terminal_id;
+            response.SetSuccess();
+
+            return response;
         }
     }
 }

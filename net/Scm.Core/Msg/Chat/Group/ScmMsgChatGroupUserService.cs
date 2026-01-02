@@ -27,7 +27,7 @@ namespace Com.Scm.Msg.Chat.Group
         public ScmMsgChatGroupUserService(SugarRepository<ChatGroupUserDao> thisRepository, IUserHolder userService)
         {
             _thisRepository = thisRepository;
-            _UserService = userService;
+            _UserHolder = userService;
         }
 
         /// <summary>

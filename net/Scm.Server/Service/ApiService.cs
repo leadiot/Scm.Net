@@ -17,7 +17,7 @@ namespace Com.Scm.Service
     {
         protected EnvConfig _EnvConfig;
         protected ISqlSugarClient _SqlClient;
-        protected IUserHolder _UserService;
+        protected IUserHolder _UserHolder;
         protected Com.Scm.Cache.ICacheService _CacheService;
 
         #region Search缓存
@@ -286,8 +286,8 @@ namespace Com.Scm.Service
         /// <param name="dvo"></param>
         protected void Prepare(ScmDataDvo dvo)
         {
-            dvo.update_names = _UserService.GetUserNames(dvo.update_user);
-            dvo.create_names = _UserService.GetUserNames(dvo.create_user);
+            dvo.update_names = _UserHolder.GetUserNames(dvo.update_user);
+            dvo.create_names = _UserHolder.GetUserNames(dvo.create_user);
         }
 
         /// <summary>
@@ -298,8 +298,8 @@ namespace Com.Scm.Service
         {
             foreach (var item in list)
             {
-                item.update_names = _UserService.GetUserNames(item.update_user);
-                item.create_names = _UserService.GetUserNames(item.create_user);
+                item.update_names = _UserHolder.GetUserNames(item.update_user);
+                item.create_names = _UserHolder.GetUserNames(item.create_user);
             }
         }
         #endregion

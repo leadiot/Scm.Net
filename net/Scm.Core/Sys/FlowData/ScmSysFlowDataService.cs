@@ -20,7 +20,7 @@ namespace Com.Scm.Sys.FlowData
         public ScmSysFlowDataService(ISqlSugarClient sqlClient, IUserHolder userService, ScmContextHolder jwtHolder)
         {
             _SqlClient = sqlClient;
-            _UserService = userService;
+            _UserHolder = userService;
             _jwtHolder = jwtHolder;
         }
 

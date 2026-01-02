@@ -33,7 +33,7 @@ namespace Com.Scm.Msg.Chat.Group
         {
             _thisRepository = thisRepository;
             _groupUserRepository = groupUserRepository;
-            _UserService = userService;
+            _UserHolder = userService;
         }
 
         /// <summary>

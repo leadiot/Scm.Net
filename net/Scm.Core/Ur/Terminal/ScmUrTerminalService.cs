@@ -22,9 +22,10 @@ namespace Com.Scm.Scm.Ur
         /// 
         /// </summary>
         /// <param name="thisRepository"></param>
-        public ScmUrTerminalService(SugarRepository<ScmUrTerminalDao> thisRepository, ITerminalHolder holder)
+        public ScmUrTerminalService(SugarRepository<ScmUrTerminalDao> thisRepository, IUserHolder userHolder, ITerminalHolder holder)
         {
             _thisRepository = thisRepository;
+            _UserHolder = userHolder;
             _terminalHolder = holder;
         }
 

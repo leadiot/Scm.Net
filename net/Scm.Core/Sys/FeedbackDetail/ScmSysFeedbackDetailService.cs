@@ -26,7 +26,7 @@ namespace Com.Scm.Sys.FeedbackDetail
         public ScmSysFeedbackDetailService(SugarRepository<FeedbackDetailDao> thisRepository, IUserHolder userService)
         {
             _thisRepository = thisRepository;
-            _UserService = userService;
+            _UserHolder = userService;
         }
 
         /// <summary>

@@ -33,7 +33,7 @@ namespace Com.Scm.Msg.Comment
         {
             _headerRepository = headerRepository;
             _detailRepository = detailRepository;
-            _UserService = userService;
+            _UserHolder = userService;
         }
 
         /// <summary>
@@ -74,9 +74,9 @@ namespace Com.Scm.Msg.Comment
         {
             foreach (var item in list)
             {
-                item.update_names = _UserService.GetUserNames(item.update_user);
+                item.update_names = _UserHolder.GetUserNames(item.update_user);
 
-                var createDao = _UserService.GetUser(item.create_user);
+                var createDao = _UserHolder.GetUser(item.create_user);
                 if (createDao != null)
                 {
                     item.create_names = createDao.names;

@@ -25,7 +25,7 @@ namespace Com.Scm.Sys
         public ScmSysThemeService(SugarRepository<ThemeDao> thisRepository, IUserHolder userService)
         {
             _thisRepository = thisRepository;
-            _UserService = userService;
+            _UserHolder = userService;
         }
 
         /// <summary>

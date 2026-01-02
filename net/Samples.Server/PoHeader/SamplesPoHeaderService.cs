@@ -30,7 +30,7 @@ namespace Com.Scm.Samples.PoHeader
             IFlowService flowService)
         {
             _thisRepository = thisRepository;
-            _UserService = userService;
+            _UserHolder = userService;
             _FlowService = flowService;
         }
 

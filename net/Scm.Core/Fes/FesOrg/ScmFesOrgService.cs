@@ -23,7 +23,7 @@ namespace Com.Scm.Fes.FesOrg
         public ScmFesOrgService(SugarRepository<ScmFesOrgDao> thisRepository, IUserHolder userService)
         {
             _thisRepository = thisRepository;
-            _UserService = userService;
+            _UserHolder = userService;
         }
 
         /// <summary>

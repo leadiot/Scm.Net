@@ -26,7 +26,7 @@ namespace Com.Scm.Sys.Feedback
         {
             _headerRepository = headerRepository;
             _detailRepository = detailRepository;
-            _UserService = userService;
+            _UserHolder = userService;
         }
 
         /// <summary>

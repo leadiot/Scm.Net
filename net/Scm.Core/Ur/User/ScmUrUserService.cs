@@ -39,7 +39,7 @@ namespace Com.Scm.Ur.User
             _SqlClient = sqlClient;
             _jwtContextHolder = jwtContextHolder;
             _thisRepository = thisRepository;
-            _UserService = userService;
+            _UserHolder = userService;
         }
 
         /// <summary>
@@ -362,7 +362,7 @@ namespace Com.Scm.Ur.User
             // 群组更新
             await SaveUserGroup(model);
 
-            _UserService.Remove(userDao.id);
+            _UserHolder.Remove(userDao.id);
         }
 
         /// <summary>
@@ -504,7 +504,7 @@ namespace Com.Scm.Ur.User
 
             foreach (var id in idList)
             {
-                _UserService.Remove(id);
+                _UserHolder.Remove(id);
             }
 
             return qty;

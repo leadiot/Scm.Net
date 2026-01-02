@@ -59,7 +59,7 @@ namespace Com.Scm.Ur
         /// <summary>
         /// 过期时间(UTC时间)
         /// </summary>
-        public long expires { get; set; }
+        public long expired { get; set; }
 
         /// <summary>
         /// 系统名称

@@ -53,7 +53,7 @@ namespace Com.Scm.Ur
         /// <summary>
         /// 过期时间
         /// </summary>
-        public long expires { get; set; }
+        public long expired { get; set; }
 
         /// <summary>
         /// MAC地址

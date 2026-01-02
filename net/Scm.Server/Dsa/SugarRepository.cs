@@ -112,11 +112,11 @@ namespace Com.Scm.Dsa
             }
 
             var sql = "it." + nameof(IUserDao.user_id);
-            if (token.data == ScmUserDataEnum.CurrentUser)
-            {
-                GenLimitFilter(token, subType, sql + "=" + token.user_id);
-                return;
-            }
+            //if (token.data == ScmUserDataEnum.CurrentUser)
+            //{
+            //    GenLimitFilter(token, subType, sql + "=" + token.user_id);
+            //    return;
+            //}
 
             var sub = $"(select suud.data_id from scm_ur_user_data suud where suud.user_id = {token.user_id} and suud.types = {ScmUserDataTypesEnum.User} and suud.row_status = {ScmRowStatusEnum.Enabled})";
             if (token.data == ScmUserDataEnum.SpecifiedUser)
@@ -131,7 +131,8 @@ namespace Com.Scm.Dsa
                 return;
             }
 
-            GenLimitFilter(token, subType, sql + "=0");
+            GenLimitFilter(token, subType, sql + "=" + token.user_id);
+            //GenLimitFilter(token, subType, sql + "=0");
         }
 
         private void GenLimitFilter(ScmToken token, Type subType, string subSql)

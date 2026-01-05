@@ -34,6 +34,8 @@
 							@click="delete_list"></el-button>
 					</el-tooltip>
 				</el-button-group>
+				<el-divider direction="vertical"></el-divider>
+				<el-button icon="el-icon-plus" type="danger" :disabled="selection.length != 1" @click="unbind()" />
 			</div>
 			<div class="right-panel">
 				<el-input v-model="param.key" clearable placeholder="关键字">
@@ -62,6 +64,11 @@
 						</el-popconfirm>
 					</template>
 				</el-table-column>
+				<template #names="scope">
+					<el-button type="text" link @click="open(scope.row)">
+						{{ scope.row.names }}
+					</el-button>
+				</template>
 				<template #row_status="scope">
 					<el-tooltip :content="scope.row.row_status ? '正常' : '停用'" placement="right">
 						<el-switch v-model="scope.row.row_status" :active-value="1" :inactive-value="2"
@@ -72,6 +79,7 @@
 			</scTable>
 		</el-main>
 		<edit ref="edit" @complete="complete" />
+		<info ref="info" />
 	</el-container>
 </template>
 <script>
@@ -80,6 +88,7 @@ export default {
 	name: 'scm_ur_terminal',
 	components: {
 		edit: defineAsyncComponent(() => import("./edit")),
+		info: defineAsyncComponent(() => import("./info")),
 	},
 	data() {
 		return {
@@ -87,7 +96,7 @@ export default {
 			apiObj: this.$API.scmurterminal.page,
 			list: [],
 			param: {
-				option_id: this.$SCM.ID_ALL,
+				types: this.$SCM.ID_ALL_INT,
 				row_status: this.$SCM.DEF_STATUS,
 				create_time: '',
 				key: ''
@@ -95,11 +104,10 @@ export default {
 			selection: [],
 			column: [
 				{ label: "id", prop: "id", hide: true },
-				{ prop: 'user_id', label: '用户ID', width: 100 },
-				{ prop: 'types', label: '终端类型', width: 100 },
-				{ prop: 'codes', label: '终端代码', width: 100 },
-				{ prop: 'names', label: '终端名称', width: 100 },
-				{ prop: 'token', label: '终端授权', width: 100 },
+				{ prop: 'types', label: '终端类型', width: 130, align: 'left', formatter: this.getTypesNames },
+				{ prop: 'codes', label: '终端代码', width: 150 },
+				{ prop: 'names', label: '终端名称', minWidth: 140, align: 'left' },
+				{ prop: 'pass', label: '终端授权', width: 170, align: 'left' },
 				{ prop: "row_status", label: "数据状态", width: 80, },
 				{ prop: "update_names", label: "更新人员", width: 100, },
 				{ prop: "update_time", label: "更新时间", width: 160, formatter: this.$TOOL.dateTimeFormat },
@@ -111,7 +119,7 @@ export default {
 		};
 	},
 	mounted() {
-		this.$SCM.list_dic(this.types_list, 'client_type', false);
+		this.$SCM.list_dic(this.types_list, 'client_type', true);
 		this.$SCM.list_status(this.row_status_list, true);
 	},
 	methods: {
@@ -156,6 +164,18 @@ export default {
 				return;
 			}
 		},
+		getTypesNames(id) {
+			return this.$SCM.get_dic_names(this.types_list, id, '-');
+		},
+		open(row) {
+			this.$refs.info.open(row);
+		},
+		unbind() {
+			if (this.selection.length != 1) {
+				return;
+			}
+			this.$API.scmurterminal.unbind.post(this.selection[0].id);
+		}
 	},
 };
 </script>

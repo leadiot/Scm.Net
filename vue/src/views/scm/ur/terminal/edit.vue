@@ -29,7 +29,7 @@ export default {
 			formData: this.def_data(),
 			rules: {
 				types: [
-					{ required: true, trigger: "change", message: "请选择终端类型", pattern: this.$SCM.REGEX_ID_INT },
+					{ required: true, trigger: "change", message: "请选择终端类型", pattern: this.$SCM.REGEX_INT },
 				],
 				names: [
 					{ required: true, trigger: "blur", message: "终端名称不能为空" },
@@ -46,7 +46,7 @@ export default {
 		def_data() {
 			return {
 				id: this.$SCM.DEF_ID,
-				types: '',
+				types: this.$SCM.ID_ONE_INT,
 				names: '',
 			}
 		},

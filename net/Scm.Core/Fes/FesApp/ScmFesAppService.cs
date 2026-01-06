@@ -1,12 +1,12 @@
 using Com.Scm.Dsa;
 using Com.Scm.Dvo;
 using Com.Scm.Exceptions;
-using Com.Scm.Fes.FesApp.Dvo;
+using Com.Scm.Nas.FesApp.Dvo;
 using Com.Scm.Service;
 using Com.Scm.Utils;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Com.Scm.Fes.FesApp
+namespace Com.Scm.Nas.FesApp
 {
     /// <summary>
     /// 服务接口
@@ -14,13 +14,13 @@ namespace Com.Scm.Fes.FesApp
     [ApiExplorerSettings(GroupName = "Scm")]
     public class ScmFesAppService : ApiService
     {
-        private readonly SugarRepository<ScmFesAppDao> _thisRepository;
+        private readonly SugarRepository<ScmNasAppDao> _thisRepository;
 
         /// <summary>
         /// 
         /// </summary>
         /// <param name="thisRepository"></param>
-        public ScmFesAppService(SugarRepository<ScmFesAppDao> thisRepository, IUserHolder userService)
+        public ScmFesAppService(SugarRepository<ScmNasAppDao> thisRepository, IUserHolder userService)
         {
             _thisRepository = thisRepository;
             _UserHolder = userService;
@@ -66,13 +66,13 @@ namespace Com.Scm.Fes.FesApp
 
         private void Prepare(List<ScmFesAppDvo> list)
         {
-            var orgRepository = _thisRepository.Change<ScmFesOrgDao>();
-            var orgDict = new Dictionary<long, ScmFesOrgDao>();
+            var orgRepository = _thisRepository.Change<ScmNasOrgDao>();
+            var orgDict = new Dictionary<long, ScmNasOrgDao>();
             foreach (var item in list)
             {
                 Prepare(item);
 
-                ScmFesOrgDao orgDao = null;
+                ScmNasOrgDao orgDao = null;
                 if (orgDict.ContainsKey(item.org_id))
                 {
                     orgDao = orgDict[item.org_id];
@@ -110,11 +110,11 @@ namespace Com.Scm.Fes.FesApp
         /// <param name="id"></param>
         /// <returns></returns>
         [HttpGet("{id}")]
-        public async Task<ScmFesAppDto> GetAsync(long id)
+        public async Task<ScmNasAppDto> GetAsync(long id)
         {
             return await _thisRepository
                 .AsQueryable()
-                .Select<ScmFesAppDto>()
+                .Select<ScmNasAppDto>()
                 .FirstAsync(m => m.id == id);
         }
 
@@ -124,11 +124,11 @@ namespace Com.Scm.Fes.FesApp
         /// <param name="id"></param>
         /// <returns></returns>
         [HttpGet("{id}")]
-        public async Task<ScmFesAppDto> GetEditAsync(long id)
+        public async Task<ScmNasAppDto> GetEditAsync(long id)
         {
             return await _thisRepository
                 .AsQueryable()
-                .Select<ScmFesAppDto>()
+                .Select<ScmNasAppDto>()
                 .FirstAsync(m => m.id == id);
         }
 
@@ -151,7 +151,7 @@ namespace Com.Scm.Fes.FesApp
         /// </summary>
         /// <param name="model"></param>
         /// <returns></returns>
-        public async Task<bool> AddAsync(ScmFesAppDto model)
+        public async Task<bool> AddAsync(ScmNasAppDto model)
         {
             var dao = await _thisRepository.GetFirstAsync(a => a.codec == model.codec);
             if (dao != null)
@@ -164,7 +164,7 @@ namespace Com.Scm.Fes.FesApp
                 throw new BusinessException("已存在相同名称的应用！");
             }
 
-            dao = model.Adapt<ScmFesAppDao>();
+            dao = model.Adapt<ScmNasAppDao>();
             return await _thisRepository.InsertAsync(dao);
         }
 
@@ -173,7 +173,7 @@ namespace Com.Scm.Fes.FesApp
         /// </summary>
         /// <param name="model"></param>
         /// <returns></returns>
-        public async Task<bool> UpdateAsync(ScmFesAppDto model)
+        public async Task<bool> UpdateAsync(ScmNasAppDto model)
         {
             var dao = await _thisRepository.GetFirstAsync(a => a.codec == model.codec && a.id != model.id);
             if (dao != null)

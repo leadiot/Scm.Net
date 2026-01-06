@@ -1,7 +1,7 @@
 using Com.Scm.Dvo;
 using Com.Scm.Enums;
 
-namespace Com.Scm.Fes.FesExt.Dvo
+namespace Com.Scm.Nas.FesExt.Dvo
 {
     /// <summary>
     /// 

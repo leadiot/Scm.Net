@@ -1,12 +1,12 @@
 using Com.Scm.Dsa;
 using Com.Scm.Dvo;
 using Com.Scm.Exceptions;
-using Com.Scm.Fes.FesOrg.Dvo;
+using Com.Scm.Nas.FesOrg.Dvo;
 using Com.Scm.Service;
 using Com.Scm.Utils;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Com.Scm.Fes.FesOrg
+namespace Com.Scm.Nas.FesOrg
 {
     /// <summary>
     /// 服务接口
@@ -14,13 +14,13 @@ namespace Com.Scm.Fes.FesOrg
     [ApiExplorerSettings(GroupName = "Scm")]
     public class ScmFesOrgService : ApiService
     {
-        private readonly SugarRepository<ScmFesOrgDao> _thisRepository;
+        private readonly SugarRepository<ScmNasOrgDao> _thisRepository;
 
         /// <summary>
         /// 
         /// </summary>
         /// <param name="thisRepository"></param>
-        public ScmFesOrgService(SugarRepository<ScmFesOrgDao> thisRepository, IUserHolder userService)
+        public ScmFesOrgService(SugarRepository<ScmNasOrgDao> thisRepository, IUserHolder userService)
         {
             _thisRepository = thisRepository;
             _UserHolder = userService;
@@ -84,11 +84,11 @@ namespace Com.Scm.Fes.FesOrg
         /// <param name="id"></param>
         /// <returns></returns>
         [HttpGet("{id}")]
-        public async Task<ScmFesOrgDto> GetAsync(long id)
+        public async Task<ScmNasOrgDto> GetAsync(long id)
         {
             return await _thisRepository
                 .AsQueryable()
-                .Select<ScmFesOrgDto>()
+                .Select<ScmNasOrgDto>()
                 .FirstAsync(m => m.id == id);
         }
 
@@ -98,11 +98,11 @@ namespace Com.Scm.Fes.FesOrg
         /// <param name="id"></param>
         /// <returns></returns>
         [HttpGet("{id}")]
-        public async Task<ScmFesOrgDto> GetEditAsync(long id)
+        public async Task<ScmNasOrgDto> GetEditAsync(long id)
         {
             return await _thisRepository
                 .AsQueryable()
-                .Select<ScmFesOrgDto>()
+                .Select<ScmNasOrgDto>()
                 .FirstAsync(m => m.id == id);
         }
 
@@ -125,7 +125,7 @@ namespace Com.Scm.Fes.FesOrg
         /// </summary>
         /// <param name="model"></param>
         /// <returns></returns>
-        public async Task<bool> AddAsync(ScmFesOrgDto model)
+        public async Task<bool> AddAsync(ScmNasOrgDto model)
         {
             var dao = await _thisRepository.GetFirstAsync(a => a.codec == model.codec);
             if (dao != null)
@@ -138,7 +138,7 @@ namespace Com.Scm.Fes.FesOrg
                 throw new BusinessException("已存在相同名称的组织！");
             }
 
-            dao = model.Adapt<ScmFesOrgDao>();
+            dao = model.Adapt<ScmNasOrgDao>();
             return await _thisRepository.InsertAsync(dao);
         }
 
@@ -147,7 +147,7 @@ namespace Com.Scm.Fes.FesOrg
         /// </summary>
         /// <param name="model"></param>
         /// <returns></returns>
-        public async Task<bool> UpdateAsync(ScmFesOrgDto model)
+        public async Task<bool> UpdateAsync(ScmNasOrgDto model)
         {
             var dao = await _thisRepository.GetFirstAsync(a => a.codec == model.codec && a.id != model.id);
             if (dao != null)

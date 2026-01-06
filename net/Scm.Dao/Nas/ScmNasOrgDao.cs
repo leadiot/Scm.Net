@@ -2,13 +2,13 @@ using Com.Scm.Dao;
 using SqlSugar;
 using System.ComponentModel.DataAnnotations;
 
-namespace Com.Scm.Fes
+namespace Com.Scm.Nas
 {
     /// <summary>
     /// 
     /// </summary>
     [SugarTable("scm_fes_org")]
-    public class ScmFesOrgDao : ScmDataDao
+    public class ScmNasOrgDao : ScmDataDao
     {
         /// <summary>
         /// 组织代码

@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Builder;
 
 namespace Com.Scm.Config
 {
-    public class EnvConfig
+    public partial class EnvConfig
     {
         public const string NAME = "Env";
 

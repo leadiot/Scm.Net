@@ -1,12 +1,12 @@
 using Com.Scm.Dsa;
 using Com.Scm.Dvo;
 using Com.Scm.Exceptions;
-using Com.Scm.Fes.FesExt.Dvo;
+using Com.Scm.Nas.FesExt.Dvo;
 using Com.Scm.Service;
 using Com.Scm.Utils;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Com.Scm.Fes.FesExt
+namespace Com.Scm.Nas.FesExt
 {
     /// <summary>
     /// 服务接口
@@ -14,14 +14,14 @@ namespace Com.Scm.Fes.FesExt
     [ApiExplorerSettings(GroupName = "Scm")]
     public class ScmFesExtService : ApiService
     {
-        private readonly SugarRepository<ScmFesExtDao> _thisRepository;
+        private readonly SugarRepository<ScmNasExtDao> _thisRepository;
         private readonly IDicService _dicService;
 
         /// <summary>
         /// 
         /// </summary>
         /// <param name="thisRepository"></param>
-        public ScmFesExtService(SugarRepository<ScmFesExtDao> thisRepository, IUserHolder userService, IDicService dicService)
+        public ScmFesExtService(SugarRepository<ScmNasExtDao> thisRepository, IUserHolder userService, IDicService dicService)
         {
             _thisRepository = thisRepository;
             _UserHolder = userService;
@@ -71,17 +71,17 @@ namespace Com.Scm.Fes.FesExt
         private void Prepare(List<ScmFesExtDvo> list)
         {
             var dicDao = _dicService.GetDic("file_type");
-            var orgRepository = _thisRepository.Change<ScmFesOrgDao>();
-            var orgDict = new Dictionary<long, ScmFesOrgDao>();
-            var appRepository = _thisRepository.Change<ScmFesAppDao>();
-            var appDict = new Dictionary<long, ScmFesAppDao>();
+            var orgRepository = _thisRepository.Change<ScmNasOrgDao>();
+            var orgDict = new Dictionary<long, ScmNasOrgDao>();
+            var appRepository = _thisRepository.Change<ScmNasAppDao>();
+            var appDict = new Dictionary<long, ScmNasAppDao>();
             foreach (var item in list)
             {
                 Prepare(item);
 
                 item.types_name = dicDao.GetDetail((int)item.types)?.namec;
 
-                ScmFesOrgDao orgDao = null;
+                ScmNasOrgDao orgDao = null;
                 if (orgDict.ContainsKey(item.org_id))
                 {
                     orgDao = orgDict[item.org_id];
@@ -93,7 +93,7 @@ namespace Com.Scm.Fes.FesExt
                 }
                 item.org_name = orgDao?.names;
 
-                ScmFesAppDao appDao = null;
+                ScmNasAppDao appDao = null;
                 if (appDict.ContainsKey(item.app_id))
                 {
                     appDao = appDict[item.app_id];
@@ -131,11 +131,11 @@ namespace Com.Scm.Fes.FesExt
         /// <param name="id"></param>
         /// <returns></returns>
         [HttpGet("{id}")]
-        public async Task<ScmFesExtDto> GetAsync(long id)
+        public async Task<ScmNasExtDto> GetAsync(long id)
         {
             return await _thisRepository
                 .AsQueryable()
-                .Select<ScmFesExtDto>()
+                .Select<ScmNasExtDto>()
                 .FirstAsync(m => m.id == id);
         }
 
@@ -145,11 +145,11 @@ namespace Com.Scm.Fes.FesExt
         /// <param name="id"></param>
         /// <returns></returns>
         [HttpGet("{id}")]
-        public async Task<ScmFesExtDto> GetEditAsync(long id)
+        public async Task<ScmNasExtDto> GetEditAsync(long id)
         {
             return await _thisRepository
                 .AsQueryable()
-                .Select<ScmFesExtDto>()
+                .Select<ScmNasExtDto>()
                 .FirstAsync(m => m.id == id);
         }
 
@@ -172,7 +172,7 @@ namespace Com.Scm.Fes.FesExt
         /// </summary>
         /// <param name="model"></param>
         /// <returns></returns>
-        public async Task<bool> AddAsync(ScmFesExtDto model)
+        public async Task<bool> AddAsync(ScmNasExtDto model)
         {
             var dao = await _thisRepository.GetFirstAsync(a => a.codec == model.codec);
             if (dao != null)
@@ -180,7 +180,7 @@ namespace Com.Scm.Fes.FesExt
                 throw new BusinessException("已存在相同编码的后缀！");
             }
 
-            dao = model.Adapt<ScmFesExtDao>();
+            dao = model.Adapt<ScmNasExtDao>();
             return await _thisRepository.InsertAsync(dao);
         }
 
@@ -189,7 +189,7 @@ namespace Com.Scm.Fes.FesExt
         /// </summary>
         /// <param name="model"></param>
         /// <returns></returns>
-        public async Task<bool> UpdateAsync(ScmFesExtDto model)
+        public async Task<bool> UpdateAsync(ScmNasExtDto model)
         {
             var dao = await _thisRepository.GetFirstAsync(a => a.codec == model.codec && a.id != model.id);
             if (dao != null)

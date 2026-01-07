@@ -1,12 +1,12 @@
 using Com.Scm.Dto;
 using System.ComponentModel.DataAnnotations;
 
-namespace Com.Scm.Fes
+namespace Com.Scm.Nas
 {
     /// <summary>
     /// 
     /// </summary>
-    public class ScmFesAppDto : ScmDataDto
+    public class ScmNasAppDto : ScmDataDto
     {
         /// <summary>
         /// 组织ID

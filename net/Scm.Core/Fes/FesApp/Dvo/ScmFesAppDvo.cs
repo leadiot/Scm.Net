@@ -1,6 +1,6 @@
 using Com.Scm.Dvo;
 
-namespace Com.Scm.Fes.FesApp.Dvo
+namespace Com.Scm.Nas.FesApp.Dvo
 {
     /// <summary>
     /// 

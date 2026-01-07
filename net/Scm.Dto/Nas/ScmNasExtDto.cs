@@ -2,12 +2,12 @@ using Com.Scm.Dto;
 using Com.Scm.Enums;
 using System.ComponentModel.DataAnnotations;
 
-namespace Com.Scm.Fes
+namespace Com.Scm.Nas
 {
     /// <summary>
     /// 
     /// </summary>
-    public class ScmFesExtDto : ScmDataDto
+    public class ScmNasExtDto : ScmDataDto
     {
         /// <summary>
         /// 文件类型

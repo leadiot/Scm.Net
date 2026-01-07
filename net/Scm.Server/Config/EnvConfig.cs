@@ -60,7 +60,7 @@ namespace Com.Scm.Config
         /// </summary>
         public string DefaultPassWord { get; set; }
 
-        public void Prepare(WebApplicationBuilder builder)
+        public virtual void Prepare(WebApplicationBuilder builder)
         {
             DataDir = GetPath(builder.Environment.ContentRootPath, DataDir, "data");
             if (DataDir.EndsWith("\\"))

@@ -107,14 +107,6 @@ public static class SwaggerExtension
             c.DocExpansion(Swashbuckle.AspNetCore.SwaggerUI.DocExpansion.List);
             c.EnableDeepLinking();
         });
-        // FytApiUI
-        //app.UseFytApiUI(c =>
-        //{
-        //    foreach (var doc in config.ApiDocs)
-        //    {
-        //        c.SwaggerEndpoint($"/swagger/{doc.Group}/swagger.json", doc.Title, doc.Version);
-        //    }
-        //});
     }
 
     // 从配置中获取 RoutePrefix（如果没有则返回 null）

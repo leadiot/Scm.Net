@@ -1,13 +1,13 @@
 ﻿using Com.Scm.Dao;
 using SqlSugar;
 
-namespace Com.Scm.Sys
+namespace Com.Scm.Sys.Pv
 {
     /// <summary>
-    /// 页面访问统计
+    /// 
     /// </summary>
-    [SugarTable("scm_sys_pv_header")]
-    public class PvHeaderDao : ScmDao
+    [SugarTable("scm_sys_pv_detail")]
+    public class PvDetailDao : ScmDao
     {
         /// <summary>
         /// 日期：格式(yyyy-MM-dd)
@@ -22,8 +22,8 @@ namespace Com.Scm.Sys
         /// </summary>
         public string url { get; set; }
         /// <summary>
-        /// 数量
+        /// 时间
         /// </summary>
-        public int qty { get; set; }
+        public long time { get; set; }
     }
 }

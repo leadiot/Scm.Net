@@ -3,7 +3,7 @@ using Com.Scm.Enums;
 using SqlSugar;
 using System.ComponentModel.DataAnnotations;
 
-namespace Com.Scm.Sys;
+namespace Com.Scm.Sys.Region;
 
 /// <summary>
 /// 区域表

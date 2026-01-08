@@ -23,7 +23,7 @@ namespace Com.Scm.Sys.FeedbackHeader
         /// <param name="thisRepository"></param>
         /// <param name="userService"></param>
         /// <returns></returns>
-        public ScmSysFeedbackHeaderService(SugarRepository<FeedbackHeaderDao> thisRepository, IUserHolder userService)
+        public ScmSysFeedbackHeaderService(SugarRepository<FeedbackHeaderDao> thisRepository, IResHolder userService)
         {
             _thisRepository = thisRepository;
             _ResHolder = userService;

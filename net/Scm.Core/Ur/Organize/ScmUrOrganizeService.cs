@@ -21,7 +21,7 @@ public class ScmUrOrganizeService : ApiService
     /// 
     /// </summary>
     /// <param name="thisRepository"></param>
-    public ScmUrOrganizeService(SugarRepository<OrganizeDao> thisRepository, IUserHolder userService)
+    public ScmUrOrganizeService(SugarRepository<OrganizeDao> thisRepository, IResHolder userService)
     {
         _thisRepository = thisRepository;
         _ResHolder = userService;

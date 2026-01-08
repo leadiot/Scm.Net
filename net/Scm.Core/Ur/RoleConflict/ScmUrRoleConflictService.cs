@@ -21,7 +21,7 @@ public class ScmUrRoleConflictService : ApiService
     /// </summary>
     /// <param name="thisRepository"></param>
     public ScmUrRoleConflictService(SugarRepository<RoleConflictDao> thisRepository,
-        IUserHolder userService,
+        IResHolder userService,
         SugarRepository<RoleDao> roleRepository)
     {
         _thisRepository = thisRepository;

@@ -26,7 +26,7 @@ namespace Com.Scm.Sys.Notes
         /// <param name="userService"></param>
         /// <param name="config"></param>
         public ScmSysNoteService(SugarRepository<NoteDao> thisRepository,
-            IUserHolder userService,
+            IResHolder userService,
             EnvConfig config)
         {
             _thisRepository = thisRepository;

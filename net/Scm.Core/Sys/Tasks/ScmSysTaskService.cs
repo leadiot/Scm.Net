@@ -22,7 +22,7 @@ namespace Com.Scm.Sys.Tasks
         /// <param name="thisRepository"></param>
         /// <param name="userService"></param>
         /// <returns></returns>
-        public ScmSysTaskService(SugarRepository<TaskDao> thisRepository, IUserHolder userService)
+        public ScmSysTaskService(SugarRepository<TaskDao> thisRepository, IResHolder userService)
         {
             _thisRepository = thisRepository;
             _ResHolder = userService;

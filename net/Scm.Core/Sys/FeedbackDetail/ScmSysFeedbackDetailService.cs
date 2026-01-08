@@ -23,7 +23,7 @@ namespace Com.Scm.Sys.FeedbackDetail
         /// <param name="thisRepository"></param>
         /// <param name="userService"></param>
         /// <returns></returns>
-        public ScmSysFeedbackDetailService(SugarRepository<FeedbackDetailDao> thisRepository, IUserHolder userService)
+        public ScmSysFeedbackDetailService(SugarRepository<FeedbackDetailDao> thisRepository, IResHolder userService)
         {
             _thisRepository = thisRepository;
             _ResHolder = userService;

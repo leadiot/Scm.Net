@@ -20,7 +20,7 @@ namespace Com.Scm.Flow
         /// 
         /// </summary>
         /// <param name="thisRepository"></param>
-        public ScmSysFlowOrderService(SugarRepository<ScmFlowOrderDao> thisRepository, IUserHolder userService)
+        public ScmSysFlowOrderService(SugarRepository<ScmFlowOrderDao> thisRepository, IResHolder userService)
         {
             _thisRepository = thisRepository;
             _ResHolder = userService;

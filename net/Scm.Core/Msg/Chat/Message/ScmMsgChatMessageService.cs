@@ -45,7 +45,7 @@ namespace Com.Scm.Msg.Chat.Message
         public ScmMsgChatMessageService(SugarRepository<ChatMsgHeaderDao> headerRepository,
             SugarRepository<ChatMsgDetailDao> detailRepository,
             SugarRepository<ChatGroupUserDao> groupUserRepository,
-            IUserHolder userService,
+            IResHolder userService,
             ScmContextHolder contextHolder,
             Cache.ICacheService cacheService,
             IHubContext<ScmHub> hubContext,

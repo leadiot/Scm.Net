@@ -112,7 +112,7 @@ namespace Com.Scm.Api
                 corsConfig.Prepare(envConfig);
             }
 
-            services.AddScoped<IUserHolder, ScmUserHolder>();
+            services.AddScoped<IResHolder, ScmUserHolder>();
             services.AddScoped<ITerminalHolder, ScmTerminalHolder>();
             services.AddScoped<ILogService, ScmLogService>();
             services.AddScoped<IDicService, ScmDicService>();

@@ -22,7 +22,7 @@ namespace Com.Scm.Res.Otp
         /// <param name="thisRepository"></param>
         /// <param name="userService"></param>
         /// <returns></returns>
-        public ScmResOtpService(SugarRepository<ScmResOtpDao> thisRepository, IUserHolder userService)
+        public ScmResOtpService(SugarRepository<ScmResOtpDao> thisRepository, IResHolder userService)
         {
             _thisRepository = thisRepository;
             _ResHolder = userService;

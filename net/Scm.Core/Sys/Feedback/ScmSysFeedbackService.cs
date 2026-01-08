@@ -22,7 +22,7 @@ namespace Com.Scm.Sys.Feedback
         /// </summary>
         public ScmSysFeedbackService(SugarRepository<FeedbackHeaderDao> headerRepository,
             SugarRepository<FeedbackDetailDao> detailRepository,
-            IUserHolder userService)
+            IResHolder userService)
         {
             _headerRepository = headerRepository;
             _detailRepository = detailRepository;

@@ -17,13 +17,13 @@ namespace Com.Scm.Samples.Demo
     {
         private readonly SugarRepository<DemoDao> _thisRepository;
         private readonly EnvConfig _Config;
-        private readonly IUserHolder _userService;
+        private readonly IResHolder _userService;
 
         /// <summary>
         /// 构造函数
         /// </summary>
         /// <param name="thisRepository"></param>
-        public SamplesDemoService(SugarRepository<DemoDao> thisRepository, IUserHolder userService, EnvConfig config)
+        public SamplesDemoService(SugarRepository<DemoDao> thisRepository, IResHolder userService, EnvConfig config)
         {
             _thisRepository = thisRepository;
             _userService = userService;

@@ -4,7 +4,7 @@ using SqlSugar;
 
 namespace Com.Scm.User
 {
-    public class ScmUserHolder : IUserHolder
+    public class ScmUserHolder : IResHolder
     {
         private readonly ISqlSugarClient _sqlClient;
         private static Dictionary<long, ScmUserInfo> _UserDict = new Dictionary<long, ScmUserInfo>();

@@ -26,7 +26,7 @@ namespace Com.Scm.Samples.PoHeader
         /// <param name="userService"></param>
         /// <param name="flowService"></param>
         public SamplesPoHeaderService(SugarRepository<SamplesPoHeaderDao> thisRepository,
-            IUserHolder userService,
+            IResHolder userService,
             IFlowService flowService)
         {
             _thisRepository = thisRepository;

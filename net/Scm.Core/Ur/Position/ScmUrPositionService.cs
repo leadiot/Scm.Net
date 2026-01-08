@@ -22,7 +22,7 @@ public class ScmUrPositionService : ApiService
     /// </summary>
     /// <param name="thisRepository"></param>
     /// <param name="userService"></param>
-    public ScmUrPositionService(SugarRepository<PositionDao> thisRepository, IUserHolder userService)
+    public ScmUrPositionService(SugarRepository<PositionDao> thisRepository, IResHolder userService)
     {
         _thisRepository = thisRepository;
         _ResHolder = userService;

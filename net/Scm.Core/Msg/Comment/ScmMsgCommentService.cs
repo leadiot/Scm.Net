@@ -29,7 +29,7 @@ namespace Com.Scm.Msg.Comment
         /// <returns></returns>
         public ScmMsgCommentService(SugarRepository<CommentHeaderDao> headerRepository,
             SugarRepository<CommentDetailDao> detailRepository,
-            IUserHolder userService)
+            IResHolder userService)
         {
             _headerRepository = headerRepository;
             _detailRepository = detailRepository;

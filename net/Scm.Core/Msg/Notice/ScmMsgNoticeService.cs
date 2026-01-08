@@ -44,7 +44,7 @@ public class ScmMsgNoticeService : ApiService
         , SugarRepository<NoticeReaderDao> readerRepository
         , SugarRepository<NoticeSenderDao> senderRepository
         , ScmContextHolder jwtHolder
-        , IUserHolder userService)
+        , IResHolder userService)
     {
         _thisRepository = thisRepository;
         _summaryRepository = summaryRepository;

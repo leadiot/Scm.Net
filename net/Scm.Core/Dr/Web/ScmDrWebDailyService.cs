@@ -19,10 +19,10 @@ namespace Com.Scm.Dr.Web
         /// 
         /// </summary>
         /// <param name="thisRepository"></param>
-        public ScmDrWebDailyService(SugarRepository<ScmDrWebDailyDao> thisRepository, IResHolder userService)
+        public ScmDrWebDailyService(SugarRepository<ScmDrWebDailyDao> thisRepository, IResHolder resHolder)
         {
             _thisRepository = thisRepository;
-            _ResHolder = userService;
+            _ResHolder = resHolder;
         }
 
         /// <summary>

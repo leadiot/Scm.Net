@@ -24,11 +24,11 @@ namespace Com.Scm.Samples.PoDetail
         /// </summary>
         /// <param name="thisRepository"></param>
         public SamplesPoDetailService(SugarRepository<SamplesPoDetailDao> thisRepository,
-            IResHolder userService,
+            IResHolder resHolder,
             IBookService bookService)
         {
             _thisRepository = thisRepository;
-            _ResHolder = userService;
+            _ResHolder = resHolder;
             _BookService = bookService;
         }
 

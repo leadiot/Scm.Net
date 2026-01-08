@@ -33,13 +33,13 @@ namespace Com.Scm.Ur.User
             ISqlSugarClient sqlClient,
             ScmContextHolder jwtContextHolder,
             SugarRepository<UserDao> thisRepository,
-            IResHolder userService)
+            IResHolder resHolder)
         {
             _EnvConfig = envConfig;
             _SqlClient = sqlClient;
             _jwtContextHolder = jwtContextHolder;
             _thisRepository = thisRepository;
-            _ResHolder = userService;
+            _ResHolder = resHolder;
         }
 
         /// <summary>

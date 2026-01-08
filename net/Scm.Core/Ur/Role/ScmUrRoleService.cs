@@ -21,10 +21,10 @@ public class ScmUrRoleService : ApiService
     /// 
     /// </summary>
     /// <param name="thisRepository"></param>
-    public ScmUrRoleService(SugarRepository<RoleDao> thisRepository, IResHolder userService)
+    public ScmUrRoleService(SugarRepository<RoleDao> thisRepository, IResHolder resHolder)
     {
         _thisRepository = thisRepository;
-        _ResHolder = userService;
+        _ResHolder = resHolder;
     }
 
     /// <summary>

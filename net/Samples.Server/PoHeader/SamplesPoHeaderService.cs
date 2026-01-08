@@ -23,14 +23,14 @@ namespace Com.Scm.Samples.PoHeader
         /// 
         /// </summary>
         /// <param name="thisRepository"></param>
-        /// <param name="userService"></param>
+        /// <param name="resHolder"></param>
         /// <param name="flowService"></param>
         public SamplesPoHeaderService(SugarRepository<SamplesPoHeaderDao> thisRepository,
-            IResHolder userService,
+            IResHolder resHolder,
             IFlowService flowService)
         {
             _thisRepository = thisRepository;
-            _ResHolder = userService;
+            _ResHolder = resHolder;
             _FlowService = flowService;
         }
 

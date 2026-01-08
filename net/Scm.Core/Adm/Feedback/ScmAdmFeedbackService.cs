@@ -2,6 +2,7 @@
 using Com.Scm.Adm.Feedback.Dvo;
 using Com.Scm.Dsa;
 using Com.Scm.Service;
+using Com.Scm.Ur;
 using Com.Scm.Utils;
 using Microsoft.AspNetCore.Mvc;
 
@@ -20,11 +21,11 @@ namespace Com.Scm.Adm.Feedback
         /// </summary>
         public ScmAdmFeedbackService(SugarRepository<AdmFeedbackHeaderDao> headerRespository,
             SugarRepository<AdmFeedbackDetailDao> detailRespository,
-            IResHolder userService)
+            IResHolder resHolder)
         {
             _headerRepository = headerRespository;
             _detailRepository = detailRespository;
-            _ResHolder = userService;
+            _ResHolder = resHolder;
         }
 
         /// <summary>
@@ -86,8 +87,7 @@ namespace Com.Scm.Adm.Feedback
 
             if (headerDvo != null)
             {
-                var userDao = _ResHolder.GetUser(headerDvo.user_id);
-                headerDvo.user_names = userDao?.names;
+                headerDvo.user_names = _ResHolder.GetResNames<UserDao>(headerDvo.user_id);
 
                 headerDvo.details = await _detailRepository
                     .AsQueryable()

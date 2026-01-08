@@ -36,7 +36,7 @@ public class ScmMsgNoticeService : ApiService
     /// <param name="readerRepository"></param>
     /// <param name="senderRepository"></param>
     /// <param name="jwtHolder"></param>
-    /// <param name="userService"></param>
+    /// <param name="resHolder"></param>
     public ScmMsgNoticeService(SugarRepository<NoticeDao> thisRepository
         , SugarRepository<NoticeSummaryDao> summaryRepository
         , SugarRepository<NoticeRecipientDao> recipientRepository
@@ -44,7 +44,7 @@ public class ScmMsgNoticeService : ApiService
         , SugarRepository<NoticeReaderDao> readerRepository
         , SugarRepository<NoticeSenderDao> senderRepository
         , ScmContextHolder jwtHolder
-        , IResHolder userService)
+        , IResHolder resHolder)
     {
         _thisRepository = thisRepository;
         _summaryRepository = summaryRepository;
@@ -53,7 +53,7 @@ public class ScmMsgNoticeService : ApiService
         _jwtHolder = jwtHolder;
         _readerRepository = readerRepository;
         _senderRepository = senderRepository;
-        _ResHolder = userService;
+        _ResHolder = resHolder;
     }
 
     /// <summary>
@@ -162,7 +162,7 @@ public class ScmMsgNoticeService : ApiService
             dvo.title = dao.title;
             dvo.content = dao.content;
 
-            var userDao = _ResHolder.GetUser(dao.send_user);
+            var userDao = _ResHolder.GetRes<UserDao>(dao.send_user);
             dvo.sender = userDao.Adapt<SimpleUserDvo>();
             list.Add(dvo);
         }
@@ -203,7 +203,7 @@ public class ScmMsgNoticeService : ApiService
             dvo.content = dao.content;
             dvo.unread = false;
 
-            var userDao = _ResHolder.GetUser(dao.send_user);
+            var userDao = _ResHolder.GetRes<UserDao>(dao.send_user);
             dvo.sender = userDao.Adapt<SimpleUserDvo>();
             list.Add(dvo);
         }
@@ -244,7 +244,7 @@ public class ScmMsgNoticeService : ApiService
             dvo.content = dao.content;
             dvo.unread = false;
 
-            var userDao = _ResHolder.GetUser(dao.send_user);
+            var userDao = _ResHolder.GetRes<UserDao>(dao.send_user);
             dvo.sender = userDao.Adapt<SimpleUserDvo>();
             list.Add(dvo);
         }

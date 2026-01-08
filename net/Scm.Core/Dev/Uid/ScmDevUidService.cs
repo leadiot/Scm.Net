@@ -22,10 +22,10 @@ namespace Com.Scm.Dev.Uid
         /// <param name="thisRepository"></param>
         /// <param name="userRepository"></param>
         /// <returns></returns>
-        public ScmDevUidService(SugarRepository<ScmDevUidDao> thisRepository, IResHolder userService)
+        public ScmDevUidService(SugarRepository<ScmDevUidDao> thisRepository, IResHolder resHolder)
         {
             _thisRepository = thisRepository;
-            _ResHolder = userService;
+            _ResHolder = resHolder;
         }
 
         /// <summary>

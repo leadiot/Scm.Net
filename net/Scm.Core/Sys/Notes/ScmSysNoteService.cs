@@ -23,14 +23,14 @@ namespace Com.Scm.Sys.Notes
         /// 
         /// </summary>
         /// <param name="thisRepository"></param>
-        /// <param name="userService"></param>
+        /// <param name="resHolder"></param>
         /// <param name="config"></param>
         public ScmSysNoteService(SugarRepository<NoteDao> thisRepository,
-            IResHolder userService,
+            IResHolder resHolder,
             EnvConfig config)
         {
             _thisRepository = thisRepository;
-            _ResHolder = userService;
+            _ResHolder = resHolder;
             _EnvConfig = config;
         }
 

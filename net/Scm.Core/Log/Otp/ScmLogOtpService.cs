@@ -20,12 +20,12 @@ namespace Com.Scm.Log.Sms
         /// 
         /// </summary>
         /// <param name="thisRepository"></param>
-        /// <param name="userService"></param>
+        /// <param name="resHolder"></param>
         /// <returns></returns>
-        public ScmLogOtpService(SugarRepository<LogOtpDao> thisRepository, IResHolder userService)
+        public ScmLogOtpService(SugarRepository<LogOtpDao> thisRepository, IResHolder resHolder)
         {
             _thisRepository = thisRepository;
-            _ResHolder = userService;
+            _ResHolder = resHolder;
         }
 
         /// <summary>

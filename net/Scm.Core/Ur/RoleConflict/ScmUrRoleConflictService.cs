@@ -21,11 +21,11 @@ public class ScmUrRoleConflictService : ApiService
     /// </summary>
     /// <param name="thisRepository"></param>
     public ScmUrRoleConflictService(SugarRepository<RoleConflictDao> thisRepository,
-        IResHolder userService,
+        IResHolder resHolder,
         SugarRepository<RoleDao> roleRepository)
     {
         _thisRepository = thisRepository;
-        _ResHolder = userService;
+        _ResHolder = resHolder;
         _roleRepository = roleRepository;
     }
 

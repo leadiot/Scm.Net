@@ -17,10 +17,10 @@ namespace Com.Scm.Sys.FlowData
         /// 
         /// </summary>
         /// <param name="sqlClient"></param>
-        public ScmSysFlowDataService(ISqlSugarClient sqlClient, IResHolder userService, ScmContextHolder jwtHolder)
+        public ScmSysFlowDataService(ISqlSugarClient sqlClient, IResHolder resHolder, ScmContextHolder jwtHolder)
         {
             _SqlClient = sqlClient;
-            _ResHolder = userService;
+            _ResHolder = resHolder;
             _jwtHolder = jwtHolder;
         }
 

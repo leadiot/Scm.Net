@@ -29,11 +29,11 @@ namespace Com.Scm.Samples.Book
         /// </summary>
         /// <param name="thisRepository"></param>
         public SamplesBookService(SugarRepository<BookDao> thisRepository,
-            IResHolder userService,
+            IResHolder resHolder,
             EnvConfig config)
         {
             _thisRepository = thisRepository;
-            _ResHolder = userService;
+            _ResHolder = resHolder;
             _Config = config;
         }
 

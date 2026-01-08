@@ -20,10 +20,10 @@ namespace Com.Scm.Nas.FesOrg
         /// 
         /// </summary>
         /// <param name="thisRepository"></param>
-        public ScmFesOrgService(SugarRepository<ScmNasOrgDao> thisRepository, IResHolder userService)
+        public ScmFesOrgService(SugarRepository<ScmNasOrgDao> thisRepository, IResHolder resHolder)
         {
             _thisRepository = thisRepository;
-            _ResHolder = userService;
+            _ResHolder = resHolder;
         }
 
         /// <summary>

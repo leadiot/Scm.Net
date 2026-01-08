@@ -35,7 +35,7 @@ namespace Com.Scm.Msg.Chat.Message
         /// <param name="headerRepository"></param>
         /// <param name="detailRepository"></param>
         /// <param name="groupUserRepository"></param>
-        /// <param name="userService"></param>
+        /// <param name="resHolder"></param>
         /// <param name="contextHolder"></param>
         /// <param name="cacheService"></param>
         /// <param name="hubContext"></param>
@@ -45,7 +45,7 @@ namespace Com.Scm.Msg.Chat.Message
         public ScmMsgChatMessageService(SugarRepository<ChatMsgHeaderDao> headerRepository,
             SugarRepository<ChatMsgDetailDao> detailRepository,
             SugarRepository<ChatGroupUserDao> groupUserRepository,
-            IResHolder userService,
+            IResHolder resHolder,
             ScmContextHolder contextHolder,
             Cache.ICacheService cacheService,
             IHubContext<ScmHub> hubContext,
@@ -55,7 +55,7 @@ namespace Com.Scm.Msg.Chat.Message
             _headerRepository = headerRepository;
             _detailRepository = detailRepository;
             _groupUserRepository = groupUserRepository;
-            _ResHolder = userService;
+            _ResHolder = resHolder;
             _contextHolder = contextHolder;
             _CacheService = cacheService;
             _hubContext = hubContext;

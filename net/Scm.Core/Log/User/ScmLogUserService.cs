@@ -22,7 +22,7 @@ namespace Com.Scm.Log.User
         /// 
         /// </summary>
         /// <param name="thisRepository"></param>
-        /// <param name="userService"></param>
+        /// <param name="resHolder"></param>
         /// <returns></returns>
         public ScmLogUserService(SugarRepository<LogUserDao> thisRepository, ScmContextHolder holder, IDicService dicService)
         {

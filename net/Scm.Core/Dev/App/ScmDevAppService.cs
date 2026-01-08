@@ -22,11 +22,11 @@ namespace Com.Scm.Dev.App
         /// 
         /// </summary>
         /// <param name="thisRepository"></param>
-        /// <param name="userService"></param>
-        public ScmDevAppService(SugarRepository<ScmDevAppDao> thisRepository, IResHolder userService)
+        /// <param name="resHolder"></param>
+        public ScmDevAppService(SugarRepository<ScmDevAppDao> thisRepository, IResHolder resHolder)
         {
             _thisRepository = thisRepository;
-            _ResHolder = userService;
+            _ResHolder = resHolder;
         }
 
         /// <summary>

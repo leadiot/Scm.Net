@@ -3,6 +3,7 @@ using Com.Scm.Dsa;
 using Com.Scm.Enums;
 using Com.Scm.Samples.Demo.Dvo;
 using Com.Scm.Service;
+using Com.Scm.Ur;
 using Com.Scm.Utils;
 using Microsoft.AspNetCore.Mvc;
 using MiniExcelLibs;
@@ -17,16 +18,15 @@ namespace Com.Scm.Samples.Demo
     {
         private readonly SugarRepository<DemoDao> _thisRepository;
         private readonly EnvConfig _Config;
-        private readonly IResHolder _userService;
 
         /// <summary>
         /// 构造函数
         /// </summary>
         /// <param name="thisRepository"></param>
-        public SamplesDemoService(SugarRepository<DemoDao> thisRepository, IResHolder userService, EnvConfig config)
+        public SamplesDemoService(SugarRepository<DemoDao> thisRepository, IResHolder resHolder, EnvConfig config)
         {
             _thisRepository = thisRepository;
-            _userService = userService;
+            _ResHolder = resHolder;
             _Config = config;
         }
 
@@ -78,8 +78,8 @@ namespace Com.Scm.Samples.Demo
         {
             foreach (var item in list)
             {
-                item.update_names = _userService.GetUserNames(item.update_user);
-                item.create_names = _userService.GetUserNames(item.create_user);
+                item.update_names = _ResHolder.GetResNames<UserDao>(item.update_user);
+                item.create_names = _ResHolder.GetResNames<UserDao>(item.create_user);
 
                 // Others TODO
             }

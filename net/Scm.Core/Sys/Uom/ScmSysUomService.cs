@@ -21,10 +21,10 @@ namespace Com.Scm.Sys
         /// 
         /// </summary>
         /// <param name="thisRepository"></param>
-        public ScmSysUomService(SugarRepository<ScmSysUomDao> thisRepository, IResHolder userService)
+        public ScmSysUomService(SugarRepository<ScmSysUomDao> thisRepository, IResHolder resHolder)
         {
             _thisRepository = thisRepository;
-            _ResHolder = userService;
+            _ResHolder = resHolder;
         }
 
         /// <summary>

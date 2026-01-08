@@ -21,12 +21,12 @@ namespace Com.Scm.Msg.CommentHeader
         /// 
         /// </summary>
         /// <param name="thisRepository"></param>
-        /// <param name="userService"></param>
+        /// <param name="resHolder"></param>
         /// <returns></returns>
-        public ScmMsgCommentHeaderService(SugarRepository<CommentHeaderDao> thisRepository, IResHolder userService)
+        public ScmMsgCommentHeaderService(SugarRepository<CommentHeaderDao> thisRepository, IResHolder resHolder)
         {
             _thisRepository = thisRepository;
-            _ResHolder = userService;
+            _ResHolder = resHolder;
         }
 
         /// <summary>

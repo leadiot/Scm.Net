@@ -5,6 +5,7 @@ using Com.Scm.Dsa.Dba.Sugar.UnitOfWork.Filters;
 using Com.Scm.Email.Config;
 using Com.Scm.Extensions;
 using Com.Scm.Generator.Config;
+using Com.Scm.Holder;
 using Com.Scm.Hubs;
 using Com.Scm.Login.Otp;
 using Com.Scm.Mapper;
@@ -16,7 +17,6 @@ using Com.Scm.Server;
 using Com.Scm.Service;
 using Com.Scm.Terminal;
 using Com.Scm.Uid.Config;
-using Com.Scm.User;
 using Com.Scm.Utils;
 using Microsoft.Extensions.FileProviders;
 using Serilog;
@@ -112,7 +112,7 @@ namespace Com.Scm.Api
                 corsConfig.Prepare(envConfig);
             }
 
-            services.AddScoped<IResHolder, ScmUserHolder>();
+            services.AddScoped<IResHolder, ScmResHolder>();
             services.AddScoped<ITerminalHolder, ScmTerminalHolder>();
             services.AddScoped<ILogService, ScmLogService>();
             services.AddScoped<IDicService, ScmDicService>();

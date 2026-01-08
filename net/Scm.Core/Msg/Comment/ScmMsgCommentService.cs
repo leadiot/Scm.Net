@@ -5,6 +5,7 @@ using Com.Scm.Msg.Comment.Dvo;
 using Com.Scm.Msg.CommentDetail.Dvo;
 using Com.Scm.Msg.CommentHeader.Dvo;
 using Com.Scm.Service;
+using Com.Scm.Ur;
 using Com.Scm.Utils;
 
 using Microsoft.AspNetCore.Mvc;
@@ -25,15 +26,15 @@ namespace Com.Scm.Msg.Comment
         /// </summary>
         /// <param name="headerRepository"></param>
         /// <param name="detailRepository"></param>
-        /// <param name="userService"></param>
+        /// <param name="resHolder"></param>
         /// <returns></returns>
         public ScmMsgCommentService(SugarRepository<CommentHeaderDao> headerRepository,
             SugarRepository<CommentDetailDao> detailRepository,
-            IResHolder userService)
+            IResHolder resHolder)
         {
             _headerRepository = headerRepository;
             _detailRepository = detailRepository;
-            _ResHolder = userService;
+            _ResHolder = resHolder;
         }
 
         /// <summary>
@@ -74,9 +75,9 @@ namespace Com.Scm.Msg.Comment
         {
             foreach (var item in list)
             {
-                item.update_names = _ResHolder.GetUserNames(item.update_user);
+                item.update_names = _ResHolder.GetResNames<UserDao>(item.update_user);
 
-                var createDao = _ResHolder.GetUser(item.create_user);
+                var createDao = _ResHolder.GetRes<UserDao>(item.create_user);
                 if (createDao != null)
                 {
                     item.create_names = createDao.names;

@@ -22,6 +22,18 @@ namespace Com.Scm.Api.Controllers
         }
 
         /// <summary>
+        /// 心跳测试
+        /// </summary>
+        /// <param name="msg"></param>
+        /// <returns></returns>
+        [HttpGet("Echo")]
+        [AllowAnonymous]
+        public string GetEcho(string msg)
+        {
+            return msg;
+        }
+
+        /// <summary>
         /// 终端设备心跳
         /// </summary>
         /// <param name="ip">主机地址</param>

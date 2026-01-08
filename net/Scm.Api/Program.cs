@@ -162,6 +162,15 @@ namespace Com.Scm.Api
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();
+            app.UseDefaultFiles(new DefaultFilesOptions
+            {
+                DefaultFileNames = new List<string>
+                {
+                    "index.html",
+                    "default.html",
+                    "home.html"
+                }
+            });
 
             if (!string.IsNullOrEmpty(envConfig.DataUri))
             {

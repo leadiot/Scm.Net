@@ -1,6 +1,5 @@
 ﻿using Com.Scm.Controllers;
 using Com.Scm.Token;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Com.Scm.Api.Controllers
@@ -13,16 +12,6 @@ namespace Com.Scm.Api.Controllers
         public TestController(ScmContextHolder scmHolder)
         {
             _ScmHolder = scmHolder;
-        }
-
-        [HttpGet("Echo")]
-        public ScmApiResponse GetEcho(string id)
-        {
-            var token = _ScmHolder.GetToken();
-            var response = new ScmApiResponse();
-            response.SetSuccess();
-
-            return response;
         }
 
         [HttpPost("Echo")]

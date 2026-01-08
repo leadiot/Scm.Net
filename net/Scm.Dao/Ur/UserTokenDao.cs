@@ -7,6 +7,7 @@ namespace Com.Scm.Ur
     /// <summary>
     /// 终端授权
     /// </summary>
+    [SqlSugar.SugarTable("scm_ur_user_token")]
     public class UserTokenDao : ScmUserDataDao
     {
         /// <summary>

@@ -24,7 +24,7 @@ public class ScmUrGroupService : ApiService
     public ScmUrGroupService(SugarRepository<GroupDao> thisRepository, IUserHolder userService)
     {
         _thisRepository = thisRepository;
-        _UserHolder = userService;
+        _ResHolder = userService;
     }
 
     /// <summary>

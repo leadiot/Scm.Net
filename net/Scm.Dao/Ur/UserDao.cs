@@ -11,12 +11,13 @@ namespace Com.Scm.Ur
     /// 用户表
     /// </summary>
     [SugarTable("scm_ur_user")]
-    public class UserDao : ScmDataDao, IDeleteDao
+    public class UserDao : ScmDataDao, IDeleteDao, IResDao
     {
         /// <summary>
         /// 
         /// </summary>
         public ScmUserTypesEnum types { get; set; }
+
         /// <summary>
         /// 系统代码
         /// </summary>

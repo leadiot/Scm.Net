@@ -25,7 +25,7 @@ public class ScmUrRoleConflictService : ApiService
         SugarRepository<RoleDao> roleRepository)
     {
         _thisRepository = thisRepository;
-        _UserHolder = userService;
+        _ResHolder = userService;
         _roleRepository = roleRepository;
     }
 

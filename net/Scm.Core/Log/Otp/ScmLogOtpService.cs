@@ -25,7 +25,7 @@ namespace Com.Scm.Log.Sms
         public ScmLogOtpService(SugarRepository<LogOtpDao> thisRepository, IUserHolder userService)
         {
             _thisRepository = thisRepository;
-            _UserHolder = userService;
+            _ResHolder = userService;
         }
 
         /// <summary>

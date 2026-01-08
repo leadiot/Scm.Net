@@ -23,7 +23,7 @@ namespace Com.Scm.Flow
         public ScmSysFlowOrderService(SugarRepository<ScmFlowOrderDao> thisRepository, IUserHolder userService)
         {
             _thisRepository = thisRepository;
-            _UserHolder = userService;
+            _ResHolder = userService;
         }
 
         /// <summary>

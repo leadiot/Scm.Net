@@ -7,7 +7,7 @@ namespace Com.Scm.Ur
     /// 群组表
     /// </summary>
     [SqlSugar.SugarTable("scm_ur_group")]
-    public class GroupDao : ScmDataDao
+    public class GroupDao : ScmDataDao, IResDao
     {
         /// <summary>
         /// 

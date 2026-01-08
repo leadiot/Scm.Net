@@ -24,7 +24,7 @@ namespace Com.Scm.Nas.FesExt
         public ScmFesExtService(SugarRepository<ScmNasExtDao> thisRepository, IUserHolder userService, IDicService dicService)
         {
             _thisRepository = thisRepository;
-            _UserHolder = userService;
+            _ResHolder = userService;
             _dicService = dicService;
         }
 

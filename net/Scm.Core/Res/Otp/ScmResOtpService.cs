@@ -25,7 +25,7 @@ namespace Com.Scm.Res.Otp
         public ScmResOtpService(SugarRepository<ScmResOtpDao> thisRepository, IUserHolder userService)
         {
             _thisRepository = thisRepository;
-            _UserHolder = userService;
+            _ResHolder = userService;
         }
 
         /// <summary>

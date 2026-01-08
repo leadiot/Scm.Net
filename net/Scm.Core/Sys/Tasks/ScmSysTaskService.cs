@@ -25,7 +25,7 @@ namespace Com.Scm.Sys.Tasks
         public ScmSysTaskService(SugarRepository<TaskDao> thisRepository, IUserHolder userService)
         {
             _thisRepository = thisRepository;
-            _UserHolder = userService;
+            _ResHolder = userService;
         }
 
         /// <summary>

@@ -25,7 +25,7 @@ namespace Com.Scm.Scm.Ur
         public ScmUrTerminalService(SugarRepository<ScmUrTerminalDao> thisRepository, IUserHolder userHolder, ITerminalHolder holder)
         {
             _thisRepository = thisRepository;
-            _UserHolder = userHolder;
+            _ResHolder = userHolder;
             _terminalHolder = holder;
         }
 

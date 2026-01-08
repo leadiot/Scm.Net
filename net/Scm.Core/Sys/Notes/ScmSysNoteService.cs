@@ -30,7 +30,7 @@ namespace Com.Scm.Sys.Notes
             EnvConfig config)
         {
             _thisRepository = thisRepository;
-            _UserHolder = userService;
+            _ResHolder = userService;
             _EnvConfig = config;
         }
 

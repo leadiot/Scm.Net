@@ -24,7 +24,7 @@ namespace Com.Scm.Adm.Feedback
         {
             _headerRepository = headerRespository;
             _detailRepository = detailRespository;
-            _UserHolder = userService;
+            _ResHolder = userService;
         }
 
         /// <summary>
@@ -86,7 +86,7 @@ namespace Com.Scm.Adm.Feedback
 
             if (headerDvo != null)
             {
-                var userDao = _UserHolder.GetUser(headerDvo.user_id);
+                var userDao = _ResHolder.GetUser(headerDvo.user_id);
                 headerDvo.user_names = userDao?.names;
 
                 headerDvo.details = await _detailRepository

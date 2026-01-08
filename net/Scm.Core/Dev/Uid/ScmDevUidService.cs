@@ -25,7 +25,7 @@ namespace Com.Scm.Dev.Uid
         public ScmDevUidService(SugarRepository<ScmDevUidDao> thisRepository, IUserHolder userService)
         {
             _thisRepository = thisRepository;
-            _UserHolder = userService;
+            _ResHolder = userService;
         }
 
         /// <summary>

@@ -7,7 +7,7 @@ namespace Com.Scm.Res.Service
     /// 
     /// </summary>
     [SqlSugar.SugarTable("scm_res_service")]
-    public class ScmResServiceDao : ScmDataDao
+    public class ScmResServiceDao : ScmDataDao, IResDao
     {
         /// <summary>
         /// 

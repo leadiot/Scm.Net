@@ -55,7 +55,7 @@ namespace Com.Scm.Msg.Chat.Message
             _headerRepository = headerRepository;
             _detailRepository = detailRepository;
             _groupUserRepository = groupUserRepository;
-            _UserHolder = userService;
+            _ResHolder = userService;
             _contextHolder = contextHolder;
             _CacheService = cacheService;
             _hubContext = hubContext;

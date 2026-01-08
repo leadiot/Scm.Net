@@ -26,7 +26,7 @@ namespace Com.Scm.Msg.Chat.Friend
         public ScmMsgChatFriendService(SugarRepository<ChatFriendDao> thisRepository, IUserHolder userService)
         {
             _thisRepository = thisRepository;
-            _UserHolder = userService;
+            _ResHolder = userService;
         }
 
         /// <summary>

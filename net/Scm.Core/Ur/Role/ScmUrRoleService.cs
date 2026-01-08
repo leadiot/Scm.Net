@@ -24,7 +24,7 @@ public class ScmUrRoleService : ApiService
     public ScmUrRoleService(SugarRepository<RoleDao> thisRepository, IUserHolder userService)
     {
         _thisRepository = thisRepository;
-        _UserHolder = userService;
+        _ResHolder = userService;
     }
 
     /// <summary>

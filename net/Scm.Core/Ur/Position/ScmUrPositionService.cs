@@ -25,7 +25,7 @@ public class ScmUrPositionService : ApiService
     public ScmUrPositionService(SugarRepository<PositionDao> thisRepository, IUserHolder userService)
     {
         _thisRepository = thisRepository;
-        _UserHolder = userService;
+        _ResHolder = userService;
     }
 
     /// <summary>

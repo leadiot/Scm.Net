@@ -23,7 +23,7 @@ namespace Com.Scm.Nas.FesApp
         public ScmFesAppService(SugarRepository<ScmNasAppDao> thisRepository, IUserHolder userService)
         {
             _thisRepository = thisRepository;
-            _UserHolder = userService;
+            _ResHolder = userService;
         }
 
         /// <summary>

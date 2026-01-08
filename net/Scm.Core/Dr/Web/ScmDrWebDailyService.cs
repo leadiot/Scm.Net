@@ -22,7 +22,7 @@ namespace Com.Scm.Dr.Web
         public ScmDrWebDailyService(SugarRepository<ScmDrWebDailyDao> thisRepository, IUserHolder userService)
         {
             _thisRepository = thisRepository;
-            _UserHolder = userService;
+            _ResHolder = userService;
         }
 
         /// <summary>

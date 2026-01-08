@@ -23,7 +23,7 @@ namespace Com.Scm.Dev.Db
         public ScmDevDbService(SugarRepository<ScmDevDbDao> thisRepository, IUserHolder userService)
         {
             _thisRepository = thisRepository;
-            _UserHolder = userService;
+            _ResHolder = userService;
         }
 
         /// <summary>

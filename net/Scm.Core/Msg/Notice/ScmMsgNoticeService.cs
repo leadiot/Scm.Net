@@ -53,7 +53,7 @@ public class ScmMsgNoticeService : ApiService
         _jwtHolder = jwtHolder;
         _readerRepository = readerRepository;
         _senderRepository = senderRepository;
-        _UserHolder = userService;
+        _ResHolder = userService;
     }
 
     /// <summary>
@@ -162,7 +162,7 @@ public class ScmMsgNoticeService : ApiService
             dvo.title = dao.title;
             dvo.content = dao.content;
 
-            var userDao = _UserHolder.GetUser(dao.send_user);
+            var userDao = _ResHolder.GetUser(dao.send_user);
             dvo.sender = userDao.Adapt<SimpleUserDvo>();
             list.Add(dvo);
         }
@@ -203,7 +203,7 @@ public class ScmMsgNoticeService : ApiService
             dvo.content = dao.content;
             dvo.unread = false;
 
-            var userDao = _UserHolder.GetUser(dao.send_user);
+            var userDao = _ResHolder.GetUser(dao.send_user);
             dvo.sender = userDao.Adapt<SimpleUserDvo>();
             list.Add(dvo);
         }
@@ -244,7 +244,7 @@ public class ScmMsgNoticeService : ApiService
             dvo.content = dao.content;
             dvo.unread = false;
 
-            var userDao = _UserHolder.GetUser(dao.send_user);
+            var userDao = _ResHolder.GetUser(dao.send_user);
             dvo.sender = userDao.Adapt<SimpleUserDvo>();
             list.Add(dvo);
         }

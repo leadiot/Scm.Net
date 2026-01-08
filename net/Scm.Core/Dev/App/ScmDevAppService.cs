@@ -26,7 +26,7 @@ namespace Com.Scm.Dev.App
         public ScmDevAppService(SugarRepository<ScmDevAppDao> thisRepository, IUserHolder userService)
         {
             _thisRepository = thisRepository;
-            _UserHolder = userService;
+            _ResHolder = userService;
         }
 
         /// <summary>

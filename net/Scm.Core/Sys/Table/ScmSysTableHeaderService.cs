@@ -25,7 +25,7 @@ namespace Com.Scm.Sys.Table
         public ScmSysTableHeaderService(SugarRepository<SysTableHeaderDao> thisRepository, IUserHolder userService)
         {
             _thisRepository = thisRepository;
-            _UserHolder = userService;
+            _ResHolder = userService;
         }
 
         /// <summary>

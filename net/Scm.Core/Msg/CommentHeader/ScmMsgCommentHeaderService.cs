@@ -26,7 +26,7 @@ namespace Com.Scm.Msg.CommentHeader
         public ScmMsgCommentHeaderService(SugarRepository<CommentHeaderDao> thisRepository, IUserHolder userService)
         {
             _thisRepository = thisRepository;
-            _UserHolder = userService;
+            _ResHolder = userService;
         }
 
         /// <summary>

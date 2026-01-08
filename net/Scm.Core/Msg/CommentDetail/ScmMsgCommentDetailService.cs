@@ -23,7 +23,7 @@ namespace Com.Scm.Msg.CommentDetail
         public ScmMsgCommentDetailService(SugarRepository<CommentDetailDao> thisRepository, IUserHolder userService)
         {
             _thisRepository = thisRepository;
-            _UserHolder = userService;
+            _ResHolder = userService;
         }
 
         /// <summary>
@@ -90,9 +90,9 @@ namespace Com.Scm.Msg.CommentDetail
         {
             foreach (var item in list)
             {
-                item.update_names = _UserHolder.GetUserNames(item.update_user);
+                item.update_names = _ResHolder.GetUserNames(item.update_user);
 
-                var createDao = _UserHolder.GetUser(item.create_user);
+                var createDao = _ResHolder.GetUser(item.create_user);
                 if (createDao != null)
                 {
                     item.create_names = createDao.names;

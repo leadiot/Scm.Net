@@ -24,7 +24,7 @@ namespace Com.Scm.Sys
         public ScmSysUomService(SugarRepository<ScmSysUomDao> thisRepository, IUserHolder userService)
         {
             _thisRepository = thisRepository;
-            _UserHolder = userService;
+            _ResHolder = userService;
         }
 
         /// <summary>

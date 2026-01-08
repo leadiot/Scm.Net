@@ -5,6 +5,7 @@ using Com.Scm.Dvo;
 using Com.Scm.Enums;
 using Com.Scm.Exceptions;
 using Com.Scm.Sys.Tasks;
+using Com.Scm.Ur;
 using Com.Scm.Utils;
 using SqlSugar;
 
@@ -17,7 +18,7 @@ namespace Com.Scm.Service
     {
         protected EnvConfig _EnvConfig;
         protected ISqlSugarClient _SqlClient;
-        protected IUserHolder _UserHolder;
+        protected IResHolder _ResHolder;
         protected Com.Scm.Cache.ICacheService _CacheService;
 
         #region Search缓存
@@ -286,8 +287,8 @@ namespace Com.Scm.Service
         /// <param name="dvo"></param>
         protected void Prepare(ScmDataDvo dvo)
         {
-            dvo.update_names = _UserHolder.GetUserNames(dvo.update_user);
-            dvo.create_names = _UserHolder.GetUserNames(dvo.create_user);
+            dvo.update_names = _ResHolder.GetResNames<UserDao>(dvo.update_user);
+            dvo.create_names = _ResHolder.GetResNames<UserDao>(dvo.create_user);
         }
 
         /// <summary>
@@ -298,8 +299,8 @@ namespace Com.Scm.Service
         {
             foreach (var item in list)
             {
-                item.update_names = _UserHolder.GetUserNames(item.update_user);
-                item.create_names = _UserHolder.GetUserNames(item.create_user);
+                item.update_names = _ResHolder.GetResNames<UserDao>(item.update_user);
+                item.create_names = _ResHolder.GetResNames<UserDao>(item.create_user);
             }
         }
         #endregion

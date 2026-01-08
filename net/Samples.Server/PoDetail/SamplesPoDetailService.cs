@@ -28,7 +28,7 @@ namespace Com.Scm.Samples.PoDetail
             IBookService bookService)
         {
             _thisRepository = thisRepository;
-            _UserHolder = userService;
+            _ResHolder = userService;
             _BookService = bookService;
         }
 

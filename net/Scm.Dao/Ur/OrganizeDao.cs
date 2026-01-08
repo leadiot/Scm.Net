@@ -10,17 +10,17 @@ namespace Com.Scm.Ur;
 /// 组织机构表
 /// </summary>
 [SugarTable("scm_ur_organize")]
-public class OrganizeDao : ScmDataDao, ISortableDao, IDeleteDao
+public class OrganizeDao : ScmDataDao, ISortableDao, IDeleteDao, IResDao
 {
     /// <summary>
     /// 
     /// </summary>
     public string codes { get; set; }
+
     /// <summary>
-    /// 父节点
+    /// 机构编码
     /// </summary>
-    [Required]
-    public long pid { get; set; }
+    public string codec { get; set; }
 
     /// <summary>
     /// 
@@ -37,9 +37,10 @@ public class OrganizeDao : ScmDataDao, ISortableDao, IDeleteDao
     public string namec { get; set; }
 
     /// <summary>
-    /// 机构编码
+    /// 父节点
     /// </summary>
-    public string codec { get; set; }
+    [Required]
+    public long pid { get; set; }
 
     /// <summary>
     /// 部门层级

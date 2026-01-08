@@ -33,7 +33,7 @@ namespace Com.Scm.Samples.Book
             EnvConfig config)
         {
             _thisRepository = thisRepository;
-            _UserHolder = userService;
+            _ResHolder = userService;
             _Config = config;
         }
 

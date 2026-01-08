@@ -26,7 +26,7 @@ namespace Com.Scm.Log.OAuth
         public ScmLogOauthService(SugarRepository<LogOidcDao> thisRepository, IUserHolder userService)
         {
             _thisRepository = thisRepository;
-            _UserHolder = userService;
+            _ResHolder = userService;
         }
 
         /// <summary>

@@ -1,204 +1,108 @@
 ﻿using Com.Scm.Config;
 using Com.Scm.Controllers;
-using Com.Scm.Filters;
-using Com.Scm.Image.SkiaSharp;
-using Com.Scm.Sys.SysSafety;
+using Com.Scm.Nas;
+using Com.Scm.Utils;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Text.RegularExpressions;
 
 namespace Com.Scm.Api.Controllers
 {
+    /// <summary>
+    /// 文件上传服务
+    /// </summary>
+    [AllowAnonymous]
     [ApiExplorerSettings(GroupName = "Scm")]
     public class UploadController : ApiController
     {
-        private EnvConfig _Config;
-        private ScmSysSafetyService _SafetyService;
+        private EnvConfig _EnvConfig;
 
-        public UploadController(EnvConfig config, ScmSysSafetyService safetyService)
+        public UploadController(EnvConfig envConfig)
         {
-            _Config = config;
-            _SafetyService = safetyService;
+            _EnvConfig = envConfig;
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="request"></param>
-        /// <returns></returns>
-        [HttpPost("upload")]
-        public async Task<ScmUploadResponse> UploadAsync(ScmUploadRequest request)
-        {
-            if (request.type == UploadTypeEnum.ByFile)
-            {
-                return await ByFileAsync(request);
-            }
-
-            if (request.type == UploadTypeEnum.ByPart)
-            {
-                return await ByPartAsync(request);
-            }
-
-            if (request.type == UploadTypeEnum.ByHash)
-            {
-                return await ByHashAsync(request);
-            }
-
-            var response = new ScmUploadResponse();
-            response.SetFailure("未知的上传类型！");
-            return response;
-        }
-
-        /// <summary>
-        /// 文件上传
-        /// </summary>
-        /// <param name="request"></param>
-        /// <returns></returns>
-        [HttpPost("byfile")]
-        public async Task<ScmUploadResponse> ByFileAsync(ScmUploadRequest request)
+        #region 小文件上传
+        [HttpPost("file")]
+        public async Task<ScmUploadResponse> UploadFileAsync(ScmUploadRequest request)
         {
             var response = new ScmUploadResponse();
 
-            var files = Request.Form.Files;
-            if (files.Count == 0)
+            var file = request.file;
+            if (file == null)
             {
-                response.SetFailure("请选择文件！");
+                LogUtils.Debug("上传文件为空！");
+                response.SetFailure("上传文件为空！");
                 return response;
             }
 
-            var qty = 0;
-            foreach (var file in files)
+            if (file.Length > NasEnv.MAX_CHUNK_SIZE)
             {
-                var name = file.Name;
-
-                var exts = Path.GetExtension(file.FileName).ToLower();
-                if (!IsAcceptExts(exts))
-                {
-                    response.SetFailure("不支持的文件类型！");
-                    return response;
-                }
-
-                var dstFile = "";
-                using (var stream = System.IO.File.OpenWrite(dstFile))
-                {
-                    await file.CopyToAsync(stream);
-                }
-                qty += 1;
-            }
-
-            response.SetSuccess(qty, $"成功上传 {qty} 个文件！");
-            return response;
-        }
-
-        /// <summary>
-        /// 分段上传
-        /// </summary>
-        /// <param name="request"></param>
-        /// <returns></returns>
-        [HttpPost("bypart")]
-        public async Task<ScmUploadResponse> ByPartAsync(ScmUploadRequest request)
-        {
-            var response = new ScmUploadResponse();
-
-            var files = Request.Form.Files;
-            if (files.Count == 0)
-            {
-                response.SetFailure("请选择文件！");
+                LogUtils.Debug("无效的内容过大！");
+                response.SetFailure("无效的内容过大！");
                 return response;
             }
 
-            var qty = 0;
-            foreach (var file in files)
+            var name = (request.file_name ?? file.FileName).ToLower();
+            if (!Regex.IsMatch(name, @"^\w{64}[.]nas$"))
             {
-                var name = file.Name;
-
-                var exts = Path.GetExtension(file.FileName).ToLower();
-                if (!IsAcceptExts(exts))
-                {
-                    response.SetFailure("不支持的文件类型！");
-                    return response;
-                }
-
-                var dstFile = "";
-                using (var stream = System.IO.File.OpenWrite(dstFile))
-                {
-                    await file.CopyToAsync(stream);
-                }
-                qty += 1;
-            }
-
-            response.SetSuccess(qty, $"成功上传 {qty} 个文件！");
-            return response;
-        }
-
-        /// <summary>
-        /// 摘要上传
-        /// </summary>
-        /// <param name="request"></param>
-        /// <returns></returns>
-        [HttpPost("byhash")]
-        public async Task<ScmUploadResponse> ByHashAsync(ScmUploadRequest request)
-        {
-            var response = new ScmUploadResponse();
-
-            var files = Request.Form.Files;
-            if (files.Count == 0)
-            {
-                response.SetFailure("请选择文件！");
+                LogUtils.Debug("无效的文件名称！");
+                response.SetFailure("无效的文件名称！");
                 return response;
             }
 
-            var qty = 0;
-            foreach (var file in files)
+            //var exts = Path.GetExtension(file.FileName).ToLower();
+            //if (!IsAcceptExts(exts))
+            //{
+            //    response.SetFailure("不支持的文件类型！");
+            //    return response;
+            //}
+
+            var dstFile = _EnvConfig.GetTempPath(name);
+            using (var stream = System.IO.File.OpenWrite(dstFile))
             {
-                var name = file.Name;
-
-                var exts = Path.GetExtension(file.FileName).ToLower();
-                if (!IsAcceptExts(exts))
-                {
-                    response.SetFailure("不支持的文件类型！");
-                    return response;
-                }
-
-                var dstFile = "";
-                using (var stream = System.IO.File.OpenWrite(dstFile))
-                {
-                    await file.CopyToAsync(stream);
-                }
-                qty += 1;
+                await file.CopyToAsync(stream);
             }
 
-            response.SetSuccess(qty, $"成功上传 {qty} 个文件！");
+            LogUtils.Debug("上传文件成功：" + name);
+            response.SetSuccess($"文件上传成功！");
             return response;
         }
+        #endregion
 
-        private bool IsAcceptExts(string exts)
+        #region 大文件上传
+        /// <summary>
+        /// 分块上传
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        [HttpPost("chunk")]
+        public async Task<ScmUploadResponse> UploadChunkAsync(ScmUploadRequest request)
         {
-            var safety = _SafetyService.Get();
-            if (string.IsNullOrWhiteSpace(safety.UploadWhite))
-            {
-                return true;
-            }
-
-            var arr = safety.UploadWhite.Split(new char[] { '|' }, StringSplitOptions.RemoveEmptyEntries);
-            return arr.Contains(exts);
+            return null;
         }
 
-        [HttpGet("avatar/{file}"), AllowAnonymous, NoJsonResult, NoAuditLog]
-        public async Task<IActionResult> AvatarAsync(string file)
+        /// <summary>
+        /// 上传校验
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        [HttpPost("check")]
+        public async Task<ScmUploadResponse> UploadCheckAsync(ScmUploadRequest request)
         {
-            var path = _Config.GetAvatarPath(file);
-            if (!System.IO.File.Exists(path))
-            {
-                var result = new ImageEngine().GenAvatar();
-                return File(result.Image, "image/png");
-            }
-
-            using (var stream = System.IO.File.OpenRead(path))
-            {
-                var bytes = new byte[stream.Length];
-                await stream.ReadAsync(bytes, 0, bytes.Length);
-                return File(bytes, "image/png");
-            }
+            return null;
         }
+
+        /// <summary>
+        /// 文件合并
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        [HttpPost("merge")]
+        public async Task<ScmUploadResponse> UploadMergeAsync(ScmUploadRequest request)
+        {
+            return null;
+        }
+        #endregion
     }
 }

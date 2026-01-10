@@ -52,6 +52,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Reference Include="Scm.Common.Http">
+      <HintPath>..\Libs\netstandard2.0\Scm.Common.Http.dll</HintPath>
+    </Reference>
     <Reference Include="Scm.Common.Otp">
       <HintPath>..\Libs\netstandard2.0\Scm.Common.Otp.dll</HintPath>
     </Reference>

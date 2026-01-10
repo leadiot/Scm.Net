@@ -87,6 +87,11 @@
         public const string FileDownloadUrl = "/Download/file";
 
         /// <summary>
+        /// Nas数据目录
+        /// </summary>
+        public const string DEF_NAS_DIR = "Nas";
+
+        /// <summary>
         /// 默认目录ID
         /// </summary>
         public const long DEF_DIR_ID = 0;
@@ -100,5 +105,10 @@
         /// 网络路径分隔符
         /// </summary>
         public static readonly char WebSeparator = '/';
+
+        /// <summary>
+        /// 块文件大小
+        /// </summary>
+        public const long MAX_CHUNK_SIZE = 1024 * 1024 * 5;
     }
 }

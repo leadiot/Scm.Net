@@ -1,0 +1,44 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>disable</Nullable>
+    <RootNamespace>Com.Scm.Nas</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Core" Version="2.3.0" />
+    <PackageReference Include="MiniExcel" Version="1.42.0" />
+    <PackageReference Include="SqlSugarCore" Version="5.1.4.210" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\..\Scm\Scm.Net\net\Scm.Dao\Scm.Dao.csproj" />
+    <ProjectReference Include="..\..\..\..\Scm\Scm.Net\net\Scm.Dsa.Dba.Sugar\Scm.Dsa.Dba.Sugar.csproj" />
+    <ProjectReference Include="..\..\..\..\Scm\Scm.Net\net\Scm.Server.Api\Scm.Server.Api.csproj" />
+    <ProjectReference Include="..\..\..\..\Scm\Scm.Net\net\Scm.Server.Dao\Scm.Server.Dao.csproj" />
+    <ProjectReference Include="..\..\..\..\Scm\Scm.Net\net\Scm.Server\Scm.Server.csproj" />
+    <ProjectReference Include="..\Nas.Common\Nas.Common.csproj" />
+    <ProjectReference Include="..\Nas.Dao\Nas.Dao.csproj" />
+    <ProjectReference Include="..\Nas.Dto\Nas.Dto.csproj" />
+    <ProjectReference Include="..\Scm.Common.Dto\Scm.Common.Dto.csproj" />
+    <ProjectReference Include="..\Scm.Common\Scm.Common.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="Scm.Common.File">
+      <HintPath>..\Libs\netstandard2.0\Scm.Common.File.dll</HintPath>
+    </Reference>
+    <Reference Include="Scm.Common.Text">
+      <HintPath>..\Libs\netstandard2.0\Scm.Common.Text.dll</HintPath>
+    </Reference>
+    <Reference Include="Scm.Common.Time">
+      <HintPath>..\Libs\netstandard2.0\Scm.Common.Time.dll</HintPath>
+    </Reference>
+    <Reference Include="Scm.Uid">
+      <HintPath>..\Libs\net10.0\Scm.Uid.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+</Project>

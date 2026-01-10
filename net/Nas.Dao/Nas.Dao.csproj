@@ -1,0 +1,35 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>disable</Nullable>
+    <RootNamespace>Com.Scm.Nas</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="SqlSugarCore" Version="5.1.4.210" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Nas.Common\Nas.Common.csproj" />
+    <ProjectReference Include="..\Scm.Server.Dao\Scm.Server.Dao.csproj" />
+    <ProjectReference Include="..\Scm.Server\Scm.Server.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="Scm.Common">
+      <HintPath>..\Libs\netstandard2.0\Scm.Common.dll</HintPath>
+    </Reference>
+    <Reference Include="Scm.Common.Text">
+      <HintPath>..\Libs\netstandard2.0\Scm.Common.Text.dll</HintPath>
+    </Reference>
+    <Reference Include="Scm.Common.Time">
+      <HintPath>..\Libs\netstandard2.0\Scm.Common.Time.dll</HintPath>
+    </Reference>
+    <Reference Include="Scm.Uid">
+      <HintPath>..\Libs\net10.0\Scm.Uid.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+</Project>

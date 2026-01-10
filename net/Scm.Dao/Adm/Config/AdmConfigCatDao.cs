@@ -1,5 +1,7 @@
 ﻿using Com.Scm.Dao;
 using Com.Scm.Enums;
+using SqlSugar;
+using System.ComponentModel.DataAnnotations;
 
 namespace Com.Scm.Adm.Config
 {
@@ -16,10 +18,14 @@ namespace Com.Scm.Adm.Config
         /// <summary>
         /// 
         /// </summary>
+        [StringLength(32)]
+        [SugarColumn(Length = 32)]
         public string codec { get; set; }
         /// <summary>
         /// 
         /// </summary>
+        [StringLength(32)]
+        [SugarColumn(Length = 32)]
         public string namec { get; set; }
         /// <summary>
         /// 

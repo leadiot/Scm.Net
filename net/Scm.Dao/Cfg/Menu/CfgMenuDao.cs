@@ -19,6 +19,7 @@ namespace Com.Scm.Cfg
         /// 展示名称
         /// </summary>
         [StringLength(32)]
+        [SugarColumn(Length = 32)]
         public string namec { get; set; }
 
         /// <summary>

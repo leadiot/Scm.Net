@@ -1,4 +1,5 @@
 ﻿using Com.Scm.Dao;
+using SqlSugar;
 using System.ComponentModel.DataAnnotations;
 
 namespace Com.Scm.Cfg.DateTheme
@@ -14,6 +15,7 @@ namespace Com.Scm.Cfg.DateTheme
         /// 格式：yyyy-MM-dd
         /// </summary>
         [StringLength(16)]
+        [SugarColumn(Length = 16)]
         public string dates { get; set; }
 
         /// <summary>

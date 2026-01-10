@@ -1,4 +1,5 @@
 ﻿using Com.Scm.Dao.User;
+using SqlSugar;
 using System.ComponentModel.DataAnnotations;
 
 namespace Com.Scm.Cfg.Export
@@ -13,21 +14,25 @@ namespace Com.Scm.Cfg.Export
         /// 系统编码
         /// </summary>
         [StringLength(16)]
+        [SugarColumn(Length = 16)]
         public string codes { get; set; }
         /// <summary>
         /// 用户编码
         /// </summary>
         [StringLength(128)]
+        [SugarColumn(Length = 128)]
         public string codec { get; set; }
         /// <summary>
         /// 说明
         /// </summary>
         [StringLength(64)]
+        [SugarColumn(Length = 64)]
         public string names { get; set; }
         /// <summary>
         /// 文件名称
         /// </summary>
         [StringLength(32)]
+        [SugarColumn(Length = 32)]
         public string file { get; set; }
 
         /// <summary>

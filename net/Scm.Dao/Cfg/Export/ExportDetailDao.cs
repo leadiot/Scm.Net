@@ -1,4 +1,6 @@
 ﻿using Com.Scm.Dao;
+using SqlSugar;
+using System.ComponentModel.DataAnnotations;
 
 namespace Com.Scm.Cfg.Export
 {
@@ -19,18 +21,26 @@ namespace Com.Scm.Cfg.Export
         /// <summary>
         /// 列名称
         /// </summary>
+        [StringLength(256)]
+        [SugarColumn(Length = 256)]
         public string col { get; set; }
         /// <summary>
         /// 展示名称
         /// </summary>
+        [StringLength(64)]
+        [SugarColumn(Length = 64)]
         public string namec { get; set; }
         /// <summary>
         /// 默认值
         /// </summary>
+        [StringLength(256)]
+        [SugarColumn(Length = 256, IsNullable = true)]
         public string def { get; set; }
         /// <summary>
         /// 公式
         /// </summary>
+        [StringLength(256)]
+        [SugarColumn(Length = 256, IsNullable = true)]
         public string fun { get; set; }
     }
 }

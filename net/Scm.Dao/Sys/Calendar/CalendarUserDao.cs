@@ -6,7 +6,7 @@ namespace Com.Scm.Sys.Calendar
     /// <summary>
     /// 参与人列表
     /// </summary>
-    [SugarTable("scm_calendar_user")]
+    [SugarTable("scm_sys_calendar_user")]
     public class CalendarUserDao : ScmDataDao
     {
         /// <summary>

@@ -9,15 +9,8 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Nas.Common\Nas.Common.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Reference Include="Scm.Common">
-      <HintPath>..\Libs\netstandard2.0\Scm.Common.dll</HintPath>
-    </Reference>
-    <Reference Include="Scm.Common.Dto">
-      <HintPath>..\Libs\netstandard2.0\Scm.Common.Dto.dll</HintPath>
-    </Reference>
+    <ProjectReference Include="..\Scm.Common.Dto\Scm.Common.Dto.csproj" />
+    <ProjectReference Include="..\Scm.Common\Scm.Common.csproj" />
   </ItemGroup>
 
 </Project>

@@ -14,16 +14,16 @@ namespace Com.Scm.Sys.SysAdvInfo;
 [ApiExplorerSettings(GroupName = "Sys")]
 public class ScmSysAdvInfoService : IApiService
 {
-    private readonly SugarRepository<SysAdvInfoDao> _thisRepository;
-    private readonly SugarRepository<SysAdvColumnDao> _advColumnRepository;
+    private readonly SugarRepository<ScmAdvInfoDao> _thisRepository;
+    private readonly SugarRepository<ScmAdvColumnDao> _advColumnRepository;
 
     /// <summary>
     /// 
     /// </summary>
     /// <param name="thisRepository"></param>
     /// <param name="advColumnRepository"></param>
-    public ScmSysAdvInfoService(SugarRepository<SysAdvInfoDao> thisRepository
-    , SugarRepository<SysAdvColumnDao> advColumnRepository)
+    public ScmSysAdvInfoService(SugarRepository<ScmAdvInfoDao> thisRepository
+    , SugarRepository<ScmAdvColumnDao> advColumnRepository)
     {
         _thisRepository = thisRepository;
         _advColumnRepository = advColumnRepository;
@@ -72,7 +72,7 @@ public class ScmSysAdvInfoService : IApiService
     /// <returns></returns>
     public async Task<bool> AddAsync(SysAdvInfoDto model)
     {
-        return await _thisRepository.InsertAsync(model.Adapt<SysAdvInfoDao>());
+        return await _thisRepository.InsertAsync(model.Adapt<ScmAdvInfoDao>());
     }
 
     /// <summary>
@@ -82,7 +82,7 @@ public class ScmSysAdvInfoService : IApiService
     /// <returns></returns>
     public async Task<bool> UpdateAsync(SysAdvInfoDto model)
     {
-        return await _thisRepository.UpdateAsync(model.Adapt<SysAdvInfoDao>());
+        return await _thisRepository.UpdateAsync(model.Adapt<ScmAdvInfoDao>());
     }
 
     /// <summary>

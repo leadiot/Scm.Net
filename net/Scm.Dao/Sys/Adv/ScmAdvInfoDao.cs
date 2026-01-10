@@ -7,8 +7,8 @@ namespace Com.Scm.Sys.Adv;
 /// <summary>
 /// 广告位信息表 
 /// </summary>
-[SugarTable("sys_adv_info")]
-public class SysAdvInfoDao : ScmDao
+[SugarTable("scm_adv_info")]
+public class ScmAdvInfoDao : ScmDao
 {
     /// <summary>
     /// 栏目Id
@@ -21,6 +21,7 @@ public class SysAdvInfoDao : ScmDao
     /// </summary>
     [Required]
     [StringLength(128)]
+    [SugarColumn(Length = 128)]
     public string Title { get; set; }
 
     /// <summary>
@@ -38,11 +39,13 @@ public class SysAdvInfoDao : ScmDao
     /// <summary>
     /// 广告位图片
     /// </summary>
+    [SugarColumn(Length = 128)]
     public string ImgUrl { get; set; }
 
     /// <summary>
     /// 连接地址
     /// </summary>
+    [SugarColumn(Length = 128)]
     public string LinkUrl { get; set; }
 
     /// <summary>
@@ -50,16 +53,19 @@ public class SysAdvInfoDao : ScmDao
     /// </summary>
     [Required]
     [StringLength(32)]
+    [SugarColumn(Length = 32)]
     public string Target { get; set; }
 
     /// <summary>
     /// 描述
     /// </summary>
+    [SugarColumn(Length = 512)]
     public string Summary { get; set; }
 
     /// <summary>
     /// 广告位代码
     /// </summary>
+    [SugarColumn(Length = 512)]
     public string Codes { get; set; }
 
     /// <summary>
@@ -71,12 +77,12 @@ public class SysAdvInfoDao : ScmDao
     /// <summary>
     /// 开始时间
     /// </summary>
-    public DateTime? BeginTime { get; set; }
+    public long BeginTime { get; set; }
 
     /// <summary>
     /// 结束时间
     /// </summary>
-    public DateTime? EndTime { get; set; }
+    public long EndTime { get; set; }
 
     /// <summary>
     /// 排序
@@ -89,26 +95,4 @@ public class SysAdvInfoDao : ScmDao
     /// </summary>
     [Required]
     public int Hits { get; set; } = 0;
-
-    /// <summary>
-    /// 添加时间
-    /// </summary>
-    public DateTime CreateTime { get; set; } = DateTime.Now;
-
-    /// <summary>
-    /// 添加人
-    /// </summary>
-    public string CreateUser { get; set; }
-
-    /// <summary>
-    /// 修改时间
-    /// </summary>
-    public DateTime? UpdateTime { get; set; }
-
-    /// <summary>
-    /// 修改人
-    /// </summary>
-    public string UpdateUser { get; set; }
-
-
 }

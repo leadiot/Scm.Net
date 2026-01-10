@@ -7,22 +7,14 @@ namespace Com.Scm.Sys.Adv;
 /// <summary>
 /// 广告位栏目表 
 /// </summary>
-[SugarTable("sys_adv_column")]
-public class SysAdvColumnDao : ScmDao
+[SugarTable("scm_adv_column")]
+public class ScmAdvColumnDao : ScmDao
 {
     /// <summary>
     /// 父编号
     /// </summary>
     [Required]
     public long ParentId { get; set; }
-
-    /// <summary>
-    /// 父编号集合
-    /// </summary>
-    [Required]
-    [StringLength(128)]
-    [SugarColumn(IsJson = true)]
-    public List<string> ParentIdList { get; set; } = new List<string>();
 
     /// <summary>
     /// 层级
@@ -35,11 +27,13 @@ public class SysAdvColumnDao : ScmDao
     /// </summary>
     [Required]
     [StringLength(32)]
+    [SugarColumn(Length = 32)]
     public string Name { get; set; }
 
     /// <summary>
     /// 栏目类型
     /// </summary>
+    [SugarColumn(Length = 50)]
     public string Flag { get; set; }
 
     /// <summary>
@@ -68,6 +62,7 @@ public class SysAdvColumnDao : ScmDao
     /// <summary>
     /// 栏目说明
     /// </summary>
+    [SugarColumn(Length = 512)]
     public string Summary { get; set; }
 
     /// <summary>

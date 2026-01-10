@@ -1,5 +1,7 @@
 using Com.Scm.Enums;
 using Com.Scm.Ur;
+using Com.Scm.Utils;
+using System.Text;
 
 namespace Com.Scm.Token;
 
@@ -54,5 +56,44 @@ public class ScmToken
     public bool IsLogin()
     {
         return user_id > 0;
+    }
+
+    public static ScmToken FromAppToken(string token)
+    {
+        if (token.StartsWith(PRE_APP))
+        {
+            token = token.Substring(PRE_APP.Length);
+        }
+
+        var bytes = Convert.FromBase64String(token);
+        token = Encoding.UTF8.GetString(bytes);
+
+        var arr = token.Split(":");
+        var nasToken = new ScmToken();
+        if (arr.Length == 3)
+        {
+            var tmp = arr[0];
+            if (TextUtils.IsLong(tmp))
+            {
+                nasToken.terminal_id = long.Parse(tmp);
+            }
+
+            tmp = arr[1];
+            if (TextUtils.IsLong(tmp))
+            {
+                nasToken.time = long.Parse(tmp);
+            }
+
+            nasToken.digest = arr[2];
+        }
+
+        return nasToken;
+    }
+
+    public bool IsValidAppToken(string token, string appToken)
+    {
+        var key = $"{terminal_id}:{time}:{token}";
+        var hash = TextUtils.Md5(key);
+        return hash.Equals(appToken, StringComparison.OrdinalIgnoreCase);
     }
 }

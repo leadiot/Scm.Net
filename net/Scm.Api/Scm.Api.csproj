@@ -26,6 +26,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Nas.Server\Nas.Server.csproj" />
     <ProjectReference Include="..\Samples.Server\Samples.Server.csproj" />
     <ProjectReference Include="..\Scm.Cache\Scm.Cache.csproj" />
     <ProjectReference Include="..\Scm.Common\Scm.Common.csproj" />

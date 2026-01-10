@@ -1,3 +1,4 @@
+using Com.Scm.Dao;
 using Com.Scm.Dao.User;
 using Com.Scm.Enums;
 using Com.Scm.Utils;
@@ -10,7 +11,7 @@ namespace Com.Scm.Ur
     /// 终端
     /// </summary>
     [SugarTable("scm_ur_terminal")]
-    public class ScmUrTerminalDao : ScmUserDataDao
+    public class ScmUrTerminalDao : ScmUserDataDao, IResDao
     {
         /// <summary>
         /// 终端类型
@@ -25,11 +26,18 @@ namespace Com.Scm.Ur
         [StringLength(16)]
         public string codes { get; set; }
 
+        [Required]
+        [StringLength(32)]
+        public string codec { get; set; }
+
         /// <summary>
         /// 终端名称
         /// </summary>
         [StringLength(32)]
         public string names { get; set; }
+
+        [StringLength(64)]
+        public string namec { get; set; }
 
         /// <summary>
         /// 终端口令
@@ -76,6 +84,11 @@ namespace Com.Scm.Ur
             base.PrepareCreate(userId);
 
             this.codes = UidUtils.NextCodes("scm_ur_terminal", (int)this.types);
+        }
+
+        public bool IsExpired()
+        {
+            return TimeUtils.GetUnixTime(true) > expired;
         }
     }
 }

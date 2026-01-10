@@ -13,13 +13,13 @@ namespace Com.Scm.Sys.SysAdvColumn;
 [ApiExplorerSettings(GroupName = "Sys")]
 public class ScmSysAdvColumnService : IApiService
 {
-    private readonly SugarRepository<SysAdvColumnDao> _thisRepository;
+    private readonly SugarRepository<ScmAdvColumnDao> _thisRepository;
 
     /// <summary>
     /// 
     /// </summary>
     /// <param name="thisRepository"></param>
-    public ScmSysAdvColumnService(SugarRepository<SysAdvColumnDao> thisRepository)
+    public ScmSysAdvColumnService(SugarRepository<ScmAdvColumnDao> thisRepository)
     {
         _thisRepository = thisRepository;
     }
@@ -84,7 +84,7 @@ public class ScmSysAdvColumnService : IApiService
 
         var upModel = await _thisRepository.GetFirstAsync(m => true, m => m.Sort);
         model.Sort = upModel.Sort + 1;
-        return await _thisRepository.InsertAsync(model.Adapt<SysAdvColumnDao>());
+        return await _thisRepository.InsertAsync(model.Adapt<ScmAdvColumnDao>());
     }
 
     /// <summary>

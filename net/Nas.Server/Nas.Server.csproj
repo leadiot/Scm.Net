@@ -8,22 +8,20 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.AspNetCore.Mvc.Core" Version="2.3.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Core" Version="2.3.9" />
     <PackageReference Include="MiniExcel" Version="1.42.0" />
-    <PackageReference Include="SqlSugarCore" Version="5.1.4.210" />
+    <PackageReference Include="SqlSugarCore" Version="5.1.4.211" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\..\..\Scm\Scm.Net\net\Scm.Dao\Scm.Dao.csproj" />
-    <ProjectReference Include="..\..\..\..\Scm\Scm.Net\net\Scm.Dsa.Dba.Sugar\Scm.Dsa.Dba.Sugar.csproj" />
-    <ProjectReference Include="..\..\..\..\Scm\Scm.Net\net\Scm.Server.Api\Scm.Server.Api.csproj" />
-    <ProjectReference Include="..\..\..\..\Scm\Scm.Net\net\Scm.Server.Dao\Scm.Server.Dao.csproj" />
-    <ProjectReference Include="..\..\..\..\Scm\Scm.Net\net\Scm.Server\Scm.Server.csproj" />
     <ProjectReference Include="..\Nas.Common\Nas.Common.csproj" />
     <ProjectReference Include="..\Nas.Dao\Nas.Dao.csproj" />
     <ProjectReference Include="..\Nas.Dto\Nas.Dto.csproj" />
     <ProjectReference Include="..\Scm.Common.Dto\Scm.Common.Dto.csproj" />
     <ProjectReference Include="..\Scm.Common\Scm.Common.csproj" />
+    <ProjectReference Include="..\Scm.Dao\Scm.Dao.csproj" />
+    <ProjectReference Include="..\Scm.Server.Dao\Scm.Server.Dao.csproj" />
+    <ProjectReference Include="..\Scm.Server\Scm.Server.csproj" />
   </ItemGroup>
 
   <ItemGroup>

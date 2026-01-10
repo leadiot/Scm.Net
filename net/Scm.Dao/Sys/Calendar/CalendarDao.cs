@@ -8,7 +8,7 @@ namespace Com.Scm.Sys.Calendar;
 /// <summary>
 /// 日程表
 /// </summary>
-[SugarTable("scm_calendar")]
+[SugarTable("scm_sys_calendar")]
 public class CalendarDao : ScmDataDao
 {
     /// <summary>

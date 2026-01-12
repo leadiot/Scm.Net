@@ -747,7 +747,7 @@ namespace Com.Scm.Nas.Sync
             var dstFile = GetPhysicalPath(dto.path);
             FileUtils.MoveDoc(srcFile, dstFile, true);
 
-            var dstDao = GetDirDaoByPath(dto.path);
+            var dstDao = GetDocDaoByPath(dto.path);
             if (dstDao != null)
             {
                 DeleteResFileDao(token, dstDao);

@@ -555,7 +555,7 @@ namespace Com.Scm.Nas.Sync
             LogUtils.Debug("移动目录：" + dto.path);
 
             var srcFile = GetPhysicalPath(dto.src);
-            if (!FileUtils.ExistsDoc(srcFile))
+            if (!FileUtils.ExistsDir(srcFile))
             {
                 result.SetFailure($"来源目录 {dto.src} 不存在！");
                 return false;
@@ -656,7 +656,7 @@ namespace Com.Scm.Nas.Sync
             LogUtils.Debug("复制目录：" + dto.path);
 
             var srcFile = GetPhysicalPath(dto.src);
-            if (!FileUtils.ExistsDoc(srcFile))
+            if (!FileUtils.ExistsDir(srcFile))
             {
                 LogUtils.Debug($"来源目录 {dto.src} 不存在！");
                 result.SetFailure($"来源目录 {dto.src} 不存在！");

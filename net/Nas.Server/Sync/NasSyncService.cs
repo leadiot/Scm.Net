@@ -631,6 +631,11 @@ namespace Com.Scm.Nas.Sync
         /// <returns></returns>
         private bool MoveDirCasced(ScmUrTerminalDao token, SyncResFileDao parentDao, string srcDir, string srcPath, string dstDir, string dstPath)
         {
+            if (!Directory.Exists(dstDir))
+            {
+                Directory.CreateDirectory(dstDir);
+            }
+
             var dirList = Directory.GetDirectories(srcDir);
             foreach (var dir in dirList)
             {
@@ -673,7 +678,7 @@ namespace Com.Scm.Nas.Sync
                 var dstUri = dstPath + NasEnv.WebSeparator + name;
 
                 // 若目标存在，则删除
-                var dstDao = GetDirDaoByPath(dstUri);
+                var dstDao = GetDocDaoByPath(dstUri);
                 if (dstDao != null)
                 {
                     DeleteResFileDao(token, dstDao);

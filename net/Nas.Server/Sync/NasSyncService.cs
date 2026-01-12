@@ -609,13 +609,30 @@ namespace Com.Scm.Nas.Sync
                 return false;
             }
 
+            var parentDao = CreateResDirDao(GetParentPath(dto.path), token.user_id);
+            var dstDao = GetDirDaoByPath(dto.path);
+            if (dstDao != null)
+            {
+                DeleteResFileDao(token, dstDao);
+            }
+            var srcDao = GetDirDaoByPath(dto.src);
+            if (srcDao != null)
+            {
+                srcDao.path = dto.path;
+                srcDao.dir_id = parentDao.id;
+                UpdateResFileDao(token, srcDao);
+            }
+            else
+            {
+                srcDao = AddCreateResDirDao(token, parentDao.id, NasTypeEnums.Doc, dto.path, dto.name);
+            }
+
             var dstDir = GetPhysicalPath(dto.path);
-            var dirDao = CreateResDirDao(dto.path, token.user_id);
-            MoveDirCasced(token, dirDao, srcDir, dto.src, dstDir, dto.path);
+            MoveDirCasced(token, srcDao, srcDir, dto.src, dstDir, dto.path);
 
-            AddLogFileByDto(token, dto, dirDao.dir_id);
+            AddLogFileByDto(token, dto, srcDao.dir_id);
 
-            result.SetSuccess(dirDao.id);
+            result.SetSuccess(srcDao.id);
             return true;
         }
 
@@ -913,13 +930,30 @@ namespace Com.Scm.Nas.Sync
                 return false;
             }
 
+            var parentDao = CreateResDirDao(GetParentPath(dto.path), token.user_id);
+            var dstDao = GetDirDaoByPath(dto.path);
+            if (dstDao != null)
+            {
+                DeleteResFileDao(token, dstDao);
+            }
+            var srcDao = GetDirDaoByPath(dto.src);
+            if (srcDao != null)
+            {
+                srcDao.path = dto.path;
+                srcDao.dir_id = parentDao.id;
+                UpdateResFileDao(token, srcDao);
+            }
+            else
+            {
+                srcDao = AddCreateResDirDao(token, parentDao.id, NasTypeEnums.Doc, dto.path, dto.name);
+            }
+
             var dstDir = GetPhysicalPath(dto.path);
-            var dirDao = CreateResDirDao(dto.path, token.user_id);
-            MoveDirCasced(token, dirDao, srcDir, dto.src, dstDir, dto.path);
+            MoveDirCasced(token, srcDao, srcDir, dto.src, dstDir, dto.path);
 
-            AddLogFileByDto(token, dto, dirDao.dir_id);
+            AddLogFileByDto(token, dto, srcDao.dir_id);
 
-            result.SetSuccess();
+            result.SetSuccess(srcDao.id);
             return true;
         }
 

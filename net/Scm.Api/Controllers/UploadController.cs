@@ -1,5 +1,6 @@
 ﻿using Com.Scm.Config;
 using Com.Scm.Controllers;
+using Com.Scm.Nas;
 using Com.Scm.Utils;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -35,7 +36,7 @@ namespace Com.Scm.Api.Controllers
                 return response;
             }
 
-            if (file.Length > 1024 * 1024 * 5)
+            if (file.Length > NasEnv.MAX_CHUNK_SIZE)
             {
                 LogUtils.Debug("无效的内容过大！");
                 response.SetFailure("无效的内容过大！");

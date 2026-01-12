@@ -50,7 +50,7 @@ namespace Com.Scm.Server
                         {
                             sql = sql.Replace(item.ParameterName, "'" + item.Value + "'");
                         }
-                        LogUtils.Debug("Sql脚本：" + sql, "db");
+                        //LogUtils.Debug("Sql脚本：" + sql, "db");
                     };
                 });
                 return sugarScope;

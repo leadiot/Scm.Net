@@ -80,7 +80,7 @@ namespace Com.Scm.Nas.Sync
 
             if (!ScmUtils.IsValidId(model.folder_id))
             {
-                model.folder_id = CreateDirDao(model.path, ScmEnv.DEFAULT_ID).id;
+                model.folder_id = CreateResDirDao(model.path, ScmEnv.DEFAULT_ID).id;
             }
 
             var dao = await _SqlClient.Queryable<SyncCfgDriveDao>()
@@ -445,7 +445,7 @@ namespace Com.Scm.Nas.Sync
                 Directory.CreateDirectory(path);
             }
 
-            var dirDao = CreateDirDao(dto.path, token.user_id);
+            var dirDao = CreateResDirDao(dto.path, token.user_id);
 
             AddLogFileByDto(token, dto, dirDao.dir_id);
 
@@ -482,7 +482,7 @@ namespace Com.Scm.Nas.Sync
                 return false;
             }
 
-            var dirDao = CreateDirDao(GetParentDir(dto.path), token.user_id);
+            var dirDao = CreateResDirDao(GetParentPath(dto.path), token.user_id);
 
             var docDao = AddCreateFile(token, dto, dirDao.id);
 
@@ -564,23 +564,33 @@ namespace Com.Scm.Nas.Sync
             var dstFile = GetPhysicalPath(dto.path);
             FileUtils.MoveDir(srcFile, dstFile, true);
 
-            var dirDao = GetDirDaoByPath(dto.src);
-            if (dirDao != null)
+            var dstDao = GetDirDaoByPath(dto.path);
+            if (dstDao != null)
             {
-                dirDao.name = dto.name;
-                dirDao.path = dto.path;
-                UpdateResFileDao(token, dirDao);
+                DeleteResFileDao(token, dstDao);
+            }
 
-                RenameDirDao(token, dirDao);
+            // 创建父级目录
+            var dirDao = CreateResDirDao(GetParentPath(dto.path), token.user_id);
+
+            var srcDao = GetDirDaoByPath(dto.src);
+            if (srcDao != null)
+            {
+                srcDao.name = dto.name;
+                srcDao.path = dto.path;
+                srcDao.dir_id = dirDao.id;
+                UpdateResFileDao(token, srcDao);
+
+                RenameDirDao(token, srcDao);
             }
             else
             {
-                dirDao = CreateDirDao(dto.path, token.user_id);
+                srcDao = CreateResDirDao(dto.path, token.user_id);
             }
 
-            AddLogFileByDto(token, dto, dirDao.dir_id);
+            AddLogFileByDto(token, dto, srcDao.dir_id);
 
-            result.SetSuccess(dirDao.id);
+            result.SetSuccess(srcDao.id);
             return true;
         }
 
@@ -604,13 +614,33 @@ namespace Com.Scm.Nas.Sync
             var dstFile = GetPhysicalPath(dto.path);
             FileUtils.MoveDoc(srcFile, dstFile, true);
 
-            var dirDao = CreateDirDao(GetParentDir(dto.path), token.user_id);
-            var docDao = AddCreateFile(token, dto, dirDao.id);
+            var dstDao = GetDirDaoByPath(dto.path);
+            if (dstDao != null)
+            {
+                DeleteResFileDao(token, dstDao);
+            }
 
-            var dao = dto.Adapt<Sync.SyncLogFileDao>();
-            await _SqlClient.Insertable(dao).ExecuteCommandAsync();
+            // 创建父级目录
+            var dirDao = CreateResDirDao(GetParentPath(dto.path), token.user_id);
 
-            result.SetSuccess(docDao.id);
+            var srcDao = GetDocDaoByPath(dto.src);
+            if (srcDao != null)
+            {
+                srcDao.name = dto.name;
+                srcDao.path = dto.path;
+                srcDao.dir_id = dirDao.id;
+                UpdateResFileDao(token, srcDao);
+
+                RenameDirDao(token, srcDao);
+            }
+            else
+            {
+                srcDao = AddResFileByDto(token, dto);
+            }
+
+            AddLogFileByDto(token, dto, srcDao.dir_id);
+
+            result.SetSuccess(srcDao.id);
             return true;
         }
         #endregion
@@ -666,7 +696,7 @@ namespace Com.Scm.Nas.Sync
             var dstFile = GetPhysicalPath(dto.path);
             FileUtils.CopyDir(srcFile, dstFile, true);
 
-            var dirDao = CreateDirDao(dto.path, token.user_id);
+            var dirDao = CreateResDirDao(dto.path, token.user_id);
 
             AddLogFileByDto(token, dto, dirDao.dir_id);
 
@@ -752,7 +782,7 @@ namespace Com.Scm.Nas.Sync
         }
 
         /// <summary>
-        /// 移动目录
+        /// 更名目录
         /// </summary>
         /// <param name="dto"></param>
         /// <param name="result"></param>
@@ -771,26 +801,32 @@ namespace Com.Scm.Nas.Sync
             var dstFile = GetPhysicalPath(dto.path);
             FileUtils.MoveDir(srcFile, dstFile, true);
 
-            var dirDao = GetDirDaoByPath(dto.src);
-            var dirId = 0L;
-            if (dirDao != null)
+            var dstDao = GetDirDaoByPath(dto.path);
+            if (dstDao != null)
             {
-                dirDao.name = dto.name;
-                dirDao.path = dto.path;
-                dirId = dirDao.dir_id;
-                UpdateResFileDao(token, dirDao);
+                DeleteResFileDao(token, dstDao);
+            }
 
-                RenameDirDao(token, dirDao);
+            var dirDao = CreateResDirDao(GetParentPath(dto.path), token.user_id);
+
+            var srcDao = GetDirDaoByPath(dto.src);
+            if (srcDao != null)
+            {
+                srcDao.name = dto.name;
+                srcDao.path = dto.path;
+                srcDao.dir_id = dirDao.id;
+                UpdateResFileDao(token, srcDao);
+
+                RenameDirDao(token, srcDao);
             }
             else
             {
-                dirId = GetParentIdByPath(dto.path);
-                dto.dir_id = dirId;
+                srcDao = CreateResDirDao(dto.path, token.user_id);
                 // 追加文档记录
                 AddResFileByDto(token, dto);
             }
 
-            AddLogFileByDto(token, dto, dirId);
+            AddLogFileByDto(token, dto, srcDao.dir_id);
 
             result.SetSuccess();
             return true;
@@ -956,7 +992,7 @@ namespace Com.Scm.Nas.Sync
                 Directory.CreateDirectory(tmpFile);
             }
 
-            var dirDao = CreateDirDao(dto.path, token.user_id);
+            var dirDao = CreateResDirDao(dto.path, token.user_id);
 
             AddLogFileByDto(token, dto, dirDao.dir_id);
 
@@ -1054,7 +1090,7 @@ namespace Com.Scm.Nas.Sync
         /// </summary>
         /// <param name="file">虚拟绝对路径</param>
         /// <returns></returns>
-        private static string GetParentDir(string file)
+        private static string GetParentPath(string file)
         {
             file = file.TrimEnd(NasEnv.WebSeparator);
             var idx = file.LastIndexOf(NasEnv.WebSeparator);
@@ -1071,7 +1107,7 @@ namespace Com.Scm.Nas.Sync
         /// <param name="path"></param>
         /// <param name="userId"></param>
         /// <returns></returns>
-        private SyncResFileDao CreateDirDao(string path, long userId)
+        private SyncResFileDao CreateResDirDao(string path, long userId)
         {
             var tmp = "";
             SyncResFileDao parent = new SyncResFileDao() { id = NasEnv.DEF_DIR_ID };
@@ -1104,18 +1140,24 @@ namespace Com.Scm.Nas.Sync
             return parent;
         }
 
+        private void DeleteResFileDao(ScmUrTerminalDao token, SyncResFileDao dao)
+        {
+            _SqlClient.Deleteable(dao).ExecuteCommand();
+        }
+
         private void UpdateResFileDao(ScmUrTerminalDao token, Sync.SyncResFileDao dao)
         {
             dao.PrepareUpdate(token.user_id);
             _SqlClient.Updateable(dao).ExecuteCommand();
         }
 
-        private void AddResFileByDto(ScmUrTerminalDao token, NasLogFileDto dto)
+        private SyncResFileDao AddResFileByDto(ScmUrTerminalDao token, NasLogFileDto dto)
         {
             var docDao = dto.Adapt<Sync.SyncResFileDao>();
             docDao.user_id = token.user_id;
             docDao.PrepareCreate(token.user_id);
             _SqlClient.Insertable(docDao).ExecuteCommand();
+            return docDao;
         }
 
         /// <summary>

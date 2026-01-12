@@ -18,6 +18,7 @@
     <ProjectReference Include="..\Nas.Dao\Nas.Dao.csproj" />
     <ProjectReference Include="..\Nas.Dto\Nas.Dto.csproj" />
     <ProjectReference Include="..\Scm.Common.Dto\Scm.Common.Dto.csproj" />
+    <ProjectReference Include="..\Scm.Common.Time\Scm.Common.Time.csproj" />
     <ProjectReference Include="..\Scm.Common\Scm.Common.csproj" />
     <ProjectReference Include="..\Scm.Dao\Scm.Dao.csproj" />
     <ProjectReference Include="..\Scm.Server.Dao\Scm.Server.Dao.csproj" />
@@ -30,9 +31,6 @@
     </Reference>
     <Reference Include="Scm.Common.Text">
       <HintPath>..\Libs\netstandard2.0\Scm.Common.Text.dll</HintPath>
-    </Reference>
-    <Reference Include="Scm.Common.Time">
-      <HintPath>..\Libs\netstandard2.0\Scm.Common.Time.dll</HintPath>
     </Reference>
     <Reference Include="Scm.Uid">
       <HintPath>..\Libs\net10.0\Scm.Uid.dll</HintPath>

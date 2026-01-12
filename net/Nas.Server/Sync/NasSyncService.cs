@@ -17,12 +17,10 @@ namespace Com.Scm.Nas.Sync
     /// <summary>
     /// 终端文件同步服务
     /// </summary>
-    [ApiExplorerSettings(GroupName = "Scm")]
     [AllowAnonymous]
+    [ApiExplorerSettings(GroupName = "Scm")]
     public class NasSyncService : AppService
     {
-        private ScmContextHolder _ScmHolder;
-
         /// <summary>
         /// 构造函数
         /// </summary>
@@ -31,15 +29,14 @@ namespace Com.Scm.Nas.Sync
         /// <param name="resHolder"></param>
         public NasSyncService(ISqlSugarClient sqlClient,
             EnvConfig envConfig,
-            ScmContextHolder scmHolder,
             IResHolder resHolder)
         {
             _SqlClient = sqlClient;
             _EnvConfig = envConfig;
-            _ScmHolder = scmHolder;
             _ResHolder = resHolder;
         }
 
+        #region 对外接口
         /// <summary>
         /// 获取驱动列表
         /// </summary>
@@ -290,6 +287,7 @@ namespace Com.Scm.Nas.Sync
             result.SetFailure("不支持的操作：" + dto.opt);
             return result;
         }
+        #endregion
 
         #region 删除文件
         /// <summary>
@@ -512,6 +510,56 @@ namespace Com.Scm.Nas.Sync
             }
             return docDao;
         }
+
+        /// <summary>
+        /// 添加目录记录
+        /// </summary>
+        /// <param name="token"></param>
+        /// <param name="dirId"></param>
+        /// <param name="type"></param>
+        /// <param name="path"></param>
+        /// <returns></returns>
+        private Sync.SyncResFileDao AddCreateResDirDao(ScmUrTerminalDao token, long dirId, NasTypeEnums type, string path, string name)
+        {
+            var dirDao = new Sync.SyncResFileDao
+            {
+                user_id = token.user_id,
+                type = NasTypeEnums.Dir,
+                name = name,
+                path = path,
+                dir_id = dirId, // 根目录
+            };
+            _SqlClient.Insertable(dirDao).ExecuteCommand();
+            return dirDao;
+        }
+
+        /// <summary>
+        /// 添加文档记录
+        /// </summary>
+        /// <param name="token"></param>
+        /// <param name="dirId"></param>
+        /// <param name="type"></param>
+        /// <param name="path"></param>
+        /// <param name="name"></param>
+        /// <param name="hash"></param>
+        /// <param name="size"></param>
+        /// <returns></returns>
+        private Sync.SyncResFileDao AddCreateResDocDao(ScmUrTerminalDao token, long dirId, NasTypeEnums type, string path, string name, string hash, long size, long time)
+        {
+            var dirDao = new Sync.SyncResFileDao
+            {
+                user_id = token.user_id,
+                type = NasTypeEnums.Doc,
+                name = name,
+                path = path,
+                hash = hash,
+                size = size,
+                modify_time = time,
+                dir_id = dirId, // 根目录
+            };
+            _SqlClient.Insertable(dirDao).ExecuteCommand();
+            return dirDao;
+        }
         #endregion
 
         #region 移动文件
@@ -554,43 +602,105 @@ namespace Com.Scm.Nas.Sync
         {
             LogUtils.Debug("移动目录：" + dto.path);
 
-            var srcFile = GetPhysicalPath(dto.src);
-            if (!FileUtils.ExistsDir(srcFile))
+            var srcDir = GetPhysicalPath(dto.src);
+            if (!FileUtils.ExistsDir(srcDir))
             {
                 result.SetFailure($"来源目录 {dto.src} 不存在！");
                 return false;
             }
 
-            var dstFile = GetPhysicalPath(dto.path);
-            FileUtils.MoveDir(srcFile, dstFile, true);
+            var dstDir = GetPhysicalPath(dto.path);
+            var dirDao = CreateResDirDao(dto.path, token.user_id);
+            MoveDirCasced(token, dirDao, srcDir, dto.src, dstDir, dto.path);
 
-            var dstDao = GetDirDaoByPath(dto.path);
-            if (dstDao != null)
+            AddLogFileByDto(token, dto, dirDao.dir_id);
+
+            result.SetSuccess(dirDao.id);
+            return true;
+        }
+
+        /// <summary>
+        /// 目录级联移动
+        /// </summary>
+        /// <param name="token"></param>
+        /// <param name="parentDao"></param>
+        /// <param name="srcDir"></param>
+        /// <param name="srcPath"></param>
+        /// <param name="dstDir"></param>
+        /// <param name="dstPath"></param>
+        /// <returns></returns>
+        private bool MoveDirCasced(ScmUrTerminalDao token, SyncResFileDao parentDao, string srcDir, string srcPath, string dstDir, string dstPath)
+        {
+            var dirList = Directory.GetDirectories(srcDir);
+            foreach (var dir in dirList)
             {
-                DeleteResFileDao(token, dstDao);
+                var name = FileUtils.GetFileName(dir);
+                var dstUri = dstPath + NasEnv.WebSeparator + name;
+
+                // 若目标存在，则删除
+                var dstDao = GetDirDaoByPath(dstUri);
+                if (dstDao != null)
+                {
+                    DeleteResFileDao(token, dstDao);
+                }
+
+                var srcUri = srcPath + NasEnv.WebSeparator + name;
+                var dirDao = GetDirDaoByPath(srcUri);
+                if (dirDao != null)
+                {
+                    dirDao.path = dstUri;
+                    dirDao.dir_id = parentDao.id;
+                    UpdateResFileDao(token, dirDao);
+                }
+                else
+                {
+                    dirDao = AddCreateResDirDao(token, parentDao.id, NasTypeEnums.Dir, dstUri, name);
+                }
+
+                var dstFile = Path.Combine(dstDir, name);
+                if (!Directory.Exists(dstFile))
+                {
+                    Directory.CreateDirectory(dstFile);
+                }
+
+                MoveDirCasced(token, dirDao, dir, srcUri, dstFile, dstUri);
             }
 
-            // 创建父级目录
-            var dirDao = CreateResDirDao(GetParentPath(dto.path), token.user_id);
-
-            var srcDao = GetDirDaoByPath(dto.src);
-            if (srcDao != null)
+            var docList = Directory.GetFiles(srcDir);
+            foreach (var doc in docList)
             {
-                srcDao.name = dto.name;
-                srcDao.path = dto.path;
-                srcDao.dir_id = dirDao.id;
-                UpdateResFileDao(token, srcDao);
+                var name = FileUtils.GetFileName(doc);
+                var dstUri = dstPath + NasEnv.WebSeparator + name;
 
-                RenameDirDao(token, srcDao);
+                // 若目标存在，则删除
+                var dstDao = GetDirDaoByPath(dstUri);
+                if (dstDao != null)
+                {
+                    DeleteResFileDao(token, dstDao);
+                }
+
+                var srcUri = srcPath + NasEnv.WebSeparator + name;
+                var docDao = GetDocDaoByPath(srcUri);
+                if (docDao != null)
+                {
+                    docDao.path = dstUri;
+                    docDao.dir_id = parentDao.id;
+                    UpdateResFileDao(token, docDao);
+                }
+                else
+                {
+                    var hash = FileUtils.Sha(doc);
+                    var info = new FileInfo(doc);
+                    var time = TimeUtils.GetUnixTime(info.LastAccessTimeUtc);
+                    docDao = AddCreateResDocDao(token, parentDao.id, NasTypeEnums.Dir, dstUri, name, hash, info.Length, time);
+                }
+
+                var dstFile = Path.Combine(dstDir, name);
+                File.Move(doc, dstFile, true);
             }
-            else
-            {
-                srcDao = CreateResDirDao(dto.path, token.user_id);
-            }
 
-            AddLogFileByDto(token, dto, srcDao.dir_id);
+            Directory.Delete(srcDir, true);
 
-            result.SetSuccess(srcDao.id);
             return true;
         }
 
@@ -791,42 +901,18 @@ namespace Com.Scm.Nas.Sync
         {
             LogUtils.Debug("更名目录：" + dto.path);
 
-            var srcFile = GetPhysicalPath(dto.src);
-            if (!FileUtils.ExistsDir(srcFile))
+            var srcDir = GetPhysicalPath(dto.src);
+            if (!FileUtils.ExistsDir(srcDir))
             {
                 result.SetFailure($"来源目录 {dto.src} 不存在！");
                 return false;
             }
 
-            var dstFile = GetPhysicalPath(dto.path);
-            FileUtils.MoveDir(srcFile, dstFile, true);
+            var dstDir = GetPhysicalPath(dto.path);
+            var dirDao = CreateResDirDao(dto.path, token.user_id);
+            MoveDirCasced(token, dirDao, srcDir, dto.src, dstDir, dto.path);
 
-            var dstDao = GetDirDaoByPath(dto.path);
-            if (dstDao != null)
-            {
-                DeleteResFileDao(token, dstDao);
-            }
-
-            var dirDao = CreateResDirDao(GetParentPath(dto.path), token.user_id);
-
-            var srcDao = GetDirDaoByPath(dto.src);
-            if (srcDao != null)
-            {
-                srcDao.name = dto.name;
-                srcDao.path = dto.path;
-                srcDao.dir_id = dirDao.id;
-                UpdateResFileDao(token, srcDao);
-
-                RenameDirDao(token, srcDao);
-            }
-            else
-            {
-                srcDao = CreateResDirDao(dto.path, token.user_id);
-                // 追加文档记录
-                AddResFileByDto(token, dto);
-            }
-
-            AddLogFileByDto(token, dto, srcDao.dir_id);
+            AddLogFileByDto(token, dto, dirDao.dir_id);
 
             result.SetSuccess();
             return true;
@@ -1085,6 +1171,17 @@ namespace Com.Scm.Nas.Sync
             return _EnvConfig.GetDataPath("Nas" + path);
         }
 
+        private string GetVirtualPath(string path)
+        {
+            if (string.IsNullOrEmpty(path))
+            {
+                return "" + NasEnv.WebSeparator;
+            }
+
+            var nasPath = _EnvConfig.GetDataPath("Nas");
+            return path.Substring(nasPath.Length);
+        }
+
         /// <summary>
         /// 获取上级目录
         /// </summary>
@@ -1134,6 +1231,14 @@ namespace Com.Scm.Nas.Sync
                     dao.PrepareCreate(userId);
                     _SqlClient.Insertable(dao).ExecuteCommand();
                 }
+                else
+                {
+                    dao.name = arr;
+                    dao.path = tmp;
+                    dao.dir_id = parent.id;
+                    _SqlClient.Updateable(dao).ExecuteCommand();
+                }
+
                 parent = dao;
             }
 

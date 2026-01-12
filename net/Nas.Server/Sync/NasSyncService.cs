@@ -618,6 +618,7 @@ namespace Com.Scm.Nas.Sync
             var srcDao = GetDirDaoByPath(dto.src);
             if (srcDao != null)
             {
+                srcDao.name = dto.name;
                 srcDao.path = dto.path;
                 srcDao.dir_id = parentDao.id;
                 UpdateResFileDao(token, srcDao);
@@ -939,6 +940,7 @@ namespace Com.Scm.Nas.Sync
             var srcDao = GetDirDaoByPath(dto.src);
             if (srcDao != null)
             {
+                srcDao.name = dto.name;
                 srcDao.path = dto.path;
                 srcDao.dir_id = parentDao.id;
                 UpdateResFileDao(token, srcDao);

@@ -249,7 +249,7 @@ namespace Com.Scm.Nas.Sync
             var result = new SyncResult();
             if (dto.opt == NasOptEnums.Delete)
             {
-                await DeleteFile(terminalDao, dto, result);
+                DeleteFile(terminalDao, dto, result);
                 return result;
             }
 
@@ -296,7 +296,7 @@ namespace Com.Scm.Nas.Sync
         /// <param name="dto"></param>
         /// <param name="result"></param>
         /// <returns></returns>
-        private async Task<bool> DeleteFile(ScmUrTerminalDao token, NasLogFileDto dto, SyncResult result)
+        private bool DeleteFile(ScmUrTerminalDao token, NasLogFileDto dto, SyncResult result)
         {
             LogUtils.Debug("删除文件：" + dto.path);
 
@@ -307,12 +307,12 @@ namespace Com.Scm.Nas.Sync
 
             if (dto.type == NasTypeEnums.Dir)
             {
-                return await DeleteDir(token, dto, result);
+                return DeleteDir(token, dto, result);
             }
 
             if (dto.type == NasTypeEnums.Doc)
             {
-                return await DeleteDoc(token, dto, result);
+                return DeleteDoc(token, dto, result);
             }
 
             LogUtils.Debug("未知的文件类型：" + dto.type);
@@ -326,20 +326,18 @@ namespace Com.Scm.Nas.Sync
         /// <param name="dto"></param>
         /// <param name="result"></param>
         /// <returns></returns>
-        private async Task<bool> DeleteDoc(ScmUrTerminalDao token, NasLogFileDto dto, SyncResult result)
+        private bool DeleteDoc(ScmUrTerminalDao token, NasLogFileDto dto, SyncResult result)
         {
             LogUtils.Debug("删除文档：" + dto.path);
 
             var dstFile = GetPhysicalPath(dto.path);
             FileUtils.DeleteDoc(dstFile);
 
-            var docDao = await _SqlClient.Queryable<Sync.SyncResFileDao>()
-                .Where(a => a.type == NasTypeEnums.Doc && a.path == dto.path && a.hash == dto.hash)
-                .FirstAsync();
+            var docDao = GetDocDaoByPath(dto.path);
             var dirId = 0L;
             if (docDao != null)
             {
-                await DeleteDocDao(docDao);
+                DeleteDocDao(docDao);
                 dirId = docDao.dir_id;
             }
 
@@ -349,9 +347,9 @@ namespace Com.Scm.Nas.Sync
             return true;
         }
 
-        private async Task DeleteDocDao(Sync.SyncResFileDao dao)
+        private void DeleteDocDao(Sync.SyncResFileDao dao)
         {
-            await _SqlClient.Deleteable(dao).ExecuteCommandAsync();
+            _SqlClient.Deleteable(dao).ExecuteCommand();
         }
 
         /// <summary>
@@ -360,23 +358,21 @@ namespace Com.Scm.Nas.Sync
         /// <param name="dto"></param>
         /// <param name="result"></param>
         /// <returns></returns>
-        private async Task<bool> DeleteDir(ScmUrTerminalDao token, NasLogFileDto dto, SyncResult result)
+        private bool DeleteDir(ScmUrTerminalDao token, NasLogFileDto dto, SyncResult result)
         {
             LogUtils.Debug("删除目录：" + dto.path);
 
             var dstFile = GetPhysicalPath(dto.path);
             FileUtils.DeleteDir(dstFile);
 
-            var dirDao = await _SqlClient.Queryable<Sync.SyncResFileDao>()
-                .Where(a => a.type == NasTypeEnums.Dir && a.path == dto.path)
-                .FirstAsync();
+            var dirDao = GetDirDaoByPath(dto.path);
 
             var dirId = 0L;
             if (dirDao != null)
             {
-                await DeleteDirDao(dirDao);
+                DeleteDirDao(dirDao);
 
-                await _SqlClient.Deleteable(dirDao).ExecuteCommandAsync();
+                DeleteResFileDao(token, dirDao);
                 dirId = dirDao.dir_id;
             }
 
@@ -386,19 +382,19 @@ namespace Com.Scm.Nas.Sync
             return true;
         }
 
-        private async Task DeleteDirDao(Sync.SyncResFileDao dao)
+        private void DeleteDirDao(Sync.SyncResFileDao dao)
         {
-            var dirList = await _SqlClient.Queryable<Sync.SyncResFileDao>()
+            var dirList = _SqlClient.Queryable<Sync.SyncResFileDao>()
                 .Where(a => a.type == NasTypeEnums.Dir && a.dir_id == dao.id)
-                .ToListAsync();
+                .ToList();
             foreach (var dir in dirList)
             {
-                await DeleteDirDao(dir);
+                DeleteDirDao(dir);
             }
 
-            await _SqlClient.Deleteable<Sync.SyncResFileDao>()
-                .Where(a => a.dir_id == dao.dir_id)
-                .ExecuteCommandAsync();
+            _SqlClient.Deleteable<Sync.SyncResFileDao>()
+                .Where(a => a.dir_id == dao.id)
+                .ExecuteCommand();
         }
         #endregion
 

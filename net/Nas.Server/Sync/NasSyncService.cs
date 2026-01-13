@@ -1324,7 +1324,7 @@ namespace Com.Scm.Nas.Sync
                 var dao = GetDirDaoByPath(tmp);
                 if (dao == null)
                 {
-                    AddDirDao(arr, tmp, parentDao.id, userId);
+                    dao = AddDirDao(arr, tmp, parentDao.id, userId);
                 }
                 else
                 {

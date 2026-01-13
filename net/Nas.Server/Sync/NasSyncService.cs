@@ -1114,27 +1114,35 @@ namespace Com.Scm.Nas.Sync
             }
 
             var dstFile = GetPhysicalPath(dto.path);
+            var dstDir = FileUtils.GetDir(dstFile);
+            if (!Directory.Exists(dstDir))
+            {
+                Directory.CreateDirectory(dstDir);
+            }
+
             if (!FileUtils.MoveDoc(tmpFile, dstFile, true))
             {
                 SyncResult.Failure("上传文档移动异常！");
                 return false;
             }
 
+            var parentDao = CreateRecursiveDirDao(GetParentPath(dto.path), token.user_id);
+
             var docDao = GetDocDaoByPath(dto.path);
             if (docDao == null)
             {
-                var dirId = GetParentIdByPath(dto.path);
-                AddCreateFile(token, dto, dirId);
+                AddCreateFile(token, dto, parentDao.id);
 
-                AddLogFileByDto(token, dto, dirId);
+                AddLogFileByDto(token, dto, parentDao.id);
             }
             else
             {
                 docDao.hash = dto.hash;
                 docDao.size = dto.size;
+                docDao.dir_id = parentDao.id;
                 UpdateResFileDao(token, docDao);
 
-                AddLogFileByDto(token, dto, docDao.dir_id);
+                AddLogFileByDto(token, dto, parentDao.id);
             }
 
             result.SetSuccess();

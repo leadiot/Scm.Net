@@ -117,47 +117,94 @@
         /// <summary>
         /// 最近
         /// </summary>
-        public const string Recent = "Recent";
+        public const string FolderRecent = "Recent";
         /// <summary>
         /// 常用
         /// </summary>
-        public const string Usually = "Usually";
+        public const string FolderUsually = "Usually";
         /// <summary>
         /// 收藏
         /// </summary>
-        public const string Favorites = "Favorites";
+        public const string FolderFavorites = "Favorites";
         /// <summary>
         /// 设备
         /// </summary>
-        public const string Devices = "Devices";
+        public const string FolderDevices = "Devices";
         /// <summary>
         /// 下载
         /// </summary>
-        public const string Downloads = "Downloads";
+        public const string FolderDownloads = "Downloads";
         /// <summary>
         /// 私密
         /// </summary>
-        public const string Secret = "Secret";
+        public const string FolderSecret = "Secret";
         /// <summary>
         /// 共享
         /// </summary>
-        public const string Public = "Public";
+        public const string FolderPublic = "Public";
         /// <summary>
         /// 标签
         /// </summary>
-        public const string Tags = "Tags";
+        public const string FolderTags = "Tags";
         /// <summary>
         /// 文档
         /// </summary>
-        public const string Docs = "Docs";
+        public const string FolderDocs = "Docs";
         /// <summary>
         /// 应用
         /// </summary>
-        public const string Apps = "Apps";
+        public const string FolderApps = "Apps";
         /// <summary>
         /// 回收站
         /// </summary>
-        public const string Trash = "Trash";
+        public const string FolderTrash = "Trash";
+        #endregion
+
+        #region 系统专用目录
+        /// <summary>
+        /// 最近
+        /// </summary>
+        public const string PathRecent = "/" + FolderRecent;
+        /// <summary>
+        /// 常用
+        /// </summary>
+        public const string PathUsually = "/" + FolderUsually;
+        /// <summary>
+        /// 收藏
+        /// </summary>
+        public const string PathFavorites = "/" + FolderFavorites;
+        /// <summary>
+        /// 设备
+        /// </summary>
+        public const string PathDevices = "/" + FolderDevices;
+        /// <summary>
+        /// 下载
+        /// </summary>
+        public const string PathDownloads = "/" + FolderDownloads;
+        /// <summary>
+        /// 私密
+        /// </summary>
+        public const string PathSecret = "/" + FolderSecret;
+        /// <summary>
+        /// 共享
+        /// </summary>
+        public const string PathPublic = "/" + FolderPublic;
+        /// <summary>
+        /// 标签
+        /// </summary>
+        public const string PathTags = "/" + FolderTags;
+        /// <summary>
+        /// 文档
+        /// </summary>
+        public const string PathDocs = "/" + FolderDocs;
+        /// <summary>
+        /// 应用
+        /// </summary>
+        public const string PathApps = "/" + FolderApps;
+        /// <summary>
+        /// 回收站
+        /// </summary>
+        public const string PathTrash = "/" + FolderTrash;
         #endregion
     }
 }

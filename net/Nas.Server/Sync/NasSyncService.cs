@@ -356,7 +356,7 @@ namespace Com.Scm.Nas.Sync
 
             AddLogFileByDto(token, dto, resId, dirId);
 
-            result.SetSuccess();
+            result.SetSuccess(resId);
             return true;
         }
 
@@ -393,7 +393,7 @@ namespace Com.Scm.Nas.Sync
 
             AddLogFileByDto(token, dto, resId, dirId);
 
-            result.SetSuccess();
+            result.SetSuccess(resId);
             return true;
         }
 
@@ -1031,7 +1031,7 @@ namespace Com.Scm.Nas.Sync
 
             AddLogFileByDto(token, dto, srcDao.id, paretnDao.id);
 
-            result.SetSuccess();
+            result.SetSuccess(srcDao.id);
             return true;
         }
         #endregion
@@ -1113,7 +1113,7 @@ namespace Com.Scm.Nas.Sync
 
             AddLogFileByDto(token, dto, docDao.id, parentDao.id);
 
-            result.SetSuccess();
+            result.SetSuccess(docDao.id);
             return true;
         }
 

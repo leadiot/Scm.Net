@@ -11,6 +11,11 @@
         /// </summary>
         public long id { get; set; }
 
+        /// <summary>
+        /// 资源版本
+        /// </summary>
+        public long ver { get; set; }
+
         public void SetSuccess()
         {
             success = true;
@@ -19,6 +24,13 @@
         public void SetSuccess(long id)
         {
             this.id = id;
+            success = true;
+        }
+
+        public void SetSuccess(long id, long ver)
+        {
+            this.id = id;
+            this.ver = ver;
             success = true;
         }
 

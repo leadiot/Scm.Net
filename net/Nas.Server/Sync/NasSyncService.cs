@@ -346,17 +346,19 @@ namespace Com.Scm.Nas.Sync
 
             var docDao = GetDocDaoByPath(dto.folder_id, dto.path);
             var resId = 0L;
+            var ver = 0L;
             var dirId = 0L;
             if (docDao != null)
             {
                 DeleteDocDao(docDao);
                 resId = docDao.id;
+                ver = docDao.ver;
                 dirId = docDao.dir_id;
             }
 
             AddLogFileByDto(token, dto, resId, dirId);
 
-            result.SetSuccess(resId);
+            result.SetSuccess(resId, ver);
             return true;
         }
 
@@ -381,6 +383,7 @@ namespace Com.Scm.Nas.Sync
             var dirDao = GetDirDaoByPath(dto.folder_id, dto.path);
 
             var resId = 0L;
+            var ver = 0L;
             var dirId = 0L;
             if (dirDao != null)
             {
@@ -388,12 +391,13 @@ namespace Com.Scm.Nas.Sync
 
                 DeleteResFileDao(token, dirDao);
                 resId = dirDao.id;
+                ver = dirDao.ver;
                 dirId = dirDao.dir_id;
             }
 
             AddLogFileByDto(token, dto, resId, dirId);
 
-            result.SetSuccess(resId);
+            result.SetSuccess(resId, ver);
             return true;
         }
 
@@ -459,7 +463,7 @@ namespace Com.Scm.Nas.Sync
 
             AddLogFileByDto(token, dto, dirDao.id, dirDao.dir_id);
 
-            result.SetSuccess(dirDao.id);
+            result.SetSuccess(dirDao.id, dirDao.ver);
             return true;
         }
 
@@ -498,7 +502,7 @@ namespace Com.Scm.Nas.Sync
 
             AddLogFileByDto(token, dto, docDao.id, dirDao.id);
 
-            result.SetSuccess(docDao.id);
+            result.SetSuccess(docDao.id, docDao.ver);
             return true;
         }
 
@@ -595,7 +599,7 @@ namespace Com.Scm.Nas.Sync
 
             AddLogFileByDto(token, dto, srcDao.id, srcDao.dir_id);
 
-            result.SetSuccess(srcDao.id);
+            result.SetSuccess(srcDao.id, srcDao.ver);
             return true;
         }
 
@@ -726,7 +730,7 @@ namespace Com.Scm.Nas.Sync
 
             AddLogFileByDto(token, dto, srcDao.id, srcDao.dir_id);
 
-            result.SetSuccess(srcDao.id);
+            result.SetSuccess(srcDao.id, srcDao.ver);
             return true;
         }
         #endregion
@@ -796,7 +800,7 @@ namespace Com.Scm.Nas.Sync
 
             AddLogFileByDto(token, dto, dstDao.id, dstDao.dir_id);
 
-            result.SetSuccess(dstDao.id);
+            result.SetSuccess(dstDao.id, dstDao.ver);
             return true;
         }
 
@@ -911,7 +915,7 @@ namespace Com.Scm.Nas.Sync
 
             AddLogFileByDto(token, dto, dstDao.id, parentDao.id);
 
-            result.SetSuccess(dstDao.id);
+            result.SetSuccess(dstDao.id, dstDao.ver);
             return true;
         }
         #endregion
@@ -986,7 +990,7 @@ namespace Com.Scm.Nas.Sync
 
             AddLogFileByDto(token, dto, srcDao.id, srcDao.dir_id);
 
-            result.SetSuccess(srcDao.id);
+            result.SetSuccess(srcDao.id, srcDao.ver);
             return true;
         }
 
@@ -1031,7 +1035,7 @@ namespace Com.Scm.Nas.Sync
 
             AddLogFileByDto(token, dto, srcDao.id, paretnDao.id);
 
-            result.SetSuccess(srcDao.id);
+            result.SetSuccess(srcDao.id, srcDao.ver);
             return true;
         }
         #endregion
@@ -1113,7 +1117,7 @@ namespace Com.Scm.Nas.Sync
 
             AddLogFileByDto(token, dto, docDao.id, parentDao.id);
 
-            result.SetSuccess(docDao.id);
+            result.SetSuccess(docDao.id, docDao.ver);
             return true;
         }
 
@@ -1137,7 +1141,7 @@ namespace Com.Scm.Nas.Sync
 
             AddLogFileByDto(token, dto, dirDao.id, dirDao.dir_id);
 
-            result.SetSuccess(dirDao.id);
+            result.SetSuccess(dirDao.id, dirDao.ver);
             return true;
         }
         #endregion

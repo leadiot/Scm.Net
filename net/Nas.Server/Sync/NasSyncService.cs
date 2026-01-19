@@ -505,7 +505,7 @@ namespace Com.Scm.Nas.Sync
             {
                 docDao = new Sync.SyncResFileDao();
                 docDao.user_id = token.user_id;
-                docDao.terminal_id = dto.terminal_id;
+                docDao.terminal_id = token.id;
                 docDao.folder_id = dto.folder_id;
                 docDao.type = dto.type;
                 docDao.name = dto.name;
@@ -519,87 +519,6 @@ namespace Com.Scm.Nas.Sync
                 _SqlClient.Insertable(docDao).ExecuteCommand();
             }
             return docDao;
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="token"></param>
-        /// <param name="userId"></param>
-        /// <param name="terminalId"></param>
-        /// <param name="folderId"></param>
-        /// <param name="dirId"></param>
-        /// <param name="name"></param>
-        /// <param name="path"></param>
-        /// <returns></returns>
-        private SyncResFileDao AddCreateResDirDao(ScmUrTerminalDao token, long folderId, long dirId, string name, string path)
-        {
-            var dao = new Sync.SyncResFileDao
-            {
-                user_id = token.user_id,
-                terminal_id = token.id,
-                folder_id = folderId,
-                type = NasTypeEnums.Dir,
-                name = name,
-                path = path,
-                dir_id = dirId, // 根目录
-            };
-            dao.PrepareCreate(token.user_id);
-            _SqlClient.Insertable(dao).ExecuteCommand();
-            return dao;
-        }
-
-        /// <summary>
-        /// 添加目录记录
-        /// </summary>
-        /// <param name="token"></param>
-        /// <param name="dto"></param>
-        /// <param name="dirId"></param>
-        /// <returns></returns>
-        private Sync.SyncResFileDao AddCreateResDirDao(ScmUrTerminalDao token, NasLogFileDto dto, long dirId)
-        {
-            var dirDao = new Sync.SyncResFileDao
-            {
-                user_id = token.user_id,
-                terminal_id = token.id,
-                folder_id = dto.folder_id,
-                type = NasTypeEnums.Dir,
-                name = dto.name,
-                path = dto.path,
-                dir_id = dirId, // 根目录
-            };
-            dirDao.PrepareCreate(token.user_id);
-            _SqlClient.Insertable(dirDao).ExecuteCommand();
-            return dirDao;
-        }
-
-        /// <summary>
-        /// 添加文档记录
-        /// </summary>
-        /// <param name="token"></param>
-        /// <param name="dirId"></param>
-        /// <param name="path"></param>
-        /// <param name="name"></param>
-        /// <param name="hash"></param>
-        /// <param name="size"></param>
-        /// <returns></returns>
-        private Sync.SyncResFileDao AddCreateResDocDao(ScmUrTerminalDao token, long folderId, long dirId, string path, string name, string hash, long size, long time)
-        {
-            var dirDao = new Sync.SyncResFileDao
-            {
-                user_id = token.user_id,
-                terminal_id = token.id,
-                folder_id = 0,
-                type = NasTypeEnums.Doc,
-                name = name,
-                path = path,
-                hash = hash,
-                size = size,
-                modify_time = time,
-                dir_id = dirId, // 根目录
-            };
-            _SqlClient.Insertable(dirDao).ExecuteCommand();
-            return dirDao;
         }
         #endregion
 
@@ -664,7 +583,7 @@ namespace Com.Scm.Nas.Sync
             }
             else
             {
-                srcDao = AddCreateResDirDao(token, dto, parentDao.id);
+                srcDao = AddResDirDao(token, dto, parentDao.id);
             }
 
             var dstDir = GetPhysicalPath(token, dto.path);
@@ -714,7 +633,7 @@ namespace Com.Scm.Nas.Sync
                 }
                 else
                 {
-                    dirDao = AddCreateResDirDao(token, parentDao.folder_id, parentDao.id, name, dstUri);
+                    dirDao = AddResDirDao(token, parentDao.folder_id, parentDao.id, name, dstUri);
                 }
 
                 var dstFile = Path.Combine(dstDir, name);
@@ -750,7 +669,7 @@ namespace Com.Scm.Nas.Sync
                     var hash = FileUtils.Sha(doc);
                     var info = new FileInfo(doc);
                     var time = TimeUtils.GetUnixTime(info.LastAccessTimeUtc);
-                    docDao = AddCreateResDocDao(token, parentDao.folder_id, parentDao.id, dstUri, name, hash, info.Length, time);
+                    docDao = AddResDocDao(token, parentDao.folder_id, parentDao.id, dstUri, name, hash, info.Length, time);
                 }
 
                 var dstFile = Path.Combine(dstDir, name);
@@ -865,7 +784,7 @@ namespace Com.Scm.Nas.Sync
             }
             else
             {
-                dstDao = AddCreateResDirDao(token, dto, parentDao.id);
+                dstDao = AddResDirDao(token, dto, parentDao.id);
             }
 
             var dstDir = GetPhysicalPath(token, dto.path);
@@ -908,7 +827,7 @@ namespace Com.Scm.Nas.Sync
                 }
                 else
                 {
-                    dstDao = AddCreateResDirDao(token, parentDao.folder_id, parentDao.id, name, dstUri);
+                    dstDao = AddResDirDao(token, parentDao.folder_id, parentDao.id, name, dstUri);
                 }
 
                 var dstFile = Path.Combine(dstDir, name);
@@ -937,7 +856,7 @@ namespace Com.Scm.Nas.Sync
                     var hash = FileUtils.Sha(doc);
                     var info = new FileInfo(doc);
                     var time = TimeUtils.GetUnixTime(info.LastAccessTimeUtc);
-                    dstDao = AddCreateResDocDao(token, parentDao.folder_id, parentDao.id, name, dstUri, hash, info.Length, time);
+                    dstDao = AddResDocDao(token, parentDao.folder_id, parentDao.id, name, dstUri, hash, info.Length, time);
                 }
 
                 var dstFile = Path.Combine(dstDir, name);
@@ -1055,7 +974,7 @@ namespace Com.Scm.Nas.Sync
             }
             else
             {
-                srcDao = AddCreateResDirDao(token, dto, parentDao.id);
+                srcDao = AddResDirDao(token, dto, parentDao.id);
             }
 
             var dstDir = GetPhysicalPath(token, dto.path);
@@ -1254,6 +1173,12 @@ namespace Com.Scm.Nas.Sync
             return dao;
         }
 
+        private void UpdateResFileDao(ScmUrTerminalDao token, Sync.SyncResFileDao dao)
+        {
+            dao.PrepareUpdate(token.user_id);
+            _SqlClient.Updateable(dao).ExecuteCommand();
+        }
+
         private List<Sync.SyncResFileDao> ListResFileDaoByParent(long dirId, NasTypeEnums type)
         {
             return _SqlClient.Queryable<Sync.SyncResFileDao>()
@@ -1367,7 +1292,7 @@ namespace Com.Scm.Nas.Sync
                 var dao = GetDirDaoByPath(folderId, tmp);
                 if (dao == null)
                 {
-                    dao = AddCreateResDirDao(token, folderId, parentDao.id, arr, tmp);
+                    dao = AddResDirDao(token, folderId, parentDao.id, arr, tmp);
                 }
                 else
                 {
@@ -1385,10 +1310,85 @@ namespace Com.Scm.Nas.Sync
             _SqlClient.Deleteable(dao).ExecuteCommand();
         }
 
-        private void UpdateResFileDao(ScmUrTerminalDao token, Sync.SyncResFileDao dao)
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="token"></param>
+        /// <param name="userId"></param>
+        /// <param name="terminalId"></param>
+        /// <param name="folderId"></param>
+        /// <param name="dirId"></param>
+        /// <param name="name"></param>
+        /// <param name="path"></param>
+        /// <returns></returns>
+        private SyncResFileDao AddResDirDao(ScmUrTerminalDao token, long folderId, long dirId, string name, string path)
         {
-            dao.PrepareUpdate(token.user_id);
-            _SqlClient.Updateable(dao).ExecuteCommand();
+            var dao = new Sync.SyncResFileDao
+            {
+                user_id = token.user_id,
+                terminal_id = token.id,
+                folder_id = folderId,
+                type = NasTypeEnums.Dir,
+                name = name,
+                path = path,
+                dir_id = dirId, // 根目录
+            };
+            dao.PrepareCreate(token.user_id);
+            _SqlClient.Insertable(dao).ExecuteCommand();
+            return dao;
+        }
+
+        /// <summary>
+        /// 添加目录记录
+        /// </summary>
+        /// <param name="token"></param>
+        /// <param name="dto"></param>
+        /// <param name="dirId"></param>
+        /// <returns></returns>
+        private Sync.SyncResFileDao AddResDirDao(ScmUrTerminalDao token, NasLogFileDto dto, long dirId)
+        {
+            var dirDao = new Sync.SyncResFileDao
+            {
+                user_id = token.user_id,
+                terminal_id = token.id,
+                folder_id = dto.folder_id,
+                type = NasTypeEnums.Dir,
+                name = dto.name,
+                path = dto.path,
+                dir_id = dirId, // 根目录
+            };
+            dirDao.PrepareCreate(token.user_id);
+            _SqlClient.Insertable(dirDao).ExecuteCommand();
+            return dirDao;
+        }
+
+        /// <summary>
+        /// 添加文档记录
+        /// </summary>
+        /// <param name="token"></param>
+        /// <param name="dirId"></param>
+        /// <param name="path"></param>
+        /// <param name="name"></param>
+        /// <param name="hash"></param>
+        /// <param name="size"></param>
+        /// <returns></returns>
+        private Sync.SyncResFileDao AddResDocDao(ScmUrTerminalDao token, long folderId, long dirId, string path, string name, string hash, long size, long time)
+        {
+            var dirDao = new Sync.SyncResFileDao
+            {
+                user_id = token.user_id,
+                terminal_id = token.id,
+                folder_id = folderId,
+                type = NasTypeEnums.Doc,
+                name = name,
+                path = path,
+                hash = hash,
+                size = size,
+                modify_time = time,
+                dir_id = dirId, // 根目录
+            };
+            _SqlClient.Insertable(dirDao).ExecuteCommand();
+            return dirDao;
         }
 
         private SyncResFileDao AddResFileByDto(ScmUrTerminalDao token, NasLogFileDto dto, long dirId)

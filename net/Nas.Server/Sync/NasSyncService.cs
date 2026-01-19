@@ -1267,7 +1267,7 @@ namespace Com.Scm.Nas.Sync
                 return null;
             }
 
-            return $"/{userDao.codes}/{NasEnv.FolderDevices}" + path;
+            return $"/{userDao.codes}/{NasEnv.NodeDevices}" + path;
         }
 
         /// <summary>

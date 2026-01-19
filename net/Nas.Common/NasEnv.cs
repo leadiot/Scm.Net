@@ -117,94 +117,94 @@
         /// <summary>
         /// 最近
         /// </summary>
-        public const string FolderRecent = "Recent";
+        public const string NodeRecent = "Recent";
         /// <summary>
         /// 常用
         /// </summary>
-        public const string FolderUsually = "Usually";
+        public const string NodeUsually = "Usually";
         /// <summary>
         /// 收藏
         /// </summary>
-        public const string FolderFavorites = "Favorites";
+        public const string NodeFavorites = "Favorites";
         /// <summary>
         /// 设备
         /// </summary>
-        public const string FolderDevices = "Devices";
+        public const string NodeDevices = "Devices";
         /// <summary>
         /// 下载
         /// </summary>
-        public const string FolderDownloads = "Downloads";
+        public const string NodeDownloads = "Downloads";
         /// <summary>
         /// 私密
         /// </summary>
-        public const string FolderSecret = "Secret";
+        public const string NodeSecret = "Secret";
         /// <summary>
         /// 共享
         /// </summary>
-        public const string FolderPublic = "Public";
+        public const string NodePublic = "Public";
         /// <summary>
         /// 标签
         /// </summary>
-        public const string FolderTags = "Tags";
+        public const string NodeTags = "Tags";
         /// <summary>
         /// 文档
         /// </summary>
-        public const string FolderDocs = "Docs";
+        public const string NodeDocs = "Docs";
         /// <summary>
         /// 应用
         /// </summary>
-        public const string FolderApps = "Apps";
+        public const string NodeApps = "Apps";
         /// <summary>
         /// 回收站
         /// </summary>
-        public const string FolderTrash = "Trash";
+        public const string NodeTrash = "Trash";
         #endregion
 
         #region 系统专用目录
         /// <summary>
         /// 最近
         /// </summary>
-        public const string PathRecent = "/" + FolderRecent;
+        public const string PathRecent = "/" + NodeRecent;
         /// <summary>
         /// 常用
         /// </summary>
-        public const string PathUsually = "/" + FolderUsually;
+        public const string PathUsually = "/" + NodeUsually;
         /// <summary>
         /// 收藏
         /// </summary>
-        public const string PathFavorites = "/" + FolderFavorites;
+        public const string PathFavorites = "/" + NodeFavorites;
         /// <summary>
         /// 设备
         /// </summary>
-        public const string PathDevices = "/" + FolderDevices;
+        public const string PathDevices = "/" + NodeDevices;
         /// <summary>
         /// 下载
         /// </summary>
-        public const string PathDownloads = "/" + FolderDownloads;
+        public const string PathDownloads = "/" + NodeDownloads;
         /// <summary>
         /// 私密
         /// </summary>
-        public const string PathSecret = "/" + FolderSecret;
+        public const string PathSecret = "/" + NodeSecret;
         /// <summary>
         /// 共享
         /// </summary>
-        public const string PathPublic = "/" + FolderPublic;
+        public const string PathPublic = "/" + NodePublic;
         /// <summary>
         /// 标签
         /// </summary>
-        public const string PathTags = "/" + FolderTags;
+        public const string PathTags = "/" + NodeTags;
         /// <summary>
         /// 文档
         /// </summary>
-        public const string PathDocs = "/" + FolderDocs;
+        public const string PathDocs = "/" + NodeDocs;
         /// <summary>
         /// 应用
         /// </summary>
-        public const string PathApps = "/" + FolderApps;
+        public const string PathApps = "/" + NodeApps;
         /// <summary>
         /// 回收站
         /// </summary>
-        public const string PathTrash = "/" + FolderTrash;
+        public const string PathTrash = "/" + NodeTrash;
         #endregion
     }
 }

@@ -7,20 +7,14 @@ namespace Com.Scm.Nas.Cfg
     /// <summary>
     /// 驱动
     /// </summary>
-    [SugarTable("nas_cfg_drive")]
-    public class NasCfgDriveDao : ScmUserDataDao
+    [SugarTable("nas_cfg_folder")]
+    public class NasCfgFolderDao : ScmUserDataDao
     {
         /// <summary>
         /// 终端ID
         /// </summary>
         [Required]
         public long terminal_id { get; set; }
-
-        /// <summary>
-        /// 目录ID
-        /// </summary>
-        [Required]
-        public long folder_id { get; set; }
 
         /// <summary>
         /// 名称

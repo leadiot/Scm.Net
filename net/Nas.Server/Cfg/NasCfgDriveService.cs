@@ -15,13 +15,13 @@ namespace Com.Scm.Nas.Cfg
     [ApiExplorerSettings(GroupName = "Nas")]
     public class NasCfgDriveService : ApiService
     {
-        private readonly SugarRepository<NasCfgDriveDao> _thisRepository;
+        private readonly SugarRepository<NasCfgFolderDao> _thisRepository;
 
         /// <summary>
         /// 
         /// </summary>
         /// <param name="thisRepository"></param>
-        public NasCfgDriveService(SugarRepository<NasCfgDriveDao> thisRepository, IResHolder resHolder)
+        public NasCfgDriveService(SugarRepository<NasCfgFolderDao> thisRepository, IResHolder resHolder)
         {
             _thisRepository = thisRepository;
             _ResHolder = resHolder;
@@ -70,12 +70,12 @@ namespace Com.Scm.Nas.Cfg
         /// <param name="id"></param>
         /// <returns></returns>
         [HttpGet("{id}")]
-        public async Task<NasCfgDriveDto> GetAsync(long id)
+        public async Task<NasCfgFolderDto> GetAsync(long id)
         {
             return await _thisRepository
                 .AsQueryable()
                 .Where(a => a.id == id)
-                .Select<NasCfgDriveDto>()
+                .Select<NasCfgFolderDto>()
                 .FirstAsync();
         }
 
@@ -116,12 +116,12 @@ namespace Com.Scm.Nas.Cfg
         /// <param name="id"></param>
         /// <returns></returns>
         [HttpGet("{id}")]
-        public async Task<NasCfgDriveDto> GetEditAsync(long id)
+        public async Task<NasCfgFolderDto> GetEditAsync(long id)
         {
             return await _thisRepository
                 .AsQueryable()
                 .Where(a => a.id == id)
-                .Select<NasCfgDriveDto>()
+                .Select<NasCfgFolderDto>()
                 .FirstAsync();
         }
 
@@ -130,7 +130,7 @@ namespace Com.Scm.Nas.Cfg
         /// </summary>
         /// <param name="model"></param>
         /// <returns></returns>
-        public async Task<bool> AddAsync(NasCfgDriveDto model)
+        public async Task<bool> AddAsync(NasCfgFolderDto model)
         {
             var dao = await _thisRepository.GetFirstAsync(a => a.name == model.name);
             if (dao != null)
@@ -143,7 +143,7 @@ namespace Com.Scm.Nas.Cfg
                 throw new BusinessException("已存在相同路径的目录！");
             }
 
-            dao = model.Adapt<NasCfgDriveDao>();
+            dao = model.Adapt<NasCfgFolderDao>();
             return await _thisRepository.InsertAsync(dao);
         }
 
@@ -152,7 +152,7 @@ namespace Com.Scm.Nas.Cfg
         /// </summary>
         /// <param name="model"></param>
         /// <returns></returns>
-        public async Task<bool> UpdateAsync(NasCfgDriveDto model)
+        public async Task<bool> UpdateAsync(NasCfgFolderDto model)
         {
             var dao = await _thisRepository.GetFirstAsync(a => a.name == model.name && a.id != model.id);
             if (dao != null)

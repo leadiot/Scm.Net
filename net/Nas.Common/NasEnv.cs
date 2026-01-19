@@ -33,6 +33,32 @@
         public const string TempFileExt = ".nas";
 
         /// <summary>
+        /// Nas数据目录
+        /// </summary>
+        public const string DEF_NAS_DIR = "Nas";
+
+        /// <summary>
+        /// 默认目录ID
+        /// </summary>
+        public const long DEF_DIR_ID = 0;
+
+        /// <summary>
+        /// 当前系统路径分隔符
+        /// </summary>
+        public static readonly char DirSeparator = System.IO.Path.DirectorySeparatorChar;
+
+        /// <summary>
+        /// 网络路径分隔符
+        /// </summary>
+        public static readonly char WebSeparator = '/';
+
+        /// <summary>
+        /// 块文件大小
+        /// </summary>
+        public const long MAX_CHUNK_SIZE = 1024 * 1024 * 5;
+
+        #region 服务端接口
+        /// <summary>
         /// 获取目录路径
         /// </summary>
         public const string DirUrl = "/NasSync/Dir";
@@ -85,30 +111,53 @@
         /// 文件下载路径
         /// </summary>
         public const string FileDownloadUrl = "/Download/file";
+        #endregion
 
+        #region 系统专用目录
         /// <summary>
-        /// Nas数据目录
+        /// 最近
         /// </summary>
-        public const string DEF_NAS_DIR = "Nas";
-
+        public const string Recent = "Recent";
         /// <summary>
-        /// 默认目录ID
+        /// 常用
         /// </summary>
-        public const long DEF_DIR_ID = 0;
-
+        public const string Usually = "Usually";
         /// <summary>
-        /// 当前系统路径分隔符
+        /// 收藏
         /// </summary>
-        public static readonly char DirSeparator = System.IO.Path.DirectorySeparatorChar;
-
+        public const string Favorites = "Favorites";
         /// <summary>
-        /// 网络路径分隔符
+        /// 设备
         /// </summary>
-        public static readonly char WebSeparator = '/';
-
+        public const string Devices = "Devices";
         /// <summary>
-        /// 块文件大小
+        /// 下载
         /// </summary>
-        public const long MAX_CHUNK_SIZE = 1024 * 1024 * 5;
+        public const string Downloads = "Downloads";
+        /// <summary>
+        /// 私密
+        /// </summary>
+        public const string Secret = "Secret";
+        /// <summary>
+        /// 共享
+        /// </summary>
+        public const string Public = "Public";
+        /// <summary>
+        /// 标签
+        /// </summary>
+        public const string Tags = "Tags";
+        /// <summary>
+        /// 文档
+        /// </summary>
+        public const string Docs = "Docs";
+        /// <summary>
+        /// 应用
+        /// </summary>
+        public const string Apps = "Apps";
+        /// <summary>
+        /// 回收站
+        /// </summary>
+        public const string Trash = "Trash";
+        #endregion
     }
 }

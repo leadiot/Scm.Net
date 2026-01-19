@@ -84,11 +84,11 @@
         /// <summary>
         /// 获取驱动列表
         /// </summary>
-        public const string ListDriveUrl = "/NasSync/Drive";
+        public const string ListFolderUrl = "/NasSync/Folder";
         /// <summary>
         /// 更新驱动路径
         /// </summary>
-        public const string SaveDriveUrl = "/NasSync/Drive";
+        public const string SaveFolderUrl = "/NasSync/Folder";
 
         /// <summary>
         /// 文件上传路径

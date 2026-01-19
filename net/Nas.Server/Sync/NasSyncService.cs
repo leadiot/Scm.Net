@@ -345,14 +345,16 @@ namespace Com.Scm.Nas.Sync
             FileUtils.DeleteDoc(dstFile);
 
             var docDao = GetDocDaoByPath(dto.folder_id, dto.path);
+            var resId = 0L;
             var dirId = 0L;
             if (docDao != null)
             {
                 DeleteDocDao(docDao);
+                resId = docDao.id;
                 dirId = docDao.dir_id;
             }
 
-            AddLogFileByDto(token, dto, dirId);
+            AddLogFileByDto(token, dto, resId, dirId);
 
             result.SetSuccess();
             return true;
@@ -378,16 +380,18 @@ namespace Com.Scm.Nas.Sync
 
             var dirDao = GetDirDaoByPath(dto.folder_id, dto.path);
 
+            var resId = 0L;
             var dirId = 0L;
             if (dirDao != null)
             {
                 DeleteDirDao(dirDao);
 
                 DeleteResFileDao(token, dirDao);
+                resId = dirDao.id;
                 dirId = dirDao.dir_id;
             }
 
-            AddLogFileByDto(token, dto, dirId);
+            AddLogFileByDto(token, dto, resId, dirId);
 
             result.SetSuccess();
             return true;
@@ -453,7 +457,7 @@ namespace Com.Scm.Nas.Sync
 
             var dirDao = CreateRecursiveDirDao(token, dto.folder_id, dto.path);
 
-            AddLogFileByDto(token, dto, dirDao.dir_id);
+            AddLogFileByDto(token, dto, dirDao.id, dirDao.dir_id);
 
             result.SetSuccess(dirDao.id);
             return true;
@@ -492,33 +496,33 @@ namespace Com.Scm.Nas.Sync
 
             var docDao = AddCreateFile(token, dto, dirDao.id);
 
-            AddLogFileByDto(token, dto, dirDao.id);
+            AddLogFileByDto(token, dto, docDao.id, dirDao.id);
 
             result.SetSuccess(docDao.id);
             return true;
         }
 
-        private Sync.SyncResFileDao AddCreateFile(ScmUrTerminalDao token, NasLogFileDto dto, long dirId)
+        private Sync.SyncResFileDao AddCreateFile(ScmUrTerminalDao token, NasLogFileDto logDto, long dirId)
         {
-            var docDao = GetResFileDaoByPath(dto.folder_id, dto.path, dto.type);
-            if (docDao == null)
+            var resDao = GetResFileDaoByPath(logDto.folder_id, logDto.path, logDto.type);
+            if (resDao == null)
             {
-                docDao = new Sync.SyncResFileDao();
-                docDao.user_id = token.user_id;
-                docDao.terminal_id = token.id;
-                docDao.folder_id = dto.folder_id;
-                docDao.type = dto.type;
-                docDao.name = dto.name;
-                docDao.path = dto.path;
-                docDao.hash = dto.hash;
-                docDao.size = dto.size;
+                resDao = new Sync.SyncResFileDao();
+                resDao.user_id = token.user_id;
+                resDao.terminal_id = token.id;
+                resDao.folder_id = logDto.folder_id;
+                resDao.type = logDto.type;
+                resDao.name = logDto.name;
+                resDao.path = logDto.path;
+                resDao.hash = logDto.hash;
+                resDao.size = logDto.size;
                 //docDao.modify_time = dto.modify_time;
-                docDao.dir_id = dirId;
-                docDao.PrepareCreate(token.user_id);
+                resDao.dir_id = dirId;
+                resDao.PrepareCreate(token.user_id);
 
-                _SqlClient.Insertable(docDao).ExecuteCommand();
+                _SqlClient.Insertable(resDao).ExecuteCommand();
             }
-            return docDao;
+            return resDao;
         }
         #endregion
 
@@ -589,7 +593,7 @@ namespace Com.Scm.Nas.Sync
             var dstDir = GetPhysicalPath(token, dto.path);
             MoveDirCasced(token, srcDao, srcDir, dto.src, dstDir, dto.path);
 
-            AddLogFileByDto(token, dto, srcDao.dir_id);
+            AddLogFileByDto(token, dto, srcDao.id, srcDao.dir_id);
 
             result.SetSuccess(srcDao.id);
             return true;
@@ -720,7 +724,7 @@ namespace Com.Scm.Nas.Sync
                 srcDao = AddResFileByDto(token, dto, parentDao.id);
             }
 
-            AddLogFileByDto(token, dto, srcDao.dir_id);
+            AddLogFileByDto(token, dto, srcDao.id, srcDao.dir_id);
 
             result.SetSuccess(srcDao.id);
             return true;
@@ -790,7 +794,7 @@ namespace Com.Scm.Nas.Sync
             var dstDir = GetPhysicalPath(token, dto.path);
             CopyDirCasced(token, dstDao, srcPath, dto.src, dstDir, dto.path);
 
-            AddLogFileByDto(token, dto, dstDao.dir_id);
+            AddLogFileByDto(token, dto, dstDao.id, dstDao.dir_id);
 
             result.SetSuccess(dstDao.id);
             return true;
@@ -902,10 +906,10 @@ namespace Com.Scm.Nas.Sync
             else
             {
                 // 追加文档记录
-                AddResFileByDto(token, dto, parentDao.id);
+                dstDao = AddResFileByDto(token, dto, parentDao.id);
             }
 
-            AddLogFileByDto(token, dto, parentDao.id);
+            AddLogFileByDto(token, dto, dstDao.id, parentDao.id);
 
             result.SetSuccess(dstDao.id);
             return true;
@@ -980,7 +984,7 @@ namespace Com.Scm.Nas.Sync
             var dstDir = GetPhysicalPath(token, dto.path);
             MoveDirCasced(token, srcDao, srcDir, dto.src, dstDir, dto.path);
 
-            AddLogFileByDto(token, dto, srcDao.dir_id);
+            AddLogFileByDto(token, dto, srcDao.id, srcDao.dir_id);
 
             result.SetSuccess(srcDao.id);
             return true;
@@ -1022,10 +1026,10 @@ namespace Com.Scm.Nas.Sync
             else
             {
                 // 追加文档记录
-                AddResFileByDto(token, dto, paretnDao.id);
+                srcDao = AddResFileByDto(token, dto, paretnDao.id);
             }
 
-            AddLogFileByDto(token, dto, paretnDao.id);
+            AddLogFileByDto(token, dto, srcDao.id, paretnDao.id);
 
             result.SetSuccess();
             return true;
@@ -1097,9 +1101,7 @@ namespace Com.Scm.Nas.Sync
             var docDao = GetDocDaoByPath(dto.folder_id, dto.path);
             if (docDao == null)
             {
-                AddCreateFile(token, dto, parentDao.id);
-
-                AddLogFileByDto(token, dto, parentDao.id);
+                docDao = AddCreateFile(token, dto, parentDao.id);
             }
             else
             {
@@ -1107,9 +1109,9 @@ namespace Com.Scm.Nas.Sync
                 docDao.size = dto.size;
                 docDao.dir_id = parentDao.id;
                 UpdateResFileDao(token, docDao);
-
-                AddLogFileByDto(token, dto, parentDao.id);
             }
+
+            AddLogFileByDto(token, dto, docDao.id, parentDao.id);
 
             result.SetSuccess();
             return true;
@@ -1133,7 +1135,7 @@ namespace Com.Scm.Nas.Sync
 
             var dirDao = CreateRecursiveDirDao(token, dto.folder_id, dto.path);
 
-            AddLogFileByDto(token, dto, dirDao.dir_id);
+            AddLogFileByDto(token, dto, dirDao.id, dirDao.dir_id);
 
             result.SetSuccess(dirDao.id);
             return true;
@@ -1391,12 +1393,12 @@ namespace Com.Scm.Nas.Sync
             return dirDao;
         }
 
-        private SyncResFileDao AddResFileByDto(ScmUrTerminalDao token, NasLogFileDto dto, long dirId)
+        private SyncResFileDao AddResFileByDto(ScmUrTerminalDao token, NasLogFileDto logDto, long dirId)
         {
-            var docDao = dto.Adapt<Sync.SyncResFileDao>();
+            var docDao = logDto.Adapt<Sync.SyncResFileDao>();
             docDao.user_id = token.user_id;
             docDao.terminal_id = token.id;
-            docDao.folder_id = dto.folder_id;
+            docDao.folder_id = logDto.folder_id;
             docDao.dir_id = dirId;
             docDao.user_id = token.user_id;
             docDao.PrepareCreate(token.user_id);
@@ -1408,18 +1410,19 @@ namespace Com.Scm.Nas.Sync
         /// 记录操作日志
         /// </summary>
         /// <param name="token"></param>
-        /// <param name="dto"></param>
+        /// <param name="logDto"></param>
         /// <returns></returns>
-        private void AddLogFileByDto(ScmUrTerminalDao token, NasLogFileDto dto, long dirId)
+        private void AddLogFileByDto(ScmUrTerminalDao token, NasLogFileDto logDto, long resId, long dirId)
         {
-            var dao = dto.Adapt<Sync.SyncLogFileDao>();
-            dao.user_id = token.user_id;
-            dao.terminal_id = token.id;
-            dao.folder_id = dto.folder_id;
-            dao.dir_id = dirId;
-            dao.terminal_id = token.id;
-            dao.PrepareCreate(token.user_id);
-            _SqlClient.Insertable(dao).ExecuteCommand();
+            var logDao = logDto.Adapt<Sync.SyncLogFileDao>();
+            logDao.user_id = token.user_id;
+            logDao.terminal_id = token.id;
+            logDao.folder_id = logDto.folder_id;
+            logDao.res_id = resId;
+            logDao.dir_id = dirId;
+            logDao.terminal_id = token.id;
+            logDao.PrepareCreate(token.user_id);
+            _SqlClient.Insertable(logDao).ExecuteCommand();
         }
         #endregion
     }

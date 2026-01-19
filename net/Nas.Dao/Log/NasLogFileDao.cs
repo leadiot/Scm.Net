@@ -23,6 +23,12 @@ namespace Com.Scm.Nas.Log
         public long folder_id { get; set; }
 
         /// <summary>
+        /// 记录ID
+        /// </summary>
+        [Required]
+        public long res_id { get; set; }
+
+        /// <summary>
         /// 文件类型
         /// </summary>
         [Required]

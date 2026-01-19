@@ -29,6 +29,12 @@ namespace Com.Scm.Nas.Sync
         public long folder_id { get; set; }
 
         /// <summary>
+        /// 文件ID
+        /// </summary>
+        [Required]
+        public long res_id { get; set; }
+
+        /// <summary>
         /// 目录ID
         /// </summary>
         [Required]

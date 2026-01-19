@@ -527,7 +527,7 @@ namespace Com.Scm.Nas.Sync
                 resDao.path = logDto.path;
                 resDao.hash = logDto.hash;
                 resDao.size = logDto.size;
-                //docDao.modify_time = dto.modify_time;
+                resDao.modify_time = logDto.modify_time;
                 resDao.dir_id = dirId;
                 resDao.PrepareCreate(token.user_id);
 
@@ -1410,7 +1410,6 @@ namespace Com.Scm.Nas.Sync
             docDao.terminal_id = token.id;
             docDao.folder_id = logDto.folder_id;
             docDao.dir_id = dirId;
-            docDao.user_id = token.user_id;
             docDao.PrepareCreate(token.user_id);
             _SqlClient.Insertable(docDao).ExecuteCommand();
             return docDao;

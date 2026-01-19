@@ -61,6 +61,11 @@ namespace Com.Scm.Nas.Log
         public long size { get; set; }
 
         /// <summary>
+        /// 更新时间
+        /// </summary>
+        public long modify_time { get; set; }
+
+        /// <summary>
         /// 操作类型
         /// </summary>
         [Required]

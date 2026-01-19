@@ -96,20 +96,14 @@ namespace Com.Scm.Nas.Sync
                 await _SqlClient.Updateable(cfgDao).ExecuteCommandAsync();
             }
 
-            //var path = model.path;
-            //var idx = path.LastIndexOf(NasEnv.WebSeparator);
-            //if (idx > 0)
-            //{
-            //    path = path.Substring(idx);
-            //}
-            var vPath = GetVirtualPath(terminalDao, model.path);
-            var dirDao = CreateRecursiveDirDao(terminalDao, cfgDao.id, vPath);
+            model.path = GetVirtualPath(terminalDao, model.path);
+            var dirDao = CreateRecursiveDirDao(terminalDao, cfgDao.id, model.path);
 
             // 回写
             cfgDao.res_id = dirDao.id;
             await _SqlClient.Updateable(cfgDao).ExecuteCommandAsync();
 
-            var rPath = GetPhysicalPath(terminalDao, vPath);
+            var rPath = GetPhysicalPath(terminalDao, model.path);
             FileUtils.CreateDir(rPath);
 
             model.id = cfgDao.id;
@@ -1267,7 +1261,7 @@ namespace Com.Scm.Nas.Sync
                 return null;
             }
 
-            return $"/{userDao.codes}/{NasEnv.NodeDevices}" + path;
+            return $"/{userDao.codes}" + path;
         }
 
         /// <summary>

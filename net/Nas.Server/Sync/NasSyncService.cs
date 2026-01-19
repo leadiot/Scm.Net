@@ -1240,7 +1240,13 @@ namespace Com.Scm.Nas.Sync
         /// <returns></returns>
         private string GetPhysicalPath(ScmUrTerminalDao token, string path)
         {
-            return _EnvConfig.GetDataPath("/Nas" + path);
+            var userDao = _ResHolder.GetRes<UserDao>(token.user_id);
+            if (userDao == null)
+            {
+                return null;
+            }
+
+            return _EnvConfig.GetDataPath($"/Nas/{userDao.codes}" + path);
         }
 
         private string GetVirtualPath(ScmUrTerminalDao token, string path)
@@ -1255,13 +1261,7 @@ namespace Com.Scm.Nas.Sync
                 path = path.Substring(NasEnv.VirtualTag.Length);
             }
 
-            var userDao = _ResHolder.GetRes<UserDao>(token.user_id);
-            if (userDao == null)
-            {
-                return null;
-            }
-
-            return $"/{userDao.codes}" + path;
+            return path;
         }
 
         /// <summary>

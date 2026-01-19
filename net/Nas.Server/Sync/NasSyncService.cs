@@ -109,7 +109,7 @@ namespace Com.Scm.Nas.Sync
             cfgDao.res_id = dirDao.id;
             await _SqlClient.Updateable(cfgDao).ExecuteCommandAsync();
 
-            var rPath = GetPhysicalPath(terminalDao, model.path);
+            var rPath = GetPhysicalPath(terminalDao, vPath);
             FileUtils.CreateDir(rPath);
 
             model.id = cfgDao.id;
@@ -267,6 +267,8 @@ namespace Com.Scm.Nas.Sync
             {
                 return null;
             }
+
+            dto.path = GetVirtualPath(terminalDao, dto.path);
 
             var result = new SyncResult();
             if (dto.opt == NasOptEnums.Delete)
@@ -1244,7 +1246,6 @@ namespace Com.Scm.Nas.Sync
         /// <returns></returns>
         private string GetPhysicalPath(ScmUrTerminalDao token, string path)
         {
-            path = GetVirtualPath(token, path);
             return _EnvConfig.GetDataPath("/Nas" + path);
         }
 
@@ -1266,7 +1267,7 @@ namespace Com.Scm.Nas.Sync
                 return null;
             }
 
-            return $"/{NasEnv.Devices}/{userDao.codes}" + path;
+            return $"/{userDao.codes}/{NasEnv.Devices}" + path;
         }
 
         /// <summary>

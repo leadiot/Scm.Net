@@ -20,7 +20,7 @@ namespace Com.Scm.Nas.Log
         /// 驱动ID
         /// </summary>
         [Required]
-        public long drive_id { get; set; }
+        public long folder_id { get; set; }
 
         /// <summary>
         /// 文件类型

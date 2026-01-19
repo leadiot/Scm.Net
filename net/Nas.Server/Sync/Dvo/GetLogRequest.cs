@@ -2,6 +2,6 @@
 {
     public class GetLogRequest : ScmSearchPageRequest
     {
-        public long drive_id { get; set; }
+        public long folder_id { get; set; }
     }
 }

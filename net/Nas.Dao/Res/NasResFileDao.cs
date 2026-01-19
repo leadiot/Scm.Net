@@ -13,6 +13,12 @@ namespace Com.Scm.Nas.Res
     public class NasResFileDao : ScmUserDataDao
     {
         /// <summary>
+        /// 驱动ID
+        /// </summary>
+        [Required]
+        public long folder_id { get; set; }
+
+        /// <summary>
         /// 文件类型
         /// </summary>
         public NasTypeEnums type { get; set; }

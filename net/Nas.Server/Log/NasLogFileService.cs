@@ -33,7 +33,7 @@ namespace Com.Scm.Nas.Log
         {
             var result = await _thisRepository.AsQueryable()
                 .WhereIF(IsNormalId(request.terminal_id), a => a.terminal_id == request.terminal_id)
-                .WhereIF(IsNormalId(request.drive_id), a => a.drive_id == request.drive_id)
+                .WhereIF(IsNormalId(request.drive_id), a => a.folder_id == request.drive_id)
                 .WhereIF(request.opt != NasOptEnums.None, a => a.opt == request.opt)
                 //.WhereIF(!string.IsNullOrEmpty(request.key), a => a.text.Contains(request.key))
                 .OrderBy(m => m.id)

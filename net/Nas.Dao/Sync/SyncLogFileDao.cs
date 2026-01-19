@@ -26,7 +26,7 @@ namespace Com.Scm.Nas.Sync
         /// 驱动ID
         /// </summary>
         [Required]
-        public long drive_id { get; set; }
+        public long folder_id { get; set; }
 
         /// <summary>
         /// 目录ID

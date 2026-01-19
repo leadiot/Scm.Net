@@ -96,11 +96,11 @@ namespace Com.Scm.Nas.Sync
                 await _SqlClient.Updateable(dao).ExecuteCommandAsync();
             }
 
-            var path = GetVirtualPath(terminalDao, model.path);
-            CreateRecursiveDirDao(terminalDao, dao.id, path);
+            //var path = GetVirtualPath(terminalDao, model.path);
+            //CreateRecursiveDirDao(terminalDao, dao.id, path);
 
-            path = _EnvConfig.GetDataPath(path);
-            FileUtils.CreateDir(path);
+            //path = _EnvConfig.GetDataPath(path);
+            //FileUtils.CreateDir(path);
 
             model.id = dao.id;
 
@@ -1321,7 +1321,7 @@ namespace Com.Scm.Nas.Sync
                 return null;
             }
 
-            return $"/Nas/{userDao.codes}/{token.codes}" + path;
+            return $"/Nas/{userDao.codes}" + path;
         }
 
         /// <summary>

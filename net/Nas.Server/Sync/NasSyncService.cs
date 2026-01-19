@@ -99,6 +99,10 @@ namespace Com.Scm.Nas.Sync
             var path = GetVirtualPath(terminalDao, model.path);
             var dirDao = CreateRecursiveDirDao(terminalDao, cfgDao.id, path);
 
+            // 回写
+            cfgDao.res_id = dirDao.id;
+            await _SqlClient.Updateable(cfgDao).ExecuteCommandAsync();
+
             path = _EnvConfig.GetDataPath(path);
             FileUtils.CreateDir(path);
 

@@ -96,15 +96,21 @@ namespace Com.Scm.Nas.Sync
                 await _SqlClient.Updateable(cfgDao).ExecuteCommandAsync();
             }
 
-            var path = GetVirtualPath(terminalDao, model.path);
-            var dirDao = CreateRecursiveDirDao(terminalDao, cfgDao.id, path);
+            //var path = model.path;
+            //var idx = path.LastIndexOf(NasEnv.WebSeparator);
+            //if (idx > 0)
+            //{
+            //    path = path.Substring(idx);
+            //}
+            var vPath = GetVirtualPath(terminalDao, model.path);
+            var dirDao = CreateRecursiveDirDao(terminalDao, cfgDao.id, vPath);
 
             // 回写
             cfgDao.res_id = dirDao.id;
             await _SqlClient.Updateable(cfgDao).ExecuteCommandAsync();
 
-            path = _EnvConfig.GetDataPath(path);
-            FileUtils.CreateDir(path);
+            var rPath = GetPhysicalPath(terminalDao, model.path);
+            FileUtils.CreateDir(rPath);
 
             model.id = cfgDao.id;
             model.res_id = dirDao.id;
@@ -1239,7 +1245,7 @@ namespace Com.Scm.Nas.Sync
         private string GetPhysicalPath(ScmUrTerminalDao token, string path)
         {
             path = GetVirtualPath(token, path);
-            return _EnvConfig.GetDataPath(path);
+            return _EnvConfig.GetDataPath("/Nas" + path);
         }
 
         private string GetVirtualPath(ScmUrTerminalDao token, string path)
@@ -1260,7 +1266,7 @@ namespace Com.Scm.Nas.Sync
                 return null;
             }
 
-            return $"/Nas/{userDao.codes}" + path;
+            return $"/{NasEnv.Devices}/{userDao.codes}" + path;
         }
 
         /// <summary>

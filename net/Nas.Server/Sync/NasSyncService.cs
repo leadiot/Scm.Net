@@ -82,7 +82,8 @@ namespace Com.Scm.Nas.Sync
             if (dao == null)
             {
                 dao = new SyncCfgFolderDao();
-                dao.terminal_id = token.terminal_id;
+                dao.user_id = terminalDao.user_id;
+                dao.terminal_id = terminalDao.id;
                 dao.name = model.name;
                 dao.path = model.path;
                 dao.PrepareCreate(terminalDao.user_id);

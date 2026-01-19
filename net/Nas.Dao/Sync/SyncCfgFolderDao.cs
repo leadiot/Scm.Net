@@ -1,4 +1,4 @@
-using Com.Scm.Dao.User;
+using Com.Scm.Dao;
 using SqlSugar;
 using System.ComponentModel.DataAnnotations;
 
@@ -8,8 +8,14 @@ namespace Com.Scm.Nas.Cfg
     /// 驱动
     /// </summary>
     [SugarTable("nas_cfg_folder")]
-    public class SyncCfgFolderDao : ScmUserDataDao
+    public class SyncCfgFolderDao : ScmDataDao
     {
+        /// <summary>
+        /// 用户ID
+        /// </summary>
+        [Required]
+        public long user_id { get; set; }
+
         /// <summary>
         /// 终端ID
         /// </summary>

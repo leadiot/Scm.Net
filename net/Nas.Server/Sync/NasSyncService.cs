@@ -582,11 +582,13 @@ namespace Com.Scm.Nas.Sync
         /// <param name="hash"></param>
         /// <param name="size"></param>
         /// <returns></returns>
-        private Sync.SyncResFileDao AddCreateResDocDao(ScmUrTerminalDao token, long dirId, string path, string name, string hash, long size, long time)
+        private Sync.SyncResFileDao AddCreateResDocDao(ScmUrTerminalDao token, long folderId, long dirId, string path, string name, string hash, long size, long time)
         {
             var dirDao = new Sync.SyncResFileDao
             {
                 user_id = token.user_id,
+                terminal_id = token.id,
+                folder_id = 0,
                 type = NasTypeEnums.Doc,
                 name = name,
                 path = path,
@@ -747,7 +749,7 @@ namespace Com.Scm.Nas.Sync
                     var hash = FileUtils.Sha(doc);
                     var info = new FileInfo(doc);
                     var time = TimeUtils.GetUnixTime(info.LastAccessTimeUtc);
-                    docDao = AddCreateResDocDao(token, parentDao.id, dstUri, name, hash, info.Length, time);
+                    docDao = AddCreateResDocDao(token, parentDao.folder_id, parentDao.id, dstUri, name, hash, info.Length, time);
                 }
 
                 var dstFile = Path.Combine(dstDir, name);
@@ -934,7 +936,7 @@ namespace Com.Scm.Nas.Sync
                     var hash = FileUtils.Sha(doc);
                     var info = new FileInfo(doc);
                     var time = TimeUtils.GetUnixTime(info.LastAccessTimeUtc);
-                    dstDao = AddCreateResDocDao(token, parentDao.id, name, dstUri, hash, info.Length, time);
+                    dstDao = AddCreateResDocDao(token, parentDao.folder_id, parentDao.id, name, dstUri, hash, info.Length, time);
                 }
 
                 var dstFile = Path.Combine(dstDir, name);
@@ -1389,6 +1391,9 @@ namespace Com.Scm.Nas.Sync
         private SyncResFileDao AddResFileByDto(ScmUrTerminalDao token, NasLogFileDto dto, long dirId)
         {
             var docDao = dto.Adapt<Sync.SyncResFileDao>();
+            docDao.user_id = token.user_id;
+            docDao.terminal_id = token.id;
+            docDao.folder_id = dto.folder_id;
             docDao.dir_id = dirId;
             docDao.user_id = token.user_id;
             docDao.PrepareCreate(token.user_id);
@@ -1406,6 +1411,8 @@ namespace Com.Scm.Nas.Sync
         {
             var dao = dto.Adapt<Sync.SyncLogFileDao>();
             dao.user_id = token.user_id;
+            dao.terminal_id = token.id;
+            dao.folder_id = dto.folder_id;
             dao.dir_id = dirId;
             dao.terminal_id = token.id;
             dao.PrepareCreate(token.user_id);

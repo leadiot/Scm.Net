@@ -90,6 +90,8 @@ namespace Com.Scm.Nas.Sync
                 hash = "";
             }
 
+            user_id = userId;
+
             p_delete = ScmBoolEnum.False;
             s_delete = ScmBoolEnum.False;
             is_delete = ScmBoolEnum.False;

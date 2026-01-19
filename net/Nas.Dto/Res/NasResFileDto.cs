@@ -6,6 +6,11 @@ namespace Com.Scm.Nas.Res
     public class NasResFileDto : ScmDataDto
     {
         /// <summary>
+        /// 驱动ID
+        /// </summary>
+        public long folder_id { get; set; }
+
+        /// <summary>
         /// 
         /// </summary>
         public NasTypeEnums type { get; set; }
@@ -30,15 +35,20 @@ namespace Com.Scm.Nas.Res
         public string path { get; set; }
 
         /// <summary>
+        /// 文档摘要
+        /// </summary>
+        [StringLength(64)]
+        public string hash { get; set; }
+
+        /// <summary>
         /// 文档大小
         /// </summary>
         public long size { get; set; }
 
         /// <summary>
-        /// 文档摘要
+        /// 更新时间
         /// </summary>
-        [StringLength(64)]
-        public string hash { get; set; }
+        public long modify_time { get; set; }
 
         /// <summary>
         /// 版本

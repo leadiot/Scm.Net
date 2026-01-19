@@ -58,15 +58,15 @@ namespace Com.Scm.Nas.Res
         /// </summary>
         public long modify_time { get; set; }
 
-        public ScmBoolEnum p_delete { get; set; }
-        public ScmBoolEnum s_delete { get; set; }
-        public ScmBoolEnum is_delete { get; set; }
-
         /// <summary>
         /// 版本
         /// </summary>
         [Required]
         public long ver { get; set; }
+
+        public ScmBoolEnum p_delete { get; set; }
+        public ScmBoolEnum s_delete { get; set; }
+        public ScmBoolEnum is_delete { get; set; }
 
         public override void PrepareCreate(long userId)
         {

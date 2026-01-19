@@ -445,6 +445,7 @@ namespace Com.Scm.Nas.Sync
             LogUtils.Debug("创建目录：" + dto.path);
 
             var path = GetPhysicalPath(token, dto.path);
+            LogUtils.Debug("路径目录：" + path);
             if (!Directory.Exists(path))
             {
                 Directory.CreateDirectory(path);
@@ -1350,6 +1351,8 @@ namespace Com.Scm.Nas.Sync
         /// <returns></returns>
         private SyncResFileDao CreateRecursiveDirDao(ScmUrTerminalDao token, long folderId, string path)
         {
+            LogUtils.Debug("CreateRecursiveDirDao:" + path);
+
             var tmp = "";
             SyncResFileDao parentDao = new SyncResFileDao() { id = NasEnv.DEF_DIR_ID };
             path = path.Trim(NasEnv.WebSeparator);

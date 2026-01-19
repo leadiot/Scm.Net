@@ -75,34 +75,35 @@ namespace Com.Scm.Nas.Sync
                 return null;
             }
 
-            var dao = await _SqlClient.Queryable<SyncCfgFolderDao>()
+            var cfgDao = await _SqlClient.Queryable<SyncCfgFolderDao>()
                 .Where(a => a.terminal_id == token.terminal_id && a.name == model.name)
                 .FirstAsync();
 
-            if (dao == null)
+            if (cfgDao == null)
             {
-                dao = new SyncCfgFolderDao();
-                dao.user_id = terminalDao.user_id;
-                dao.terminal_id = terminalDao.id;
-                dao.name = model.name;
-                dao.path = model.path;
-                dao.PrepareCreate(terminalDao.user_id);
-                await _SqlClient.Insertable(dao).ExecuteCommandAsync();
+                cfgDao = new SyncCfgFolderDao();
+                cfgDao.user_id = terminalDao.user_id;
+                cfgDao.terminal_id = terminalDao.id;
+                cfgDao.name = model.name;
+                cfgDao.path = model.path;
+                cfgDao.PrepareCreate(terminalDao.user_id);
+                await _SqlClient.Insertable(cfgDao).ExecuteCommandAsync();
             }
             else
             {
-                dao.row_status = Enums.ScmRowStatusEnum.Enabled;
-                dao.PrepareUpdate(terminalDao.user_id);
-                await _SqlClient.Updateable(dao).ExecuteCommandAsync();
+                cfgDao.row_status = Enums.ScmRowStatusEnum.Enabled;
+                cfgDao.PrepareUpdate(terminalDao.user_id);
+                await _SqlClient.Updateable(cfgDao).ExecuteCommandAsync();
             }
 
-            //var path = GetVirtualPath(terminalDao, model.path);
-            //CreateRecursiveDirDao(terminalDao, dao.id, path);
+            var path = GetVirtualPath(terminalDao, model.path);
+            var dirDao = CreateRecursiveDirDao(terminalDao, cfgDao.id, path);
 
-            //path = _EnvConfig.GetDataPath(path);
-            //FileUtils.CreateDir(path);
+            path = _EnvConfig.GetDataPath(path);
+            FileUtils.CreateDir(path);
 
-            model.id = dao.id;
+            model.id = cfgDao.id;
+            model.res_id = dirDao.id;
 
             return model;
         }

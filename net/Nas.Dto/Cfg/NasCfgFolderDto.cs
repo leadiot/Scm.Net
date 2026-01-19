@@ -26,5 +26,10 @@ namespace Com.Scm.Nas.Cfg
         /// </summary>
         [StringLength(2048)]
         public string path { get; set; }
+
+        /// <summary>
+        /// 记录ID
+        /// </summary>
+        public long res_id { get; set; }
     }
 }

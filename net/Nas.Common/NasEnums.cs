@@ -144,7 +144,7 @@ namespace Com.Scm.Nas
         Stoped
     }
 
-    public enum NasFolderEnums
+    public enum NasNodeEnums
     {
         None,
         /// <summary>

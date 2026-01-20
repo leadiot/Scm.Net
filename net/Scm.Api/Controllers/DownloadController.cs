@@ -2,9 +2,12 @@
 using Com.Scm.Controllers;
 using Com.Scm.Filters;
 using Com.Scm.Http;
+using Com.Scm.Nas.Res;
+using Com.Scm.Ur;
 using Com.Scm.Utils;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using SqlSugar;
 
 namespace Com.Scm.Api.Controllers
 {
@@ -16,10 +19,12 @@ namespace Com.Scm.Api.Controllers
     public class DownloadController : ApiController
     {
         private EnvConfig _EnvConfig;
+        private ISqlSugarClient _SqlClient;
 
-        public DownloadController(EnvConfig envConfig)
+        public DownloadController(EnvConfig envConfig, ISqlSugarClient sqlClient)
         {
             _EnvConfig = envConfig;
+            _SqlClient = sqlClient;
         }
 
         /// <summary>
@@ -27,15 +32,33 @@ namespace Com.Scm.Api.Controllers
         /// </summary>
         /// <param name="path">要下载的文件名（含扩展名）</param>
         /// <returns>文件流</returns>
-        [HttpGet("File")]
-        [HttpGet("Small")]
+        [HttpGet("File/{id}")]
+        [HttpGet("Small/{id}")]
         [NoJsonResult]
-        public IActionResult DownloadSmallFile(string path)
+        public async Task<IActionResult> DownloadSmallFile(long id)
         {
-            LogUtils.Debug("小文件下载：" + path);
+            LogUtils.Debug("小文件下载：" + id);
+
+            var docDao = await _SqlClient.Queryable<NasResFileDao>()
+                .Where(a => a.id == id)
+                .FirstAsync();
+            if (docDao == null)
+            {
+                return Empty;
+            }
+
+            var userDao = await _SqlClient.Queryable<UserDao>()
+                .Where(a => a.id == docDao.user_id)
+                .FirstAsync();
+            if (userDao == null)
+            {
+                return Empty;
+            }
+
+            var path = "/Nas/" + userDao.codes + docDao.path;
 
             // 1. 定义文件存储的根路径
-            var filePath = _EnvConfig.GetDataPath("/Nas" + path);
+            var filePath = _EnvConfig.GetDataPath(path);
 
             // 2. 校验文件是否存在
             if (!System.IO.File.Exists(filePath))

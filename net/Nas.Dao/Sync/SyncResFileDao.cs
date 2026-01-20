@@ -18,17 +18,17 @@ namespace Com.Scm.Nas.Sync
         [Required]
         public long user_id { get; set; }
 
-        /// <summary>
-        /// 终端ID
-        /// </summary>
-        [Required]
-        public long terminal_id { get; set; }
+        ///// <summary>
+        ///// 终端ID
+        ///// </summary>
+        //[Required]
+        //public long terminal_id { get; set; }
 
-        /// <summary>
-        /// 驱动ID
-        /// </summary>
-        [Required]
-        public long folder_id { get; set; }
+        ///// <summary>
+        ///// 驱动ID
+        ///// </summary>
+        //[Required]
+        //public long folder_id { get; set; }
 
 
         /// <summary>

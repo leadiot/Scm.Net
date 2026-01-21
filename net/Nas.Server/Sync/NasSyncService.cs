@@ -1453,7 +1453,7 @@ namespace Com.Scm.Nas.Sync
             var key = "/" + userDao.codes;
             if (path.StartsWith(key, StringComparison.OrdinalIgnoreCase))
             {
-                path = key.Substring(key.Length);
+                path = path.Substring(key.Length);
             }
 
             return path;

@@ -1428,6 +1428,11 @@ namespace Com.Scm.Nas.Sync
                 path = path.Substring(NasEnv.VirtualTag.Length);
             }
 
+            if (path[0] != NasEnv.WebSeparator)
+            {
+                return path;
+            }
+
             var userDao = _ResHolder.GetRes<UserDao>(token.user_id);
             if (userDao == null)
             {

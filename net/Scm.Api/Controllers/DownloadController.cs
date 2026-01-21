@@ -2,8 +2,7 @@
 using Com.Scm.Controllers;
 using Com.Scm.Filters;
 using Com.Scm.Http;
-using Com.Scm.Nas.Res;
-using Com.Scm.Ur;
+using Com.Scm.Nas.Sync;
 using Com.Scm.Utils;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -39,7 +38,7 @@ namespace Com.Scm.Api.Controllers
         {
             LogUtils.Debug("小文件下载：" + id);
 
-            var docDao = await _SqlClient.Queryable<NasResFileDao>()
+            var docDao = await _SqlClient.Queryable<SyncResFileDao>()
                 .Where(a => a.id == id)
                 .FirstAsync();
             if (docDao == null)
@@ -47,18 +46,8 @@ namespace Com.Scm.Api.Controllers
                 return Empty;
             }
 
-            var userDao = await _SqlClient.Queryable<UserDao>()
-                .Where(a => a.id == docDao.user_id)
-                .FirstAsync();
-            if (userDao == null)
-            {
-                return Empty;
-            }
-
-            var path = "/Nas/" + userDao.codes + docDao.path;
-
             // 1. 定义文件存储的根路径
-            var filePath = _EnvConfig.GetDataPath(path);
+            var filePath = _EnvConfig.GetDataPath("/Nas" + docDao.path);
 
             // 2. 校验文件是否存在
             if (!System.IO.File.Exists(filePath))

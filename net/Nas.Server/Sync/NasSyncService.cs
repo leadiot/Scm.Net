@@ -96,7 +96,6 @@ namespace Com.Scm.Nas.Sync
                 await _SqlClient.Updateable(cfgDao).ExecuteCommandAsync();
             }
 
-            model.path = GetStoragePath(terminalDao, model.path);
             var list = new List<SyncResFileDao>();
             var dirDao = CreateRecursiveDirDao(terminalDao, model.path, list);
 
@@ -104,7 +103,7 @@ namespace Com.Scm.Nas.Sync
             cfgDao.res_id = dirDao.id;
             await _SqlClient.Updateable(cfgDao).ExecuteCommandAsync();
 
-            var rPath = GetNativePath(terminalDao, model.path);
+            var rPath = GetNativePath(model.path);
             FileUtils.CreateDir(rPath);
 
             model.id = cfgDao.id;
@@ -275,8 +274,6 @@ namespace Com.Scm.Nas.Sync
                 return null;
             }
 
-            dto.path = GetStoragePath(terminalDao, dto.path);
-
             var result = new SyncResult();
             if (dto.opt == NasOptEnums.Delete)
             {
@@ -361,11 +358,11 @@ namespace Com.Scm.Nas.Sync
         {
             LogUtils.Debug("删除文档：" + dto.path);
 
-            var dstFile = GetNativePath(token, dto.path);
+            var dstFile = GetNativePath(dto.path);
             FileUtils.DeleteDoc(dstFile);
 
             var parentList = new List<SyncResFileDao>();
-            var parentDao = GetDirDaoByPath(token, GetParentPath(dto.path), parentList);
+            var parentDao = GetDirDaoByPath(token, NasUtils.GetParentPath(dto.path), parentList);
             var docDao = GetDocDaoByPath(token.user_id, dto.path);
 
             var resId = 0L;
@@ -400,11 +397,11 @@ namespace Com.Scm.Nas.Sync
         {
             LogUtils.Debug("删除目录：" + dto.path);
 
-            var dstFile = GetNativePath(token, dto.path);
+            var dstFile = GetNativePath(dto.path);
             FileUtils.DeleteDir(dstFile);
 
             var parentList = new List<SyncResFileDao>();
-            var parentDao = GetDirDaoByPath(token, GetParentPath(dto.path), parentList);
+            var parentDao = GetDirDaoByPath(token, NasUtils.GetParentPath(dto.path), parentList);
             var dirDao = GetDirDaoByPath(token.user_id, dto.path);
 
             var resId = 0L;
@@ -477,7 +474,7 @@ namespace Com.Scm.Nas.Sync
         {
             LogUtils.Debug("创建目录：" + dto.path);
 
-            var path = GetNativePath(token, dto.path);
+            var path = GetNativePath(dto.path);
             LogUtils.Debug("路径目录：" + path);
             if (!Directory.Exists(path))
             {
@@ -515,7 +512,7 @@ namespace Com.Scm.Nas.Sync
                 return false;
             }
 
-            var dstFile = GetNativePath(token, dto.path);
+            var dstFile = GetNativePath(dto.path);
             if (!FileUtils.MoveDoc(tmpFile, dstFile, true))
             {
                 SyncResult.Failure("上传文档移动异常！");
@@ -523,7 +520,7 @@ namespace Com.Scm.Nas.Sync
             }
 
             var parentList = new List<SyncResFileDao>();
-            var dirDao = CreateRecursiveDirDao(token, GetParentPath(dto.path), parentList);
+            var dirDao = CreateRecursiveDirDao(token, NasUtils.GetParentPath(dto.path), parentList);
 
             var docDao = AddCreateFile(token, dto, dirDao.id);
 
@@ -595,7 +592,7 @@ namespace Com.Scm.Nas.Sync
         {
             LogUtils.Debug("移动目录：" + dto.path);
 
-            var srcDir = GetNativePath(token, dto.src);
+            var srcDir = GetNativePath(dto.src);
             if (!FileUtils.ExistsDir(srcDir))
             {
                 result.SetFailure($"来源目录 {dto.src} 不存在！");
@@ -603,7 +600,7 @@ namespace Com.Scm.Nas.Sync
             }
 
             var parentList = new List<SyncResFileDao>();
-            var parentDao = CreateRecursiveDirDao(token, GetParentPath(dto.path), parentList);
+            var parentDao = CreateRecursiveDirDao(token, NasUtils.GetParentPath(dto.path), parentList);
             var dstDao = GetDirDaoByPath(token.user_id, dto.path);
             if (dstDao != null)
             {
@@ -620,7 +617,7 @@ namespace Com.Scm.Nas.Sync
                 srcDao = AddResDirDao(token, dto, parentDao.id);
             }
 
-            var dstDir = GetNativePath(token, dto.path);
+            var dstDir = GetNativePath(dto.path);
             MoveDirCasced(token, srcDao, srcDir, dto.src, dstDir, dto.path);
 
             AddLogFileByDto(token, dto, srcDao.id, srcDao.dir_id, parentList);
@@ -725,14 +722,14 @@ namespace Com.Scm.Nas.Sync
         {
             LogUtils.Debug("移动文档：" + dto.path);
 
-            var srcFile = GetNativePath(token, dto.src);
+            var srcFile = GetNativePath(dto.src);
             if (!FileUtils.ExistsDoc(srcFile))
             {
                 result.SetFailure($"来源文档 {dto.src} 不存在！");
                 return false;
             }
 
-            var dstFile = GetNativePath(token, dto.path);
+            var dstFile = GetNativePath(dto.path);
             FileUtils.MoveDoc(srcFile, dstFile, true);
 
             var dstDao = GetDocDaoByPath(token.user_id, dto.path);
@@ -743,7 +740,7 @@ namespace Com.Scm.Nas.Sync
 
             // 创建父级目录
             var parentList = new List<SyncResFileDao>();
-            var parentDao = CreateRecursiveDirDao(token, GetParentPath(dto.path), parentList);
+            var parentDao = CreateRecursiveDirDao(token, NasUtils.GetParentPath(dto.path), parentList);
 
             var srcDao = GetDocDaoByPath(token.user_id, dto.src);
             if (srcDao != null)
@@ -802,7 +799,7 @@ namespace Com.Scm.Nas.Sync
         {
             LogUtils.Debug("复制目录：" + dto.path);
 
-            var srcPath = GetNativePath(token, dto.src);
+            var srcPath = GetNativePath(dto.src);
             if (!FileUtils.ExistsDir(srcPath))
             {
                 LogUtils.Debug($"来源目录 {dto.src} 不存在！");
@@ -811,7 +808,7 @@ namespace Com.Scm.Nas.Sync
             }
 
             var parentList = new List<SyncResFileDao>();
-            var parentDao = CreateRecursiveDirDao(token, GetParentPath(dto.path), parentList);
+            var parentDao = CreateRecursiveDirDao(token, NasUtils.GetParentPath(dto.path), parentList);
 
             var dstDao = GetDirDaoByPath(token.user_id, dto.path);
             if (dstDao != null)
@@ -823,7 +820,7 @@ namespace Com.Scm.Nas.Sync
                 dstDao = AddResDirDao(token, dto, parentDao.id);
             }
 
-            var dstDir = GetNativePath(token, dto.path);
+            var dstDir = GetNativePath(dto.path);
             CopyDirCasced(token, dstDao, srcPath, dto.src, dstDir, dto.path);
 
             AddLogFileByDto(token, dto, dstDao.id, dstDao.dir_id, parentList);
@@ -912,7 +909,7 @@ namespace Com.Scm.Nas.Sync
         {
             LogUtils.Debug("复制文档：" + dto.path);
 
-            var srcFile = GetNativePath(token, dto.src);
+            var srcFile = GetNativePath(dto.src);
             if (!FileUtils.ExistsDoc(srcFile))
             {
                 LogUtils.Debug($"来源文档 {dto.src} 不存在！");
@@ -920,11 +917,11 @@ namespace Com.Scm.Nas.Sync
                 return false;
             }
 
-            var dstFile = GetNativePath(token, dto.path);
+            var dstFile = GetNativePath(dto.path);
             FileUtils.CopyDoc(srcFile, dstFile, true);
 
             var parentList = new List<SyncResFileDao>();
-            var parentDao = CreateRecursiveDirDao(token, GetParentPath(dto.path), parentList);
+            var parentDao = CreateRecursiveDirDao(token, NasUtils.GetParentPath(dto.path), parentList);
 
             var dstDao = GetDocDaoByPath(token.user_id, dto.path);
             if (dstDao != null)
@@ -989,7 +986,7 @@ namespace Com.Scm.Nas.Sync
         {
             LogUtils.Debug("更名目录：" + dto.path);
 
-            var srcDir = GetNativePath(token, dto.src);
+            var srcDir = GetNativePath(dto.src);
             if (!FileUtils.ExistsDir(srcDir))
             {
                 result.SetFailure($"来源目录 {dto.src} 不存在！");
@@ -997,7 +994,7 @@ namespace Com.Scm.Nas.Sync
             }
 
             var parentList = new List<SyncResFileDao>();
-            var parentDao = CreateRecursiveDirDao(token, GetParentPath(dto.path), parentList);
+            var parentDao = CreateRecursiveDirDao(token, NasUtils.GetParentPath(dto.path), parentList);
 
             var dstDao = GetDirDaoByPath(token.user_id, dto.path);
             if (dstDao != null)
@@ -1015,7 +1012,7 @@ namespace Com.Scm.Nas.Sync
                 srcDao = AddResDirDao(token, dto, parentDao.id);
             }
 
-            var dstDir = GetNativePath(token, dto.path);
+            var dstDir = GetNativePath(dto.path);
             MoveDirCasced(token, srcDao, srcDir, dto.src, dstDir, dto.path);
 
             AddLogFileByDto(token, dto, srcDao.id, srcDao.dir_id, parentList);
@@ -1034,18 +1031,18 @@ namespace Com.Scm.Nas.Sync
         {
             LogUtils.Debug("更名文档：" + dto.path);
 
-            var srcFile = GetNativePath(token, dto.src);
+            var srcFile = GetNativePath(dto.src);
             if (!FileUtils.ExistsDoc(srcFile))
             {
                 result.SetFailure($"来源文档 {dto.src} 不存在！");
                 return false;
             }
 
-            var dstFile = GetNativePath(token, dto.path);
+            var dstFile = GetNativePath(dto.path);
             FileUtils.MoveDoc(srcFile, dstFile, true);
 
             var parentList = new List<SyncResFileDao>();
-            var paretnDao = CreateRecursiveDirDao(token, GetParentPath(dto.path), parentList);
+            var paretnDao = CreateRecursiveDirDao(token, NasUtils.GetParentPath(dto.path), parentList);
 
             var dstDao = GetDocDaoByPath(token.user_id, dto.path);
             if (dstDao != null)
@@ -1118,7 +1115,7 @@ namespace Com.Scm.Nas.Sync
                 return false;
             }
 
-            var dstFile = GetNativePath(token, dto.path);
+            var dstFile = GetNativePath(dto.path);
             var dstDir = FileUtils.GetDir(dstFile);
             if (!Directory.Exists(dstDir))
             {
@@ -1132,7 +1129,7 @@ namespace Com.Scm.Nas.Sync
             }
 
             var parentList = new List<SyncResFileDao>();
-            var parentDao = CreateRecursiveDirDao(token, GetParentPath(dto.path), parentList);
+            var parentDao = CreateRecursiveDirDao(token, NasUtils.GetParentPath(dto.path), parentList);
 
             var docDao = GetDocDaoByPath(token.user_id, dto.path);
             if (docDao == null)
@@ -1163,7 +1160,7 @@ namespace Com.Scm.Nas.Sync
         {
             LogUtils.Debug("更新目录：" + dto.path);
 
-            var tmpFile = GetNativePath(token, dto.path);
+            var tmpFile = GetNativePath(dto.path);
             if (!Directory.Exists(tmpFile))
             {
                 Directory.CreateDirectory(tmpFile);
@@ -1386,18 +1383,7 @@ namespace Com.Scm.Nas.Sync
         /// </summary>
         /// <param name="path"></param>
         /// <returns></returns>
-        private string GetNativePath(ScmUrTerminalDao token, string path)
-        {
-            return _EnvConfig.GetDataPath($"/Nas" + path);
-        }
-
-        /// <summary>
-        /// 获取存储相对路径
-        /// </summary>
-        /// <param name="token"></param>
-        /// <param name="path"></param>
-        /// <returns></returns>
-        private string GetStoragePath(ScmUrTerminalDao token, string path)
+        private string GetNativePath(string path)
         {
             if (string.IsNullOrEmpty(path))
             {
@@ -1409,29 +1395,7 @@ namespace Com.Scm.Nas.Sync
                 path = path.Substring(NasEnv.VirtualTag.Length);
             }
 
-            var userDao = _ResHolder.GetRes<UserDao>(token.user_id);
-            if (userDao == null)
-            {
-                return null;
-            }
-
-            return $"/{userDao.codes}" + path;
-        }
-
-        /// <summary>
-        /// 获取上级目录
-        /// </summary>
-        /// <param name="file">虚拟绝对路径</param>
-        /// <returns></returns>
-        private static string GetParentPath(string file)
-        {
-            file = file.TrimEnd(NasEnv.WebSeparator);
-            var idx = file.LastIndexOf(NasEnv.WebSeparator);
-            if (idx > 0)
-            {
-                return file.Substring(0, idx);
-            }
-            return "" + NasEnv.WebSeparator;
+            return _EnvConfig.GetDataPath($"/Nas" + path);
         }
 
         /// <summary>

@@ -8,6 +8,5 @@ namespace Com.Scm.Nas.Sync
     {
         public long user_id { get; set; }
         public long folder_id { get; set; }
-        public long log_id { get; set; }
     }
 }

@@ -1268,9 +1268,9 @@ namespace Com.Scm.Nas.Sync
                     }
 
                     var dao = new SyncLogFolderDao();
+                    dao.id = logDao.id;
                     dao.user_id = logDao.user_id;
-                    dao.folder_id = folder.id;
-                    dao.log_id = logDao.id;
+                    dao.folder_id = logDao.folder_id;
                     list.Add(dao);
                 }
             }

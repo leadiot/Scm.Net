@@ -7,8 +7,5 @@ namespace Com.Scm.Nas.Log
     public class NasLogFolderDao : ScmUserDataDao
     {
         public long folder_id { get; set; }
-
-
-        public long log_id { get; set; }
     }
 }

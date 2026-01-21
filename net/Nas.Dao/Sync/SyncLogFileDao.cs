@@ -72,6 +72,11 @@ namespace Com.Scm.Nas.Sync
         public long size { get; set; }
 
         /// <summary>
+        /// 
+        /// </summary>
+        public long modify_time { get; set; }
+
+        /// <summary>
         /// 操作类型
         /// </summary>
         [Required]

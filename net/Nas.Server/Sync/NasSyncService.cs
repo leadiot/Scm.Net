@@ -1619,6 +1619,11 @@ namespace Com.Scm.Nas.Sync
             var folderList = GetFolderList(token.user_id);
             foreach (var folder in folderList)
             {
+                if (folder.id == logDto.folder_id)
+                {
+                    continue;
+                }
+
                 var parent = parentList.Find(a => a.id == folder.res_id);
                 if (parent == null)
                 {

@@ -64,9 +64,9 @@ namespace Com.Scm.Nas.Sync
         /// <summary>
         /// 更新驱动
         /// </summary>
-        /// <param name="model"></param>
+        /// <param name="dto"></param>
         /// <returns></returns>
-        public async Task<NasCfgFolderDto> PostFolderAsync(NasCfgFolderDto model, [FromHeader] string appToken)
+        public async Task<NasCfgFolderDto> PostFolderAsync(NasCfgFolderDto dto, [FromHeader] string appToken)
         {
             var token = ScmToken.FromAppToken(appToken);
             var terminalDao = _ResHolder.GetRes<ScmUrTerminalDao>(token.terminal_id);
@@ -75,8 +75,10 @@ namespace Com.Scm.Nas.Sync
                 return null;
             }
 
+            dto.path = GetStoragePath(terminalDao, dto.path);
+
             var cfgDao = await _SqlClient.Queryable<SyncCfgFolderDao>()
-                .Where(a => a.terminal_id == token.terminal_id && a.name == model.name)
+                .Where(a => a.terminal_id == token.terminal_id && a.name == dto.name)
                 .FirstAsync();
 
             if (cfgDao == null)
@@ -84,8 +86,8 @@ namespace Com.Scm.Nas.Sync
                 cfgDao = new SyncCfgFolderDao();
                 cfgDao.user_id = terminalDao.user_id;
                 cfgDao.terminal_id = terminalDao.id;
-                cfgDao.name = model.name;
-                cfgDao.path = model.path;
+                cfgDao.name = dto.name;
+                cfgDao.path = dto.path;
                 cfgDao.PrepareCreate(terminalDao.user_id);
                 await _SqlClient.Insertable(cfgDao).ExecuteCommandAsync();
             }
@@ -97,19 +99,19 @@ namespace Com.Scm.Nas.Sync
             }
 
             var list = new List<SyncResFileDao>();
-            var dirDao = CreateRecursiveDirDao(terminalDao, model.path, list);
+            var dirDao = CreateRecursiveDirDao(terminalDao, dto.path, list);
 
             // 回写
             cfgDao.res_id = dirDao.id;
             await _SqlClient.Updateable(cfgDao).ExecuteCommandAsync();
 
-            var rPath = GetNativePath(model.path);
+            var rPath = GetNativePath(dto.path);
             FileUtils.CreateDir(rPath);
 
-            model.id = cfgDao.id;
-            model.res_id = dirDao.id;
+            dto.id = cfgDao.id;
+            dto.res_id = dirDao.id;
 
-            return model;
+            return dto;
         }
 
         /// <summary>
@@ -143,7 +145,7 @@ namespace Com.Scm.Nas.Sync
 
             //var driveDao = GetDriveDao(driveId);
 
-            return await _SqlClient.Queryable<SyncLogFolderDao, SyncLogFileDao>((a, b) => a.id == b.id)
+            var response = await _SqlClient.Queryable<SyncLogFolderDao, SyncLogFileDao>((a, b) => a.id == b.id)
                 .Where((a, b) => a.user_id == terminalDao.user_id &&
                     a.folder_id == request.folder_id &&
                     a.row_status == Enums.ScmRowStatusEnum.Enabled &&
@@ -167,6 +169,13 @@ namespace Com.Scm.Nas.Sync
                     src = b.src
                 })
                 .ToPageAsync(request.page, request.limit);
+
+            foreach (var item in response.Items)
+            {
+                item.path = GetClientPath(terminalDao, item.path);
+                item.src = GetClientPath(terminalDao, item.src);
+            }
+            return response;
         }
 
         /// <summary>
@@ -185,7 +194,7 @@ namespace Com.Scm.Nas.Sync
 
             var byPath = request.by_path;// !string.IsNullOrEmpty(request.path);
 
-            return await _SqlClient.Queryable<Sync.SyncResFileDao>()
+            var response = await _SqlClient.Queryable<Sync.SyncResFileDao>()
                 .Where(a => a.user_id == terminalDao.user_id &&
                     a.type == NasTypeEnums.Dir &&
                     a.row_status == Enums.ScmRowStatusEnum.Enabled)
@@ -194,6 +203,12 @@ namespace Com.Scm.Nas.Sync
                 .OrderBy(a => a.name, OrderByType.Asc)
                 .Select<NasResFileDto>()
                 .ToPageAsync(request.page, request.limit);
+
+            foreach (var item in response.Items)
+            {
+                item.path = GetClientPath(terminalDao, item.path);
+            }
+            return response;
         }
 
         /// <summary>
@@ -212,7 +227,7 @@ namespace Com.Scm.Nas.Sync
 
             var byPath = request.by_path;// !string.IsNullOrEmpty(request.path);
 
-            return await _SqlClient.Queryable<Sync.SyncResFileDao>()
+            var response = await _SqlClient.Queryable<Sync.SyncResFileDao>()
                 .Where(a => a.user_id == terminalDao.user_id &&
                     a.type == NasTypeEnums.Doc &&
                     a.row_status == Enums.ScmRowStatusEnum.Enabled)
@@ -221,6 +236,12 @@ namespace Com.Scm.Nas.Sync
                 .OrderBy(a => a.name, OrderByType.Asc)
                 .Select<NasResFileDto>()
                 .ToPageAsync(request.page, request.limit);
+
+            foreach (var item in response.Items)
+            {
+                item.path = GetClientPath(terminalDao, item.path);
+            }
+            return response;
         }
 
         /// <summary>
@@ -239,7 +260,7 @@ namespace Com.Scm.Nas.Sync
 
             var byPath = request.by_path;// !string.IsNullOrEmpty(request.path);
 
-            var items = await _SqlClient.Queryable<Sync.SyncResFileDao>()
+            var response = await _SqlClient.Queryable<Sync.SyncResFileDao>()
                 .Where(a => a.user_id == terminalDao.user_id &&
                     a.row_status == Enums.ScmRowStatusEnum.Enabled)
                 .WhereIF(byPath, a => a.path == request.path)
@@ -249,7 +270,11 @@ namespace Com.Scm.Nas.Sync
                 .Select<NasResFileDto>()
                 .ToPageAsync(request.page, request.limit);
 
-            return items;
+            foreach (var item in response.Items)
+            {
+                item.path = GetClientPath(terminalDao, item.path);
+            }
+            return response;
         }
 
         /// <summary>
@@ -273,6 +298,9 @@ namespace Com.Scm.Nas.Sync
             {
                 return null;
             }
+
+            dto.path = GetStoragePath(terminalDao, dto.path);
+            dto.src = GetStoragePath(terminalDao, dto.src);
 
             var result = new SyncResult();
             if (dto.opt == NasOptEnums.Delete)
@@ -1385,6 +1413,11 @@ namespace Com.Scm.Nas.Sync
         /// <returns></returns>
         private string GetNativePath(string path)
         {
+            return _EnvConfig.GetDataPath($"/Nas" + path);
+        }
+
+        private string GetStoragePath(ScmUrTerminalDao token, string path)
+        {
             if (string.IsNullOrEmpty(path))
             {
                 return null;
@@ -1395,7 +1428,35 @@ namespace Com.Scm.Nas.Sync
                 path = path.Substring(NasEnv.VirtualTag.Length);
             }
 
-            return _EnvConfig.GetDataPath($"/Nas" + path);
+            var userDao = _ResHolder.GetRes<UserDao>(token.user_id);
+            if (userDao == null)
+            {
+                return path;
+            }
+
+            return $"/{userDao.codes}" + path;
+        }
+
+        private string GetClientPath(ScmUrTerminalDao token, string path)
+        {
+            if (string.IsNullOrEmpty(path))
+            {
+                return path;
+            }
+
+            var userDao = _ResHolder.GetRes<UserDao>(token.user_id);
+            if (userDao == null)
+            {
+                return path;
+            }
+
+            var key = "/" + userDao.codes;
+            if (path.StartsWith(key, StringComparison.OrdinalIgnoreCase))
+            {
+                path = key.Substring(key.Length);
+            }
+
+            return path;
         }
 
         /// <summary>

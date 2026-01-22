@@ -41,7 +41,7 @@ namespace Com.Scm.Nas.Sync
         /// 数据初始化
         /// </summary>
         /// <returns></returns>
-        public async Task<SyncResFileDao> PostInitAsync([FromHeader] string appToken)
+        public async Task<List<SyncResFileDao>> PostInitAsync([FromHeader] string appToken)
         {
             var token = ScmToken.FromAppToken(appToken);
             var terminalDao = _ResHolder.GetRes<ScmUrTerminalDao>(token.terminal_id);
@@ -56,10 +56,17 @@ namespace Com.Scm.Nas.Sync
                 return null;
             }
 
-            var secretDao = CreateRecursiveDirDao(terminalDao, $"/{userDao.codes}/{NasEnv.NodeSecret}");
-            var publicDao = CreateRecursiveDirDao(terminalDao, $"/{userDao.codes}/{NasEnv.NodePublic}");
+            var dirList = new List<SyncResFileDao>();
+            var dao = CreateRecursiveDirDao(terminalDao, $"/{userDao.codes}/{NasEnv.NodeDownloads}");
+            dirList.Add(dao);
+            dao = CreateRecursiveDirDao(terminalDao, $"/{userDao.codes}/{NasEnv.NodeDevices}");
+            dirList.Add(dao);
+            dao = CreateRecursiveDirDao(terminalDao, $"/{userDao.codes}/{NasEnv.NodeSecret}");
+            dirList.Add(dao);
+            dao = CreateRecursiveDirDao(terminalDao, $"/{userDao.codes}/{NasEnv.NodePublic}");
+            dirList.Add(dao);
 
-            return publicDao;
+            return dirList;
         }
 
         /// <summary>

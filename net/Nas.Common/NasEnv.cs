@@ -132,13 +132,13 @@
         /// </summary>
         public const string NodeFavorites = "Favorites";
         /// <summary>
-        /// 设备
-        /// </summary>
-        public const string NodeDevices = "Devices";
-        /// <summary>
         /// 下载
         /// </summary>
         public const string NodeDownloads = "Downloads";
+        /// <summary>
+        /// 设备
+        /// </summary>
+        public const string NodeDevices = "Devices";
         /// <summary>
         /// 私密
         /// </summary>

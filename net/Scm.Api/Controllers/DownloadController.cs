@@ -56,7 +56,8 @@ namespace Com.Scm.Api.Controllers
             }
 
             // 3. 获取文件的MIME类型
-            var contentType = HttpContentType.APPLICATION_OCTET_STREAM;
+            var ext = FileUtils.GetExtension(filePath);
+            var contentType = MimeUtils.GetMimeType(ext);
 
             // 4. 返回文件流（第三个参数是下载时显示的文件名）
             return PhysicalFile(filePath, contentType, Path.GetFileName(filePath));

@@ -33,14 +33,14 @@
         public const string TempFileExt = ".nas";
 
         /// <summary>
-        /// Nas数据目录
-        /// </summary>
-        public const string DEF_NAS_DIR = "Nas";
-
-        /// <summary>
         /// 默认目录ID
         /// </summary>
         public const long DEF_DIR_ID = 0;
+
+        /// <summary>
+        /// Nas数据目录
+        /// </summary>
+        public const string DEF_NAS_DIR = "Nas";
 
         /// <summary>
         /// 当前系统路径分隔符
@@ -58,6 +58,11 @@
         public const long MAX_CHUNK_SIZE = 1024 * 1024 * 5;
 
         #region 服务端接口
+        /// <summary>
+        /// 环境初始化
+        /// </summary>
+        public const string InitUrl = "/NasSync/Init";
+
         /// <summary>
         /// 获取目录路径
         /// </summary>

@@ -38,6 +38,31 @@ namespace Com.Scm.Nas.Sync
 
         #region 对外接口
         /// <summary>
+        /// 数据初始化
+        /// </summary>
+        /// <returns></returns>
+        public async Task<SyncResFileDao> PostInitAsync([FromHeader] string appToken)
+        {
+            var token = ScmToken.FromAppToken(appToken);
+            var terminalDao = _ResHolder.GetRes<ScmUrTerminalDao>(token.terminal_id);
+            if (terminalDao == null || terminalDao.IsExpired())
+            {
+                return null;
+            }
+
+            var userDao = _ResHolder.GetRes<UserDao>(terminalDao.user_id);
+            if (userDao == null)
+            {
+                return null;
+            }
+
+            var secretDao = CreateRecursiveDirDao(terminalDao, $"/{userDao.codes}/{NasEnv.NodeSecret}");
+            var publicDao = CreateRecursiveDirDao(terminalDao, $"/{userDao.codes}/{NasEnv.NodePublic}");
+
+            return publicDao;
+        }
+
+        /// <summary>
         /// 获取驱动列表
         /// </summary>
         /// <returns></returns>
@@ -1413,7 +1438,7 @@ namespace Com.Scm.Nas.Sync
         /// <returns></returns>
         private string GetNativePath(string path)
         {
-            return _EnvConfig.GetDataPath($"/Nas" + path);
+            return _EnvConfig.GetDataPath($"/" + NasEnv.DEF_NAS_DIR + path);
         }
 
         private string GetStoragePath(ScmUrTerminalDao token, string path)
@@ -1470,9 +1495,9 @@ namespace Com.Scm.Nas.Sync
         /// </summary>
         /// <param name="token"></param>
         /// <param name="path"></param>
-        /// <param name="daoList">返回的上级列表</param>
+        /// <param name="dirList">返回的上级列表</param>
         /// <returns></returns>
-        private SyncResFileDao CreateRecursiveDirDao(ScmUrTerminalDao token, string path, List<SyncResFileDao> daoList)
+        private SyncResFileDao CreateRecursiveDirDao(ScmUrTerminalDao token, string path, List<SyncResFileDao> dirList = null)
         {
             LogUtils.Debug("CreateRecursiveDirDao:" + path);
 
@@ -1497,7 +1522,11 @@ namespace Com.Scm.Nas.Sync
                 {
                     UpdateResFileDao(dao, arr, tmp, parentDao.id, token.user_id);
                 }
-                daoList.Add(dao);
+
+                if (dirList != null)
+                {
+                    dirList.Add(dao);
+                }
 
                 parentDao = dao;
             }

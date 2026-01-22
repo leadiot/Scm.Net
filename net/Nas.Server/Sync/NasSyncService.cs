@@ -153,7 +153,7 @@ namespace Com.Scm.Nas.Sync
                 .OrderBy(a => a.id, OrderByType.Asc)
                 .Select((a, b) => new NasLogFileDto
                 {
-                    id = b.id,
+                    id = a.id,
                     terminal_id = b.terminal_id,
                     folder_id = b.folder_id,
                     res_id = b.res_id,

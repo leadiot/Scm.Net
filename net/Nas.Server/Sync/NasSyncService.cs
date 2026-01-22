@@ -145,7 +145,7 @@ namespace Com.Scm.Nas.Sync
 
             //var driveDao = GetDriveDao(driveId);
 
-            var response = await _SqlClient.Queryable<SyncLogFolderDao, SyncLogFileDao>((a, b) => a.id == b.id)
+            var response = await _SqlClient.Queryable<SyncLogFolderDao, SyncLogFileDao>((a, b) => a.log_id == b.id)
                 .Where((a, b) => a.user_id == terminalDao.user_id &&
                     a.folder_id == request.folder_id &&
                     a.row_status == Enums.ScmRowStatusEnum.Enabled &&
@@ -1293,9 +1293,9 @@ namespace Com.Scm.Nas.Sync
                     }
 
                     var dao = new SyncLogFolderDao();
-                    dao.id = logDao.id;
                     dao.user_id = logDao.user_id;
                     dao.folder_id = logDao.folder_id;
+                    dao.log_id = logDao.id;
                     list.Add(dao);
                 }
             }
@@ -1661,9 +1661,9 @@ namespace Com.Scm.Nas.Sync
                 }
 
                 var tmpDao = new SyncLogFolderDao();
-                tmpDao.id = logDao.id;
                 tmpDao.user_id = token.user_id;
                 tmpDao.folder_id = folder.id;
+                tmpDao.log_id = logDao.id;
                 tmpDao.PrepareCreate(token.user_id);
                 _SqlClient.Insertable(tmpDao).ExecuteCommand();
             }

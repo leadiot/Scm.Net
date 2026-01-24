@@ -15,17 +15,23 @@ public class PositionDao : ScmDataDao
     /// 
     /// </summary>
     public string codes { get; set; }
+
+    /// <summary>
+    /// 岗位编码
+    /// </summary>
+    public string codec { get; set; }
+
+    /// <summary>
+    /// 
+    /// </summary>
+    public string names { get; set; }
+
     /// <summary>
     /// 岗位名称
     /// </summary>
     [Required]
     [StringLength(32)]
     public string namec { get; set; }
-
-    /// <summary>
-    /// 岗位编码
-    /// </summary>
-    public string codec { get; set; }
 
     /// <summary>
     /// 排序

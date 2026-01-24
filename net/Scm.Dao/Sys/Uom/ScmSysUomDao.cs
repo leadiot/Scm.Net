@@ -40,30 +40,35 @@ namespace Com.Scm.Sys
         /// 系统代码
         /// </summary>
         [StringLength(16)]
+        [SugarColumn(Length = 16)]
         public string codes { get; set; }
 
         /// <summary>
         /// 单位编码
         /// </summary>
         [StringLength(32)]
+        [SugarColumn(Length = 32)]
         public string codec { get; set; }
 
         /// <summary>
         /// 显示语言
         /// </summary>
         [StringLength(8)]
+        [SugarColumn(Length = 8)]
         public string lang { get; set; }
 
         /// <summary>
         /// 系统名称
         /// </summary>
         [StringLength(32)]
+        [SugarColumn(Length = 32)]
         public string names { get; set; }
 
         /// <summary>
         /// 单位名称
         /// </summary>
         [StringLength(32)]
+        [SugarColumn(Length = 32)]
         public string namec { get; set; }
 
         /// <summary>

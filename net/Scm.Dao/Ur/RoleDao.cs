@@ -60,6 +60,8 @@ public class RoleDao : ScmDataDao, ISortableDao, ISystemDao
     /// </summary>
     public ScmSystemEnum row_system { get; set; }
 
+    public ScmDeleteEnum row_delete { get; set; }
+
     /// <summary>
     /// 
     /// </summary>

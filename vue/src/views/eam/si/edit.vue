@@ -66,14 +66,10 @@
 	</el-container>
 </template>
 <script>
-import { defineAsyncComponent } from "vue";
 import { useRoute } from "vue-router";
 
 export default {
 	name: 'samples_po_detail',
-	components: {
-		bookSelector: defineAsyncComponent(() => import("../book/selector")),
-	},
 	data() {
 		return {
 			tableName: 'samples_po_detail',
@@ -141,7 +137,6 @@ export default {
 			this.$SCM.delete_list(this, this.$API.samplespodetail.delete, this.selection);
 		},
 		open_dialog() {
-			this.$refs.bookSelector.open(this.param.id, this.$API.samplespodetail.batch);
 		},
 		selectionChange(selection) {
 			this.selection = selection;
@@ -161,7 +156,6 @@ export default {
 			}
 		},
 		open_selector() {
-			this.$refs.bookSelector.open(this.param.id, this.$API.samplespodetail.batch);
 		},
 		async save() {
 			var tableData = this.$refs.table.getData();

@@ -11,7 +11,7 @@ namespace Com.Scm.Ur
     /// 用户表
     /// </summary>
     [SugarTable("scm_ur_user")]
-    public class UserDao : ScmDataDao, IDeleteDao, IResDao
+    public class UserDao : ScmDataDao, ISystemDao, IDeleteDao, IResDao
     {
         /// <summary>
         /// 
@@ -137,6 +137,10 @@ namespace Com.Scm.Ur
         public ScmUserHomeTypesEnum home { get; set; }
         #endregion
 
+        /// <summary>
+        /// 
+        /// </summary>
+        public ScmSystemEnum row_system { get; set; }
         /// <summary>
         /// 
         /// </summary>

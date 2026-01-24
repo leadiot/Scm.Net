@@ -21,6 +21,7 @@ public class DicDetailDao : ScmDataDao
     /// </summary>
     [Required]
     [StringLength(32)]
+    [SugarColumn(Length = 32)]
     public string codec { get; set; }
     /// <summary>
     /// 值
@@ -33,6 +34,7 @@ public class DicDetailDao : ScmDataDao
     /// </summary>
     [Required]
     [StringLength(64)]
+    [SugarColumn(Length = 64)]
     public string namec { get; set; }
 
     /// <summary>
@@ -45,6 +47,7 @@ public class DicDetailDao : ScmDataDao
     /// 备注
     /// </summary>
     [StringLength(128)]
+    [SugarColumn(Length = 128, IsNullable = true)]
     public string remark { get; set; }
 
     /// <summary>

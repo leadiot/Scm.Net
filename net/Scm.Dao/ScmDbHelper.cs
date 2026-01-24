@@ -16,42 +16,43 @@ namespace Com.Scm
 {
     public class ScmDbHelper
     {
-        public static void InitDb(ISqlSugarClient sqlClient)
+        private ISqlSugarClient _SqlClient;
+
+        public ScmDbHelper(ISqlSugarClient sqlClient)
         {
-            try
-            {
-                var key = "scmdb";
-
-                var verDao = ReadVer(sqlClient, key);
-                if (verDao == null)
-                {
-                    verDao = new ScmVerDao();
-                    verDao.key = key;
-                    verDao.create_time = TimeUtils.GetUnixTime();
-                }
-
-                InitDdl(sqlClient);
-
-                if (verDao.major == 0)
-                {
-                    InitDml(sqlClient);
-                }
-
-                var dir = AppDomain.CurrentDomain.BaseDirectory;
-                var ddlFile = Path.Combine(dir, "data", "ddl.sql");
-                ExecuteSql(sqlClient, ddlFile, verDao.major);
-
-                var dmlFile = Path.Combine(dir, "data", "dml.sql");
-                ExecuteSql(sqlClient, dmlFile, verDao.major);
-
-                SaveVer(sqlClient, verDao);
-            }
-            catch (Exception ex)
-            {
-            }
+            _SqlClient = sqlClient;
         }
 
-        private static void ExecuteSql(ISqlSugarClient sqlClient, string file, int major)
+        public bool InitDb(string baseDir)
+        {
+            var key = "scmdb";
+
+            var verDao = ReadVer(key);
+            if (verDao == null)
+            {
+                verDao = new ScmVerDao();
+                verDao.key = key;
+                verDao.create_time = TimeUtils.GetUnixTime();
+            }
+
+            InitDdl();
+
+            if (verDao.major == 0)
+            {
+                InitDml();
+            }
+
+            var ddlFile = Path.Combine(baseDir, "ddl.sql");
+            ExecuteSql(ddlFile, verDao.major);
+
+            var dmlFile = Path.Combine(baseDir, "dml.sql");
+            ExecuteSql(dmlFile, verDao.major);
+
+            SaveVer(verDao);
+            return true;
+        }
+
+        private void ExecuteSql(string file, int major)
         {
             if (!File.Exists(file))
             {
@@ -73,17 +74,24 @@ namespace Com.Scm
                 {
                     inComment = true;
                 }
-                if (inComment && !needRun)
+
+                if (inComment)
                 {
-                    var ver = GetSqlVer(sql);
-                    if (ver > major)
+                    if (!needRun)
                     {
-                        needRun = true;
+                        var ver = GetSqlVer(sql);
+                        if (ver > major)
+                        {
+                            needRun = true;
+                        }
                     }
-                }
-                if (sql.EndsWith("*/"))
-                {
-                    inComment = false;
+
+                    if (sql.EndsWith("*/"))
+                    {
+                        inComment = false;
+                    }
+
+                    continue;
                 }
 
                 if (!needRun)
@@ -91,7 +99,7 @@ namespace Com.Scm
                     return;
                 }
 
-                sqlClient.Ado.ExecuteCommand(line);
+                _SqlClient.Ado.ExecuteCommand(line);
             }
         }
 
@@ -119,7 +127,7 @@ namespace Com.Scm
         /// 数据库定义
         /// </summary>
         /// <param name="sqlClient"></param>
-        private static void InitDdl(ISqlSugarClient sqlClient)
+        private void InitDdl()
         {
             var assembly = Assembly.GetExecutingAssembly();
             var scmDao = typeof(ScmDao);
@@ -132,14 +140,14 @@ namespace Com.Scm
                     daoList.Add(item);
                 }
             }
-            sqlClient.CodeFirst.InitTables(daoList.ToArray());
+            _SqlClient.CodeFirst.InitTables(daoList.ToArray());
         }
 
-        private static ScmVerDao ReadVer(ISqlSugarClient sqlClient, string key)
+        private ScmVerDao ReadVer(string key)
         {
             try
             {
-                return sqlClient.Queryable<ScmVerDao>().First(a => a.key == key);
+                return _SqlClient.Queryable<ScmVerDao>().First(a => a.key == key);
             }
             catch (Exception ex)
             {
@@ -147,7 +155,7 @@ namespace Com.Scm
             }
         }
 
-        private static void SaveVer(ISqlSugarClient sqlClient, ScmVerDao verDao)
+        private void SaveVer(ScmVerDao verDao)
         {
             verDao.update_time = TimeUtils.GetUnixTime();
             verDao.major = ScmVerDao.VER_MAJOR;
@@ -157,15 +165,15 @@ namespace Com.Scm
 
             if (verDao.id == 0)
             {
-                sqlClient.Insertable(verDao).ExecuteCommand();
+                _SqlClient.Insertable(verDao).ExecuteCommand();
             }
             else
             {
-                sqlClient.Updateable(verDao).ExecuteCommand();
+                _SqlClient.Updateable(verDao).ExecuteCommand();
             }
         }
 
-        private static void InitDml(ISqlSugarClient sqlClient)
+        private void InitDml()
         {
             var appDao = new ScmDevAppDao();
             appDao.id = ScmEnv.DEFAULT_ID;
@@ -174,87 +182,87 @@ namespace Com.Scm
             appDao.code = "scm.net";
             appDao.name = "Scm.Net";
             appDao.content = "<p>一款基于Vue3和.Net10.0技术框架、适用于中后台管理系统的快速开发框架。</p><img src=\"/img/loginbg.svg\" alt=\"logo\"/>";
-            SaveDao(sqlClient, appDao);
+            SaveDao(appDao);
 
             var langDao = new LangDao();
             langDao.code = "zh-cn";
             langDao.text = "简体中文";
             langDao.od = 1;
-            SaveDao(sqlClient, langDao);
+            SaveDao(langDao);
 
             langDao = new LangDao();
             langDao.code = "en-us";
             langDao.text = "English(US)";
             langDao.od = 1;
-            SaveDao(sqlClient, langDao);
+            SaveDao(langDao);
 
             // Root
-            var menuRootDao = CreateMenu(sqlClient, ScmEnv.DEFAULT_ID, "", "", 0, 0, 0, "/", "", "");
+            var menuRootDao = CreateMenu(ScmEnv.DEFAULT_ID, "", "", 0, 0, 0, "/", "", "");
             menuRootDao.row_status = ScmRowStatusEnum.Normal;
-            sqlClient.Updateable(menuRootDao).ExecuteCommand();
+            _SqlClient.Updateable(menuRootDao).ExecuteCommand();
 
             // 主页
-            var menuHomeDao = CreateMenu(sqlClient, 1000000000000001000, "home", "主页", 0, 1, 1, "/home", "home", "sc-home-4-line");
+            var menuHomeDao = CreateMenu(1000000000000001000, "home", "主页", 0, 1, 1, "/home", "home", "sc-home-4-line");
             // 工作台
-            var menuDashboardDao = CreateMenu(sqlClient, 1000000000000001100, "dashboard", "工作台", menuHomeDao.id, 2, 1, "/dashboard", "home", "sc-menu-line");
+            var menuDashboardDao = CreateMenu(1000000000000001100, "dashboard", "工作台", menuHomeDao.id, 2, 1, "/dashboard", "home", "sc-menu-line");
             // 我的收藏
-            var menuFavoritesDao = CreateMenu(sqlClient, 1000000000000001200, "favorites", "我的收藏", menuHomeDao.id, 2, 2, "/favorites", "", "sc-heart-3-line");
+            var menuFavoritesDao = CreateMenu(1000000000000001200, "favorites", "我的收藏", menuHomeDao.id, 2, 2, "/favorites", "", "sc-heart-3-line");
             // 账户信息
-            var menuProfilesDao = CreateMenu(sqlClient, 1000000000000001300, "profiles", "账户信息", menuHomeDao.id, 2, 3, "/profiles", "", "sc-coffee-cup-line");
+            var menuProfilesDao = CreateMenu(1000000000000001300, "profiles", "账户信息", menuHomeDao.id, 2, 3, "/profiles", "", "sc-coffee-cup-line");
             // 机构信息
-            var menuHomeUnitDao = CreateMenu(sqlClient, 1000000000000001310, "home_unit", "机构信息", menuProfilesDao.id, 3, 1, "/home/unitCenter", "home/unitinfo", "sc-settings-3-line");
-            var menuHomeUserDao = CreateMenu(sqlClient, 1000000000000001320, "home_user", "个人信息", menuProfilesDao.id, 3, 2, "/home/usercenter", "home/userinfo", "sc-user-line");
-            var menuHomeOAuthDao = CreateMenu(sqlClient, 1000000000000001330, "scm-oauth", "联合登录", menuProfilesDao.id, 3, 3, "/home/oauth", "home/oauth", "sc-bubble-chart-line");
-            var menuHomeOtpDao = CreateMenu(sqlClient, 1000000000000001340, "scm-otp", "凭证登录", menuProfilesDao.id, 3, 4, "/scm/otp", "home/otp", "sc-bubble-chart-line");
+            var menuHomeUnitDao = CreateMenu(1000000000000001310, "home_unit", "机构信息", menuProfilesDao.id, 3, 1, "/home/unitCenter", "home/unitinfo", "sc-settings-3-line");
+            var menuHomeUserDao = CreateMenu(1000000000000001320, "home_user", "个人信息", menuProfilesDao.id, 3, 2, "/home/usercenter", "home/userinfo", "sc-user-line");
+            var menuHomeOAuthDao = CreateMenu(1000000000000001330, "scm-oauth", "联合登录", menuProfilesDao.id, 3, 3, "/home/oauth", "home/oauth", "sc-bubble-chart-line");
+            var menuHomeOtpDao = CreateMenu(1000000000000001340, "scm-otp", "凭证登录", menuProfilesDao.id, 3, 4, "/scm/otp", "home/otp", "sc-bubble-chart-line");
             // 我的反馈
-            var menuFeedbackDao = CreateMenu(sqlClient, 1000000000000001400, "feedback", "我的反馈", menuHomeDao.id, 2, 4, "/scm/feedback", "scm/sys/feedback", "sc-chat-quote-line");
+            var menuFeedbackDao = CreateMenu(1000000000000001400, "feedback", "我的反馈", menuHomeDao.id, 2, 4, "/scm/feedback", "scm/sys/feedback", "sc-chat-quote-line");
             // 我的终端
-            var menuTerminalDao = CreateMenu(sqlClient, 1000000000000001500, "terminal", "我的终端", menuHomeDao.id, 2, 5, "/scm/terminal", "scm/ur/terminal", "sc-device-line");
+            var menuTerminalDao = CreateMenu(1000000000000001500, "terminal", "我的终端", menuHomeDao.id, 2, 5, "/scm/terminal", "scm/ur/terminal", "sc-device-line");
             // 下载中心
-            var menuDownloadDao = CreateMenu(sqlClient, 1000000000000001600, "download", "下载中心", menuHomeDao.id, 2, 6, "/scm/download", "scm/down", "sc-device-line");
+            var menuDownloadDao = CreateMenu(1000000000000001600, "download", "下载中心", menuHomeDao.id, 2, 6, "/scm/download", "scm/down", "sc-device-line");
 
             // 设置
-            var menuSettingsDao = CreateMenu(sqlClient, 1000000000000003000, "setting", "设置", 0, 1, 3, "/setting", "", "mi-settings_applications");
+            var menuSettingsDao = CreateMenu(1000000000000003000, "setting", "设置", 0, 1, 3, "/setting", "", "mi-settings_applications");
             // 研发管理
-            var menuDevDao = CreateMenu(sqlClient, 1000000000000003100, "setting", "研发管理", menuSettingsDao.id, 2, 1, "/dev", "dev", "sc-bug-line");
-            var menuDevMenuDao = CreateMenu(sqlClient, 1000000000000003110, "dev_menu", "资源管理", menuDevDao.id, 3, 1, "/scm/dev/menu", "scm/dev/menu", "sc-menu-fill");
-            var menuDevAppDao = CreateMenu(sqlClient, 1000000000000003120, "dev_app", "应用管理", menuDevDao.id, 3, 2, "/scm/dev/app", "scm/dev/app", "sc-apple");
-            var menuDevVerDao = CreateMenu(sqlClient, 1000000000000003130, "dev_version", "版本管理", menuDevDao.id, 3, 3, "/scm/dev/version", "scm/dev/version", "sc-file-text-line");
-            var menuDevUidDao = CreateMenu(sqlClient, 1000000000000003140, "dev_uid", "编码管理", menuDevDao.id, 3, 4, "/scm/dev/uid", "scm/dev/uid", "sc-list-ordered");
-            var menuDevGenDao = CreateMenu(sqlClient, 1000000000000003150, "dev_gen", "代码生成", menuDevDao.id, 3, 5, "/scm/dev/generate", "scm/dev/generate", "sc-code-fill");
-            //var menuDevDbaDao = CreateMenu(sqlClient, 1000000000000003160, "dev_db", "数据库管理", menuDevDao.id, 3, 6, "/scm/dev/db", "scm/dev/db", "sc-coin-line");
-            //var menuDevSqlDao = CreateMenu(sqlClient, 1000000000000003170, "dev_sql", "数据库脚本", menuDevDao.id, 3, 7, "/scm/dev/sql", "scm/dev/sql", "sc-file-paper-2-line");
-            //var menuDevQtzDao = CreateMenu(sqlClient, 1000000000000003180, "dev_quartz", "后台任务", menuDevDao.id, 3, 8, "/scm/sys/quartz", "scm/sys/quartz", "sc-drag-move-line");
+            var menuDevDao = CreateMenu(1000000000000003100, "setting", "研发管理", menuSettingsDao.id, 2, 1, "/dev", "dev", "sc-bug-line");
+            var menuDevMenuDao = CreateMenu(1000000000000003110, "dev_menu", "资源管理", menuDevDao.id, 3, 1, "/scm/dev/menu", "scm/dev/menu", "sc-menu-fill");
+            var menuDevAppDao = CreateMenu(1000000000000003120, "dev_app", "应用管理", menuDevDao.id, 3, 2, "/scm/dev/app", "scm/dev/app", "sc-apple");
+            var menuDevVerDao = CreateMenu(1000000000000003130, "dev_version", "版本管理", menuDevDao.id, 3, 3, "/scm/dev/version", "scm/dev/version", "sc-file-text-line");
+            var menuDevUidDao = CreateMenu(1000000000000003140, "dev_uid", "编码管理", menuDevDao.id, 3, 4, "/scm/dev/uid", "scm/dev/uid", "sc-list-ordered");
+            var menuDevGenDao = CreateMenu(1000000000000003150, "dev_gen", "代码生成", menuDevDao.id, 3, 5, "/scm/dev/generate", "scm/dev/generate", "sc-code-fill");
+            //var menuDevDbaDao = CreateMenu(1000000000000003160, "dev_db", "数据库管理", menuDevDao.id, 3, 6, "/scm/dev/db", "scm/dev/db", "sc-coin-line");
+            //var menuDevSqlDao = CreateMenu(1000000000000003170, "dev_sql", "数据库脚本", menuDevDao.id, 3, 7, "/scm/dev/sql", "scm/dev/sql", "sc-file-paper-2-line");
+            //var menuDevQtzDao = CreateMenu(1000000000000003180, "dev_quartz", "后台任务", menuDevDao.id, 3, 8, "/scm/sys/quartz", "scm/sys/quartz", "sc-drag-move-line");
 
             // 全局配置
-            var menuCfgDao = CreateMenu(sqlClient, 1000000000000003200, "scm_cfg", "全局配置", menuSettingsDao.id, 2, 2, "/scm/cfg", "scm/cfg", "sc-settings-line");
-            var menuCfgAdmDao = CreateMenu(sqlClient, 1000000000000003210, "scm-adm-cfg", "参数配置", menuCfgDao.id, 3, 1, "/scm/adm/cfg", "scm/adm/cfg", "sc-file-text-line");
-            var menuCfgDicDao = CreateMenu(sqlClient, 1000000000000003220, "scm-adm-dic", "数据字典", menuCfgDao.id, 3, 2, "/scm/adm/dic", "scm/adm/dic", "sc-file-copy-2-line");
-            var menuCfgCatDao = CreateMenu(sqlClient, 1000000000000003230, "scm-res-cat", "分类管理", menuCfgDao.id, 3, 3, "/scm/res/cat", "scm/res/cat", "sc-layers-line");
-            var menuCfgUomDao = CreateMenu(sqlClient, 1000000000000003240, "scm-sys-uom", "计量单位", menuCfgDao.id, 3, 4, "/scm/sys/uom", "scm/sys/uom", "sc-signpost-line");
-            var menuCfgSecDao = CreateMenu(sqlClient, 1000000000000003250, "scm-adm-safety", "安全设置", menuCfgDao.id, 3, 5, "/scm/adm/safety", "scm/adm/safety", "sc-verified-badge-line");
+            var menuCfgDao = CreateMenu(1000000000000003200, "scm_cfg", "全局配置", menuSettingsDao.id, 2, 2, "/scm/cfg", "scm/cfg", "sc-settings-line");
+            var menuCfgAdmDao = CreateMenu(1000000000000003210, "scm-adm-cfg", "参数配置", menuCfgDao.id, 3, 1, "/scm/adm/cfg", "scm/adm/cfg", "sc-file-text-line");
+            var menuCfgDicDao = CreateMenu(1000000000000003220, "scm-adm-dic", "数据字典", menuCfgDao.id, 3, 2, "/scm/adm/dic", "scm/adm/dic", "sc-file-copy-2-line");
+            var menuCfgCatDao = CreateMenu(1000000000000003230, "scm-res-cat", "分类管理", menuCfgDao.id, 3, 3, "/scm/res/cat", "scm/res/cat", "sc-layers-line");
+            var menuCfgUomDao = CreateMenu(1000000000000003240, "scm-sys-uom", "计量单位", menuCfgDao.id, 3, 4, "/scm/sys/uom", "scm/sys/uom", "sc-signpost-line");
+            var menuCfgSecDao = CreateMenu(1000000000000003250, "scm-adm-safety", "安全设置", menuCfgDao.id, 3, 5, "/scm/adm/safety", "scm/adm/safety", "sc-verified-badge-line");
 
             // 权限管理
-            var menuUrDao = CreateMenu(sqlClient, 1000000000000003300, "scm-adm-safety", "权限管理", menuSettingsDao.id, 2, 3, "/scm/ur", "scm/ur", "sc-user-settings-line");
-            var menuUrOrganizeDao = CreateMenu(sqlClient, 1000000000000003310, "scm_ur_organize", "组织管理", menuUrDao.id, 3, 1, "/scm/ur/organize", "scm/ur/organize", "sc-company-line");
-            var menuUrPositionDao = CreateMenu(sqlClient, 1000000000000003320, "scm_ur_position", "岗位管理", menuUrDao.id, 3, 2, "/scm/ur/position", "scm/ur/position", "sc-place");
-            var menuUrRoleDao = CreateMenu(sqlClient, 1000000000000003330, "scm_ur_role", "角色管理", menuUrDao.id, 3, 3, "/scm/ur/role", "scm/ur/role", "sc-contacts-book-upload-line");
-            var menuUrUserDao = CreateMenu(sqlClient, 1000000000000003340, "scm_ur_user", "用户管理", menuUrDao.id, 3, 4, "/scm/ur/user", "scm/ur/user", "sc-user-line");
-            var menuUrAuthDao = CreateMenu(sqlClient, 1000000000000003350, "scm_ur_permission", "权限管理", menuUrDao.id, 3, 5, "/scm/ur/permission", "scm/ur/roleauth", "sc-verified-badge-line");
-            var menuUrAuthCDao = CreateMenu(sqlClient, 1000000000000003360, "scm_ur_roleconflict", "角色互斥", menuUrDao.id, 3, 6, "/scm/ur/roleconflict", "scm/ur/roleconflict", "sc-cherry");
-            var menuUrGroupDao = CreateMenu(sqlClient, 1000000000000003370, "scm_ur_group", "群组管理", menuUrDao.id, 3, 7, "/scm/ur/group", "scm/ur/group", "sc-user-2-line");
+            var menuUrDao = CreateMenu(1000000000000003300, "scm-adm-safety", "权限管理", menuSettingsDao.id, 2, 3, "/scm/ur", "scm/ur", "sc-user-settings-line");
+            var menuUrOrganizeDao = CreateMenu(1000000000000003310, "scm_ur_organize", "组织管理", menuUrDao.id, 3, 1, "/scm/ur/organize", "scm/ur/organize", "sc-company-line");
+            var menuUrPositionDao = CreateMenu(1000000000000003320, "scm_ur_position", "岗位管理", menuUrDao.id, 3, 2, "/scm/ur/position", "scm/ur/position", "sc-place");
+            var menuUrRoleDao = CreateMenu(1000000000000003330, "scm_ur_role", "角色管理", menuUrDao.id, 3, 3, "/scm/ur/role", "scm/ur/role", "sc-contacts-book-upload-line");
+            var menuUrUserDao = CreateMenu(1000000000000003340, "scm_ur_user", "用户管理", menuUrDao.id, 3, 4, "/scm/ur/user", "scm/ur/user", "sc-user-line");
+            var menuUrAuthDao = CreateMenu(1000000000000003350, "scm_ur_permission", "权限管理", menuUrDao.id, 3, 5, "/scm/ur/permission", "scm/ur/roleauth", "sc-verified-badge-line");
+            var menuUrAuthCDao = CreateMenu(1000000000000003360, "scm_ur_roleconflict", "角色互斥", menuUrDao.id, 3, 6, "/scm/ur/roleconflict", "scm/ur/roleconflict", "sc-cherry");
+            var menuUrGroupDao = CreateMenu(1000000000000003370, "scm_ur_group", "群组管理", menuUrDao.id, 3, 7, "/scm/ur/group", "scm/ur/group", "sc-user-2-line");
 
-            CreateUid(sqlClient, ScmEnv.DEFAULT_ID, "", 0, "", "");
-            CreateUid(sqlClient, 1000000000000000011, "scm_sys_uom", 0, "", "");
-            CreateUid(sqlClient, 1000000000000000012, "scm_sys_task", 12, "TASK", "");
-            CreateUid(sqlClient, 1000000000000001001, "scm_ur_unit", 7, "U", "");
-            CreateUid(sqlClient, 1000000000000001002, "scm_ur_user", 7, "X", "");
-            CreateUid(sqlClient, 1000000000000001011, "scm_ur_group", 7, "G", "");
-            CreateUid(sqlClient, 1000000000000001012, "scm_ur_organize", 7, "O", "");
-            CreateUid(sqlClient, 1000000000000001013, "scm_ur_position", 7, "P", "");
-            CreateUid(sqlClient, 1000000000000001014, "scm_ur_role", 1, "", "");
-            CreateUid(sqlClient, 1000000000000001016, "scm_ur_terminal", 9, "T", "");
-            CreateUid(sqlClient, 1000000000000001015, "scm_sys_table_header", 1, "", "");
+            CreateUid(ScmEnv.DEFAULT_ID, "", 0, "", "");
+            CreateUid(1000000000000000011, "scm_sys_uom", 0, "", "");
+            CreateUid(1000000000000000012, "scm_sys_task", 12, "TASK", "");
+            CreateUid(1000000000000001001, "scm_ur_unit", 7, "U", "");
+            CreateUid(1000000000000001002, "scm_ur_user", 7, "X", "");
+            CreateUid(1000000000000001011, "scm_ur_group", 7, "G", "");
+            CreateUid(1000000000000001012, "scm_ur_organize", 7, "O", "");
+            CreateUid(1000000000000001013, "scm_ur_position", 7, "P", "");
+            CreateUid(1000000000000001014, "scm_ur_role", 1, "", "");
+            CreateUid(1000000000000001016, "scm_ur_terminal", 9, "T", "");
+            CreateUid(1000000000000001015, "scm_sys_table_header", 1, "", "");
 
             var uomDao = new ScmSysUomDao();
             uomDao.id = ScmEnv.DEFAULT_ID;
@@ -269,9 +277,9 @@ namespace Com.Scm
             uomDao.symbol = "";
             uomDao.refer_qty = 0;
             uomDao.basic_qty = 0;
-            SaveDao(sqlClient, uomDao);
+            SaveDao(uomDao);
             uomDao.row_status = ScmRowStatusEnum.Normal;
-            sqlClient.Updateable(uomDao).ExecuteCommand();
+            _SqlClient.Updateable(uomDao).ExecuteCommand();
 
             var groupDao = new GroupDao();
             groupDao.id = ScmEnv.DEFAULT_ID;
@@ -280,9 +288,9 @@ namespace Com.Scm
             groupDao.names = "";
             groupDao.namec = "";
             groupDao.pid = ScmEnv.DEFAULT_ID;
-            SaveDao(sqlClient, groupDao);
+            SaveDao(groupDao);
             groupDao.row_status = ScmRowStatusEnum.Normal;
-            sqlClient.Updateable(groupDao).ExecuteCommand();
+            _SqlClient.Updateable(groupDao).ExecuteCommand();
 
             var organizeDao = new OrganizeDao();
             organizeDao.id = ScmEnv.DEFAULT_ID;
@@ -292,9 +300,9 @@ namespace Com.Scm
             organizeDao.namec = "";
             organizeDao.pid = ScmEnv.DEFAULT_ID;
             organizeDao.row_delete = Enums.ScmDeleteEnum.No;
-            SaveDao(sqlClient, organizeDao);
+            SaveDao(organizeDao);
             organizeDao.row_status = ScmRowStatusEnum.Normal;
-            sqlClient.Updateable(organizeDao).ExecuteCommand();
+            _SqlClient.Updateable(organizeDao).ExecuteCommand();
 
             var positionDao = new PositionDao();
             positionDao.id = ScmEnv.DEFAULT_ID;
@@ -302,9 +310,9 @@ namespace Com.Scm
             positionDao.codec = "";
             positionDao.names = "";
             positionDao.namec = "";
-            SaveDao(sqlClient, positionDao);
+            SaveDao(positionDao);
             positionDao.row_status = ScmRowStatusEnum.Normal;
-            sqlClient.Updateable(positionDao).ExecuteCommand();
+            _SqlClient.Updateable(positionDao).ExecuteCommand();
 
             var roleRootDao = new RoleDao();
             roleRootDao.id = ScmEnv.DEFAULT_ID;
@@ -312,9 +320,9 @@ namespace Com.Scm
             roleRootDao.namec = "系统管理员";
             roleRootDao.row_system = ScmSystemEnum.Yes;
             roleRootDao.row_delete = ScmDeleteEnum.No;
-            SaveDao(sqlClient, roleRootDao);
+            SaveDao(roleRootDao);
             roleRootDao.row_status = ScmRowStatusEnum.Normal;
-            sqlClient.Updateable(roleRootDao).ExecuteCommand();
+            _SqlClient.Updateable(roleRootDao).ExecuteCommand();
 
             var roleAdminDao = new RoleDao();
             roleAdminDao.id = 1000000000000001030L;
@@ -322,7 +330,7 @@ namespace Com.Scm
             roleAdminDao.namec = "系统管理员";
             roleAdminDao.row_system = ScmSystemEnum.Yes;
             roleAdminDao.row_delete = ScmDeleteEnum.No;
-            SaveDao(sqlClient, roleAdminDao);
+            SaveDao(roleAdminDao);
 
             var roleAdminList = new List<RoleAuthDao>();
             roleAdminList.Add(new RoleAuthDao { role_id = roleAdminDao.id, auth_id = menuRootDao.id, types = ScmRoleAuthTypesEnum.RoleMenu });
@@ -361,7 +369,7 @@ namespace Com.Scm
             roleAdminList.Add(new RoleAuthDao { role_id = roleAdminDao.id, auth_id = menuUrAuthDao.id, types = ScmRoleAuthTypesEnum.RoleMenu });
             roleAdminList.Add(new RoleAuthDao { role_id = roleAdminDao.id, auth_id = menuUrAuthCDao.id, types = ScmRoleAuthTypesEnum.RoleMenu });
             roleAdminList.Add(new RoleAuthDao { role_id = roleAdminDao.id, auth_id = menuUrGroupDao.id, types = ScmRoleAuthTypesEnum.RoleMenu });
-            sqlClient.Insertable(roleAdminList).ExecuteCommand();
+            _SqlClient.Insertable(roleAdminList).ExecuteCommand();
 
             var terminalDao = new ScmUrTerminalDao();
             terminalDao.id = ScmEnv.DEFAULT_ID;
@@ -373,9 +381,9 @@ namespace Com.Scm
             terminalDao.pass = "";
             terminalDao.access_token = "";
             terminalDao.refresh_token = "";
-            SaveDao(sqlClient, terminalDao);
+            SaveDao(terminalDao);
             terminalDao.row_status = ScmRowStatusEnum.Normal;
-            sqlClient.Updateable(terminalDao).ExecuteCommand();
+            _SqlClient.Updateable(terminalDao).ExecuteCommand();
 
             var userRootDao = new UserDao();
             userRootDao.id = ScmEnv.DEFAULT_ID;
@@ -393,9 +401,9 @@ namespace Com.Scm
             userRootDao.data = ScmUserDataEnum.None;
             userRootDao.row_system = ScmSystemEnum.Yes;
             userRootDao.row_delete = ScmDeleteEnum.No;
-            SaveDao(sqlClient, userRootDao);
+            SaveDao(userRootDao);
             userRootDao.row_status = ScmRowStatusEnum.Normal;
-            sqlClient.Updateable(userRootDao).ExecuteCommand();
+            _SqlClient.Updateable(userRootDao).ExecuteCommand();
 
             var userAdminDao = new UserDao();
             userAdminDao.id = 1000000000000001030;
@@ -413,24 +421,24 @@ namespace Com.Scm
             userAdminDao.data = ScmUserDataEnum.None;
             userAdminDao.row_system = ScmSystemEnum.Yes;
             userAdminDao.row_delete = ScmDeleteEnum.No;
-            SaveDao(sqlClient, userAdminDao);
+            SaveDao(userAdminDao);
 
             // System
             //var userRoleDao = new UserRoleDao();
             //userRoleDao.user_id = userRootDao.id;
             //userRoleDao.role_id = roleRootDao.id;
-            //SaveDao(sqlClient, userRoleDao);
+            //SaveDao(userRoleDao);
 
             // Admin
             var userRoleDao = new UserRoleDao();
             userRoleDao.user_id = userAdminDao.id;
             userRoleDao.role_id = roleAdminDao.id;
-            SaveDao(sqlClient, userRoleDao);
+            SaveDao(userRoleDao);
 
-            CreateTheme(sqlClient, 1, "Default", "{\"page\":{\"backgroundImage\":\"url('http://api.c-scm.net/data/bg/bg01.jpg')\",\"backgroundColor\":\"\",\"backgroundSize\":\"cover\",\"backgroundPosition\":\"center center\",\"backgroundRepeat\":\"no-repeat\"},\"mask\":{\"backgroundColor\":\"rgba(0,0,0,0.5)\"}}");
+            CreateTheme(1, "Default", "{\"page\":{\"backgroundImage\":\"url('http://api.c-scm.net/data/bg/bg01.jpg')\",\"backgroundColor\":\"\",\"backgroundSize\":\"cover\",\"backgroundPosition\":\"center center\",\"backgroundRepeat\":\"no-repeat\"},\"mask\":{\"backgroundColor\":\"rgba(0,0,0,0.5)\"}}");
         }
 
-        private static MenuDao CreateMenu(ISqlSugarClient sqlClient,
+        private MenuDao CreateMenu(
             long id,
             string codec,
             string namec,
@@ -459,11 +467,11 @@ namespace Com.Scm
             menuDao.enabled = true;
             menuDao.keepAlive = true;
             menuDao.row_delete = ScmDeleteEnum.No;
-            SaveDao(sqlClient, menuDao);
+            SaveDao(menuDao);
             return menuDao;
         }
 
-        private static ScmDevUidDao CreateUid(ISqlSugarClient sqlClient, long id, string k, int l, string m, string p)
+        private ScmDevUidDao CreateUid(long id, string k, int l, string m, string p)
         {
             var uidDao = new ScmDevUidDao();
             uidDao.id = id;
@@ -474,32 +482,32 @@ namespace Com.Scm
             uidDao.l = l;
             uidDao.m = m;
             uidDao.p = p;
-            SaveDao(sqlClient, uidDao);
+            SaveDao(uidDao);
             return uidDao;
         }
 
-        private static ThemeDao CreateTheme(ISqlSugarClient sqlClient, long id, string name, string theme)
+        private ThemeDao CreateTheme(long id, string name, string theme)
         {
             var themeDao = new ThemeDao();
             themeDao.names = name;
             themeDao.theme = theme;
-            SaveDao(sqlClient, themeDao);
+            SaveDao(themeDao);
             return themeDao;
         }
 
-        private static void SaveDao<T>(ISqlSugarClient client, T dao) where T : ScmDao, new()
+        private void SaveDao<T>(T dao) where T : ScmDao, new()
         {
-            var tmpDao = client.Queryable<T>().First(a => a.id == dao.id);
+            var tmpDao = _SqlClient.Queryable<T>().First(a => a.id == dao.id);
             if (tmpDao != null)
             {
                 tmpDao = dao.Adapt(tmpDao);
                 tmpDao.PrepareUpdate(ScmEnv.DEFAULT_ID);
-                client.Updateable(tmpDao).ExecuteCommand();
+                _SqlClient.Updateable(tmpDao).ExecuteCommand();
                 return;
             }
 
             dao.PrepareCreate(ScmEnv.DEFAULT_ID);
-            client.Insertable(dao).ExecuteCommand();
+            _SqlClient.Insertable(dao).ExecuteCommand();
         }
     }
 }

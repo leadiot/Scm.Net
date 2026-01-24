@@ -15,11 +15,15 @@ public class OrganizeDao : ScmDataDao, ISortableDao, IDeleteDao, IResDao
     /// <summary>
     /// 
     /// </summary>
+    [StringLength(16)]
+    [SugarColumn(Length = 16)]
     public string codes { get; set; }
 
     /// <summary>
     /// 机构编码
     /// </summary>
+    [StringLength(32)]
+    [SugarColumn(Length = 32)]
     public string codec { get; set; }
 
     /// <summary>
@@ -27,6 +31,7 @@ public class OrganizeDao : ScmDataDao, ISortableDao, IDeleteDao, IResDao
     /// </summary>
     [Required]
     [StringLength(32)]
+    [SugarColumn(Length = 32)]
     public string names { get; set; }
 
     /// <summary>
@@ -34,6 +39,7 @@ public class OrganizeDao : ScmDataDao, ISortableDao, IDeleteDao, IResDao
     /// </summary>
     [Required]
     [StringLength(32)]
+    [SugarColumn(Length = 32)]
     public string namec { get; set; }
 
     /// <summary>
@@ -62,6 +68,8 @@ public class OrganizeDao : ScmDataDao, ISortableDao, IDeleteDao, IResDao
     /// <summary>
     /// 主管人员(冗余)
     /// </summary>
+    [StringLength(32)]
+    [SugarColumn(Length = 32, IsNullable = true)]
     public string owner_names { get; set; }
 
     /// <summary>

@@ -21,10 +21,15 @@ namespace Com.Scm.Ur
         /// <summary>
         /// 系统代码
         /// </summary>
+        [StringLength(16)]
+        [SugarColumn(Length = 16)]
         public string codes { get; set; }
+
         /// <summary>
         /// 用户编码（对应客户系统编码）
         /// </summary>
+        [StringLength(32)]
+        [SugarColumn(Length = 32)]
         public string codec { get; set; }
 
         /// <summary>
@@ -32,6 +37,7 @@ namespace Com.Scm.Ur
         /// </summary>
         [Required]
         [StringLength(32)]
+        [SugarColumn(Length = 32)]
         public string names { get; set; }
 
         /// <summary>
@@ -39,6 +45,7 @@ namespace Com.Scm.Ur
         /// </summary>
         [Required]
         [StringLength(32)]
+        [SugarColumn(Length = 32)]
         public string namec { get; set; }
 
         /// <summary>
@@ -46,29 +53,34 @@ namespace Com.Scm.Ur
         /// </summary>
         [Required]
         [StringLength(256)]
+        [SugarColumn(Length = 256)]
         public string pass { get; set; }
 
         /// <summary>
         /// 头像
         /// </summary>
         [StringLength(256)]
+        [SugarColumn(Length = 256)]
         public string avatar { get; set; }
 
         /// <summary>
         /// 手机
         /// </summary>
         [StringLength(32)]
+        [SugarColumn(Length = 32)]
         public string cellphone { get; set; }
         /// <summary>
         /// 固话
         /// </summary>
         [StringLength(32)]
+        [SugarColumn(Length = 32)]
         public string telephone { get; set; }
 
         /// <summary>
         /// 邮箱
         /// </summary>
         [StringLength(128)]
+        [SugarColumn(Length = 128)]
         public string email { get; set; }
 
         /// <summary>
@@ -84,6 +96,7 @@ namespace Com.Scm.Ur
         /// OTP Secret
         /// </summary>
         [StringLength(256)]
+        [SugarColumn(Length = 256, IsNullable = true)]
         public string otp_secret { get; set; }
         /// <summary>
         /// Otp启用时间
@@ -94,6 +107,7 @@ namespace Com.Scm.Ur
         /// 备注
         /// </summary>
         [StringLength(1024)]
+        [SugarColumn(Length = 1024, IsNullable = true)]
         public string remark { get; set; }
 
         #region 登录记录

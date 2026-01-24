@@ -15,6 +15,7 @@ namespace Com.Scm.Dev
         /// </summary>
         [Required]
         [StringLength(32)]
+        [SugarColumn(Length = 32, IsNullable = true)]
         public string k { get; set; }
 
         /// <summary>
@@ -51,12 +52,14 @@ namespace Com.Scm.Dev
         /// 前置掩码
         /// </summary>
         [StringLength(8)]
+        [SugarColumn(Length = 8, IsNullable = true)]
         public string m { get; set; }
 
         /// <summary>
         /// 后置掩码
         /// </summary>
         [StringLength(8)]
+        [SugarColumn(Length = 8, IsNullable = true)]
         public string p { get; set; }
     }
 }

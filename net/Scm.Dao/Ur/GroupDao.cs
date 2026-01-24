@@ -1,5 +1,7 @@
 ﻿using Com.Scm.Dao;
 using Com.Scm.Utils;
+using SqlSugar;
+using System.ComponentModel.DataAnnotations;
 
 namespace Com.Scm.Ur
 {
@@ -12,18 +14,26 @@ namespace Com.Scm.Ur
         /// <summary>
         /// 
         /// </summary>
+        [StringLength(16)]
+        [SugarColumn(Length = 16)]
         public string codes { get; set; }
         /// <summary>
         /// 
         /// </summary>
+        [StringLength(32)]
+        [SugarColumn(Length = 32)]
         public string codec { get; set; }
         /// <summary>
         /// 
         /// </summary>
+        [StringLength(16)]
+        [SugarColumn(Length = 16)]
         public string names { get; set; }
         /// <summary>
         /// 
         /// </summary>
+        [StringLength(32)]
+        [SugarColumn(Length = 32)]
         public string namec { get; set; }
         /// <summary>
         /// 
@@ -33,6 +43,8 @@ namespace Com.Scm.Ur
         /// <summary>
         /// 
         /// </summary>
+        [StringLength(256)]
+        [SugarColumn(Length = 256, IsNullable = true)]
         public string remark { get; set; }
 
         /// <summary>

@@ -14,11 +14,15 @@ public class RoleDao : ScmDataDao, ISortableDao, ISystemDao
     /// <summary>
     /// 角色编号
     /// </summary>
+    [StringLength(32)]
+    [SugarColumn(Length = 32)]
     public string codec { get; set; }
 
     /// <summary>
     /// 
     /// </summary>
+    [StringLength(32)]
+    [SugarColumn(Length = 32)]
     public string names { get; set; }
 
     /// <summary>
@@ -26,6 +30,7 @@ public class RoleDao : ScmDataDao, ISortableDao, ISystemDao
     /// </summary>
     [Required]
     [StringLength(32)]
+    [SugarColumn(Length = 32)]
     public string namec { get; set; }
 
     /// <summary>
@@ -54,12 +59,18 @@ public class RoleDao : ScmDataDao, ISortableDao, ISystemDao
     /// <summary>
     /// 描述
     /// </summary>
+    [StringLength(256)]
+    [SugarColumn(Length = 256, IsNullable = true)]
     public string remark { get; set; }
+
     /// <summary>
     /// 系统标识
     /// </summary>
     public ScmSystemEnum row_system { get; set; }
 
+    /// <summary>
+    /// 
+    /// </summary>
     public ScmDeleteEnum row_delete { get; set; }
 
     /// <summary>

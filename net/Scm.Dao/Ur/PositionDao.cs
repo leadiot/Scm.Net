@@ -14,16 +14,22 @@ public class PositionDao : ScmDataDao
     /// <summary>
     /// 
     /// </summary>
+    [StringLength(16)]
+    [SugarColumn(Length = 16)]
     public string codes { get; set; }
 
     /// <summary>
     /// 岗位编码
     /// </summary>
+    [StringLength(32)]
+    [SugarColumn(Length = 32)]
     public string codec { get; set; }
 
     /// <summary>
     /// 
     /// </summary>
+    [StringLength(32)]
+    [SugarColumn(Length = 32)]
     public string names { get; set; }
 
     /// <summary>
@@ -31,6 +37,7 @@ public class PositionDao : ScmDataDao
     /// </summary>
     [Required]
     [StringLength(32)]
+    [SugarColumn(Length = 32)]
     public string namec { get; set; }
 
     /// <summary>
@@ -42,6 +49,8 @@ public class PositionDao : ScmDataDao
     /// <summary>
     /// 备注信息
     /// </summary>
+    [StringLength(256)]
+    [SugarColumn(Length = 256, IsNullable = true)]
     public string remark { get; set; }
 
     /// <summary>

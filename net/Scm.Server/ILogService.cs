@@ -1,4 +1,5 @@
 ﻿using Com.Scm.Enums;
+using SqlSugar;
 using System.ComponentModel.DataAnnotations;
 
 namespace Com.Scm
@@ -56,16 +57,19 @@ namespace Com.Scm
         /// <summary>
         /// 详细信息
         /// </summary>
+        [SugarColumn(IsNullable = true)]
         public string message { get; set; }
 
         /// <summary>
         /// 返回结果
         /// </summary>
+        [SugarColumn(IsNullable = true)]
         public string content { get; set; }
 
         /// <summary>
         /// 操作人
         /// </summary>
+        [SugarColumn(IsNullable = true)]
         public string operate_user { get; set; }
 
         /// <summary>

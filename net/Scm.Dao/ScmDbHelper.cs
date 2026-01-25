@@ -16,7 +16,7 @@ namespace Com.Scm
 {
     public class ScmDbHelper
     {
-        private ISqlSugarClient _SqlClient;
+        protected ISqlSugarClient _SqlClient;
 
         public ScmDbHelper(ISqlSugarClient sqlClient)
         {
@@ -27,7 +27,7 @@ namespace Com.Scm
         {
             var key = "scmdb";
 
-            var verDao = ReadVer(key);
+            var verDao = ReadDbVer(key);
             if (verDao == null)
             {
                 verDao = new ScmVerDao();
@@ -48,11 +48,55 @@ namespace Com.Scm
             var dmlFile = Path.Combine(baseDir, "dml.sql");
             ExecuteSql(dmlFile, verDao.major);
 
-            SaveVer(verDao);
+            SaveDbVer(verDao);
             return true;
         }
 
-        private void ExecuteSql(string file, int major)
+        /// <summary>
+        /// 读取数据库版本
+        /// </summary>
+        /// <param name="key"></param>
+        /// <returns></returns>
+        private ScmVerDao ReadDbVer(string key)
+        {
+            try
+            {
+                return _SqlClient.Queryable<ScmVerDao>().First(a => a.key == key);
+            }
+            catch (Exception ex)
+            {
+                return null;
+            }
+        }
+
+        /// <summary>
+        /// 保存数据库版本
+        /// </summary>
+        /// <param name="verDao"></param>
+        private void SaveDbVer(ScmVerDao verDao)
+        {
+            verDao.update_time = TimeUtils.GetUnixTime();
+            verDao.major = ScmVerDao.VER_MAJOR;
+            verDao.minor = ScmVerDao.VER_MINOR;
+            verDao.patch = ScmVerDao.VER_PATCH;
+            verDao.build = ScmVerDao.VER_BUILD;
+
+            if (verDao.id == 0)
+            {
+                _SqlClient.Insertable(verDao).ExecuteCommand();
+            }
+            else
+            {
+                _SqlClient.Updateable(verDao).ExecuteCommand();
+            }
+        }
+
+        /// <summary>
+        /// 执行外部脚本
+        /// </summary>
+        /// <param name="file"></param>
+        /// <param name="major"></param>
+        protected void ExecuteSql(string file, int major)
         {
             if (!File.Exists(file))
             {
@@ -103,6 +147,11 @@ namespace Com.Scm
             }
         }
 
+        /// <summary>
+        /// 获取脚本版本
+        /// </summary>
+        /// <param name="text"></param>
+        /// <returns></returns>
         private static int GetSqlVer(string text)
         {
             var match = Regex.Match(text, @"[Vv]er[:]\s*(\d+)");
@@ -127,7 +176,7 @@ namespace Com.Scm
         /// 数据库定义
         /// </summary>
         /// <param name="sqlClient"></param>
-        private void InitDdl()
+        public virtual void InitDdl()
         {
             var assembly = Assembly.GetExecutingAssembly();
             var scmDao = typeof(ScmDao);
@@ -143,37 +192,10 @@ namespace Com.Scm
             _SqlClient.CodeFirst.InitTables(daoList.ToArray());
         }
 
-        private ScmVerDao ReadVer(string key)
-        {
-            try
-            {
-                return _SqlClient.Queryable<ScmVerDao>().First(a => a.key == key);
-            }
-            catch (Exception ex)
-            {
-                return null;
-            }
-        }
-
-        private void SaveVer(ScmVerDao verDao)
-        {
-            verDao.update_time = TimeUtils.GetUnixTime();
-            verDao.major = ScmVerDao.VER_MAJOR;
-            verDao.minor = ScmVerDao.VER_MINOR;
-            verDao.patch = ScmVerDao.VER_PATCH;
-            verDao.build = ScmVerDao.VER_BUILD;
-
-            if (verDao.id == 0)
-            {
-                _SqlClient.Insertable(verDao).ExecuteCommand();
-            }
-            else
-            {
-                _SqlClient.Updateable(verDao).ExecuteCommand();
-            }
-        }
-
-        private void InitDml()
+        /// <summary>
+        /// 数据库操作
+        /// </summary>
+        public virtual void InitDml()
         {
             var appDao = new ScmDevAppDao();
             appDao.id = ScmEnv.DEFAULT_ID;
@@ -453,7 +475,21 @@ namespace Com.Scm
             CreateTheme(1, "Default", "{\"page\":{\"backgroundImage\":\"url('http://api.c-scm.net/data/bg/bg01.jpg')\",\"backgroundColor\":\"\",\"backgroundSize\":\"cover\",\"backgroundPosition\":\"center center\",\"backgroundRepeat\":\"no-repeat\"},\"mask\":{\"backgroundColor\":\"rgba(0,0,0,0.5)\"}}");
         }
 
-        private MenuDao CreateMenu(
+        /// <summary>
+        /// 添加菜单
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="codec"></param>
+        /// <param name="namec"></param>
+        /// <param name="pid"></param>
+        /// <param name="layer"></param>
+        /// <param name="od"></param>
+        /// <param name="uri"></param>
+        /// <param name="view"></param>
+        /// <param name="icon"></param>
+        /// <param name="status"></param>
+        /// <returns></returns>
+        protected MenuDao CreateMenu(
             long id,
             string codec,
             string namec,
@@ -486,7 +522,16 @@ namespace Com.Scm
             return menuDao;
         }
 
-        private ScmDevUidDao CreateUid(long id, string k, int l, string m, string p)
+        /// <summary>
+        /// 添加UID
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="k"></param>
+        /// <param name="l"></param>
+        /// <param name="m"></param>
+        /// <param name="p"></param>
+        /// <returns></returns>
+        protected ScmDevUidDao CreateUid(long id, string k, int l, string m, string p)
         {
             var uidDao = new ScmDevUidDao();
             uidDao.id = id;
@@ -501,6 +546,13 @@ namespace Com.Scm
             return uidDao;
         }
 
+        /// <summary>
+        /// 添加主题
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="name"></param>
+        /// <param name="theme"></param>
+        /// <returns></returns>
         private ThemeDao CreateTheme(long id, string name, string theme)
         {
             var themeDao = new ThemeDao();
@@ -510,7 +562,34 @@ namespace Com.Scm
             return themeDao;
         }
 
-        private void SaveDao<T>(T dao) where T : ScmDao, new()
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="dao"></param>
+        protected void InsertDao<T>(T dao) where T : ScmDao, new()
+        {
+            dao.PrepareCreate(ScmEnv.DEFAULT_ID);
+            _SqlClient.Insertable(dao).ExecuteCommand();
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="dao"></param>
+        protected void UpdateDao<T>(T dao) where T : ScmDao, new()
+        {
+            dao.PrepareUpdate(ScmEnv.DEFAULT_ID);
+            _SqlClient.Updateable(dao).ExecuteCommand();
+        }
+
+        /// <summary>
+        /// 保存数据
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="dao"></param>
+        protected void SaveDao<T>(T dao) where T : ScmDao, new()
         {
             var tmpDao = _SqlClient.Queryable<T>().First(a => a.id == dao.id);
             if (tmpDao != null)

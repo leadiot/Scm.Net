@@ -1,6 +1,7 @@
 ﻿using Com.Scm.Config;
 using Com.Scm.Controllers;
 using Com.Scm.Filters;
+using Com.Scm.Nas;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SqlSugar;
@@ -38,7 +39,9 @@ namespace Com.Scm.Api.Controllers
             var response = new ScmResponse();
             try
             {
-                new ScmDbHelper(_SqlClient).InitDb(_EnvConfig.GetDataPath("sql"));
+                var helper = new ScmDbHelper(_SqlClient);
+                //var helper = new NasDbHelper(_SqlClient);
+                helper.InitDb(_EnvConfig.GetDataPath("sql"));
                 response.SetSuccess();
             }
             catch (Exception ex)

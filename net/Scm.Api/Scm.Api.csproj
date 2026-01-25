@@ -15,19 +15,9 @@
     <Content Remove="dev\**" />
     <Content Remove="logs\**" />
     <Content Remove="Publish\**" />
-    <EmbeddedResource Remove="dev\**" />
     <None Remove="dev\**" />
     <None Remove="logs\**" />
     <None Remove="Publish\**" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Remove="data\scm.db" />
-    <None Remove="data\scm.uid" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Include="dev\sql\dml.sql" />
   </ItemGroup>
 
   <ItemGroup>

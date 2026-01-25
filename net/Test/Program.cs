@@ -12,6 +12,6 @@ public class Program
         });
         sqlClient.Open();
 
-        ScmDbHelper.InitDb(sqlClient);
+        new ScmDbHelper(sqlClient).InitDb("");
     }
 }

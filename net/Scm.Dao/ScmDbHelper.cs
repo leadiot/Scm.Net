@@ -202,7 +202,7 @@ namespace Com.Scm
             _SqlClient.Updateable(menuRootDao).ExecuteCommand();
 
             // 主页
-            var menuHomeDao = CreateMenu(1000000000000001000, "home", "主页", 0, 1, 1, "/home", "home", "sc-home-4-line");
+            var menuHomeDao = CreateMenu(1000000000000001000, "home", "主页", menuRootDao.id, 1, 1, "/home", "home", "sc-home-4-line");
             // 工作台
             var menuDashboardDao = CreateMenu(1000000000000001100, "dashboard", "工作台", menuHomeDao.id, 2, 1, "/dashboard", "home", "sc-menu-line");
             // 我的收藏
@@ -222,7 +222,7 @@ namespace Com.Scm
             var menuDownloadDao = CreateMenu(1000000000000001600, "download", "下载中心", menuHomeDao.id, 2, 6, "/scm/download", "scm/down", "sc-device-line");
 
             // 设置
-            var menuSettingsDao = CreateMenu(1000000000000003000, "setting", "设置", 0, 1, 3, "/setting", "", "mi-settings_applications");
+            var menuSettingsDao = CreateMenu(1000000000000003000, "setting", "设置", menuRootDao.id, 1, 3, "/setting", "", "mi-settings_applications");
             // 研发管理
             var menuDevDao = CreateMenu(1000000000000003100, "setting", "研发管理", menuSettingsDao.id, 2, 1, "/dev", "dev", "sc-bug-line");
             var menuDevMenuDao = CreateMenu(1000000000000003110, "dev_menu", "资源管理", menuDevDao.id, 3, 1, "/scm/dev/menu", "scm/dev/menu", "sc-menu-fill");
@@ -253,7 +253,7 @@ namespace Com.Scm
             var menuUrGroupDao = CreateMenu(1000000000000003370, "scm_ur_group", "群组管理", menuUrDao.id, 3, 7, "/scm/ur/group", "scm/ur/group", "sc-user-2-line");
 
             // 关于
-            var menuAboutDao = CreateMenu(1000000000000004000, "about", "关于", 0, 1, 999, "/about", "about", "sc-info");
+            var menuAboutDao = CreateMenu(1000000000000004000, "about", "关于", menuRootDao.id, 1, 999, "/about", "about", "sc-info");
             var menuAboutSiteDao = CreateMenu(1000000000000004100, "about_site", "关于网站", menuAboutDao.id, 4, 1, "/about/app/site/scm.net", "about/app", "sc-global-line");
             var menuAboutAuthorDao = CreateMenu(1000000000000004200, "about_author", "关于作者", menuAboutDao.id, 4, 2, "/about/app/author/scm.net", "about/app", "sc-user-line");
             var menuAboutContactDao = CreateMenu(1000000000000004300, "about_contact", "联系作者", menuAboutDao.id, 4, 3, "/about/app/contact/scm.net", "about/app", "sc-postcard");

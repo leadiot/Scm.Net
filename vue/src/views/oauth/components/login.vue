@@ -129,7 +129,7 @@ export default {
                 );
                 return false;
             }
-            var menuList = this.$SCM.recursive_menu(menuRes.data, '0');
+            var menuList = this.$SCM.recursive_menu(menuRes.data, this.$SCM.SYS_ID);
             this.$TOOL.data.set("MENU", menuList);
             this.$TOOL.data.set("PERMISSIONS", []);
 

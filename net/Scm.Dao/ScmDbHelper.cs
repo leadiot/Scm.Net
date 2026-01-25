@@ -210,66 +210,66 @@ namespace Com.Scm
             // 账户信息
             var menuProfilesDao = CreateMenu(1000000000000001300, "profiles", "账户信息", menuHomeDao.id, 2, 3, "/profiles", "", "sc-coffee-cup-line");
             // 机构信息
-            var menuHomeUnitDao = CreateMenu(1000000000000001310, "home-unit", "机构信息", menuProfilesDao.id, 3, 1, "/home/unitCenter", "home/unitinfo", "sc-settings-3-line");
-            var menuHomeUserDao = CreateMenu(1000000000000001320, "home_user", "个人信息", menuProfilesDao.id, 3, 2, "/home/usercenter", "home/userinfo", "sc-user-line");
-            var menuHomeOAuthDao = CreateMenu(1000000000000001330, "scm-oauth", "联合登录", menuProfilesDao.id, 3, 3, "/home/oauth", "home/oauth", "sc-bubble-chart-line");
-            var menuHomeOtpDao = CreateMenu(1000000000000001340, "scm-otp", "凭证登录", menuProfilesDao.id, 3, 4, "/scm/otp", "home/otp", "sc-bubble-chart-line");
+            var menuHomeUnitDao = CreateMenu(1000000000000001310, "profiles-unit", "机构信息", menuProfilesDao.id, 3, 1, "/profiles/unitCenter", "home/unitinfo", "sc-settings-3-line");
+            var menuHomeUserDao = CreateMenu(1000000000000001320, "profiles-user", "个人信息", menuProfilesDao.id, 3, 2, "/profiles/usercenter", "home/userinfo", "sc-user-line");
+            var menuHomeOAuthDao = CreateMenu(1000000000000001330, "profiles-oauth", "联合登录", menuProfilesDao.id, 3, 3, "/profiles/oauth", "home/oauth", "sc-bubble-chart-line");
+            var menuHomeOtpDao = CreateMenu(1000000000000001340, "profiles-otp", "凭证登录", menuProfilesDao.id, 3, 4, "/profiles/otp", "home/otp", "sc-bubble-chart-line");
             // 我的反馈
-            var menuFeedbackDao = CreateMenu(1000000000000001400, "feedback", "我的反馈", menuHomeDao.id, 2, 4, "/scm/feedback", "scm/sys/feedback", "sc-chat-quote-line");
+            var menuFeedbackDao = CreateMenu(1000000000000001400, "feedback", "我的反馈", menuHomeDao.id, 2, 4, "/feedback", "scm/sys/feedback", "sc-chat-quote-line");
             // 我的终端
-            var menuTerminalDao = CreateMenu(1000000000000001500, "terminal", "我的终端", menuHomeDao.id, 2, 5, "/scm/terminal", "scm/ur/terminal", "sc-device-line");
+            var menuTerminalDao = CreateMenu(1000000000000001500, "terminal", "我的终端", menuHomeDao.id, 2, 5, "/terminal", "scm/ur/terminal", "sc-device-line");
             // 下载中心
-            var menuDownloadDao = CreateMenu(1000000000000001600, "download", "下载中心", menuHomeDao.id, 2, 6, "/scm/download", "scm/down", "sc-device-line");
+            var menuDownloadDao = CreateMenu(1000000000000001600, "download", "下载中心", menuHomeDao.id, 2, 6, "/download", "scm/down", "sc-device-line");
 
             // 设置
-            var menuSettingsDao = CreateMenu(1000000000000003000, "setting", "设置", menuRootDao.id, 1, 3, "/setting", "", "mi-settings_applications");
+            var menuSettingsDao = CreateMenu(1000000000000003000, "setting", "设置", menuRootDao.id, 1, 3, "/setting", "", "sc-settings-line");
             // 研发管理
-            var menuDevDao = CreateMenu(1000000000000003100, "setting", "研发管理", menuSettingsDao.id, 2, 1, "/dev", "dev", "sc-bug-line");
-            var menuDevMenuDao = CreateMenu(1000000000000003110, "dev_menu", "资源管理", menuDevDao.id, 3, 1, "/scm/dev/menu", "scm/dev/menu", "sc-menu-fill");
-            var menuDevAppDao = CreateMenu(1000000000000003120, "dev_app", "应用管理", menuDevDao.id, 3, 2, "/scm/dev/app", "scm/dev/app", "sc-apple");
-            var menuDevVerDao = CreateMenu(1000000000000003130, "dev_version", "版本管理", menuDevDao.id, 3, 3, "/scm/dev/version", "scm/dev/version", "sc-file-text-line");
-            var menuDevUidDao = CreateMenu(1000000000000003140, "dev_uid", "编码管理", menuDevDao.id, 3, 4, "/scm/dev/uid", "scm/dev/uid", "sc-list-ordered");
-            var menuDevGenDao = CreateMenu(1000000000000003150, "dev_gen", "代码生成", menuDevDao.id, 3, 5, "/scm/dev/generate", "scm/dev/generate", "sc-code-fill");
-            //var menuDevDbaDao = CreateMenu(1000000000000003160, "dev_db", "数据库管理", menuDevDao.id, 3, 6, "/scm/dev/db", "scm/dev/db", "sc-coin-line");
-            //var menuDevSqlDao = CreateMenu(1000000000000003170, "dev_sql", "数据库脚本", menuDevDao.id, 3, 7, "/scm/dev/sql", "scm/dev/sql", "sc-file-paper-2-line");
-            //var menuDevQtzDao = CreateMenu(1000000000000003180, "dev_quartz", "后台任务", menuDevDao.id, 3, 8, "/scm/sys/quartz", "scm/sys/quartz", "sc-drag-move-line");
+            var menuDevDao = CreateMenu(1000000000000003100, "setting-dev", "研发管理", menuSettingsDao.id, 2, 1, "/setting/dev", "dev", "sc-bug-line");
+            var menuDevMenuDao = CreateMenu(1000000000000003110, "setting-dev-menu", "资源管理", menuDevDao.id, 3, 1, "/setting/dev/menu", "scm/dev/menu", "sc-menu-fill");
+            var menuDevAppDao = CreateMenu(1000000000000003120, "setting-dev-app", "应用管理", menuDevDao.id, 3, 2, "/setting/dev/app", "scm/dev/app", "sc-apple");
+            var menuDevVerDao = CreateMenu(1000000000000003130, "setting-dev-version", "版本管理", menuDevDao.id, 3, 3, "/setting/dev/version", "scm/dev/version", "sc-file-text-line");
+            var menuDevUidDao = CreateMenu(1000000000000003140, "setting-dev-_uid", "编码管理", menuDevDao.id, 3, 4, "/setting/dev/uid", "scm/dev/uid", "sc-list-ordered");
+            var menuDevGenDao = CreateMenu(1000000000000003150, "setting-dev-gen", "代码生成", menuDevDao.id, 3, 5, "/setting/dev/generate", "scm/dev/generate", "sc-code-fill");
+            //var menuDevDbaDao = CreateMenu(1000000000000003160, "setting-dev-db", "数据库管理", menuDevDao.id, 3, 6, "/setting/dev/db", "scm/dev/db", "sc-coin-line");
+            //var menuDevSqlDao = CreateMenu(1000000000000003170, "setting-dev-sql", "数据库脚本", menuDevDao.id, 3, 7, "/setting/dev/sql", "scm/dev/sql", "sc-file-paper-2-line");
+            //var menuDevQtzDao = CreateMenu(1000000000000003180, "setting-dev-quartz", "后台任务", menuDevDao.id, 3, 8, "/setting/sys/quartz", "scm/sys/quartz", "sc-drag-move-line");
 
             // 全局配置
-            var menuCfgDao = CreateMenu(1000000000000003200, "scm_cfg", "全局配置", menuSettingsDao.id, 2, 2, "/scm/cfg", "scm/cfg", "sc-settings-line");
-            var menuCfgAdmDao = CreateMenu(1000000000000003210, "scm-adm-cfg", "参数配置", menuCfgDao.id, 3, 1, "/scm/adm/cfg", "scm/adm/cfg", "sc-file-text-line");
-            var menuCfgDicDao = CreateMenu(1000000000000003220, "scm-adm-dic", "数据字典", menuCfgDao.id, 3, 2, "/scm/adm/dic", "scm/adm/dic", "sc-file-copy-2-line");
-            var menuCfgCatDao = CreateMenu(1000000000000003230, "scm-res-cat", "分类管理", menuCfgDao.id, 3, 3, "/scm/res/cat", "scm/res/cat", "sc-layers-line");
-            var menuCfgUomDao = CreateMenu(1000000000000003240, "scm-sys-uom", "计量单位", menuCfgDao.id, 3, 4, "/scm/sys/uom", "scm/sys/uom", "sc-signpost-line");
-            var menuCfgSecDao = CreateMenu(1000000000000003250, "scm-adm-safety", "安全设置", menuCfgDao.id, 3, 5, "/scm/adm/safety", "scm/adm/safety", "sc-verified-badge-line");
+            var menuCfgDao = CreateMenu(1000000000000003200, "setting-adm", "全局配置", menuSettingsDao.id, 2, 2, "/setting/adm", "scm/cfg", "sc-settings-3-line");
+            var menuCfgAdmDao = CreateMenu(1000000000000003210, "setting-adm-cfg", "参数配置", menuCfgDao.id, 3, 1, "/setting/adm/cfg", "scm/adm/cfg", "sc-file-text-line");
+            var menuCfgDicDao = CreateMenu(1000000000000003220, "setting-adm-dic", "数据字典", menuCfgDao.id, 3, 2, "/setting/adm/dic", "scm/adm/dic", "sc-file-copy-2-line");
+            var menuCfgCatDao = CreateMenu(1000000000000003230, "setting-adm-cat", "分类管理", menuCfgDao.id, 3, 3, "/setting/adm/cat", "scm/res/cat", "sc-layers-line");
+            var menuCfgUomDao = CreateMenu(1000000000000003240, "setting-adm-uom", "计量单位", menuCfgDao.id, 3, 4, "/setting/adm/uom", "scm/sys/uom", "sc-signpost-line");
+            var menuCfgSecDao = CreateMenu(1000000000000003250, "setting-adm-safety", "安全设置", menuCfgDao.id, 3, 5, "/setting/adm/safety", "scm/adm/safety", "sc-verified-badge-line");
 
             // 权限管理
-            var menuUrDao = CreateMenu(1000000000000003300, "scm-adm-safety", "权限管理", menuSettingsDao.id, 2, 3, "/scm/ur", "scm/ur", "sc-user-settings-line");
-            var menuUrOrganizeDao = CreateMenu(1000000000000003310, "scm_ur_organize", "组织管理", menuUrDao.id, 3, 1, "/scm/ur/organize", "scm/ur/organize", "sc-company-line");
-            var menuUrPositionDao = CreateMenu(1000000000000003320, "scm_ur_position", "岗位管理", menuUrDao.id, 3, 2, "/scm/ur/position", "scm/ur/position", "sc-place");
-            var menuUrRoleDao = CreateMenu(1000000000000003330, "scm_ur_role", "角色管理", menuUrDao.id, 3, 3, "/scm/ur/role", "scm/ur/role", "sc-contacts-book-upload-line");
-            var menuUrUserDao = CreateMenu(1000000000000003340, "scm_ur_user", "用户管理", menuUrDao.id, 3, 4, "/scm/ur/user", "scm/ur/user", "sc-user-line");
-            var menuUrAuthDao = CreateMenu(1000000000000003350, "scm_ur_permission", "权限管理", menuUrDao.id, 3, 5, "/scm/ur/permission", "scm/ur/roleauth", "sc-verified-badge-line");
-            var menuUrAuthCDao = CreateMenu(1000000000000003360, "scm_ur_roleconflict", "角色互斥", menuUrDao.id, 3, 6, "/scm/ur/roleconflict", "scm/ur/roleconflict", "sc-cherry");
-            var menuUrGroupDao = CreateMenu(1000000000000003370, "scm_ur_group", "群组管理", menuUrDao.id, 3, 7, "/scm/ur/group", "scm/ur/group", "sc-user-2-line");
+            var menuUrDao = CreateMenu(1000000000000003300, "ur", "权限管理", menuSettingsDao.id, 2, 3, "/scm/ur", "scm/ur", "sc-user-settings-line");
+            var menuUrOrganizeDao = CreateMenu(1000000000000003310, "scm-ur-organize", "组织管理", menuUrDao.id, 3, 1, "/scm/ur/organize", "scm/ur/organize", "sc-company-line");
+            var menuUrPositionDao = CreateMenu(1000000000000003320, "scm-ur-position", "岗位管理", menuUrDao.id, 3, 2, "/scm/ur/position", "scm/ur/position", "sc-place");
+            var menuUrGroupDao = CreateMenu(1000000000000003330, "scm-ur-group", "群组管理", menuUrDao.id, 3, 3, "/scm/ur/group", "scm/ur/group", "sc-user-2-line");
+            var menuUrRoleDao = CreateMenu(1000000000000003340, "scm-ur-role", "角色管理", menuUrDao.id, 3, 4, "/scm/ur/role", "scm/ur/role", "sc-contacts-book-upload-line");
+            var menuUrAuthDao = CreateMenu(1000000000000003350, "scm-ur-roleauth", "角色权限", menuUrDao.id, 3, 5, "/scm/ur/roleauth", "scm/ur/roleauth", "sc-verified-badge-line");
+            var menuUrAuthCDao = CreateMenu(1000000000000003360, "scm-ur-roleconflict", "角色互斥", menuUrDao.id, 3, 6, "/scm/ur/roleconflict", "scm/ur/roleconflict", "sc-cherry");
+            var menuUrUserDao = CreateMenu(1000000000000003370, "scm-ur-user", "用户管理", menuUrDao.id, 3, 7, "/scm/ur/user", "scm/ur/user", "sc-user-line");
 
             // 关于
             var menuAboutDao = CreateMenu(1000000000000004000, "about", "关于", menuRootDao.id, 1, 999, "/about", "about", "sc-info");
-            var menuAboutSiteDao = CreateMenu(1000000000000004100, "about_site", "关于网站", menuAboutDao.id, 4, 1, "/about/app/site/scm.net", "about/app", "sc-global-line");
-            var menuAboutAuthorDao = CreateMenu(1000000000000004200, "about_author", "关于作者", menuAboutDao.id, 4, 2, "/about/app/author/scm.net", "about/app", "sc-user-line");
-            var menuAboutContactDao = CreateMenu(1000000000000004300, "about_contact", "联系作者", menuAboutDao.id, 4, 3, "/about/app/contact/scm.net", "about/app", "sc-postcard");
-            var menuAboutHistoryDao = CreateMenu(1000000000000004400, "about_history", "更新历史", menuAboutDao.id, 4, 4, "/about/ver/scm.net", "about/ver", "sc-file-text-line");
+            var menuAboutSiteDao = CreateMenu(1000000000000004100, "about-site", "关于网站", menuAboutDao.id, 4, 1, "/about/app/site/scm.net", "about/app", "sc-global-line");
+            var menuAboutAuthorDao = CreateMenu(1000000000000004200, "about-author", "关于作者", menuAboutDao.id, 4, 2, "/about/app/author/scm.net", "about/app", "sc-user-line");
+            var menuAboutContactDao = CreateMenu(1000000000000004300, "about-contact", "联系作者", menuAboutDao.id, 4, 3, "/about/app/contact/scm.net", "about/app", "sc-postcard");
+            var menuAboutHistoryDao = CreateMenu(1000000000000004400, "about-history", "更新历史", menuAboutDao.id, 4, 4, "/about/ver/scm.net", "about/ver", "sc-file-text-line");
 
-            CreateUid(ScmEnv.DEFAULT_ID, "", 0, "", "");
-            CreateUid(1000000000000000011, "scm_sys_uom", 0, "", "");
+            CreateUid(ScmEnv.DEFAULT_ID, "scm", 0, "", "");
+            CreateUid(1000000000000000011, "scm_sys_uom", 5, "UOM", "");
             CreateUid(1000000000000000012, "scm_sys_task", 12, "TASK", "");
-            CreateUid(1000000000000001001, "scm_ur_unit", 7, "U", "");
-            CreateUid(1000000000000001002, "scm_ur_user", 7, "X", "");
-            CreateUid(1000000000000001011, "scm_ur_group", 7, "G", "");
+            //CreateUid(1000000000000001011, "scm_ur_unit", 7, "U", "");
             CreateUid(1000000000000001012, "scm_ur_organize", 7, "O", "");
             CreateUid(1000000000000001013, "scm_ur_position", 7, "P", "");
-            CreateUid(1000000000000001014, "scm_ur_role", 1, "", "");
-            CreateUid(1000000000000001016, "scm_ur_terminal", 9, "T", "");
-            CreateUid(1000000000000001015, "scm_sys_table_header", 1, "", "");
+            CreateUid(1000000000000001014, "scm_ur_group", 7, "G", "");
+            CreateUid(1000000000000001015, "scm_ur_role", 7, "R", "");
+            CreateUid(1000000000000001016, "scm_ur_user", 7, "X", "");
+            CreateUid(1000000000000001017, "scm_ur_terminal", 9, "T", "");
+            CreateUid(1000000000000001018, "scm_sys_table_header", 1, "", "");
 
             var uomDao = new ScmSysUomDao();
             uomDao.id = ScmEnv.DEFAULT_ID;

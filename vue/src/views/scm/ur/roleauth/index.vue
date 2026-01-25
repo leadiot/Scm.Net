@@ -145,7 +145,7 @@ export default {
 				// });
 			});
 			this.menuList = menutree;
-			this.menuTree = this.$TOOL.changeTree(menutree);
+			this.menuTree = this.$TOOL.changeTree(menutree, this.$SCM.SYS_ID);
 			this.changeCss();
 		},
 		renderContent(h, { node }) {

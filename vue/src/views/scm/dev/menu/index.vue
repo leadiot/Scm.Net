@@ -75,7 +75,7 @@ export default {
 				});
 			});
 			this.sourceLst = res.data;
-			this.menuList = this.$TOOL.changeTree(_tree);
+			this.menuList = this.$TOOL.changeTree(_tree, this.$SCM.SYS_ID);
 		},
 		//树点击
 		menuClick(data, node) {

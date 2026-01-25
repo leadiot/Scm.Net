@@ -83,12 +83,12 @@ public class ScmUrRoleAuthService : IApiService
         var adminRoleList = await _userRoleRepository.GetListAsync(m => param.RoleArr.Contains(m.role_id.ToString()));
         foreach (var item in roleList)
         {
-            if (item is { MaxLength: 0 })
+            if (item is { max_length: 0 })
             {
                 continue;
             }
 
-            if (item != null && item.MaxLength <= adminRoleList.Count(m => m.role_id == item.id))
+            if (item != null && item.max_length <= adminRoleList.Count(m => m.role_id == item.id))
             {
                 throw new BusinessException("[" + item.namec + "]-已达到角色设置最大边界值！~");
             }

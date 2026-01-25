@@ -482,7 +482,11 @@ tool.stringToByte = function (str) {
 };
 
 /* 计算文件大小 */
-tool.fileSize = function (limit) {
+tool.fileSizeFormat = function (limit) {
+	if (!limit) {
+		return "";
+	}
+
 	var size = "";
 	if (limit < 0.1 * 1024) {
 		//小于0.1KB，则转化成B

@@ -23,9 +23,9 @@ namespace Com.Scm
             _SqlClient = sqlClient;
         }
 
-        public bool InitDb(string baseDir)
+        public virtual bool InitDb(string baseDir)
         {
-            var key = "scmdb";
+            var key = "scm";
 
             var verDao = ReadDbVer(key);
             if (verDao == null)
@@ -35,7 +35,7 @@ namespace Com.Scm
                 verDao.create_time = TimeUtils.GetUnixTime();
             }
 
-            InitDdl();
+            //InitDdl();
 
             if (verDao.major == 0)
             {
@@ -57,10 +57,12 @@ namespace Com.Scm
         /// </summary>
         /// <param name="key"></param>
         /// <returns></returns>
-        private ScmVerDao ReadDbVer(string key)
+        protected ScmVerDao ReadDbVer(string key)
         {
             try
             {
+                _SqlClient.CodeFirst.InitTables(typeof(ScmVerDao));
+
                 return _SqlClient.Queryable<ScmVerDao>().First(a => a.key == key);
             }
             catch (Exception ex)
@@ -73,7 +75,7 @@ namespace Com.Scm
         /// 保存数据库版本
         /// </summary>
         /// <param name="verDao"></param>
-        private void SaveDbVer(ScmVerDao verDao)
+        protected void SaveDbVer(ScmVerDao verDao)
         {
             verDao.update_time = TimeUtils.GetUnixTime();
             verDao.major = ScmVerDao.VER_MAJOR;
@@ -339,6 +341,7 @@ namespace Com.Scm
             positionDao.codec = "";
             positionDao.names = "";
             positionDao.namec = "";
+            positionDao.row_delete = ScmRowDeleteEnum.No;
             SaveDao(positionDao);
             positionDao.row_status = ScmRowStatusEnum.Normal;
             _SqlClient.Updateable(positionDao).ExecuteCommand();

@@ -1,4 +1,5 @@
 using Com.Scm.Dao;
+using Com.Scm.Enums;
 using Com.Scm.Utils;
 using SqlSugar;
 using System.ComponentModel.DataAnnotations;
@@ -9,7 +10,7 @@ namespace Com.Scm.Ur;
 /// 岗位表
 /// </summary>
 [SugarTable("scm_ur_position")]
-public class PositionDao : ScmDataDao
+public class PositionDao : ScmDataDao, IDeleteDao
 {
     /// <summary>
     /// 
@@ -52,6 +53,11 @@ public class PositionDao : ScmDataDao
     [StringLength(256)]
     [SugarColumn(Length = 256, IsNullable = true)]
     public string remark { get; set; }
+
+    /// <summary>
+    /// 
+    /// </summary>
+    public ScmRowDeleteEnum row_delete { get; set; }
 
     /// <summary>
     /// 

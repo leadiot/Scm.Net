@@ -17,24 +17,28 @@ namespace Com.Scm.Ur
         [StringLength(16)]
         [SugarColumn(Length = 16)]
         public string codes { get; set; }
+
         /// <summary>
         /// 
         /// </summary>
         [StringLength(32)]
         [SugarColumn(Length = 32)]
         public string codec { get; set; }
+
         /// <summary>
         /// 
         /// </summary>
         [StringLength(16)]
         [SugarColumn(Length = 16)]
         public string names { get; set; }
+
         /// <summary>
         /// 
         /// </summary>
         [StringLength(32)]
         [SugarColumn(Length = 32)]
         public string namec { get; set; }
+
         /// <summary>
         /// 
         /// </summary>

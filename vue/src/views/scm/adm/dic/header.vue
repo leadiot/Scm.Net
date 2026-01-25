@@ -1,9 +1,9 @@
 <template>
 	<sc-dialog v-model="visible" show-fullscreen :title="titleMap[mode]" width="650px" @close="close">
 		<el-form ref="formRef" label-width="100px" :model="formData" :rules="rules">
-			<el-form-item label="上级栏目" prop="parentId">
+			<el-form-item label="上级栏目" prop="pid">
 				<el-tree-select placeholder="请选择上级栏目" clearable filterable default-expand-all :check-strictly="true"
-					highlight-current :indent="24" v-model="formData.parentId" :data="parentIdOptions"
+					highlight-current :indent="24" v-model="formData.pid" :data="parentIdOptions"
 					:style="{ width: '100%' }" />
 			</el-form-item>
 			<el-form-item label="栏目名称" prop="namec">
@@ -13,11 +13,6 @@
 			<el-form-item label="栏目标识" prop="codec">
 				<el-input v-model="formData.codec" placeholder="请输入栏目标识" :maxlength="30" show-word-limit clearable
 					:style="{ width: '100%' }"></el-input>
-			</el-form-item>
-
-			<el-form-item label="状态" prop="isSystem" required>
-				<el-switch v-model="formData.isSystem" active-text="是否为系统内置集成，如果为是，则不允许删除"
-					active-color="#EB5B02"></el-switch>
 			</el-form-item>
 		</el-form>
 
@@ -34,34 +29,19 @@ export default {
 	data() {
 		return {
 			mode: "add",
-			titleMap: {
-				add: "新增",
-				edit: "编辑",
-			},
+			titleMap: { add: "新增", edit: "编辑" },
 			isSaveing: false,
 			visible: false,
 			formData: this.get_data(),
 			rules: {
-				parentId: [
-					{
-						required: true,
-						message: "请选择上级栏目",
-						trigger: "blur",
-					},
+				pid: [
+					{ required: true, message: "请选择上级栏目", trigger: "blur", },
 				],
 				namec: [
-					{
-						required: true,
-						message: "请输入栏位名称",
-						trigger: "blur",
-					},
+					{ required: true, message: "请输入栏位名称", trigger: "blur" },
 				],
 				codec: [
-					{
-						required: true,
-						message: "请输入栏位标识",
-						trigger: "blur",
-					},
+					{ required: true, message: "请输入栏位标识", trigger: "blur" },
 				],
 			},
 			parentIdOptions: [],
@@ -79,11 +59,8 @@ export default {
 			return {
 				id: this.$SCM.DEF_ID,
 				types: 1,
-				parentId: "",
-				parentIdList: [],
-				name: undefined,
-				isSystem: false,
-				sort: 1,
+				pid: this.$SCM.DEF_ID,
+				name: undefined
 			};
 		},
 		async initTree(param) {
@@ -96,10 +73,10 @@ export default {
 					id: m.id,
 					value: m.id,
 					label: m.namec,
-					parentId: m.parentId,
+					parentId: m.pid,
 				});
 			});
-			this.parentIdOptions = this.$TOOL.changeTree(_tree);
+			this.parentIdOptions = this.$TOOL.changeTree(_tree, this.$SCM.SYS_ID);
 		},
 		async open(row) {
 			this.defaultParam.type = row.type;

@@ -246,12 +246,12 @@ namespace Com.Scm.Ur.User
                 .ToListAsync();
             foreach (var item in roleList)
             {
-                if (item is { MaxLength: 0 })
+                if (item is { max_length: 0 })
                 {
                     continue;
                 }
 
-                if (item != null && item.MaxLength <= userRoleList.Count(m => m.role_id == item.id))
+                if (item != null && item.max_length <= userRoleList.Count(m => m.role_id == item.id))
                 {
                     throw new BusinessException("[" + item.namec + "]-已达到角色设置最大边界值！~");
                 }
@@ -335,12 +335,12 @@ namespace Com.Scm.Ur.User
             var userRoleList = await _SqlClient.Queryable<UserRoleDao>().Where(m => model.role_list.Contains(m.role_id)).ToListAsync();
             foreach (var roleDao in roleList)
             {
-                if (roleDao is { MaxLength: 0 })
+                if (roleDao is { max_length: 0 })
                 {
                     continue;
                 }
 
-                if (roleDao != null && roleDao.MaxLength <= userRoleList.Count(m => m.role_id == roleDao.id))
+                if (roleDao != null && roleDao.max_length <= userRoleList.Count(m => m.role_id == roleDao.id))
                 {
                     throw new BusinessException("[" + roleDao.namec + "]-已达到角色设置最大边界值！~");
                 }

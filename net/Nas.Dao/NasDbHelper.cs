@@ -11,6 +11,35 @@ namespace Com.Scm.Nas
         {
         }
 
+        public override bool InitDb(string baseDir)
+        {
+            var key = "scm.nas";
+
+            var verDao = ReadDbVer(key);
+            if (verDao == null)
+            {
+                verDao = new ScmVerDao();
+                verDao.key = key;
+                verDao.create_time = TimeUtils.GetUnixTime();
+            }
+
+            InitDdl();
+
+            if (verDao.major == 0)
+            {
+                InitDml();
+            }
+
+            var ddlFile = Path.Combine(baseDir, "ddl-nas.sql");
+            ExecuteSql(ddlFile, verDao.major);
+
+            var dmlFile = Path.Combine(baseDir, "dml-nas.sql");
+            ExecuteSql(dmlFile, verDao.major);
+
+            SaveDbVer(verDao);
+            return true;
+        }
+
         public override void InitDdl()
         {
             var assembly = Assembly.GetExecutingAssembly();

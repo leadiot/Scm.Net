@@ -9,7 +9,7 @@ namespace Com.Scm.Ur;
 /// 角色表
 /// </summary>
 [SugarTable("scm_ur_role")]
-public class RoleDao : ScmDataDao, ISortableDao, ISystemDao
+public class RoleDao : ScmDataDao, ISortableDao, ISystemDao, IDeleteDao
 {
     /// <summary>
     /// 角色编号
@@ -48,7 +48,7 @@ public class RoleDao : ScmDataDao, ISortableDao, ISystemDao
     /// 角色设置最大数量 0为不限制
     /// </summary>
     [Required]
-    public int MaxLength { get; set; } = 0;
+    public int max_length { get; set; } = 0;
 
     /// <summary>
     /// 排序

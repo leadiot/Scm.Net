@@ -203,10 +203,10 @@ export default {
 					label: m.namec,
 					code: m.codec,
 					type: m.types,
-					parentId: m.parentId,
+					parentId: m.pid,
 				});
 			});
-			this.group = this.$TOOL.changeTree(_tree);
+			this.group = this.$TOOL.changeTree(_tree, this.$SCM.SYS_ID);
 		},
 		//树过滤
 		groupFilterNode(value, data) {

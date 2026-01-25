@@ -1,4 +1,5 @@
 using Com.Scm.Dao;
+using Com.Scm.Enums;
 using SqlSugar;
 using System.ComponentModel.DataAnnotations;
 
@@ -21,19 +22,22 @@ public class AdmDicDetailDao : ScmDataDao
     /// </summary>
     [Required]
     [StringLength(32)]
+    [SugarColumn(Length = 32)]
     public string codec { get; set; }
-    /// <summary>
-    /// 值
-    /// </summary>
-    [Required]
-    public int value { get; set; }
 
     /// <summary>
     /// 字典值名称
     /// </summary>
     [Required]
     [StringLength(64)]
+    [SugarColumn(Length = 64)]
     public string namec { get; set; }
+
+    /// <summary>
+    /// 值
+    /// </summary>
+    [Required]
+    public int value { get; set; }
 
     /// <summary>
     /// 排序
@@ -45,6 +49,7 @@ public class AdmDicDetailDao : ScmDataDao
     /// 备注
     /// </summary>
     [StringLength(128)]
+    [SugarColumn(Length = 128, IsNullable = true)]
     public string remark { get; set; }
 
     /// <summary>
@@ -57,4 +62,9 @@ public class AdmDicDetailDao : ScmDataDao
     /// 类别
     /// </summary>
     public int cat { get; set; }
+
+    /// <summary>
+    /// 
+    /// </summary>
+    public ScmRowDeleteEnum row_delete { get; set; }
 }

@@ -5,8 +5,14 @@
 				<el-form-item label="终端" prop="terminal_id">
 					<sc-select v-model="param.terminal_id" placeholder="请选择" :data="terminal_list" />
 				</el-form-item>
-				<el-form-item label="驱动" prop="drive_id">
-					<sc-select v-model="param.drive_id" placeholder="请选择" :data="drive_list" />
+				<el-form-item label="文件类型" prop="type">
+					<sc-select v-model="param.type" placeholder="请选择" :data="type_list" />
+				</el-form-item>
+				<el-form-item label="同步操作" prop="opt">
+					<sc-select v-model="param.opt" placeholder="请选择" :data="opt_list" />
+				</el-form-item>
+				<el-form-item label="同步方向" prop="dir">
+					<sc-select v-model="param.dir" placeholder="请选择" :data="dir_list" />
 				</el-form-item>
 				<el-form-item label="创建时间" prop="create_time">
 					<el-date-picker v-model="param.create_time" type="datetimerange" range-separator="至"
@@ -57,7 +63,9 @@ export default {
 			apiObj: this.$API.naslogfile.page,
 			param: {
 				terminal_id: this.$SCM.ID_ALL,
-				drive_id: this.$SCM.ID_ALL,
+				type: this.$SCM.ID_ALL_INT,
+				opt: this.$SCM.ID_ALL_INT,
+				dir: this.$SCM.ID_ALL_INT,
 				row_status: this.$SCM.DEF_STATUS,
 				create_time: '',
 				key: ''
@@ -65,22 +73,25 @@ export default {
 			selection: [],
 			column: [
 				{ label: "id", prop: "id", hide: true },
-				{ prop: 'terminal_id', label: '终端ID', width: 100 },
-				{ prop: 'drive_id', label: '驱动ID', width: 100 },
-				{ prop: 'type', label: '文件类型', width: 100 },
-				{ prop: 'opt', label: '操作类型', width: 100 },
-				{ prop: 'dir', label: '同步方向', width: 100 },
+				{ prop: 'terminal_id', label: '终端', width: 100, align: 'left', formatter: this.getTerminalNames },
+				{ prop: 'type', label: '文件类型', width: 100, formatter: this.getTypeNames },
+				{ prop: 'opt', label: '操作类型', width: 100, formatter: this.getOptNames },
+				{ prop: 'dir', label: '同步方向', width: 100, formatter: this.getDirNames },
 				{ prop: 'name', label: '文件名称', minWidth: 140, align: 'left' },
 				{ prop: "update_time", label: "更新时间", width: 160, formatter: this.$TOOL.dateTimeFormat },
 				{ prop: "create_time", label: "创建时间", width: 160, formatter: this.$TOOL.dateTimeFormat },
 			],
 			terminal_list: [this.$SCM.OPTION_ALL],
-			drive_list: [this.$SCM.OPTION_ALL],
+			type_list: [this.$SCM.OPTION_ONE_INT],
+			opt_list: [this.$SCM.OPTION_ONE_INT],
+			dir_list: [this.$SCM.OPTION_ONE_INT],
 		};
 	},
 	mounted() {
 		this.$SCM.list_option(this.terminal_list, this.$API.scmurterminal.option, {}, true);
-		this.$SCM.list_option(this.drive_list, this.$API.scmurterminal.option, {}, true);
+		this.$SCM.list_dic(this.type_list, 'nas_type', true);
+		this.$SCM.list_dic(this.opt_list, 'nas_opt', true);
+		this.$SCM.list_dic(this.dir_list, 'nas_dir', true);
 	},
 	methods: {
 		complete() {
@@ -105,6 +116,13 @@ export default {
 			this.$refs.search.open(this.param.key);
 		},
 		open_dialog(row) {
+			if (!row) {
+				return;
+			}
+			row.terminal_names = this.getTerminalNames(row.terminal_id);
+			row.type_names = this.getTypeNames(row.type);
+			row.opt_names = this.getOptNames(row.opt);
+			row.dir_names = this.getDirNames(row.dir);
 			this.$refs.info.open(row);
 		},
 		selectionChange(selection) {
@@ -124,6 +142,18 @@ export default {
 				return;
 			}
 		},
+		getTerminalNames(id) {
+			return this.$SCM.get_option_names(this.terminal_list, id, '');
+		},
+		getTypeNames(id) {
+			return this.$SCM.get_dic_names(this.type_list, id, '');
+		},
+		getOptNames(id) {
+			return this.$SCM.get_dic_names(this.opt_list, id, '');
+		},
+		getDirNames(id) {
+			return this.$SCM.get_dic_names(this.dir_list, id, '');
+		}
 	},
 };
 </script>

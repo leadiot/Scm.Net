@@ -12,18 +12,13 @@ public class DicHeaderDto : ScmDataDto
     /// 父节点
     /// </summary>
     [Required]
-    public long ParentId { get; set; }
-
-    /// <summary>
-    /// 
-    /// </summary>
-    public List<string> ParentIdList { get; set; }
+    public long pid { get; set; }
 
     /// <summary>
     /// 层级
     /// </summary>
     [Required]
-    public int Layer { get; set; } = 1;
+    public int layer { get; set; } = 1;
 
     /// <summary>
     /// 分类名称
@@ -46,10 +41,4 @@ public class DicHeaderDto : ScmDataDto
     /// </summary>
     [Required]
     public int od { get; set; } = 1;
-
-    /// <summary>
-    /// 是否系统内置集成
-    /// </summary>
-    [Required]
-    public bool IsSystem { get; set; }
 }

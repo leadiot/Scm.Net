@@ -498,7 +498,7 @@ namespace Com.Scm.Ur.User
             var idList = ids.ToListLong();
 
             var qty = await _thisRepository.AsUpdateable()
-                .SetColumns(a => a.row_delete == ScmDeleteEnum.Yes)
+                .SetColumns(a => a.row_delete == ScmRowDeleteEnum.Yes)
                 .Where(a => idList.Contains(a.id))
                 .ExecuteCommandAsync();
 

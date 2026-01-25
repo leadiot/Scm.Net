@@ -127,7 +127,7 @@ public class ScmMsgMessageService : ApiService
 
         var allCount = await _thisRepository.CountAsync(m => m.user_id == user.user_id);
         var unReadCount = await _thisRepository.CountAsync(m => !m.isread && m.user_id == user.user_id);
-        var recycleCount = await _thisRepository.CountAsync(m => m.row_delete == Enums.ScmDeleteEnum.Yes && m.user_id == user.user_id);
+        var recycleCount = await _thisRepository.CountAsync(m => m.row_delete == Enums.ScmRowDeleteEnum.Yes && m.user_id == user.user_id);
         return new MessageSummaryDvo()
         {
             AllCount = allCount,

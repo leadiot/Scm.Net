@@ -64,17 +64,12 @@
 			</el-container>
 		</el-main>
 	</el-container>
-	<bookSelector ref="bookSelector" @complete="complete" />
 </template>
 <script>
-import { defineAsyncComponent } from "vue";
 import { useRoute } from "vue-router";
 
 export default {
 	name: 'samples_po_detail',
-	components: {
-		bookSelector: defineAsyncComponent(() => import("../book/selector")),
-	},
 	data() {
 		return {
 			tableName: 'samples_po_detail',

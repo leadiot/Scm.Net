@@ -34,7 +34,7 @@ namespace Com.Scm.Sys.Table
         /// 删除标记
         /// </summary>
         [Required]
-        public ScmDeleteEnum row_delete { get; set; }
+        public ScmRowDeleteEnum row_delete { get; set; }
 
         /// <summary>
         /// 

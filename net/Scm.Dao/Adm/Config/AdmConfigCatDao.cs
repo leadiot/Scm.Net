@@ -34,6 +34,6 @@ namespace Com.Scm.Adm.Config
         /// <summary>
         /// 
         /// </summary>
-        public ScmSystemEnum row_system { get; set; } = ScmSystemEnum.No;
+        public ScmRowSystemEnum row_system { get; set; } = ScmRowSystemEnum.No;
     }
 }

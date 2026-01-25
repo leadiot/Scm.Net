@@ -154,11 +154,11 @@ namespace Com.Scm.Ur
         /// <summary>
         /// 
         /// </summary>
-        public ScmSystemEnum row_system { get; set; }
+        public ScmRowSystemEnum row_system { get; set; }
         /// <summary>
         /// 
         /// </summary>
-        public ScmDeleteEnum row_delete { get; set; }
+        public ScmRowDeleteEnum row_delete { get; set; }
 
         /// <summary>
         /// 
@@ -169,7 +169,7 @@ namespace Com.Scm.Ur
             base.PrepareCreate(userId);
 
             codes = UidUtils.NextCodes("scm_ur_user", (int)types);
-            row_delete = ScmDeleteEnum.No;
+            row_delete = ScmRowDeleteEnum.No;
             if (string.IsNullOrEmpty(names))
             {
                 names = namec;

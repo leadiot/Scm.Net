@@ -75,7 +75,7 @@ public class OrganizeDao : ScmDataDao, ISortableDao, IDeleteDao, IResDao
     /// <summary>
     /// 删除状态
     /// </summary>
-    public ScmDeleteEnum row_delete { get; set; }
+    public ScmRowDeleteEnum row_delete { get; set; }
 
     /// <summary>
     /// 

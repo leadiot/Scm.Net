@@ -128,5 +128,5 @@ public class MenuDao : ScmDataDao, ISortableDao, IDeleteDao
     /// <summary>
     /// 删除状态
     /// </summary>
-    public ScmDeleteEnum row_delete { get; set; }
+    public ScmRowDeleteEnum row_delete { get; set; }
 }

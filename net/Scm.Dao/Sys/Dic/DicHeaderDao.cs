@@ -53,12 +53,12 @@ public class DicHeaderDao : ScmDataDao, ISystemDao, IDeleteDao, ISortableDao
     /// 是否系统内置集成
     /// </summary>
     [Required]
-    public ScmSystemEnum row_system { get; set; }
+    public ScmRowSystemEnum row_system { get; set; }
 
     /// <summary>
     /// 
     /// </summary>
-    public ScmDeleteEnum row_delete { get; set; }
+    public ScmRowDeleteEnum row_delete { get; set; }
 
     /// <summary>
     /// 

@@ -56,12 +56,12 @@ namespace Com.Scm.Samples.Book.Dao
         /// <summary>
         /// 系统记录标识（不是必需）
         /// </summary>
-        public ScmSystemEnum row_system { get; set; }
+        public ScmRowSystemEnum row_system { get; set; }
 
         /// <summary>
         /// 数据删除标识（不是必需）
         /// </summary>
-        public ScmDeleteEnum row_delete { get; set; }
+        public ScmRowDeleteEnum row_delete { get; set; }
 
         /// <summary>
         /// 审批状态（不是必需）

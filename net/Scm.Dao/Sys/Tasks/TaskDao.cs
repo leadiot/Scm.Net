@@ -82,7 +82,7 @@ namespace Com.Scm.Sys.Tasks
         /// 
         /// </summary>
         [Required]
-        public ScmDeleteEnum row_delete { get; set; }
+        public ScmRowDeleteEnum row_delete { get; set; }
 
         /// <summary>
         /// 

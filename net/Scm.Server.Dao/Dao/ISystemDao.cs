@@ -6,6 +6,6 @@ namespace Com.Scm.Dao
     {
         public long id { get; set; }
 
-        public ScmSystemEnum row_system { get; set; }
+        public ScmRowSystemEnum row_system { get; set; }
     }
 }

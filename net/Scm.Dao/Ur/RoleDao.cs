@@ -66,12 +66,12 @@ public class RoleDao : ScmDataDao, ISortableDao, ISystemDao
     /// <summary>
     /// 系统标识
     /// </summary>
-    public ScmSystemEnum row_system { get; set; }
+    public ScmRowSystemEnum row_system { get; set; }
 
     /// <summary>
     /// 
     /// </summary>
-    public ScmDeleteEnum row_delete { get; set; }
+    public ScmRowDeleteEnum row_delete { get; set; }
 
     /// <summary>
     /// 

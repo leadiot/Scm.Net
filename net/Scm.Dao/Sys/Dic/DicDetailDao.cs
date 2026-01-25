@@ -1,4 +1,5 @@
 using Com.Scm.Dao;
+using Com.Scm.Enums;
 using SqlSugar;
 using System.ComponentModel.DataAnnotations;
 
@@ -8,7 +9,7 @@ namespace Com.Scm.Sys.Dic;
 /// 字典信息表
 /// </summary>
 [SugarTable("scm_sys_dic_detail")]
-public class DicDetailDao : ScmDataDao
+public class DicDetailDao : ScmDataDao, IDeleteDao
 {
     /// <summary>
     /// 分类编号
@@ -23,11 +24,6 @@ public class DicDetailDao : ScmDataDao
     [StringLength(32)]
     [SugarColumn(Length = 32)]
     public string codec { get; set; }
-    /// <summary>
-    /// 值
-    /// </summary>
-    [Required]
-    public int value { get; set; }
 
     /// <summary>
     /// 字典值名称
@@ -36,6 +32,12 @@ public class DicDetailDao : ScmDataDao
     [StringLength(64)]
     [SugarColumn(Length = 64)]
     public string namec { get; set; }
+
+    /// <summary>
+    /// 值
+    /// </summary>
+    [Required]
+    public int value { get; set; }
 
     /// <summary>
     /// 排序
@@ -60,4 +62,9 @@ public class DicDetailDao : ScmDataDao
     /// 类别
     /// </summary>
     public int cat { get; set; }
+
+    /// <summary>
+    /// 
+    /// </summary>
+    public ScmRowDeleteEnum row_delete { get; set; }
 }

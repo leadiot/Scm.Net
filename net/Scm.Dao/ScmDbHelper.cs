@@ -252,6 +252,13 @@ namespace Com.Scm
             var menuUrAuthCDao = CreateMenu(1000000000000003360, "scm_ur_roleconflict", "角色互斥", menuUrDao.id, 3, 6, "/scm/ur/roleconflict", "scm/ur/roleconflict", "sc-cherry");
             var menuUrGroupDao = CreateMenu(1000000000000003370, "scm_ur_group", "群组管理", menuUrDao.id, 3, 7, "/scm/ur/group", "scm/ur/group", "sc-user-2-line");
 
+            // 关于
+            var menuAboutDao = CreateMenu(1000000000000004000, "about", "关于", 0, 1, 999, "/about", "about", "sc-info");
+            var menuAboutSiteDao = CreateMenu(1000000000000004100, "about_site", "关于网站", menuAboutDao.id, 4, 1, "/about/app/site/scm.net", "about/app", "sc-global-line");
+            var menuAboutAuthorDao = CreateMenu(1000000000000004200, "about_author", "关于作者", menuAboutDao.id, 4, 2, "/about/app/author/scm.net", "about/app", "sc-user-line");
+            var menuAboutContactDao = CreateMenu(1000000000000004300, "about_contact", "联系作者", menuAboutDao.id, 4, 3, "/about/app/contact/scm.net", "about/app", "sc-postcard");
+            var menuAboutHistoryDao = CreateMenu(1000000000000004400, "about_history", "更新历史", menuAboutDao.id, 4, 4, "/about/ver/scm.net", "about/ver", "sc-file-text-line");
+
             CreateUid(ScmEnv.DEFAULT_ID, "", 0, "", "");
             CreateUid(1000000000000000011, "scm_sys_uom", 0, "", "");
             CreateUid(1000000000000000012, "scm_sys_task", 12, "TASK", "");
@@ -299,7 +306,7 @@ namespace Com.Scm
             organizeDao.names = "";
             organizeDao.namec = "";
             organizeDao.pid = ScmEnv.DEFAULT_ID;
-            organizeDao.row_delete = Enums.ScmDeleteEnum.No;
+            organizeDao.row_delete = Enums.ScmRowDeleteEnum.No;
             SaveDao(organizeDao);
             organizeDao.row_status = ScmRowStatusEnum.Normal;
             _SqlClient.Updateable(organizeDao).ExecuteCommand();
@@ -318,8 +325,8 @@ namespace Com.Scm
             roleRootDao.id = ScmEnv.DEFAULT_ID;
             roleRootDao.codec = "admin";
             roleRootDao.namec = "系统管理员";
-            roleRootDao.row_system = ScmSystemEnum.Yes;
-            roleRootDao.row_delete = ScmDeleteEnum.No;
+            roleRootDao.row_system = ScmRowSystemEnum.Yes;
+            roleRootDao.row_delete = ScmRowDeleteEnum.No;
             SaveDao(roleRootDao);
             roleRootDao.row_status = ScmRowStatusEnum.Normal;
             _SqlClient.Updateable(roleRootDao).ExecuteCommand();
@@ -328,12 +335,13 @@ namespace Com.Scm
             roleAdminDao.id = 1000000000000001030L;
             roleAdminDao.codec = "admin";
             roleAdminDao.namec = "系统管理员";
-            roleAdminDao.row_system = ScmSystemEnum.Yes;
-            roleAdminDao.row_delete = ScmDeleteEnum.No;
+            roleAdminDao.row_system = ScmRowSystemEnum.Yes;
+            roleAdminDao.row_delete = ScmRowDeleteEnum.No;
             SaveDao(roleAdminDao);
 
             var roleAdminList = new List<RoleAuthDao>();
             roleAdminList.Add(new RoleAuthDao { role_id = roleAdminDao.id, auth_id = menuRootDao.id, types = ScmRoleAuthTypesEnum.RoleMenu });
+
             roleAdminList.Add(new RoleAuthDao { role_id = roleAdminDao.id, auth_id = menuHomeDao.id, types = ScmRoleAuthTypesEnum.RoleMenu });
             roleAdminList.Add(new RoleAuthDao { role_id = roleAdminDao.id, auth_id = menuDashboardDao.id, types = ScmRoleAuthTypesEnum.RoleMenu });
             roleAdminList.Add(new RoleAuthDao { role_id = roleAdminDao.id, auth_id = menuFavoritesDao.id, types = ScmRoleAuthTypesEnum.RoleMenu });
@@ -345,6 +353,7 @@ namespace Com.Scm
             roleAdminList.Add(new RoleAuthDao { role_id = roleAdminDao.id, auth_id = menuFeedbackDao.id, types = ScmRoleAuthTypesEnum.RoleMenu });
             roleAdminList.Add(new RoleAuthDao { role_id = roleAdminDao.id, auth_id = menuTerminalDao.id, types = ScmRoleAuthTypesEnum.RoleMenu });
             roleAdminList.Add(new RoleAuthDao { role_id = roleAdminDao.id, auth_id = menuDownloadDao.id, types = ScmRoleAuthTypesEnum.RoleMenu });
+
             roleAdminList.Add(new RoleAuthDao { role_id = roleAdminDao.id, auth_id = menuSettingsDao.id, types = ScmRoleAuthTypesEnum.RoleMenu });
             roleAdminList.Add(new RoleAuthDao { role_id = roleAdminDao.id, auth_id = menuDevDao.id, types = ScmRoleAuthTypesEnum.RoleMenu });
             roleAdminList.Add(new RoleAuthDao { role_id = roleAdminDao.id, auth_id = menuDevMenuDao.id, types = ScmRoleAuthTypesEnum.RoleMenu });
@@ -369,6 +378,12 @@ namespace Com.Scm
             roleAdminList.Add(new RoleAuthDao { role_id = roleAdminDao.id, auth_id = menuUrAuthDao.id, types = ScmRoleAuthTypesEnum.RoleMenu });
             roleAdminList.Add(new RoleAuthDao { role_id = roleAdminDao.id, auth_id = menuUrAuthCDao.id, types = ScmRoleAuthTypesEnum.RoleMenu });
             roleAdminList.Add(new RoleAuthDao { role_id = roleAdminDao.id, auth_id = menuUrGroupDao.id, types = ScmRoleAuthTypesEnum.RoleMenu });
+            roleAdminList.Add(new RoleAuthDao { role_id = roleAdminDao.id, auth_id = menuAboutDao.id, types = ScmRoleAuthTypesEnum.RoleMenu });
+
+            roleAdminList.Add(new RoleAuthDao { role_id = roleAdminDao.id, auth_id = menuAboutSiteDao.id, types = ScmRoleAuthTypesEnum.RoleMenu });
+            roleAdminList.Add(new RoleAuthDao { role_id = roleAdminDao.id, auth_id = menuAboutAuthorDao.id, types = ScmRoleAuthTypesEnum.RoleMenu });
+            roleAdminList.Add(new RoleAuthDao { role_id = roleAdminDao.id, auth_id = menuAboutContactDao.id, types = ScmRoleAuthTypesEnum.RoleMenu });
+            roleAdminList.Add(new RoleAuthDao { role_id = roleAdminDao.id, auth_id = menuAboutHistoryDao.id, types = ScmRoleAuthTypesEnum.RoleMenu });
             _SqlClient.Insertable(roleAdminList).ExecuteCommand();
 
             var terminalDao = new ScmUrTerminalDao();
@@ -399,8 +414,8 @@ namespace Com.Scm
             userRootDao.email = "";
             userRootDao.sex = ScmSexEnum.None;
             userRootDao.data = ScmUserDataEnum.None;
-            userRootDao.row_system = ScmSystemEnum.Yes;
-            userRootDao.row_delete = ScmDeleteEnum.No;
+            userRootDao.row_system = ScmRowSystemEnum.Yes;
+            userRootDao.row_delete = ScmRowDeleteEnum.No;
             SaveDao(userRootDao);
             userRootDao.row_status = ScmRowStatusEnum.Normal;
             _SqlClient.Updateable(userRootDao).ExecuteCommand();
@@ -419,8 +434,8 @@ namespace Com.Scm
             userAdminDao.email = "";
             userAdminDao.sex = ScmSexEnum.None;
             userAdminDao.data = ScmUserDataEnum.None;
-            userAdminDao.row_system = ScmSystemEnum.Yes;
-            userAdminDao.row_delete = ScmDeleteEnum.No;
+            userAdminDao.row_system = ScmRowSystemEnum.Yes;
+            userAdminDao.row_delete = ScmRowDeleteEnum.No;
             SaveDao(userAdminDao);
 
             // System
@@ -466,7 +481,7 @@ namespace Com.Scm
             menuDao.visible = true;
             menuDao.enabled = true;
             menuDao.keepAlive = true;
-            menuDao.row_delete = ScmDeleteEnum.No;
+            menuDao.row_delete = ScmRowDeleteEnum.No;
             SaveDao(menuDao);
             return menuDao;
         }

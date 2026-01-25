@@ -6,6 +6,6 @@ namespace Com.Scm.Dao
     {
         public long id { get; set; }
 
-        public ScmDeleteEnum row_delete { get; set; }
+        public ScmRowDeleteEnum row_delete { get; set; }
     }
 }

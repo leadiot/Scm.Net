@@ -2,7 +2,7 @@
 
 namespace Com.Scm.Enums
 {
-    public enum ScmDeleteEnum
+    public enum ScmRowDeleteEnum
     {
         None = 0,
         [Description("未删除")]

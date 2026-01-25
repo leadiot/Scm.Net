@@ -174,7 +174,7 @@ public class ScmUrOrganizeService : ApiService
         var idList = ids.ToListLong();
         return await _thisRepository
             .AsUpdateable()
-            .SetColumns(a => a.row_delete == Enums.ScmDeleteEnum.Yes)
+            .SetColumns(a => a.row_delete == Enums.ScmRowDeleteEnum.Yes)
             .Where(a => idList.Contains(a.id))
             .ExecuteCommandAsync();
     }

@@ -1,6 +1,6 @@
 ﻿namespace Com.Scm.Enums
 {
-    public enum ScmSystemEnum
+    public enum ScmRowSystemEnum
     {
         None = 0,
         /// <summary>

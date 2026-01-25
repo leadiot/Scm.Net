@@ -41,7 +41,7 @@ namespace Com.Scm.Samples.Demo
             var isCodes = !isEmpty && SamplesUtils.IsDemoCodes(request.key);
 
             var result = await _thisRepository.AsQueryable()
-                .Where(a => a.row_delete != ScmDeleteEnum.Yes)
+                .Where(a => a.row_delete != ScmRowDeleteEnum.Yes)
                 .WhereIF(!request.IsAllStatus(), a => a.row_status == request.row_status)
                 .WhereIF(IsNormalId(request.option_id), a => a.option_id == request.option_id)
                 .WhereIF(isCodes, a => a.codes == request.key)
@@ -62,7 +62,7 @@ namespace Com.Scm.Samples.Demo
         public async Task<List<DemoDvo>> GetListAsync(SearchRequest request)
         {
             var items = await _thisRepository.AsQueryable()
-                .Where(a => a.row_delete != ScmDeleteEnum.Yes)
+                .Where(a => a.row_delete != ScmRowDeleteEnum.Yes)
                 .WhereIF(!request.IsAllStatus(), a => a.row_status == request.row_status)
                 .WhereIF(IsNormalId(request.option_id), a => a.option_id == request.option_id)
                 .WhereIF(!string.IsNullOrEmpty(request.key), a => a.codec.Contains(request.key) || a.names.Contains(request.key))

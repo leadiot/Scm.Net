@@ -109,11 +109,11 @@ public class AdmMenuDao : ScmDataDao, ISortableDao, IDeleteDao
     /// <summary>
     /// 删除状态
     /// </summary>
-    public ScmDeleteEnum row_delete { get; set; }
+    public ScmRowDeleteEnum row_delete { get; set; }
 
     public override void PrepareCreate(long userId)
     {
         base.PrepareCreate(userId);
-        row_delete = ScmDeleteEnum.No;
+        row_delete = ScmRowDeleteEnum.No;
     }
 }

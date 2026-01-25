@@ -8,6 +8,7 @@ namespace Com.Scm
     public class ScmTestDao : ScmDao
     {
         [StringLength(32)]
+        [SugarColumn(Length = 32)]
         public string key { get; set; }
 
         [StringLength(128)]
@@ -15,7 +16,7 @@ namespace Com.Scm
         public string value { get; set; }
 
         [StringLength(128)]
-        [SugarColumn(Length = 128)]
+        [SugarColumn(Length = 128, IsNullable = true)]
         public string remark { get; set; }
     }
 }

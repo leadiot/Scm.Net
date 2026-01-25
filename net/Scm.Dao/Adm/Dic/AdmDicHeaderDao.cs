@@ -49,12 +49,12 @@ public class AdmDicHeaderDao : ScmDataDao, ISystemDao, IDeleteDao, ISortableDao
     /// 是否系统内置集成
     /// </summary>
     [Required]
-    public ScmSystemEnum row_system { get; set; } = ScmSystemEnum.No;
+    public ScmRowSystemEnum row_system { get; set; } = ScmRowSystemEnum.No;
 
     /// <summary>
     /// 
     /// </summary>
-    public ScmDeleteEnum row_delete { get; set; } = ScmDeleteEnum.No;
+    public ScmRowDeleteEnum row_delete { get; set; } = ScmRowDeleteEnum.No;
 
     /// <summary>
     /// 

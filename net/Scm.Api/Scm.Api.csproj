@@ -27,6 +27,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Include="dev\sql\dml.sql" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\Nas.Server\Nas.Server.csproj" />
     <ProjectReference Include="..\Samples.Server\Samples.Server.csproj" />
     <ProjectReference Include="..\Scm.Cache\Scm.Cache.csproj" />

@@ -1,4 +1,5 @@
 ﻿using Com.Scm.Dao;
+using SqlSugar;
 using System.ComponentModel.DataAnnotations;
 
 namespace Com.Scm.Res.Icon
@@ -6,7 +7,7 @@ namespace Com.Scm.Res.Icon
     /// <summary>
     /// 图标
     /// </summary>
-    [SqlSugar.SugarTable("scm_res_icon")]
+    [SugarTable("scm_res_icon")]
     public class ScmResIconDao : ScmDataDao
     {
         /// <summary>
@@ -28,23 +29,35 @@ namespace Com.Scm.Res.Icon
         /// 键
         /// </summary>
         [StringLength(32)]
+        [SugarColumn(Length = 32)]
         public string key { get; set; }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        [StringLength(32)]
+        [SugarColumn(Length = 32, IsNullable = true)]
+        public string code { get; set; }
 
         /// <summary>
         /// 名
         /// </summary>
-        [StringLength(32)]
+        [StringLength(64)]
+        [SugarColumn(Length = 64)]
         public string name { get; set; }
 
         /// <summary>
         /// 说明
         /// </summary>
-        [StringLength(64)]
+        [StringLength(256)]
+        [SugarColumn(Length = 256, IsNullable = true)]
         public string desc { get; set; }
 
         /// <summary>
         /// 笔画类型，both,line,fill
         /// </summary>
+        [StringLength(8)]
+        [SugarColumn(Length = 8, IsNullable = true)]
         public string type { get; set; }
     }
 }

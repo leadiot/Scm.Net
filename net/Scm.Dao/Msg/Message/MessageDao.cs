@@ -57,5 +57,5 @@ public class MessageDao : ScmUserDataDao, IDeleteDao
     /// 是否删除
     /// </summary>
     [Required]
-    public ScmDeleteEnum row_delete { get; set; }
+    public ScmRowDeleteEnum row_delete { get; set; }
 }

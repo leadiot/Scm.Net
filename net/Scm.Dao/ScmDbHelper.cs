@@ -210,7 +210,7 @@ namespace Com.Scm
             // 账户信息
             var menuProfilesDao = CreateMenu(1000000000000001300, "profiles", "账户信息", menuHomeDao.id, 2, 3, "/profiles", "", "sc-coffee-cup-line");
             // 机构信息
-            var menuHomeUnitDao = CreateMenu(1000000000000001310, "home_unit", "机构信息", menuProfilesDao.id, 3, 1, "/home/unitCenter", "home/unitinfo", "sc-settings-3-line");
+            var menuHomeUnitDao = CreateMenu(1000000000000001310, "home-unit", "机构信息", menuProfilesDao.id, 3, 1, "/home/unitCenter", "home/unitinfo", "sc-settings-3-line");
             var menuHomeUserDao = CreateMenu(1000000000000001320, "home_user", "个人信息", menuProfilesDao.id, 3, 2, "/home/usercenter", "home/userinfo", "sc-user-line");
             var menuHomeOAuthDao = CreateMenu(1000000000000001330, "scm-oauth", "联合登录", menuProfilesDao.id, 3, 3, "/home/oauth", "home/oauth", "sc-bubble-chart-line");
             var menuHomeOtpDao = CreateMenu(1000000000000001340, "scm-otp", "凭证登录", menuProfilesDao.id, 3, 4, "/scm/otp", "home/otp", "sc-bubble-chart-line");

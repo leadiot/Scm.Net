@@ -57,13 +57,13 @@ namespace Com.Scm.Nas.Sync
             }
 
             var dirList = new List<SyncResFileDao>();
-            var dao = CreateRecursiveDirDao(terminalDao, $"/{userDao.codes}/{NasEnv.NodeDownloads}");
+            var dao = CreateSpecialDirDao(terminalDao, NasEnv.NodeDownloads, NasEnv.PathDownloads, NasSubTypeEnums.DirFolder);
             dirList.Add(dao);
-            dao = CreateRecursiveDirDao(terminalDao, $"/{userDao.codes}/{NasEnv.NodeDevices}");
+            dao = CreateSpecialDirDao(terminalDao, NasEnv.NodeDevices, NasEnv.PathDevices, NasSubTypeEnums.DirFolder);
             dirList.Add(dao);
-            dao = CreateRecursiveDirDao(terminalDao, $"/{userDao.codes}/{NasEnv.NodeSecret}");
+            dao = CreateSpecialDirDao(terminalDao, NasEnv.NodeSecret, NasEnv.PathSecret, NasSubTypeEnums.DirFolder);
             dirList.Add(dao);
-            dao = CreateRecursiveDirDao(terminalDao, $"/{userDao.codes}/{NasEnv.NodePublic}");
+            dao = CreateSpecialDirDao(terminalDao, NasEnv.NodePublic, NasEnv.PathPublic, NasSubTypeEnums.DirFolder);
             dirList.Add(dao);
 
             return dirList;
@@ -107,7 +107,7 @@ namespace Com.Scm.Nas.Sync
                 return null;
             }
 
-            dto.path = GetStoragePath(terminalDao, dto.path);
+            dto.path = GetStoragePath(dto.path);
 
             var cfgDao = await _SqlClient.Queryable<SyncCfgFolderDao>()
                 .Where(a => a.terminal_id == token.terminal_id && a.name == dto.name)
@@ -137,7 +137,7 @@ namespace Com.Scm.Nas.Sync
             cfgDao.res_id = dirDao.id;
             await _SqlClient.Updateable(cfgDao).ExecuteCommandAsync();
 
-            var rPath = GetNativePath(dto.path);
+            var rPath = GetNativePath(terminalDao, dto.path);
             FileUtils.CreateDir(rPath);
 
             dto.id = cfgDao.id;
@@ -331,8 +331,8 @@ namespace Com.Scm.Nas.Sync
                 return null;
             }
 
-            dto.path = GetStoragePath(terminalDao, dto.path);
-            dto.src = GetStoragePath(terminalDao, dto.src);
+            dto.path = GetStoragePath(dto.path);
+            dto.src = GetStoragePath(dto.src);
 
             var result = new SyncResult();
             if (dto.opt == NasOptEnums.Delete)
@@ -418,7 +418,7 @@ namespace Com.Scm.Nas.Sync
         {
             LogUtils.Debug("删除文档：" + dto.path);
 
-            var dstFile = GetNativePath(dto.path);
+            var dstFile = GetNativePath(token, dto.path);
             FileUtils.DeleteDoc(dstFile);
 
             var parentList = new List<SyncResFileDao>();
@@ -457,7 +457,7 @@ namespace Com.Scm.Nas.Sync
         {
             LogUtils.Debug("删除目录：" + dto.path);
 
-            var dstFile = GetNativePath(dto.path);
+            var dstFile = GetNativePath(token, dto.path);
             FileUtils.DeleteDir(dstFile);
 
             var parentList = new List<SyncResFileDao>();
@@ -534,7 +534,7 @@ namespace Com.Scm.Nas.Sync
         {
             LogUtils.Debug("创建目录：" + dto.path);
 
-            var path = GetNativePath(dto.path);
+            var path = GetNativePath(token, dto.path);
             LogUtils.Debug("路径目录：" + path);
             if (!Directory.Exists(path))
             {
@@ -572,7 +572,7 @@ namespace Com.Scm.Nas.Sync
                 return false;
             }
 
-            var dstFile = GetNativePath(dto.path);
+            var dstFile = GetNativePath(token, dto.path);
             if (!FileUtils.MoveDoc(tmpFile, dstFile, true))
             {
                 SyncResult.Failure("上传文档移动异常！");
@@ -652,7 +652,7 @@ namespace Com.Scm.Nas.Sync
         {
             LogUtils.Debug("移动目录：" + dto.path);
 
-            var srcDir = GetNativePath(dto.src);
+            var srcDir = GetNativePath(token, dto.src);
             if (!FileUtils.ExistsDir(srcDir))
             {
                 result.SetFailure($"来源目录 {dto.src} 不存在！");
@@ -677,7 +677,7 @@ namespace Com.Scm.Nas.Sync
                 srcDao = AddResDirDao(token, dto, parentDao.id);
             }
 
-            var dstDir = GetNativePath(dto.path);
+            var dstDir = GetNativePath(token, dto.path);
             MoveDirCasced(token, srcDao, srcDir, dto.src, dstDir, dto.path);
 
             AddLogFileByDto(token, dto, srcDao.id, srcDao.dir_id, parentList);
@@ -782,14 +782,14 @@ namespace Com.Scm.Nas.Sync
         {
             LogUtils.Debug("移动文档：" + dto.path);
 
-            var srcFile = GetNativePath(dto.src);
+            var srcFile = GetNativePath(token, dto.src);
             if (!FileUtils.ExistsDoc(srcFile))
             {
                 result.SetFailure($"来源文档 {dto.src} 不存在！");
                 return false;
             }
 
-            var dstFile = GetNativePath(dto.path);
+            var dstFile = GetNativePath(token, dto.path);
             FileUtils.MoveDoc(srcFile, dstFile, true);
 
             var dstDao = GetDocDaoByPath(token.user_id, dto.path);
@@ -859,7 +859,7 @@ namespace Com.Scm.Nas.Sync
         {
             LogUtils.Debug("复制目录：" + dto.path);
 
-            var srcPath = GetNativePath(dto.src);
+            var srcPath = GetNativePath(token, dto.src);
             if (!FileUtils.ExistsDir(srcPath))
             {
                 LogUtils.Debug($"来源目录 {dto.src} 不存在！");
@@ -880,7 +880,7 @@ namespace Com.Scm.Nas.Sync
                 dstDao = AddResDirDao(token, dto, parentDao.id);
             }
 
-            var dstDir = GetNativePath(dto.path);
+            var dstDir = GetNativePath(token, dto.path);
             CopyDirCasced(token, dstDao, srcPath, dto.src, dstDir, dto.path);
 
             AddLogFileByDto(token, dto, dstDao.id, dstDao.dir_id, parentList);
@@ -969,7 +969,7 @@ namespace Com.Scm.Nas.Sync
         {
             LogUtils.Debug("复制文档：" + dto.path);
 
-            var srcFile = GetNativePath(dto.src);
+            var srcFile = GetNativePath(token, dto.src);
             if (!FileUtils.ExistsDoc(srcFile))
             {
                 LogUtils.Debug($"来源文档 {dto.src} 不存在！");
@@ -977,7 +977,7 @@ namespace Com.Scm.Nas.Sync
                 return false;
             }
 
-            var dstFile = GetNativePath(dto.path);
+            var dstFile = GetNativePath(token, dto.path);
             FileUtils.CopyDoc(srcFile, dstFile, true);
 
             var parentList = new List<SyncResFileDao>();
@@ -1046,7 +1046,7 @@ namespace Com.Scm.Nas.Sync
         {
             LogUtils.Debug("更名目录：" + dto.path);
 
-            var srcDir = GetNativePath(dto.src);
+            var srcDir = GetNativePath(token, dto.src);
             if (!FileUtils.ExistsDir(srcDir))
             {
                 result.SetFailure($"来源目录 {dto.src} 不存在！");
@@ -1072,7 +1072,7 @@ namespace Com.Scm.Nas.Sync
                 srcDao = AddResDirDao(token, dto, parentDao.id);
             }
 
-            var dstDir = GetNativePath(dto.path);
+            var dstDir = GetNativePath(token, dto.path);
             MoveDirCasced(token, srcDao, srcDir, dto.src, dstDir, dto.path);
 
             AddLogFileByDto(token, dto, srcDao.id, srcDao.dir_id, parentList);
@@ -1091,14 +1091,14 @@ namespace Com.Scm.Nas.Sync
         {
             LogUtils.Debug("更名文档：" + dto.path);
 
-            var srcFile = GetNativePath(dto.src);
+            var srcFile = GetNativePath(token, dto.src);
             if (!FileUtils.ExistsDoc(srcFile))
             {
                 result.SetFailure($"来源文档 {dto.src} 不存在！");
                 return false;
             }
 
-            var dstFile = GetNativePath(dto.path);
+            var dstFile = GetNativePath(token, dto.path);
             FileUtils.MoveDoc(srcFile, dstFile, true);
 
             var parentList = new List<SyncResFileDao>();
@@ -1175,7 +1175,7 @@ namespace Com.Scm.Nas.Sync
                 return false;
             }
 
-            var dstFile = GetNativePath(dto.path);
+            var dstFile = GetNativePath(token, dto.path);
             var dstDir = FileUtils.GetDir(dstFile);
             if (!Directory.Exists(dstDir))
             {
@@ -1220,7 +1220,7 @@ namespace Com.Scm.Nas.Sync
         {
             LogUtils.Debug("更新目录：" + dto.path);
 
-            var tmpFile = GetNativePath(dto.path);
+            var tmpFile = GetNativePath(token, dto.path);
             if (!Directory.Exists(tmpFile))
             {
                 Directory.CreateDirectory(tmpFile);
@@ -1443,12 +1443,7 @@ namespace Com.Scm.Nas.Sync
         /// </summary>
         /// <param name="path"></param>
         /// <returns></returns>
-        private string GetNativePath(string path)
-        {
-            return _EnvConfig.GetDataPath($"/" + NasEnv.DEF_NAS_DIR + path);
-        }
-
-        private string GetStoragePath(ScmUrTerminalDao token, string path)
+        private string GetNativePath(ScmUrTerminalDao token, string path)
         {
             if (string.IsNullOrEmpty(path))
             {
@@ -1471,7 +1466,12 @@ namespace Com.Scm.Nas.Sync
                 return path;
             }
 
-            return $"/{userDao.codes}" + path;
+            return _EnvConfig.GetDataPath($"/{NasEnv.DEF_NAS_DIR}/{userDao.codes}" + path);
+        }
+
+        private string GetStoragePath(string path)
+        {
+            return path;
         }
 
         private string GetClientPath(ScmUrTerminalDao token, string path)
@@ -1494,6 +1494,28 @@ namespace Com.Scm.Nas.Sync
             }
 
             return path;
+        }
+
+        private SyncResFileDao CreateSpecialDirDao(ScmUrTerminalDao token, string name, string path, NasSubTypeEnums subType)
+        {
+            var dao = _SqlClient.Queryable<SyncResFileDao>()
+                .Where(a => a.path == path && a.user_id == token.user_id)
+                .First();
+
+            if (dao == null)
+            {
+                dao = new Sync.SyncResFileDao();
+                dao.user_id = token.user_id;
+                dao.type = NasTypeEnums.Dir;
+                dao.sub = subType;
+                dao.name = name;
+                dao.path = path;
+                dao.dir_id = NasEnv.DEF_DIR_ID;
+                dao.PrepareCreate(token.user_id);
+                _SqlClient.Insertable(dao).ExecuteCommand();
+            }
+
+            return dao;
         }
 
         /// <summary>

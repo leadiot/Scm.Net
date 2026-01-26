@@ -24,6 +24,11 @@ namespace Com.Scm.Nas.Sync
         public NasTypeEnums type { get; set; }
 
         /// <summary>
+        /// 
+        /// </summary>
+        public NasSubTypeEnums sub { get; set; }
+
+        /// <summary>
         /// 目录ID
         /// </summary>
         [Required]

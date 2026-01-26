@@ -1,9 +1,7 @@
 <template>
 	<el-container>
 		<el-header>
-			<div class="left-panel">
-				{{ path }}
-			</div>
+			<scBreadcrum ref="breadcrumb" style="margin-right: 10px;" :root="root" @click="changeDir" />
 			<div class="right-panel">
 				<el-input v-model="param.key" clearable placeholder="关键字">
 					<template #append>
@@ -47,6 +45,7 @@ import { defineAsyncComponent } from "vue";
 export default {
 	name: 'nasfiledoc',
 	components: {
+		scBreadcrum: defineAsyncComponent(() => import("@/components/scBreadcrumb")),
 		edit: defineAsyncComponent(() => import("./edit")),
 		info: defineAsyncComponent(() => import("./info")),
 	},
@@ -67,9 +66,7 @@ export default {
 				{ prop: 'size', label: '大小', width: 120, align: 'right', formatter: this.$TOOL.fileSizeFormat },
 				{ prop: "update_time", label: "更新时间", width: 160, formatter: this.$TOOL.dateTimeFormat },
 			],
-			file_list: [],
-			file: { 'id': '0' },
-			path: '',
+			root: { 'id': '0', type: 10, name: '设备' },
 			row_status_list: [this.$SCM.OPTION_ALL_INT],
 			option_list: [this.$SCM.OPTION_ALL],
 		};
@@ -120,11 +117,13 @@ export default {
 			}
 		},
 		open(row) {
+			if (!row) {
+				return;
+			}
+
 			if (row.type == 10) {
-				this.file_list.push(row);
-				this.file = row;
+				this.$refs.breadcrumb.addItem(row);
 				this.param.dir_id = row.id;
-				this.showPath();
 				this.search();
 				return;
 			}
@@ -132,12 +131,14 @@ export default {
 			alert(row.type);
 			//window.open(row.url);
 		},
-		showPath() {
-			this.path = '';
-			this.file_list.forEach((item) => {
-				this.path += '/' + item.name;
-			});
-		}
+		changeDir(item) {
+			if (!item) {
+				item = this.root;
+			}
+
+			this.param.dir_id = item.id;
+			this.search();
+		},
 	},
 };
 </script>

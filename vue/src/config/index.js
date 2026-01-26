@@ -27,13 +27,13 @@ const DEFAULT_CONFIG = {
 	DASHBOARD_URL: "/dashboard",
 
 	// 服务器地址
-	SERVER_URL: process.env.VUE_APP_API_BASEURL,
+	SERVER_URL: process.env.VUE_APP_API_BASE,
 
 	// 接口地址
-	API_URL: process.env.VUE_APP_API_BASEURL + "/api",
+	API_URL: process.env.VUE_APP_API_BASE + "/api",
 
 	// SignalR地址
-	SignalR_URL: process.env.VUE_APP_API_BASEURL + "/scmhub",
+	SignalR_URL: process.env.VUE_APP_API_BASE + "/scmhub",
 
 	// 请求超时
 	TIMEOUT: 10000,

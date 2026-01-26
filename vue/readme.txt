@@ -10,7 +10,7 @@
 【环境配置】
 如果您没有本地服务，请修改.env.development文件，将VUE_APP_API_BASEURL修改为https://api.c-scm.net，可直接使用现有云服务器；
 如下为生产演示环境：
-VUE_APP_API_BASEURL = https://api.c-scm.net
+VUE_APP_API_BASE = https://api.c-scm.net
 
 【应用配置】
 以下配置文件的相关配置均可以修改：

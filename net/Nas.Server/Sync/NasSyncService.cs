@@ -1,5 +1,6 @@
 ﻿using Com.Scm.Api;
 using Com.Scm.Config;
+using Com.Scm.Filters;
 using Com.Scm.Nas.Cfg;
 using Com.Scm.Nas.Log;
 using Com.Scm.Nas.Res;
@@ -17,6 +18,7 @@ namespace Com.Scm.Nas.Sync
     /// <summary>
     /// 终端文件同步服务
     /// </summary>
+    [NoAuditLog]
     [AllowAnonymous]
     [ApiExplorerSettings(GroupName = "Scm")]
     public class NasSyncService : AppService

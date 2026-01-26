@@ -63,10 +63,6 @@ namespace Com.Scm.Nas.Res
                 .ToList();
         }
 
-        private List<NasResFileDao> GetPathListDao(string path)
-        {
-        }
-
         private void AddLog(NasResFileDao resDao, long terminalId, long folderId, NasOptEnums opt, string src = null)
         {
             var logDao = new NasLogFileDao();

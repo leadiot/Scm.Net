@@ -18,5 +18,30 @@
 
             return "";
         }
+
+        public static string CombinePath(string path, params string[] names)
+        {
+            if (names == null || names.Length == 0)
+            {
+                return path;
+            }
+
+            if (string.IsNullOrEmpty(path))
+            {
+                path = "";
+            }
+
+            foreach (var name in names)
+            {
+                if (string.IsNullOrEmpty(name))
+                {
+                    continue;
+                }
+
+                path += NasEnv.WebSeparator + name;
+            }
+
+            return path;
+        }
     }
 }

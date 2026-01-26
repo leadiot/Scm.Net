@@ -12,16 +12,15 @@ namespace Com.Scm.Nas.Res
     [SugarTable("nas_res_file")]
     public class NasResFileDao : ScmUserDataDao
     {
-        ///// <summary>
-        ///// 驱动ID
-        ///// </summary>
-        //[Required]
-        //public long folder_id { get; set; }
-
         /// <summary>
         /// 文件类型
         /// </summary>
         public NasTypeEnums type { get; set; }
+
+        /// <summary>
+        /// 二级类型
+        /// </summary>
+        public NasSubTypeEnums sub { get; set; }
 
         /// <summary>
         /// 目录ID

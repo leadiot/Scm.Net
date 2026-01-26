@@ -6,14 +6,14 @@ namespace Com.Scm.Nas.Res
     public class NasResFileDto : ScmDataDto
     {
         /// <summary>
-        /// 驱动ID
-        /// </summary>
-        public long folder_id { get; set; }
-
-        /// <summary>
-        /// 
+        /// 主类型
         /// </summary>
         public NasTypeEnums type { get; set; }
+
+        /// <summary>
+        /// 子类型
+        /// </summary>
+        public NasSubTypeEnums sub { get; set; }
 
         /// <summary>
         /// 目录ID

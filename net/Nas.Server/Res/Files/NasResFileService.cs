@@ -2,13 +2,13 @@ using Com.Scm.Dsa;
 using Com.Scm.Dvo;
 using Com.Scm.Enums;
 using Com.Scm.Exceptions;
-using Com.Scm.Nas.Res.Dvo;
+using Com.Scm.Nas.Res.Files.Dvo;
 using Com.Scm.Service;
 using Com.Scm.Token;
 using Com.Scm.Utils;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Com.Scm.Nas.Res
+namespace Com.Scm.Nas.Res.Files
 {
     /// <summary>
     /// 文档服务接口
@@ -16,8 +16,8 @@ namespace Com.Scm.Nas.Res
     [ApiExplorerSettings(GroupName = "Nas")]
     public class NasResFileService : ApiService
     {
-        private readonly SugarRepository<NasResFileDao> _thisRepository;
-        private readonly ScmContextHolder _jwtHolder;
+        protected readonly SugarRepository<NasResFileDao> _thisRepository;
+        protected readonly ScmContextHolder _jwtHolder;
 
         /// <summary>
         /// 
@@ -37,18 +37,9 @@ namespace Com.Scm.Nas.Res
         /// <returns></returns>
         public async Task<ScmSearchPageResponse<NasResFileDvo>> GetPagesAsync(SearchRequest request)
         {
-            var token = _jwtHolder.GetToken();
-
             if (!IsValidId(request.dir_id))
             {
-                var path = $"/{token.user_codes}/{NasEnv.NodeDevices}";
-                var dao = await _thisRepository.AsQueryable()
-                    .Where(a => a.path == path)
-                    .FirstAsync();
-                if (dao != null)
-                {
-                    request.dir_id = dao.id;
-                }
+                request.dir_id = GetRootDirId();
             }
 
             var result = await _thisRepository.AsQueryable()
@@ -65,15 +56,25 @@ namespace Com.Scm.Nas.Res
             return result;
         }
 
+        protected virtual long GetRootDirId()
+        {
+            return 0;
+        }
+
         /// <summary>
         /// 查询所有
         /// </summary>
         /// <param name="request"></param>
         /// <returns></returns>
-        public async Task<List<NasResFileDvo>> GetListAsync(ScmSearchRequest request)
+        public async Task<List<NasResFileDvo>> GetListAsync(SearchRequest request)
         {
+            if (!IsValidId(request.dir_id))
+            {
+                request.dir_id = GetRootDirId();
+            }
+
             var result = await _thisRepository.AsQueryable()
-                .Where(a => a.row_status == Com.Scm.Enums.ScmRowStatusEnum.Enabled)
+                .Where(a => a.dir_id == request.dir_id && a.row_status == Com.Scm.Enums.ScmRowStatusEnum.Enabled)
                 .WhereIF(!string.IsNullOrEmpty(request.key), a => a.name.Contains(request.key))
                 .OrderBy(m => m.id)
                 .Select<NasResFileDvo>()
@@ -157,8 +158,23 @@ namespace Com.Scm.Nas.Res
                 throw new BusinessException("已存在相同名称的文档！");
             }
 
+            var parentDao = await _thisRepository.GetByIdAsync(model.dir_id);
+            if (parentDao == null || parentDao.type != NasTypeEnums.Dir)
+            {
+                throw new BusinessException("上级目录不存在！");
+            }
+
+            var parentPath = parentDao.path;
+
             dao = model.Adapt<NasResFileDao>();
-            return await _thisRepository.InsertAsync(dao);
+            dao.path = NasUtils.CombinePath(parentPath, model.name);
+
+            var result = await _thisRepository.InsertAsync(dao);
+
+            var manager = new NasManager(_SqlClient);
+            manager.AddCreateLog(dao);
+
+            return result;
         }
 
         /// <summary>
@@ -180,8 +196,16 @@ namespace Com.Scm.Nas.Res
                 throw new BusinessException("无效的文档！");
             }
 
+            var src = dao.path;
+            var parentPath = NasUtils.GetParentPath(src);
             dao = model.Adapt(dao);
-            return await _thisRepository.UpdateAsync(dao);
+            dao.path = NasUtils.CombinePath(parentPath, model.name);
+            var result = await _thisRepository.UpdateAsync(dao);
+
+            var manager = new NasManager(_SqlClient);
+            manager.AddRenameLog(dao, src);
+
+            return result;
         }
 
         /// <summary>
@@ -202,6 +226,11 @@ namespace Com.Scm.Nas.Res
         [HttpDelete]
         public async Task<int> DeleteAsync(string ids)
         {
+            var idList = ids.ToListLong();
+            var daoList = await _thisRepository.GetListAsync(a => idList.Contains(a.id));
+            var manager = new NasManager(_SqlClient);
+            manager.AddDeleteLog(daoList);
+
             return await DeleteRecord(_thisRepository, ids.ToListLong());
         }
     }

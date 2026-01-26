@@ -1,4 +1,4 @@
-﻿namespace Com.Scm.Nas.Res.Dvo
+﻿namespace Com.Scm.Nas.Res.Files.Dvo
 {
     public class SearchRequest : ScmSearchPageRequest
     {

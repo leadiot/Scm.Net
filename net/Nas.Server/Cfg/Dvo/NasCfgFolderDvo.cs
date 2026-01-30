@@ -5,17 +5,12 @@ namespace Com.Scm.Nas.Cfg.Dvo
     /// <summary>
     /// 
     /// </summary>
-    public class NasResDriveDvo : ScmDataDvo
+    public class NasCfgFolderDvo : ScmDataDvo
     {
         /// <summary>
         /// 
         /// </summary>
         public long terminal_id { get; set; }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        public long folder_id { get; set; }
 
         /// <summary>
         /// 
@@ -26,5 +21,10 @@ namespace Com.Scm.Nas.Cfg.Dvo
         /// 
         /// </summary>
         public string path { get; set; }
+
+        /// <summary>
+        /// ¼ÇÂ¼ID
+        /// </summary>
+        public long res_id { get; set; }
     }
 }

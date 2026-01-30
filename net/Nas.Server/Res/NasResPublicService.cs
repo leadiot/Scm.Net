@@ -1,20 +1,19 @@
 ﻿using Com.Scm.Dsa;
-using Com.Scm.Nas.Res.Files;
 using Com.Scm.Token;
 using SqlSugar;
 
-namespace Com.Scm.Nas.Res.Apps
+namespace Com.Scm.Nas.Res
 {
-    public class NasResAppsService : NasResFileService
+    public class NasResPublicService : NasResFileService
     {
-        public NasResAppsService(SugarRepository<NasResFileDao> thisRepository, ISqlSugarClient sqlClient, ScmContextHolder scmHolder, IResHolder resHolder)
+        public NasResPublicService(SugarRepository<NasResFileDao> thisRepository, ISqlSugarClient sqlClient, ScmContextHolder scmHolder, IResHolder resHolder)
             : base(thisRepository, sqlClient, scmHolder, resHolder)
         {
         }
 
         protected override long GetRootDirId()
         {
-            var path = NasEnv.PathApps;
+            var path = NasEnv.PathPublic;
             var dao = _thisRepository.AsQueryable()
                 .Where(a => a.path == path)
                 .First();

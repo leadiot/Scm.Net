@@ -77,14 +77,14 @@
 <script>
 import { defineAsyncComponent } from "vue";
 export default {
-	name: 'nasresdrive',
+	name: 'nascfgfolder',
 	components: {
 		edit: defineAsyncComponent(() => import("./edit")),
 	},
 	data() {
 		return {
-			tableName: 'nasresdrive',
-			apiObj: this.$API.nasresdrive.page,
+			tableName: 'nascfgfolder',
+			apiObj: this.$API.nascfgfolder.page,
 			list: [],
 			param: {
 				option_id: this.$SCM.ID_ALL,
@@ -118,16 +118,16 @@ export default {
 			this.$refs.table.upData(this.param);
 		},
 		async status_item(e, row) {
-			this.$SCM.status_item(this, this.$API.nasresdrive.status, row, row.row_status);
+			this.$SCM.status_item(this, this.$API.nascfgfolder.status, row, row.row_status);
 		},
 		status_list(status) {
-			this.$SCM.status_list(this, this.$API.nasresdrive.status, this.selection, status);
+			this.$SCM.status_list(this, this.$API.nascfgfolder.status, this.selection, status);
 		},
 		async delete_item(row) {
-			this.$SCM.delete_item(this, this.$API.nasresdrive.delete, row);
+			this.$SCM.delete_item(this, this.$API.nascfgfolder.delete, row);
 		},
 		delete_list() {
-			this.$SCM.delete_list(this, this.$API.nasresdrive.delete, this.selection);
+			this.$SCM.delete_list(this, this.$API.nascfgfolder.delete, this.selection);
 		},
 		show_search() {
 			this.$refs.search.open(this.param.key);

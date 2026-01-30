@@ -2,33 +2,28 @@ using Com.Scm.Dsa;
 using Com.Scm.Dvo;
 using Com.Scm.Enums;
 using Com.Scm.Exceptions;
-using Com.Scm.Nas.Res.Files.Dvo;
+using Com.Scm.Nas.Cfg.Dvo;
 using Com.Scm.Service;
-using Com.Scm.Token;
 using Com.Scm.Utils;
 using Microsoft.AspNetCore.Mvc;
-using SqlSugar;
 
-namespace Com.Scm.Nas.Res.Files
+namespace Com.Scm.Nas.Cfg
 {
     /// <summary>
-    /// 文档服务接口
+    /// 服务接口
     /// </summary>
     [ApiExplorerSettings(GroupName = "Nas")]
-    public class NasResFileService : ApiService
+    public class NasCfgFolderService : ApiService
     {
-        protected readonly SugarRepository<NasResFileDao> _thisRepository;
-        protected readonly ScmContextHolder _jwtHolder;
+        private readonly SugarRepository<NasCfgFolderDao> _thisRepository;
 
         /// <summary>
         /// 
         /// </summary>
         /// <param name="thisRepository"></param>
-        public NasResFileService(SugarRepository<NasResFileDao> thisRepository, ISqlSugarClient sqlClient, ScmContextHolder scmHolder, IResHolder resHolder)
+        public NasCfgFolderService(SugarRepository<NasCfgFolderDao> thisRepository, IResHolder resHolder)
         {
             _thisRepository = thisRepository;
-            _SqlClient = sqlClient;
-            _jwtHolder = scmHolder;
             _ResHolder = resHolder;
         }
 
@@ -37,30 +32,18 @@ namespace Com.Scm.Nas.Res.Files
         /// </summary>
         /// <param name="request"></param>
         /// <returns></returns>
-        public async Task<ScmSearchPageResponse<NasResFileDvo>> GetPagesAsync(SearchRequest request)
+        public async Task<ScmSearchPageResponse<NasCfgFolderDvo>> GetPagesAsync(ScmSearchPageRequest request)
         {
-            if (!IsValidId(request.dir_id))
-            {
-                request.dir_id = GetRootDirId();
-            }
-
             var result = await _thisRepository.AsQueryable()
-                .Where(a => a.dir_id == request.dir_id)
                 .WhereIF(!request.IsAllStatus(), a => a.row_status == request.row_status)
                 //.WhereIF(IsValidId(request.option_id), a => a.option_id == request.option_id)
                 .WhereIF(!string.IsNullOrEmpty(request.key), a => a.name.Contains(request.key))
-                .OrderBy(a => a.type)
                 .OrderBy(m => m.id)
-                .Select<NasResFileDvo>()
+                .Select<NasCfgFolderDvo>()
                 .ToPageAsync(request.page, request.limit);
 
             Prepare(result.Items);
             return result;
-        }
-
-        protected virtual long GetRootDirId()
-        {
-            return 0;
         }
 
         /// <summary>
@@ -68,18 +51,13 @@ namespace Com.Scm.Nas.Res.Files
         /// </summary>
         /// <param name="request"></param>
         /// <returns></returns>
-        public async Task<List<NasResFileDvo>> GetListAsync(SearchRequest request)
+        public async Task<List<NasCfgFolderDvo>> GetListAsync(ScmSearchRequest request)
         {
-            if (!IsValidId(request.dir_id))
-            {
-                request.dir_id = GetRootDirId();
-            }
-
             var result = await _thisRepository.AsQueryable()
-                .Where(a => a.dir_id == request.dir_id && a.row_status == Com.Scm.Enums.ScmRowStatusEnum.Enabled)
+                .Where(a => a.row_status == Com.Scm.Enums.ScmRowStatusEnum.Enabled)
                 .WhereIF(!string.IsNullOrEmpty(request.key), a => a.name.Contains(request.key))
                 .OrderBy(m => m.id)
-                .Select<NasResFileDvo>()
+                .Select<NasCfgFolderDvo>()
                 .ToListAsync();
 
             Prepare(result);
@@ -92,12 +70,12 @@ namespace Com.Scm.Nas.Res.Files
         /// <param name="id"></param>
         /// <returns></returns>
         [HttpGet("{id}")]
-        public async Task<NasResFileDto> GetAsync(long id)
+        public async Task<NasCfgFolderDto> GetAsync(long id)
         {
             return await _thisRepository
                 .AsQueryable()
                 .Where(a => a.id == id)
-                .Select<NasResFileDto>()
+                .Select<NasCfgFolderDto>()
                 .FirstAsync();
         }
 
@@ -107,12 +85,12 @@ namespace Com.Scm.Nas.Res.Files
         /// <param name="id"></param>
         /// <returns></returns>
         [HttpGet("{id}")]
-        public async Task<NasResFileDvo> GetViewAsync(long id)
+        public async Task<NasCfgFolderDvo> GetViewAsync(long id)
         {
             return await _thisRepository
                 .AsQueryable()
                 .Where(a => a.id == id)
-                .Select<NasResFileDvo>()
+                .Select<NasCfgFolderDvo>()
                 .FirstAsync();
         }
 
@@ -138,12 +116,12 @@ namespace Com.Scm.Nas.Res.Files
         /// <param name="id"></param>
         /// <returns></returns>
         [HttpGet("{id}")]
-        public async Task<NasResFileDto> GetEditAsync(long id)
+        public async Task<NasCfgFolderDto> GetEditAsync(long id)
         {
             return await _thisRepository
                 .AsQueryable()
                 .Where(a => a.id == id)
-                .Select<NasResFileDto>()
+                .Select<NasCfgFolderDto>()
                 .FirstAsync();
         }
 
@@ -152,31 +130,21 @@ namespace Com.Scm.Nas.Res.Files
         /// </summary>
         /// <param name="model"></param>
         /// <returns></returns>
-        public async Task<bool> AddAsync(NasResFileDto model)
+        public async Task<bool> AddAsync(NasCfgFolderDto model)
         {
-            var dao = await _thisRepository.GetFirstAsync(a => a.name == model.name && a.dir_id == model.dir_id);
+            var dao = await _thisRepository.GetFirstAsync(a => a.name == model.name);
             if (dao != null)
             {
-                throw new BusinessException("已存在相同名称的文档！");
+                throw new BusinessException("已存在相同名称的目录！");
             }
-
-            var parentDao = await _thisRepository.GetByIdAsync(model.dir_id);
-            if (parentDao == null || parentDao.type != NasTypeEnums.Dir)
+            dao = await _thisRepository.GetFirstAsync(a => a.path == model.path);
+            if (dao != null)
             {
-                throw new BusinessException("上级目录不存在！");
+                throw new BusinessException("已存在相同路径的目录！");
             }
 
-            var parentPath = parentDao.path;
-
-            dao = model.Adapt<NasResFileDao>();
-            dao.path = NasUtils.CombinePath(parentPath, model.name);
-
-            var result = await _thisRepository.InsertAsync(dao);
-
-            var manager = new NasManager(_SqlClient);
-            manager.AddCreateLog(dao, parentDao.user_id);
-
-            return result;
+            dao = model.Adapt<NasCfgFolderDao>();
+            return await _thisRepository.InsertAsync(dao);
         }
 
         /// <summary>
@@ -184,32 +152,27 @@ namespace Com.Scm.Nas.Res.Files
         /// </summary>
         /// <param name="model"></param>
         /// <returns></returns>
-        public async Task<bool> UpdateAsync(NasResFileDto model)
+        public async Task<bool> UpdateAsync(NasCfgFolderDto model)
         {
-            var dao = await _thisRepository.GetFirstAsync(a => a.name == model.name && a.dir_id == model.dir_id && a.id != model.id);
+            var dao = await _thisRepository.GetFirstAsync(a => a.name == model.name && a.id != model.id);
             if (dao != null)
             {
-                throw new BusinessException("已存在相同名称的文档！");
+                throw new BusinessException("已存在相同名称的目录！");
+            }
+            dao = await _thisRepository.GetFirstAsync(a => a.path == model.path && a.id != model.id);
+            if (dao != null)
+            {
+                throw new BusinessException("已存在相同路径的目录！");
             }
 
             dao = await _thisRepository.GetByIdAsync(model.id);
             if (dao == null)
             {
-                throw new BusinessException("无效的文档！");
+                throw new BusinessException("无效的目录！");
             }
 
-            var parentDao = await _thisRepository.GetByIdAsync(model.dir_id);
-
-            var src = dao.path;
-            var parentPath = NasUtils.GetParentPath(src);
             dao = model.Adapt(dao);
-            dao.path = NasUtils.CombinePath(parentPath, model.name);
-            var result = await _thisRepository.UpdateAsync(dao);
-
-            var manager = new NasManager(_SqlClient);
-            manager.AddRenameLog(dao, parentDao.user_id, src);
-
-            return result;
+            return await _thisRepository.UpdateAsync(dao);
         }
 
         /// <summary>
@@ -230,11 +193,6 @@ namespace Com.Scm.Nas.Res.Files
         [HttpDelete]
         public async Task<int> DeleteAsync(string ids)
         {
-            var idList = ids.ToListLong();
-            var daoList = await _thisRepository.GetListAsync(a => idList.Contains(a.id));
-            var manager = new NasManager(_SqlClient);
-            manager.AddDeleteLog(daoList);
-
             return await DeleteRecord(_thisRepository, ids.ToListLong());
         }
     }

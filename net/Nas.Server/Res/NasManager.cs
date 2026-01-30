@@ -19,11 +19,8 @@ namespace Com.Scm.Nas.Res
         /// <param name="dao"></param>
         public void AddCreateLog(NasResFileDao dao, long userId)
         {
-            var folderList = ListFolderDao(userId);
             var logDao = AddLogFileDao(dao, ScmEnv.DEFAULT_ID, ScmEnv.DEFAULT_ID, NasOptEnums.Create);
-            foreach (var folder in folderList)
-            {
-            }
+            AddFolderLog(logDao, dao);
         }
 
         /// <summary>
@@ -35,9 +32,7 @@ namespace Com.Scm.Nas.Res
         public void AddRenameLog(NasResFileDao dao, long userId, string src)
         {
             var logDao = AddLogFileDao(dao, ScmEnv.DEFAULT_ID, ScmEnv.DEFAULT_ID, NasOptEnums.Rename, src);
-            var folderList = ListFolderDao(userId);
-            var parentList = ListParentDao(userId, dao.path);
-            AddFolderLog(logDao, folderList, parentList);
+            AddFolderLog(logDao, dao);
         }
 
         /// <summary>
@@ -47,22 +42,16 @@ namespace Com.Scm.Nas.Res
         /// <param name="userId"></param>
         public void AddDeleteLog(NasResFileDao dao, long userId)
         {
-            var folderList = ListFolderDao(userId);
-            foreach (var folder in folderList)
-            {
-                AddLogFileDao(dao, folder.terminal_id, folder.id, NasOptEnums.Delete);
-            }
+            var logDao = AddLogFileDao(dao, ScmEnv.DEFAULT_ID, ScmEnv.DEFAULT_ID, NasOptEnums.Delete);
+            AddFolderLog(logDao, dao);
         }
 
         public void AddDeleteLog(List<NasResFileDao> daoList, long userId)
         {
-            var folderList = ListFolderDao(userId);
             foreach (var dao in daoList)
             {
-                foreach (var folder in folderList)
-                {
-                    AddLogFileDao(dao, folder.terminal_id, folder.id, NasOptEnums.Delete);
-                }
+                var logDao = AddLogFileDao(dao, ScmEnv.DEFAULT_ID, ScmEnv.DEFAULT_ID, NasOptEnums.Delete);
+                AddFolderLog(logDao, dao);
             }
         }
 
@@ -71,6 +60,24 @@ namespace Com.Scm.Nas.Res
             return _SqlClient.Queryable<NasCfgFolderDao>()
                 .Where(a => a.user_id == userId)
                 .ToList();
+        }
+
+        private List<NasResFileDao> ListParentDao(NasResFileDao dao)
+        {
+            var list = new List<NasResFileDao>();
+            while (dao.dir_id != NasEnv.DEF_DIR_ID)
+            {
+                dao = GetDaoByPath(dao.dir_id);
+                list.Add(dao);
+            }
+            return list;
+        }
+
+        private NasResFileDao GetDaoByPath(long id)
+        {
+            return _SqlClient.Queryable<NasResFileDao>()
+                .Where(a => a.id == id)
+                .First();
         }
 
         private List<NasResFileDao> ListParentDao(long userId, string path)
@@ -107,6 +114,7 @@ namespace Com.Scm.Nas.Res
             logDao.terminal_id = terminalId;
             logDao.folder_id = folderId;
             logDao.res_id = resDao.id;
+            logDao.dir_id = resDao.dir_id;
             logDao.type = resDao.type;
             logDao.name = resDao.name;
             logDao.path = resDao.path;
@@ -114,27 +122,36 @@ namespace Com.Scm.Nas.Res
             logDao.size = resDao.size;
             logDao.opt = opt;
             logDao.dir = NasDirEnums.Download;
+            logDao.ver = resDao.ver;
             logDao.src = src;
+            logDao.modify_time = resDao.modify_time;
             _SqlClient.Insertable(logDao).ExecuteCommand();
 
             return logDao;
         }
 
-        private void AddFolderLog(NasLogFileDao logDao, List<NasCfgFolderDao> folderList, List<NasResFileDao> resList)
+        private void AddFolderLog(NasLogFileDao logDao, NasResFileDao resDao)
         {
-            foreach (var folder in folderList)
+            var folderList = ListFolderDao(resDao.user_id);
+            var parentList = ListParentDao(resDao);
+            AddFolderLog(logDao, folderList, parentList);
+        }
+
+        private void AddFolderLog(NasLogFileDao logDao, List<NasCfgFolderDao> folderList, List<NasResFileDao> parentList)
+        {
+            foreach (var folderDao in folderList)
             {
-                foreach (var resDao in resList)
+                foreach (var fileDao in parentList)
                 {
-                    if (folder.res_id == resDao.id)
+                    if (folderDao.res_id == fileDao.id)
                     {
-                        AddLogFolderDao(logDao, folder.terminal_id, folder.id);
+                        AddLogFolderDao(logDao, folderDao.id);
                     }
                 }
             }
         }
 
-        private void AddLogFolderDao(NasLogFileDao logDao, long terminalId, long folderId)
+        private void AddLogFolderDao(NasLogFileDao logDao, long folderId)
         {
             var folderDao = new NasLogFolderDao();
             folderDao.user_id = logDao.user_id;

@@ -1,9 +1,8 @@
 ﻿using Com.Scm.Dsa;
-using Com.Scm.Nas.Res.Files;
 using Com.Scm.Token;
 using SqlSugar;
 
-namespace Com.Scm.Nas.Res.Device
+namespace Com.Scm.Nas.Res
 {
     public class NasResDeviceService : NasResFileService
     {

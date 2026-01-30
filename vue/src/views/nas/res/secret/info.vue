@@ -59,7 +59,7 @@ export default {
 				],
 				namec: [
 					{ required: true, trigger: "blur", message: "名称不能为空" },
-					{ required: true, trigger: "blur", message: "名称应4至64个字符", pattern: this.$SCM.REGEX_NAMEC },
+					{ required: true, trigger: "blur", message: "名称应1至250个字符", pattern: this.$NAS.REGEX_NAMEC },
 				],
 			},
 		};
@@ -77,7 +77,7 @@ export default {
 				path: '',
 				size: '',
 				hash: '',
-				ver: '',
+				ver: '0',
 			}
 		},
 		async open(row) {

@@ -80,6 +80,8 @@ namespace Com.Scm.Nas.Res
 
             update_time = TimeUtils.GetUnixTime();
             create_time = update_time;
+
+            modify_time = update_time;
         }
 
         public override void PrepareUpdate(long userId)

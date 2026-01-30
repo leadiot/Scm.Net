@@ -35,7 +35,7 @@ namespace Com.Scm
                 verDao.create_time = TimeUtils.GetUnixTime();
             }
 
-            //InitDdl();
+            InitDdl();
 
             if (verDao.major == 0)
             {

@@ -40,7 +40,7 @@ namespace Com.Scm.Api.Controllers
             try
             {
                 var helper = new ScmDbHelper(_SqlClient);
-                //helper.InitDb(_EnvConfig.GetDataPath("sql"));
+                helper.InitDb(_EnvConfig.GetDataPath("sql"));
                 helper = new NasDbHelper(_SqlClient);
                 helper.InitDb(_EnvConfig.GetDataPath("sql"));
                 response.SetSuccess();

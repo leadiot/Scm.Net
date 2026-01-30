@@ -1,9 +1,7 @@
 <template>
 	<el-container>
 		<el-header>
-			<div class="left-panel">
-				{{ path }}
-			</div>
+			<scBreadcrum ref="breadcrumb" style="margin-right: 10px;" :root="root" @click="changeDir" />
 			<div class="right-panel">
 				<el-input v-model="param.key" clearable placeholder="关键字">
 					<template #append>
@@ -24,7 +22,7 @@
 							编辑
 						</el-button>
 						<el-divider direction="vertical" />
-						<el-popconfirm title="确定删除吗？" @confirm="table_del(scope.row, scope.$index)">
+						<el-popconfirm title="确定删除吗？" @confirm="delete_item(scope.row, scope.$index)">
 							<template #reference>
 								<el-button text type="primary" size="small">删除</el-button>
 							</template>
@@ -47,13 +45,14 @@ import { defineAsyncComponent } from "vue";
 export default {
 	name: 'nasfiledoc',
 	components: {
+		scBreadcrum: defineAsyncComponent(() => import("@/components/scBreadcrumb")),
 		edit: defineAsyncComponent(() => import("./edit")),
 		info: defineAsyncComponent(() => import("./info")),
 	},
 	data() {
 		return {
 			tableName: 'nas_res_file',
-			apiObj: this.$API.nasresfile.page,
+			apiObj: this.$API.nasresdevice.page,
 			param: {
 				dir_id: '0',
 				row_status: this.$SCM.DEF_STATUS,
@@ -67,9 +66,7 @@ export default {
 				{ prop: 'size', label: '大小', width: 120, align: 'right', formatter: this.$TOOL.fileSizeFormat },
 				{ prop: "update_time", label: "更新时间", width: 160, formatter: this.$TOOL.dateTimeFormat },
 			],
-			file_list: [],
-			file: { 'id': '0' },
-			path: '',
+			root: { 'id': '0', type: 10, name: '设备' },
 			row_status_list: [this.$SCM.OPTION_ALL_INT],
 			option_list: [this.$SCM.OPTION_ALL],
 		};
@@ -85,16 +82,16 @@ export default {
 			this.$refs.table.upData(this.param);
 		},
 		async status_item(e, row) {
-			this.$SCM.status_item(this, this.$API.nasresfile.status, row, row.row_status);
+			this.$SCM.status_item(this, this.$API.nasressecret.status, row, row.row_status);
 		},
 		status_list(status) {
-			this.$SCM.status_list(this, this.$API.nasresfile.status, this.selection, status);
+			this.$SCM.status_list(this, this.$API.nasresdevice.status, this.selection, status);
 		},
 		async delete_item(row) {
-			this.$SCM.delete_item(this, this.$API.nasresfile.delete, row);
+			this.$SCM.delete_item(this, this.$API.nasresdevice.delete, row);
 		},
 		delete_list() {
-			this.$SCM.delete_list(this, this.$API.nasresfile.delete, this.selection);
+			this.$SCM.delete_list(this, this.$API.nasresdevice.delete, this.selection);
 		},
 		show_search() {
 			this.$refs.search.open(this.param.key);
@@ -120,11 +117,13 @@ export default {
 			}
 		},
 		open(row) {
+			if (!row) {
+				return;
+			}
+
 			if (row.type == 10) {
-				this.file_list.push(row);
-				this.file = row;
+				this.$refs.breadcrumb.addItem(row);
 				this.param.dir_id = row.id;
-				this.showPath();
 				this.search();
 				return;
 			}
@@ -132,12 +131,14 @@ export default {
 			alert(row.type);
 			//window.open(row.url);
 		},
-		showPath() {
-			this.path = '';
-			this.file_list.forEach((item) => {
-				this.path += '/' + item.name;
-			});
-		}
+		changeDir(item) {
+			if (!item) {
+				item = this.root;
+			}
+
+			this.param.dir_id = item.id;
+			this.search();
+		},
 	},
 };
 </script>

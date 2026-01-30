@@ -7,6 +7,7 @@ using Com.Scm.Service;
 using Com.Scm.Token;
 using Com.Scm.Utils;
 using Microsoft.AspNetCore.Mvc;
+using SqlSugar;
 
 namespace Com.Scm.Nas.Res.Files
 {
@@ -23,9 +24,10 @@ namespace Com.Scm.Nas.Res.Files
         /// 
         /// </summary>
         /// <param name="thisRepository"></param>
-        public NasResFileService(SugarRepository<NasResFileDao> thisRepository, ScmContextHolder scmHolder, IResHolder resHolder)
+        public NasResFileService(SugarRepository<NasResFileDao> thisRepository, ISqlSugarClient sqlClient, ScmContextHolder scmHolder, IResHolder resHolder)
         {
             _thisRepository = thisRepository;
+            _SqlClient = sqlClient;
             _jwtHolder = scmHolder;
             _ResHolder = resHolder;
         }
@@ -172,7 +174,7 @@ namespace Com.Scm.Nas.Res.Files
             var result = await _thisRepository.InsertAsync(dao);
 
             var manager = new NasManager(_SqlClient);
-            manager.AddCreateLog(dao);
+            manager.AddCreateLog(dao, parentDao.user_id);
 
             return result;
         }
@@ -196,6 +198,8 @@ namespace Com.Scm.Nas.Res.Files
                 throw new BusinessException("无效的文档！");
             }
 
+            var parentDao = await _thisRepository.GetByIdAsync(model.dir_id);
+
             var src = dao.path;
             var parentPath = NasUtils.GetParentPath(src);
             dao = model.Adapt(dao);
@@ -203,7 +207,7 @@ namespace Com.Scm.Nas.Res.Files
             var result = await _thisRepository.UpdateAsync(dao);
 
             var manager = new NasManager(_SqlClient);
-            manager.AddRenameLog(dao, src);
+            manager.AddRenameLog(dao, parentDao.user_id, src);
 
             return result;
         }

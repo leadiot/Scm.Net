@@ -52,7 +52,7 @@ export default {
 	data() {
 		return {
 			tableName: 'nas_res_file',
-			apiObj: this.$API.nasresfile.page,
+			apiObj: this.$API.nasresdevice.page,
 			param: {
 				dir_id: '0',
 				row_status: this.$SCM.DEF_STATUS,
@@ -82,16 +82,16 @@ export default {
 			this.$refs.table.upData(this.param);
 		},
 		async status_item(e, row) {
-			this.$SCM.status_item(this, this.$API.nasresfile.status, row, row.row_status);
+			this.$SCM.status_item(this, this.$API.nasressecret.status, row, row.row_status);
 		},
 		status_list(status) {
-			this.$SCM.status_list(this, this.$API.nasresfile.status, this.selection, status);
+			this.$SCM.status_list(this, this.$API.nasresdevice.status, this.selection, status);
 		},
 		async delete_item(row) {
-			this.$SCM.delete_item(this, this.$API.nasresfile.delete, row);
+			this.$SCM.delete_item(this, this.$API.nasresdevice.delete, row);
 		},
 		delete_list() {
-			this.$SCM.delete_list(this, this.$API.nasresfile.delete, this.selection);
+			this.$SCM.delete_list(this, this.$API.nasresdevice.delete, this.selection);
 		},
 		show_search() {
 			this.$refs.search.open(this.param.key);

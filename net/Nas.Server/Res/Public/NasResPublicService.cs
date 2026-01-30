@@ -1,13 +1,14 @@
 ﻿using Com.Scm.Dsa;
 using Com.Scm.Nas.Res.Files;
 using Com.Scm.Token;
+using SqlSugar;
 
 namespace Com.Scm.Nas.Res.Public
 {
     public class NasResPublicService : NasResFileService
     {
-        public NasResPublicService(SugarRepository<NasResFileDao> thisRepository, ScmContextHolder scmHolder, IResHolder resHolder)
-            : base(thisRepository, scmHolder, resHolder)
+        public NasResPublicService(SugarRepository<NasResFileDao> thisRepository, ISqlSugarClient sqlClient, ScmContextHolder scmHolder, IResHolder resHolder)
+            : base(thisRepository, sqlClient, scmHolder, resHolder)
         {
         }
 

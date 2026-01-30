@@ -2,8 +2,8 @@
 	<sc-search ref="search" @search="search">
 		<template #search>
 			<el-form ref="formRef" label-width="80px" :model="param">
-				<el-form-item label="查询选项" prop="option_id">
-					<sc-select v-model="param.option_id" placeholder="请选择" :data="option_list" />
+				<el-form-item label="终端" prop="terminal_id">
+					<sc-select v-model="param.terminal_id" placeholder="请选择" :data="terminal_list" />
 				</el-form-item>
 				<el-form-item label="数据状态" prop="row_status">
 					<sc-select v-model="param.row_status" placeholder="请选择" :data="row_status_list" />
@@ -87,7 +87,7 @@ export default {
 			apiObj: this.$API.nascfgfolder.page,
 			list: [],
 			param: {
-				option_id: this.$SCM.ID_ALL,
+				terminal_id: this.$SCM.ID_ALL,
 				row_status: this.$SCM.DEF_STATUS,
 				create_time: '',
 				key: ''
@@ -95,20 +95,20 @@ export default {
 			selection: [],
 			column: [
 				{ label: "id", prop: "id", hide: true },
-				{ prop: 'user_id', label: '用户ID', width: 100 },
-				{ prop: 'terminal_id', label: '终端ID', width: 100 },
-				{ prop: 'name', label: '名称', width: 100 },
-				{ prop: 'path', label: '路径', width: 100 },
+				{ prop: 'terminal_id', label: '终端', width: 100, formatter: this.getTerminalName },
+				{ prop: 'name', label: '名称', width: 140, align: 'left' },
+				{ prop: 'path', label: '路径', minWidth: 140, align: 'left' },
 				{ prop: "row_status", label: "数据状态", width: 80, },
 				{ prop: "update_time", label: "更新时间", width: 160, formatter: this.$TOOL.dateTimeFormat },
 				{ prop: "create_time", label: "创建时间", width: 160, formatter: this.$TOOL.dateTimeFormat },
 			],
 			row_status_list: [this.$SCM.OPTION_ALL_INT],
-			option_list: [this.$SCM.OPTION_ALL],
+			terminal_list: [this.$SCM.OPTION_ALL],
 		};
 	},
 	mounted() {
 		this.$SCM.list_status(this.row_status_list, true);
+		this.$SCM.list_option(this.terminal_list, this.$API.scmurterminal.option, {}, true);
 	},
 	methods: {
 		complete() {
@@ -151,6 +151,9 @@ export default {
 				this.delete_item(obj.row);
 				return;
 			}
+		},
+		getTerminalName(id) {
+			return this.$SCM.get_option_names(this.terminal_list, id, '');
 		},
 	},
 };

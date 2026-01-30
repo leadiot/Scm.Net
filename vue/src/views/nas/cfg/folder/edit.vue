@@ -2,16 +2,14 @@
 	<sc-dialog v-model="visible" show-fullscreen destroy-on-close :title="titleMap[mode]" width="750px" @close="close">
 		<el-form ref="formRef" label-width="100px" :model="formData" :rules="rules">
 			<el-form-item label="终端ID" prop="terminal_id">
-				<el-input v-model="formData.terminal_id" placeholder="请输入终端ID" :maxlength="20" show-word-limit
-					clearable></el-input>
+				<sc-select v-model="formData.terminal_id" :data="terminal_list" disabled></sc-select>
 			</el-form-item>
 			<el-form-item label="名称" prop="name">
 				<el-input v-model="formData.name" placeholder="请输入名称" :maxlength="256" show-word-limit
 					clearable></el-input>
 			</el-form-item>
 			<el-form-item label="路径" prop="path">
-				<el-input v-model="formData.path" placeholder="请输入路径" :maxlength="256" show-word-limit
-					clearable></el-input>
+				<el-input v-model="formData.path" placeholder="请输入路径" disabled></el-input>
 			</el-form-item>
 
 		</el-form>
@@ -40,12 +38,14 @@ export default {
 				],
 				namec: [
 					{ required: true, trigger: "blur", message: "名称不能为空" },
-					{ required: true, trigger: "blur", message: "名称应1至250个字符", pattern: this.$NAS.REGEX_NAMEC },
+					{ required: true, trigger: "blur", message: "名称应1至250个字符", pattern: this.$SCM.REGEX_NAMEC_NAS },
 				],
 			},
+			terminal_list: [this.$SCM.OPTION_ONE],
 		};
 	},
 	mounted() {
+		this.$SCM.list_option(this.terminal_list, this.$API.scmurterminal.option, {}, false);
 	},
 	methods: {
 		def_data() {
@@ -54,7 +54,6 @@ export default {
 				terminal_id: this.$SCM.DEF_ID,
 				name: '',
 				path: '',
-
 			}
 		},
 		async open(row) {

@@ -110,6 +110,8 @@ export default {
 			var newMenuName = "未命名" + newMenuIndex++;
 			var newMenuData = {
 				pid: data ? data.id : "0",
+				lang: 'zh-cn',
+				client: 10,
 				name: newMenuName,
 				label: newMenuName
 			};

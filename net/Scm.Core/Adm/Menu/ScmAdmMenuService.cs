@@ -115,10 +115,14 @@ namespace Com.Scm.Adm.Menu
 
             var dao = new AdmMenuDao()
             {
-                namec = param.name,
                 pid = param.pid,
+                od = qty,
+                client = param.client,
+                lang = param.lang,
+                codec = "menu-code",
+                namec = param.name,
                 types = ScmMenuTypesEnum.Menu,
-                od = qty
+                uri = "/"
             };
 
             await _thisRepository.InsertAsync(dao);

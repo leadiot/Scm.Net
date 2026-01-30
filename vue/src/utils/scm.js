@@ -14,6 +14,8 @@ scm.REGEX_NAMEC = /^\S{4,64}$/;
 scm.REGEX_NAMEF = /^\S{4,128}$/;
 scm.REGEX_NUMBER = /^\d+$/;
 
+scm.REGEX_NAMEC_NAS = /^\S{1,250}$/;
+
 /**系统ID */
 scm.SYS_ID = "1000000000000000001";
 /**默认ID */

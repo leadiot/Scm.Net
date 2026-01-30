@@ -71,6 +71,10 @@ namespace Com.Scm.Sys.Table
             if (dao == null)
             {
                 dao = request.Adapt<SysTableHeaderDao>();
+                if (string.IsNullOrEmpty(dao.names))
+                {
+                    dao.names = dao.codes;
+                }
                 await _headerRepository.InsertAsync(dao);
             }
             //else

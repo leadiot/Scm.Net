@@ -27,7 +27,7 @@ export default {
 			rules: {
 				name: [
 					{ required: true, trigger: "blur", message: "名称不能为空" },
-					{ required: true, trigger: "blur", message: "名称应为1至250个字符", pattern: this.$NAS.REGEX_NAMEC },
+					{ required: true, trigger: "blur", message: "名称应为1至250个字符", pattern: this.$SCM.REGEX_NAMEC_NAS },
 				],
 			},
 		};

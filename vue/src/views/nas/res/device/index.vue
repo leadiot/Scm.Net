@@ -82,7 +82,7 @@ export default {
 			this.$refs.table.upData(this.param);
 		},
 		async status_item(e, row) {
-			this.$SCM.status_item(this, this.$API.nasressecret.status, row, row.row_status);
+			this.$SCM.status_item(this, this.$API.nasresdevice.status, row, row.row_status);
 		},
 		status_list(status) {
 			this.$SCM.status_list(this, this.$API.nasresdevice.status, this.selection, status);

@@ -4,6 +4,7 @@ using Com.Scm.Enums;
 using Com.Scm.Exceptions;
 using Com.Scm.Service;
 using Com.Scm.Terminal.Dvo;
+using Com.Scm.Ur;
 using Com.Scm.Utils;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -59,6 +60,17 @@ namespace Com.Scm.Terminal
             terminalDao.binded = ScmBoolEnum.False;
             await _SqlClient.UpdateAsync(terminalDao);
 
+            var userDao = await _SqlClient.Queryable<UserDao>()
+                .Where(a => a.id == terminalDao.user_id && a.row_status == ScmRowStatusEnum.Enabled)
+                .FirstAsync();
+            if (userDao != null)
+            {
+                token.user_id = userDao.id;
+                token.user_codes = userDao.codes;
+                token.user_names = userDao.names;
+                token.avatar = userDao.avatar;
+            }
+
             return token;
         }
 
@@ -109,6 +121,8 @@ namespace Com.Scm.Terminal
             terminalDao.expired = TimeUtils.GetUnixTime(DateTime.UtcNow.AddSeconds(expiresIn));
 
             token.terminal_id = terminalDao.id;
+            token.terminal_codes = terminalDao.codes;
+            token.terminal_names = terminalDao.names;
             token.access_token = terminalDao.access_token;
             token.refresh_token = terminalDao.refresh_token;
             token.expires_in = expiresIn;

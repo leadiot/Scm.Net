@@ -14,5 +14,9 @@
         public string mac { get; set; }
 
         public string os { get; set; }
+
+        public string dn { get; set; }
+
+        public string dm { get; set; }
     }
 }

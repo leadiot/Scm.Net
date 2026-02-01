@@ -80,6 +80,13 @@ namespace Com.Scm.Ur
         public long expired { get; set; }
 
         /// <summary>
+        /// MAC地址
+        /// </summary>
+        [StringLength(128)]
+        [SugarColumn(Length = 128, IsNullable = true)]
+        public string mac { get; set; }
+
+        /// <summary>
         /// 系统名称
         /// </summary>
         [StringLength(128)]
@@ -87,11 +94,18 @@ namespace Com.Scm.Ur
         public string os { get; set; }
 
         /// <summary>
-        /// MAC地址
+        /// 设备名称
         /// </summary>
         [StringLength(128)]
         [SugarColumn(Length = 128, IsNullable = true)]
-        public string mac { get; set; }
+        public string dn { get; set; }
+
+        /// <summary>
+        /// 设备型号
+        /// </summary>
+        [StringLength(128)]
+        [SugarColumn(Length = 128, IsNullable = true)]
+        public string dm { get; set; }
 
         public override void PrepareCreate(long userId)
         {

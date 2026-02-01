@@ -52,8 +52,10 @@ namespace Com.Scm.Terminal
             }
 
             GenToken(terminalDao, token);
-            terminalDao.os = request.os;
             terminalDao.mac = request.mac;
+            terminalDao.os = request.os;
+            terminalDao.dn = request.dn;
+            terminalDao.dm = request.dm;
             terminalDao.binded = ScmBoolEnum.False;
             await _SqlClient.UpdateAsync(terminalDao);
 

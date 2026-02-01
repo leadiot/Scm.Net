@@ -111,7 +111,7 @@ namespace Com.Scm.Terminal
             token.terminal_id = terminalDao.id;
             token.access_token = terminalDao.access_token;
             token.refresh_token = terminalDao.refresh_token;
-            token.expires = expiresIn;
+            token.expires_in = expiresIn;
         }
     }
 }

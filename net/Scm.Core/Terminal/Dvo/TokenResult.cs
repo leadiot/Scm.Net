@@ -8,6 +8,6 @@
 
         public string refresh_token { get; set; }
 
-        public long expires { get; set; }
+        public long expires_in { get; set; }
     }
 }

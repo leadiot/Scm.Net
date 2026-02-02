@@ -33,8 +33,8 @@ public class NoticeDao : ScmDataDao
     /// 通知内容
     /// </summary>
     [Required]
-    [StringLength(2048)]
-    [SugarColumn(Length = 2048)]
+    [StringLength(4096)]
+    [SugarColumn(Length = 4096)]
     public string content { get; set; }
 
     /// <summary>

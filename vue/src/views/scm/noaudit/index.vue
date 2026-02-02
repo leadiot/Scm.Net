@@ -14,7 +14,7 @@ export default {
 	name: 'scm_noaudit',
 	data() {
 		return {
-			app_code: '',
+			app_code: this.$CONFIG.APP_CODE,
 		};
 	},
 	mounted() { },

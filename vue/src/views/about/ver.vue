@@ -22,7 +22,7 @@ export default {
     name: 'about_version',
     data() {
         return {
-            app_code: 'scm.net',
+            app_code: this.$CONFIG.APP_CODE,
             ver_list: []
         }
     },

@@ -14,7 +14,7 @@ export default {
 	name: 'dev_building',
 	data() {
 		return {
-			app_code: '',
+			app_code: this.$CONFIG.APP_CODE,
 		};
 	},
 	mounted() { },

@@ -2,6 +2,7 @@
 using Com.Scm.Enums;
 using Com.Scm.Samples.Book.Enums;
 using Com.Scm.Utils;
+using SqlSugar;
 using System.ComponentModel.DataAnnotations;
 
 namespace Com.Scm.Samples.Book.Dao
@@ -9,7 +10,7 @@ namespace Com.Scm.Samples.Book.Dao
     /// <summary>
     /// 演示对象DAO
     /// </summary>
-    [SqlSugar.SugarTable("samples_book")]
+    [SugarTable("samples_book")]
     public class BookDao : ScmDataDao, ISystemDao, IDeleteDao, IApprovalDao
     {
         /// <summary>
@@ -20,52 +21,66 @@ namespace Com.Scm.Samples.Book.Dao
         /// 系统编码（全局编码，用于系统时API交换）
         /// 格式：DEMO00000001
         /// </summary>
+        [Required]
         [StringLength(16)]
+        [SugarColumn(Length = 16)]
         public string codes { get; set; }
         /// <summary>
         /// 书籍编码（书籍自定义编码，具有业务含义）
         /// </summary>
+        [Required]
         [StringLength(32)]
+        [SugarColumn(Length = 32)]
         public string codec { get; set; }
         /// <summary>
         /// 系统名称（简称，支持搜索）
         /// </summary>
+        [Required]
         [StringLength(32)]
+        [SugarColumn(Length = 32)]
         public string names { get; set; }
         /// <summary>
         /// 书籍名称（全称）
         /// </summary>
+        [Required]
         [StringLength(128)]
+        [SugarColumn(Length = 128)]
         public string namec { get; set; }
         /// <summary>
         /// 条码
         /// </summary>
         [StringLength(32)]
+        [SugarColumn(Length = 32, IsNullable = true)]
         public string barcode { get; set; }
         /// <summary>
         /// 图片
         /// </summary>
         [StringLength(32)]
+        [SugarColumn(Length = 32, IsNullable = true)]
         public string image { get; set; }
         /// <summary>
         /// 备注
         /// </summary>
         [StringLength(256)]
+        [SugarColumn(Length = 256, IsNullable = true)]
         public string remark { get; set; }
 
         /// <summary>
         /// 系统记录标识（不是必需）
         /// </summary>
+        [SugarColumn(ColumnDataType = "tinyint", IsNullable = false)]
         public ScmRowSystemEnum row_system { get; set; }
 
         /// <summary>
         /// 数据删除标识（不是必需）
         /// </summary>
+        [SugarColumn(ColumnDataType = "tinyint", IsNullable = false)]
         public ScmRowDeleteEnum row_delete { get; set; }
 
         /// <summary>
         /// 审批状态（不是必需）
         /// </summary>
+        [SugarColumn(ColumnDataType = "tinyint", IsNullable = false)]
         public ScmWfaStatusEnum wfa_status { get; set; }
 
         public override void PrepareCreate(long userId)

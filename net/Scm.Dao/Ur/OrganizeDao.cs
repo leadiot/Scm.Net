@@ -77,6 +77,7 @@ public class OrganizeDao : ScmDataDao, ISortableDao, IDeleteDao, IResDao
     /// <summary>
     /// 删除状态
     /// </summary>
+    [SugarColumn(ColumnDataType = "tinyint", IsNullable = false)]
     public ScmRowDeleteEnum row_delete { get; set; }
 
     /// <summary>

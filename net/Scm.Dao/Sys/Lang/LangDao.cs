@@ -29,6 +29,7 @@ namespace Com.Scm.Sys.Lang
         /// <summary>
         /// 数据状态
         /// </summary>
+        [SugarColumn(ColumnDataType = "tinyint", IsNullable = false)]
         public ScmRowStatusEnum row_status { get; set; }
     }
 }

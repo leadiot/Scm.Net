@@ -60,6 +60,7 @@ public class PositionDao : ScmDataDao, IDeleteDao
     /// <summary>
     /// 
     /// </summary>
+    [SugarColumn(ColumnDataType = "tinyint", IsNullable = false)]
     public ScmRowDeleteEnum row_delete { get; set; }
 
     /// <summary>

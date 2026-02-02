@@ -128,6 +128,7 @@ public class AdmMenuDao : ScmDataDao, ISortableDao, IDeleteDao
     /// <summary>
     /// 删除状态
     /// </summary>
+    [SugarColumn(ColumnDataType = "tinyint", IsNullable = false)]
     public ScmRowDeleteEnum row_delete { get; set; }
 
     public override void PrepareCreate(long userId)

@@ -89,5 +89,6 @@ public class RegionDao : ScmDataDao, ISortableDao
     /// <summary>
     /// 
     /// </summary>
+    [SugarColumn(ColumnDataType = "tinyint", IsNullable = false)]
     public ScmRowStatusEnum p_status { get; set; }
 }

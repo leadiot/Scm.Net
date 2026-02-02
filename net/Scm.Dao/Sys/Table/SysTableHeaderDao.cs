@@ -39,6 +39,7 @@ namespace Com.Scm.Sys.Table
         /// 删除标记
         /// </summary>
         [Required]
+        [SugarColumn(ColumnDataType = "tinyint", IsNullable = false)]
         public ScmRowDeleteEnum row_delete { get; set; }
 
         /// <summary>

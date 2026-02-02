@@ -21,13 +21,17 @@ namespace Com.Scm.Samples.PoHeader.Dao
         /// <summary>
         /// 系统代码
         /// </summary>
+        [Required]
         [StringLength(16)]
+        [SugarColumn(Length = 16)]
         public string codes { get; set; }
 
         /// <summary>
         /// 采购单号
         /// </summary>
+        [Required]
         [StringLength(32)]
+        [SugarColumn(Length = 32)]
         public string codec { get; set; }
 
         /// <summary>
@@ -54,11 +58,13 @@ namespace Com.Scm.Samples.PoHeader.Dao
         /// 备注
         /// </summary>
         [StringLength(128)]
+        [SugarColumn(Length = 128, IsNullable = true)]
         public string remark { get; set; }
 
         /// <summary>
         /// 审批状态
         /// </summary>
+        [SugarColumn(ColumnDataType = "tinyint", IsNullable = false)]
         public ScmWfaStatusEnum wfa_status { get; set; }
 
         public override void PrepareCreate(long userId)

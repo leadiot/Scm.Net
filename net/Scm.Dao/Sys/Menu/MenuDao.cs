@@ -129,5 +129,6 @@ public class MenuDao : ScmDataDao, ISortableDao, IDeleteDao
     /// <summary>
     /// 删除状态
     /// </summary>
+    [SugarColumn(ColumnDataType = "tinyint", IsNullable = false)]
     public ScmRowDeleteEnum row_delete { get; set; }
 }

@@ -39,6 +39,7 @@ namespace Com.Scm.Samples.PoDetail.Dao
         /// 备注
         /// </summary>
         [StringLength(128)]
+        [SugarColumn(Length = 128, IsNullable = true)]
         public string remark { get; set; }
     }
 }

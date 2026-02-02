@@ -208,13 +208,33 @@ namespace Com.Scm
             appDao.content = "<p>一款基于Vue3和.Net10.0技术框架、适用于中后台管理系统的快速开发框架。</p><img src=\"/img/loginbg.svg\" alt=\"logo\"/>";
             SaveDao(appDao);
 
+            appDao = new ScmDevAppDao();
+            appDao.id = 1000000000000002001;
+            appDao.types = 1;
+            appDao.od = 3;
+            appDao.code = "iam.net";
+            appDao.name = "联合登录";
+            appDao.content = "<p>简单、易用的多平台联合登录系统。</p><img src=\"/img/loginbg.svg\" alt=\"logo\"/>";
+            SaveDao(appDao);
+
+            appDao = new ScmDevAppDao();
+            appDao.id = 1000000000000002002;
+            appDao.types = 1;
+            appDao.od = 3;
+            appDao.code = "nas.net";
+            appDao.name = "私有云盘";
+            appDao.content = "<p>Nas.Net是一款针对个人、家庭以及小团队的私有云存储软件，可以直接运行于已有的多种设备上，让您的老旧设备再次焕发新的机会。</p><img src=\"/img/loginbg.svg\" alt=\"logo\"/>";
+            SaveDao(appDao);
+
             var langDao = new LangDao();
+            langDao.id = 1895368041135476736;
             langDao.code = "zh-cn";
             langDao.text = "简体中文";
             langDao.od = 1;
             SaveDao(langDao);
 
             langDao = new LangDao();
+            langDao.id = 1895370805823541248;
             langDao.code = "en-us";
             langDao.text = "English(US)";
             langDao.od = 1;

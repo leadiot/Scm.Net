@@ -1,5 +1,4 @@
-﻿using Com.Scm.Dao;
-using Com.Scm.Dev;
+﻿using Com.Scm.Dev;
 using Com.Scm.Enums;
 using Com.Scm.Sys;
 using Com.Scm.Sys.Lang;
@@ -7,23 +6,32 @@ using Com.Scm.Sys.Menu;
 using Com.Scm.Sys.Theme;
 using Com.Scm.Ur;
 using Com.Scm.Utils;
-using SqlSugar;
-using System.Data;
 using System.Reflection;
-using System.Text.RegularExpressions;
 
 namespace Com.Scm
 {
-    public class ScmDbHelper
+    public class ScmDbHelper : ScmModelHelper
     {
-        protected ISqlSugarClient _SqlClient;
-
-        public ScmDbHelper(ISqlSugarClient sqlClient)
+        public ScmDbHelper()
         {
-            _SqlClient = sqlClient;
         }
 
-        public virtual bool InitDb(string baseDir)
+        /// <summary>
+        /// 清空数据库
+        /// </summary>
+        /// <param name="baseDir"></param>
+        /// <returns></returns>
+        public override bool DropDb()
+        {
+            return DropTable(Assembly.GetExecutingAssembly());
+        }
+
+        /// <summary>
+        /// 重建数据库
+        /// </summary>
+        /// <param name="baseDir"></param>
+        /// <returns></returns>
+        public override bool InitDb()
         {
             var key = "scm";
 
@@ -35,17 +43,17 @@ namespace Com.Scm
                 verDao.create_time = TimeUtils.GetUnixTime();
             }
 
-            InitDdl();
+            InitTable(Assembly.GetExecutingAssembly());
 
             if (verDao.major == 0)
             {
                 InitDml();
             }
 
-            var ddlFile = Path.Combine(baseDir, "ddl.sql");
+            var ddlFile = Path.Combine(_BaseDir, "ddl.sql");
             ExecuteSql(ddlFile, verDao.major);
 
-            var dmlFile = Path.Combine(baseDir, "dml.sql");
+            var dmlFile = Path.Combine(_BaseDir, "dml.sql");
             ExecuteSql(dmlFile, verDao.major);
 
             SaveDbVer(verDao);
@@ -53,213 +61,9 @@ namespace Com.Scm
         }
 
         /// <summary>
-        /// 读取数据库版本
-        /// </summary>
-        /// <param name="key"></param>
-        /// <returns></returns>
-        protected ScmVerDao ReadDbVer(string key)
-        {
-            try
-            {
-                _SqlClient.CodeFirst.InitTables(typeof(ScmVerDao));
-
-                return _SqlClient.Queryable<ScmVerDao>().First(a => a.key == key);
-            }
-            catch (Exception ex)
-            {
-                return null;
-            }
-        }
-
-        /// <summary>
-        /// 保存数据库版本
-        /// </summary>
-        /// <param name="verDao"></param>
-        protected void SaveDbVer(ScmVerDao verDao)
-        {
-            verDao.update_time = TimeUtils.GetUnixTime();
-            verDao.major = ScmVerDao.VER_MAJOR;
-            verDao.minor = ScmVerDao.VER_MINOR;
-            verDao.patch = ScmVerDao.VER_PATCH;
-            verDao.build = ScmVerDao.VER_BUILD;
-
-            if (verDao.id == 0)
-            {
-                _SqlClient.Insertable(verDao).ExecuteCommand();
-            }
-            else
-            {
-                _SqlClient.Updateable(verDao).ExecuteCommand();
-            }
-        }
-
-        /// <summary>
-        /// 执行外部脚本
-        /// </summary>
-        /// <param name="file"></param>
-        /// <param name="major"></param>
-        protected void ExecuteSql(string file, int major)
-        {
-            if (!File.Exists(file))
-            {
-                return;
-            }
-
-            var lines = File.ReadAllLines(file);
-            var inComment = false;
-            var needRun = false;
-            foreach (var line in lines)
-            {
-                if (string.IsNullOrWhiteSpace(line))
-                {
-                    continue;
-                }
-
-                var sql = line.Trim();
-                if (sql.StartsWith("/*"))
-                {
-                    inComment = true;
-                }
-
-                if (inComment)
-                {
-                    if (!needRun)
-                    {
-                        var ver = GetSqlVer(sql);
-                        if (ver > major)
-                        {
-                            needRun = true;
-                        }
-                    }
-
-                    if (sql.EndsWith("*/"))
-                    {
-                        inComment = false;
-                    }
-
-                    continue;
-                }
-
-                if (!needRun)
-                {
-                    return;
-                }
-
-                _SqlClient.Ado.ExecuteCommand(line);
-            }
-        }
-
-        /// <summary>
-        /// 获取脚本版本
-        /// </summary>
-        /// <param name="text"></param>
-        /// <returns></returns>
-        private static int GetSqlVer(string text)
-        {
-            var match = Regex.Match(text, @"[Vv]er[:]\s*(\d+)");
-            if (!match.Success)
-            {
-                return 0;
-            }
-            if (match.Groups.Count < 2)
-            {
-                return 0;
-            }
-            var ver = match.Groups[1].Value;
-            if (TextUtils.IsInteger(ver))
-            {
-                return int.Parse(ver);
-            }
-
-            return 0;
-        }
-
-        /// <summary>
-        /// 删除表格
-        /// </summary>
-        public virtual void DropTable()
-        {
-            var assembly = Assembly.GetExecutingAssembly();
-            var scmDao = typeof(ScmDao);
-            var daoType = assembly.GetTypes().Where(u => u.IsClass && !u.IsAbstract && !u.IsGenericType && u.Name.EndsWith("Dao")).ToList();
-            var daoList = new List<Type>();
-            foreach (var item in daoType.Where(s => !s.IsInterface))
-            {
-                if (!CommonUtils.HasImplementedRawGeneric(item, scmDao))
-                {
-                    continue;
-                }
-
-                var tableAttr = item.GetCustomAttribute<SugarTable>();
-                if (tableAttr == null)
-                {
-                    continue;
-                }
-
-                if (_SqlClient.DbMaintenance.IsAnyTable(tableAttr.TableName))
-                {
-                    daoList.Add(item);
-                }
-            }
-
-            _SqlClient.DbMaintenance.DropTable(daoList.ToArray());
-        }
-
-        /// <summary>
-        /// 清空表格
-        /// </summary>
-        public virtual void TruncateTable()
-        {
-            var assembly = Assembly.GetExecutingAssembly();
-            var scmDao = typeof(ScmDao);
-            var daoType = assembly.GetTypes().Where(u => u.IsClass && !u.IsAbstract && !u.IsGenericType && u.Name.EndsWith("Dao")).ToList();
-            var daoList = new List<Type>();
-            foreach (var item in daoType.Where(s => !s.IsInterface))
-            {
-                if (!CommonUtils.HasImplementedRawGeneric(item, scmDao))
-                {
-                    continue;
-                }
-
-                var tableAttr = item.GetCustomAttribute<SugarTable>();
-                if (tableAttr == null)
-                {
-                    continue;
-                }
-
-                if (_SqlClient.DbMaintenance.IsAnyTable(tableAttr.TableName))
-                {
-                    daoList.Add(item);
-                }
-            }
-
-            _SqlClient.DbMaintenance.DropTable(daoList.ToArray());
-        }
-
-        /// <summary>
-        /// 数据库定义
-        /// </summary>
-        /// <param name="sqlClient"></param>
-        public virtual void InitDdl()
-        {
-            var assembly = Assembly.GetExecutingAssembly();
-            var scmDao = typeof(ScmDao);
-            var daoType = assembly.GetTypes().Where(u => u.IsClass && !u.IsAbstract && !u.IsGenericType && u.Name.EndsWith("Dao")).ToList();
-            var daoList = new List<Type>();
-            foreach (var item in daoType.Where(s => !s.IsInterface))
-            {
-                if (CommonUtils.HasImplementedRawGeneric(item, scmDao))
-                {
-                    daoList.Add(item);
-                }
-            }
-            _SqlClient.CodeFirst.InitTables(daoList.ToArray());
-        }
-
-        /// <summary>
         /// 数据库操作
         /// </summary>
-        public virtual void InitDml()
+        private void InitDml()
         {
             var appDao = new ScmDevAppDao();
             appDao.id = ScmEnv.DEFAULT_ID;
@@ -561,6 +365,46 @@ namespace Com.Scm
         }
 
         /// <summary>
+        /// 添加主题
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="name"></param>
+        /// <param name="theme"></param>
+        /// <returns></returns>
+        private ThemeDao CreateTheme(long id, string name, string theme)
+        {
+            var themeDao = new ThemeDao();
+            themeDao.names = name;
+            themeDao.theme = theme;
+            SaveDao(themeDao);
+            return themeDao;
+        }
+
+        /// <summary>
+        /// 添加UID
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="k"></param>
+        /// <param name="l"></param>
+        /// <param name="m"></param>
+        /// <param name="p"></param>
+        /// <returns></returns>
+        protected ScmDevUidDao CreateUid(long id, string k, int l, string m, string p)
+        {
+            var uidDao = new ScmDevUidDao();
+            uidDao.id = id;
+            uidDao.k = k;
+            uidDao.v = 1;
+            uidDao.c = 1;
+            uidDao.b = 1;
+            uidDao.l = l;
+            uidDao.m = m;
+            uidDao.p = p;
+            SaveDao(uidDao);
+            return uidDao;
+        }
+
+        /// <summary>
         /// 添加菜单
         /// </summary>
         /// <param name="id"></param>
@@ -605,88 +449,6 @@ namespace Com.Scm
             menuDao.row_delete = ScmRowDeleteEnum.No;
             SaveDao(menuDao);
             return menuDao;
-        }
-
-        /// <summary>
-        /// 添加UID
-        /// </summary>
-        /// <param name="id"></param>
-        /// <param name="k"></param>
-        /// <param name="l"></param>
-        /// <param name="m"></param>
-        /// <param name="p"></param>
-        /// <returns></returns>
-        protected ScmDevUidDao CreateUid(long id, string k, int l, string m, string p)
-        {
-            var uidDao = new ScmDevUidDao();
-            uidDao.id = id;
-            uidDao.k = k;
-            uidDao.v = 1;
-            uidDao.c = 1;
-            uidDao.b = 1;
-            uidDao.l = l;
-            uidDao.m = m;
-            uidDao.p = p;
-            SaveDao(uidDao);
-            return uidDao;
-        }
-
-        /// <summary>
-        /// 添加主题
-        /// </summary>
-        /// <param name="id"></param>
-        /// <param name="name"></param>
-        /// <param name="theme"></param>
-        /// <returns></returns>
-        private ThemeDao CreateTheme(long id, string name, string theme)
-        {
-            var themeDao = new ThemeDao();
-            themeDao.names = name;
-            themeDao.theme = theme;
-            SaveDao(themeDao);
-            return themeDao;
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="dao"></param>
-        protected void InsertDao<T>(T dao) where T : ScmDao, new()
-        {
-            dao.PrepareCreate(ScmEnv.DEFAULT_ID);
-            _SqlClient.Insertable(dao).ExecuteCommand();
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="dao"></param>
-        protected void UpdateDao<T>(T dao) where T : ScmDao, new()
-        {
-            dao.PrepareUpdate(ScmEnv.DEFAULT_ID);
-            _SqlClient.Updateable(dao).ExecuteCommand();
-        }
-
-        /// <summary>
-        /// 保存数据
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="dao"></param>
-        protected void SaveDao<T>(T dao) where T : ScmDao, new()
-        {
-            var tmpDao = _SqlClient.Queryable<T>().First(a => a.id == dao.id);
-            if (tmpDao != null)
-            {
-                tmpDao = dao.Adapt(tmpDao);
-                tmpDao.PrepareUpdate(ScmEnv.DEFAULT_ID);
-                _SqlClient.Updateable(tmpDao).ExecuteCommand();
-                return;
-            }
-
-            dao.PrepareCreate(ScmEnv.DEFAULT_ID);
-            _SqlClient.Insertable(dao).ExecuteCommand();
         }
     }
 }

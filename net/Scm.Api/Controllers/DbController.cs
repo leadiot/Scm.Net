@@ -2,6 +2,7 @@
 using Com.Scm.Controllers;
 using Com.Scm.Filters;
 using Com.Scm.Nas;
+using Com.Scm.Samples;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SqlSugar;
@@ -30,8 +31,20 @@ namespace Com.Scm.Api.Controllers
             var response = new ScmApiResponse();
             try
             {
-                var helper = new ScmDbHelper(_SqlClient);
-                helper.DropTable();
+                var baseDir = _EnvConfig.GetDataPath("sql");
+
+                IModelHelper helper = new ScmDbHelper();
+                helper.Init(_SqlClient, baseDir);
+                helper.DropDb();
+
+                helper = new SamplesDbHelper();
+                helper.Init(_SqlClient, baseDir);
+                helper.DropDb();
+
+                helper = new NasDbHelper();
+                helper.Init(_SqlClient, baseDir);
+                helper.DropDb();
+
                 response.SetSuccess();
             }
             catch (Exception ex)
@@ -50,10 +63,20 @@ namespace Com.Scm.Api.Controllers
             var response = new ScmApiResponse();
             try
             {
-                var helper = new ScmDbHelper(_SqlClient);
-                helper.InitDb(_EnvConfig.GetDataPath("sql"));
-                helper = new NasDbHelper(_SqlClient);
-                helper.InitDb(_EnvConfig.GetDataPath("sql"));
+                var baseDir = _EnvConfig.GetDataPath("sql");
+
+                IModelHelper helper = new ScmDbHelper();
+                helper.Init(_SqlClient, baseDir);
+                helper.InitDb();
+
+                helper = new SamplesDbHelper();
+                helper.Init(_SqlClient, baseDir);
+                helper.InitDb();
+
+                helper = new NasDbHelper();
+                helper.Init(_SqlClient, baseDir);
+                helper.InitDb();
+
                 response.SetSuccess();
             }
             catch (Exception ex)

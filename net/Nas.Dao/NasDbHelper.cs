@@ -5,13 +5,19 @@ using System.Reflection;
 
 namespace Com.Scm.Nas
 {
-    public class NasDbHelper : ScmDbHelper
+    public class NasDbHelper : ScmModelHelper
     {
-        public NasDbHelper(ISqlSugarClient sqlClient) : base(sqlClient)
+        public NasDbHelper()
         {
+            //ScmServerHelper.Register(new NasDbHelper());
         }
 
-        public override bool InitDb(string baseDir)
+        public override bool DropDb()
+        {
+            return DropTable(Assembly.GetExecutingAssembly());
+        }
+
+        public override bool InitDb()
         {
             var key = "scm.nas";
 
@@ -23,24 +29,24 @@ namespace Com.Scm.Nas
                 verDao.create_time = TimeUtils.GetUnixTime();
             }
 
-            InitDdl();
+            InitTable(Assembly.GetExecutingAssembly());
 
             if (verDao.major == 0)
             {
                 InitDml();
             }
 
-            var ddlFile = Path.Combine(baseDir, "ddl-nas.sql");
+            var ddlFile = Path.Combine(_BaseDir, "ddl-nas.sql");
             ExecuteSql(ddlFile, verDao.major);
 
-            var dmlFile = Path.Combine(baseDir, "dml-nas.sql");
+            var dmlFile = Path.Combine(_BaseDir, "dml-nas.sql");
             ExecuteSql(dmlFile, verDao.major);
 
             SaveDbVer(verDao);
             return true;
         }
 
-        public override void InitDdl()
+        private void InitDdl()
         {
             var assembly = Assembly.GetExecutingAssembly();
             var scmDao = typeof(ScmDao);
@@ -56,7 +62,7 @@ namespace Com.Scm.Nas
             _SqlClient.CodeFirst.InitTables(daoList.ToArray());
         }
 
-        public override void InitDml()
+        private void InitDml()
         {
 
         }

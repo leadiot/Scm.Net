@@ -3,7 +3,7 @@ using System.Reflection;
 
 namespace Com.Scm.Samples
 {
-    public class SamplesDbHelper : ScmModelHelper
+    public class SamplesDbHelper : ScmDbHelper
     {
         public SamplesDbHelper()
         {

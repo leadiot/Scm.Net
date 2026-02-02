@@ -175,6 +175,68 @@ namespace Com.Scm
         }
 
         /// <summary>
+        /// 删除表格
+        /// </summary>
+        public virtual void DropTable()
+        {
+            var assembly = Assembly.GetExecutingAssembly();
+            var scmDao = typeof(ScmDao);
+            var daoType = assembly.GetTypes().Where(u => u.IsClass && !u.IsAbstract && !u.IsGenericType && u.Name.EndsWith("Dao")).ToList();
+            var daoList = new List<Type>();
+            foreach (var item in daoType.Where(s => !s.IsInterface))
+            {
+                if (!CommonUtils.HasImplementedRawGeneric(item, scmDao))
+                {
+                    continue;
+                }
+
+                var tableAttr = item.GetCustomAttribute<SugarTable>();
+                if (tableAttr == null)
+                {
+                    continue;
+                }
+
+                if (_SqlClient.DbMaintenance.IsAnyTable(tableAttr.TableName))
+                {
+                    daoList.Add(item);
+                }
+            }
+
+            _SqlClient.DbMaintenance.DropTable(daoList.ToArray());
+        }
+
+        /// <summary>
+        /// 清空表格
+        /// </summary>
+        public virtual void TruncateTable()
+        {
+            var assembly = Assembly.GetExecutingAssembly();
+            var scmDao = typeof(ScmDao);
+            var daoType = assembly.GetTypes().Where(u => u.IsClass && !u.IsAbstract && !u.IsGenericType && u.Name.EndsWith("Dao")).ToList();
+            var daoList = new List<Type>();
+            foreach (var item in daoType.Where(s => !s.IsInterface))
+            {
+                if (!CommonUtils.HasImplementedRawGeneric(item, scmDao))
+                {
+                    continue;
+                }
+
+                var tableAttr = item.GetCustomAttribute<SugarTable>();
+                if (tableAttr == null)
+                {
+                    continue;
+                }
+
+                if (_SqlClient.DbMaintenance.IsAnyTable(tableAttr.TableName))
+                {
+                    daoList.Add(item);
+                }
+            }
+
+            _SqlClient.DbMaintenance.DropTable(daoList.ToArray());
+        }
+
+        /// <summary>
         /// 数据库定义
         /// </summary>
         /// <param name="sqlClient"></param>

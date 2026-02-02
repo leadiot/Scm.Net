@@ -24,19 +24,30 @@ namespace Com.Scm.Api.Controllers
             _SqlClient = sqlClient;
         }
 
-        [HttpGet("clear")]
-        public IActionResult GetClearAsync()
+        [HttpGet("drop")]
+        public ScmApiResponse GetDropAsync()
         {
-            return Ok();
+            var response = new ScmApiResponse();
+            try
+            {
+                var helper = new ScmDbHelper(_SqlClient);
+                helper.DropTable();
+                response.SetSuccess();
+            }
+            catch (Exception ex)
+            {
+                response.SetFailure(ex.Message);
+            }
+            return response;
         }
 
         /// <summary>
         /// 数据库初始化
         /// </summary>
         [HttpGet("init")]
-        public ScmResponse GetInitAsync()
+        public ScmApiResponse GetInitAsync()
         {
-            var response = new ScmResponse();
+            var response = new ScmApiResponse();
             try
             {
                 var helper = new ScmDbHelper(_SqlClient);

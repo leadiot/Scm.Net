@@ -353,6 +353,17 @@ namespace Com.Scm
             appDao.id = ScmEnv.DEFAULT_ID;
             appDao.types = 0;
             appDao.od = 0;
+            appDao.code = "";
+            appDao.name = "";
+            appDao.content = "";
+            SaveDao(appDao);
+            appDao.row_status = ScmRowStatusEnum.Normal;
+            _SqlClient.Updateable(appDao).ExecuteCommand();
+
+            appDao = new ScmDevAppDao();
+            appDao.id = 1000000000000001001;
+            appDao.types = 10;
+            appDao.od = 1;
             appDao.code = "scm.net";
             appDao.name = "Scm.Net";
             appDao.content = "<p>一款基于Vue3和.Net10.0技术框架、适用于中后台管理系统的快速开发框架。</p><img src=\"/img/loginbg.svg\" alt=\"logo\"/>";
@@ -360,20 +371,11 @@ namespace Com.Scm
 
             appDao = new ScmDevAppDao();
             appDao.id = 1000000000000002001;
-            appDao.types = 1;
-            appDao.od = 3;
+            appDao.types = 10;
+            appDao.od = 2;
             appDao.code = "iam.net";
             appDao.name = "联合登录";
             appDao.content = "<p>简单、易用的多平台联合登录系统。</p><img src=\"/img/loginbg.svg\" alt=\"logo\"/>";
-            SaveDao(appDao);
-
-            appDao = new ScmDevAppDao();
-            appDao.id = 1000000000000002002;
-            appDao.types = 1;
-            appDao.od = 3;
-            appDao.code = "nas.net";
-            appDao.name = "私有云盘";
-            appDao.content = "<p>Nas.Net是一款针对个人、家庭以及小团队的私有云存储软件，可以直接运行于已有的多种设备上，让您的老旧设备再次焕发新的机会。</p><img src=\"/img/loginbg.svg\" alt=\"logo\"/>";
             SaveDao(appDao);
 
             var langDao = new LangDao();
@@ -519,6 +521,7 @@ namespace Com.Scm
             var roleRootDao = new RoleDao();
             roleRootDao.id = ScmEnv.DEFAULT_ID;
             roleRootDao.codec = "admin";
+            roleRootDao.names = "系统管理员";
             roleRootDao.namec = "系统管理员";
             roleRootDao.row_system = ScmRowSystemEnum.Yes;
             roleRootDao.row_delete = ScmRowDeleteEnum.No;
@@ -529,6 +532,7 @@ namespace Com.Scm
             var roleAdminDao = new RoleDao();
             roleAdminDao.id = 1000000000000001030L;
             roleAdminDao.codec = "admin";
+            roleAdminDao.names = "系统管理员";
             roleAdminDao.namec = "系统管理员";
             roleAdminDao.row_system = ScmRowSystemEnum.Yes;
             roleAdminDao.row_delete = ScmRowDeleteEnum.No;

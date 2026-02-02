@@ -1,4 +1,5 @@
 ﻿using Com.Scm.Dao;
+using SqlSugar;
 using System.ComponentModel.DataAnnotations;
 
 namespace Com.Scm.Res.Icon
@@ -6,19 +7,23 @@ namespace Com.Scm.Res.Icon
     /// <summary>
     /// 图标分类
     /// </summary>
-    [SqlSugar.SugarTable("scm_res_icon_cat")]
+    [SugarTable("scm_res_icon_cat")]
     public class ScmResIconCatDao : ScmDataDao
     {
         /// <summary>
         /// 分类代码
         /// </summary>
+        [Required]
         [StringLength(16)]
+        [SugarColumn(Length = 16)]
         public string code { get; set; }
 
         /// <summary>
         /// 分类名称
         /// </summary>
+        [Required]
         [StringLength(32)]
+        [SugarColumn(Length = 32)]
         public string name { get; set; }
 
         /// <summary>

@@ -7,7 +7,7 @@ namespace Com.Scm.Cfg.DateTheme
     /// <summary>
     /// 每日主题
     /// </summary>
-    [SqlSugar.SugarTable("scm_cfg_date_theme")]
+    [SugarTable("scm_cfg_date_theme")]
     public class DateThemeDao : ScmDataDao
     {
         /// <summary>

@@ -28,6 +28,7 @@ namespace Com.Scm.Res.Icon
         /// <summary>
         /// 键
         /// </summary>
+        [Required]
         [StringLength(32)]
         [SugarColumn(Length = 32)]
         public string key { get; set; }
@@ -42,6 +43,7 @@ namespace Com.Scm.Res.Icon
         /// <summary>
         /// 名
         /// </summary>
+        [Required]
         [StringLength(64)]
         [SugarColumn(Length = 64)]
         public string name { get; set; }

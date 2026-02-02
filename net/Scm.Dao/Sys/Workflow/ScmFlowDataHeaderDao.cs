@@ -23,7 +23,9 @@ namespace Com.Scm.Sys
         /// <summary>
         /// 表格名称
         /// </summary>
+        [Required]
         [StringLength(32)]
+        [SugarColumn(Length = 32)]
         public string table { get; set; }
 
         /// <summary>
@@ -34,37 +36,45 @@ namespace Com.Scm.Sys
         /// <summary>
         /// 单据编码
         /// </summary>
+        [Required]
         [StringLength(32)]
+        [SugarColumn(Length = 32)]
         public string order_codes { get; set; }
 
         /// <summary>
         /// 单据图标
         /// </summary>
         [StringLength(32)]
+        [SugarColumn(Length = 32, IsNullable = true)]
         public string icon { get; set; }
 
         /// <summary>
         /// 审批标题
         /// </summary>
+        [Required]
         [StringLength(128)]
+        [SugarColumn(Length = 128)]
         public string title { get; set; }
 
         /// <summary>
         /// 单据地址
         /// </summary>
+        [Required]
         [StringLength(128)]
+        [SugarColumn(Length = 128)]
         public string url { get; set; }
 
         /// <summary>
         /// 审批说明
         /// </summary>
         [StringLength(256)]
+        [SugarColumn(Length = 256, IsNullable = true)]
         public string remark { get; set; }
 
         /// <summary>
         /// 已处理结点
         /// </summary>
-        [SqlSugar.SugarColumn(IsJson = true)]
+        [SugarColumn(Length = 512, IsNullable = true, IsJson = true)]
         public List<long> nodes { get; set; }
 
         public void AddNode(long nodeId)

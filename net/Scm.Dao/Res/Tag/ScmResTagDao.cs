@@ -20,6 +20,7 @@ namespace Com.Scm.Res.Tag
         /// </summary>
         [Required]
         [StringLength(32)]
+        [SugarColumn(Length = 32)]
         public string label { get; set; }
 
         /// <summary>

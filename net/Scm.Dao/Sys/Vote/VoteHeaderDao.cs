@@ -14,7 +14,8 @@ public class VoteHeaderDao : ScmDataDao
     /// 投票标题
     /// </summary>
     [Required]
-    [StringLength(90)]
+    [StringLength(128)]
+    [SugarColumn(Length = 128)]
     public string title { get; set; }
 
     /// <summary>
@@ -27,13 +28,13 @@ public class VoteHeaderDao : ScmDataDao
     /// 开始时间
     /// </summary>
     [Required]
-    public DateTime start_time { get; set; }
+    public long start_time { get; set; }
 
     /// <summary>
     /// 结束时间
     /// </summary>
     [Required]
-    public DateTime end_time { get; set; }
+    public long end_time { get; set; }
 
     /// <summary>
     /// 防刷规则（IP限制）
@@ -44,13 +45,17 @@ public class VoteHeaderDao : ScmDataDao
     /// <summary>
     /// 文件地址
     /// </summary>
+    [StringLength(128)]
+    [SugarColumn(Length = 128, IsNullable = true)]
     public string file_url { get; set; }
 
     /// <summary>
     /// 规则
     /// </summary>
+    [StringLength(1024)]
+    [SugarColumn(Length = 1024, IsNullable = true)]
     public string summary { get; set; }
 
-    [SqlSugar.SugarColumn(IsIgnore = true)]
+    [SugarColumn(IsIgnore = true)]
     public List<VoteDetailDao> details { get; set; }
 }

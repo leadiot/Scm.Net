@@ -7,10 +7,12 @@ namespace Com.Scm
     [SugarTable("scm_test")]
     public class ScmTestDao : ScmDao
     {
+        [Required]
         [StringLength(32)]
         [SugarColumn(Length = 32)]
         public string key { get; set; }
 
+        [Required]
         [StringLength(128)]
         [SugarColumn(Length = 128)]
         public string value { get; set; }

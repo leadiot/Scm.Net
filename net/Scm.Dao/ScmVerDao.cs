@@ -15,6 +15,7 @@ namespace Com.Scm
         /// <summary>
         /// 关键字
         /// </summary>
+        [Required]
         [StringLength(16)]
         [SugarColumn(Length = 16)]
         public string key { get; set; }

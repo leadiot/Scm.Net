@@ -14,7 +14,7 @@ public class ScmAdvInfoDao : ScmDao
     /// 栏目Id
     /// </summary>
     [Required]
-    public long ColumnId { get; set; }
+    public long column_id { get; set; }
 
     /// <summary>
     /// 广告名称
@@ -22,7 +22,7 @@ public class ScmAdvInfoDao : ScmDao
     [Required]
     [StringLength(128)]
     [SugarColumn(Length = 128)]
-    public string Title { get; set; }
+    public string title { get; set; }
 
     /// <summary>
     /// 广告位类型
@@ -31,22 +31,18 @@ public class ScmAdvInfoDao : ScmDao
     public int Types { get; set; } = 1;
 
     /// <summary>
-    /// 状态
-    /// </summary>
-    [Required]
-    public bool Status { get; set; } = true;
-
-    /// <summary>
     /// 广告位图片
     /// </summary>
-    [SugarColumn(Length = 128)]
-    public string ImgUrl { get; set; }
+    [StringLength(128)]
+    [SugarColumn(Length = 128, IsNullable = true)]
+    public string image_url { get; set; }
 
     /// <summary>
     /// 连接地址
     /// </summary>
-    [SugarColumn(Length = 128)]
-    public string LinkUrl { get; set; }
+    [StringLength(128)]
+    [SugarColumn(Length = 128, IsNullable = true)]
+    public string link_url { get; set; }
 
     /// <summary>
     /// 跳转方式
@@ -54,45 +50,47 @@ public class ScmAdvInfoDao : ScmDao
     [Required]
     [StringLength(32)]
     [SugarColumn(Length = 32)]
-    public string Target { get; set; }
+    public string target { get; set; }
 
     /// <summary>
     /// 描述
     /// </summary>
-    [SugarColumn(Length = 512)]
-    public string Summary { get; set; }
+    [StringLength(512)]
+    [SugarColumn(Length = 512, IsNullable = true)]
+    public string remark { get; set; }
 
     /// <summary>
     /// 广告位代码
     /// </summary>
-    [SugarColumn(Length = 512)]
-    public string Codes { get; set; }
+    [StringLength(512)]
+    [SugarColumn(Length = 512, IsNullable = true)]
+    public string codes { get; set; }
 
     /// <summary>
     /// 是否开启时间限制
     /// </summary>
     [Required]
-    public bool IsTimeLimit { get; set; } = false;
+    public bool time_limit { get; set; } = false;
 
     /// <summary>
     /// 开始时间
     /// </summary>
-    public long BeginTime { get; set; }
+    public long begin_time { get; set; }
 
     /// <summary>
     /// 结束时间
     /// </summary>
-    public long EndTime { get; set; }
+    public long end__time { get; set; }
 
     /// <summary>
     /// 排序
     /// </summary>
     [Required]
-    public int Sort { get; set; } = 1;
+    public int od { get; set; } = 1;
 
     /// <summary>
     /// 广告点击率
     /// </summary>
     [Required]
-    public int Hits { get; set; } = 0;
+    public int hits { get; set; } = 0;
 }

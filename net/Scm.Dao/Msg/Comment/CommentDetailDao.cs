@@ -19,7 +19,9 @@ namespace Com.Scm.Msg.Comment
         /// <summary>
         /// 评论
         /// </summary>
+        [Required]
         [StringLength(1024)]
+        [SugarColumn(Length = = 1024)]
         public string comment { get; set; }
 
         /// <summary>

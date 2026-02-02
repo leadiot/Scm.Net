@@ -15,19 +15,24 @@ namespace Com.Scm.Sys.Table
         /// <summary>
         /// 系统代码
         /// </summary>
+        [Required]
         [StringLength(32)]
+        [SugarColumn(Length = 32)]
         public string codes { get; set; }
 
         /// <summary>
         /// 视图编码
         /// </summary>
+        [Required]
         [StringLength(32)]
+        [SugarColumn(Length = 32)]
         public string codec { get; set; }
 
         /// <summary>
         /// 视图名称
         /// </summary>
         [StringLength(32)]
+        [SugarColumn(Length = 32, IsNullable = true)]
         public string names { get; set; }
 
         /// <summary>

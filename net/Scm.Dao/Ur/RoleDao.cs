@@ -14,6 +14,7 @@ public class RoleDao : ScmDataDao, ISortableDao, ISystemDao, IDeleteDao
     /// <summary>
     /// 角色编号
     /// </summary>
+    [Required]
     [StringLength(32)]
     [SugarColumn(Length = 32)]
     public string codec { get; set; }
@@ -21,6 +22,7 @@ public class RoleDao : ScmDataDao, ISortableDao, ISystemDao, IDeleteDao
     /// <summary>
     /// 
     /// </summary>
+    [Required]
     [StringLength(32)]
     [SugarColumn(Length = 32)]
     public string names { get; set; }

@@ -20,25 +20,31 @@ public class MessageDao : ScmUserDataDao, IDeleteDao
     /// <summary>
     /// 留言标题
     /// </summary>
+    [Required]
     [StringLength(64)]
+    [SugarColumn(Length = 64)]
     public string title { get; set; }
 
     /// <summary>
     /// 邮箱信息
     /// </summary>
+    [Required]
     [StringLength(128)]
+    [SugarColumn(Length = 128)]
     public string email { get; set; }
 
     /// <summary>
     /// 手机号码
     /// </summary>
     [StringLength(32)]
+    [SugarColumn(Length = 32, IsNullable = true)]
     public string phone { get; set; }
 
     /// <summary>
     /// 留言内容
     /// </summary>
     [StringLength(1024)]
+    [SugarColumn(Length = 1024, IsNullable = true)]
     public string remark { get; set; }
 
     /// <summary>

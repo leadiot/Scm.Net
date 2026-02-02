@@ -32,7 +32,7 @@ public class ScmSysAdvColumnService : IApiService
     public async Task<ScmSearchPageResponse<SysAdvColumnDto>> GetPagesAsync(ScmSearchPageRequest param)
     {
         return await _thisRepository.AsQueryable()
-            .WhereIF(!string.IsNullOrEmpty(param.key), m => m.Name.Contains(param.key))
+            .WhereIF(!string.IsNullOrEmpty(param.key), m => m.namec.Contains(param.key))
             .Select<SysAdvColumnDto>()
             .ToPageAsync(param.page, param.limit);
     }
@@ -74,7 +74,7 @@ public class ScmSysAdvColumnService : IApiService
         {
             model.ParentId = long.Parse(model.ParentIdList.Last());
             var paramModel = await _thisRepository.GetByIdAsync(model.ParentId);
-            model.Layer = paramModel.Layer + 1;
+            model.Layer = paramModel.layer + 1;
             model.ParentIdList.Add(model.id.ToString());
         }
         else
@@ -82,8 +82,8 @@ public class ScmSysAdvColumnService : IApiService
             model.ParentIdList = new List<string> { model.id.ToString() };
         }
 
-        var upModel = await _thisRepository.GetFirstAsync(m => true, m => m.Sort);
-        model.Sort = upModel.Sort + 1;
+        var upModel = await _thisRepository.GetFirstAsync(m => true, m => m.od);
+        model.Sort = upModel.od + 1;
         return await _thisRepository.InsertAsync(model.Adapt<ScmAdvColumnDao>());
     }
 

@@ -1,5 +1,6 @@
 ﻿using Com.Scm.Dao;
 using SqlSugar;
+using System.ComponentModel.DataAnnotations;
 
 namespace Com.Scm.Msg.Chat
 {
@@ -17,6 +18,8 @@ namespace Com.Scm.Msg.Chat
         /// <summary>
         /// 
         /// </summary>
+        [StringLength(64)]
+        [SugarColumn(Length = 64, IsNullable = true)]
         public string namec { get; set; }
     }
 }

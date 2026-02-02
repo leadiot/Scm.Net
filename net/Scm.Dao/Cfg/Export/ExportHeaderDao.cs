@@ -13,18 +13,21 @@ namespace Com.Scm.Cfg.Export
         /// <summary>
         /// 系统编码
         /// </summary>
+        [Required]
         [StringLength(16)]
         [SugarColumn(Length = 16)]
         public string codes { get; set; }
         /// <summary>
         /// 用户编码
         /// </summary>
+        [Required]
         [StringLength(128)]
         [SugarColumn(Length = 128)]
         public string codec { get; set; }
         /// <summary>
         /// 说明
         /// </summary>
+        [Required]
         [StringLength(64)]
         [SugarColumn(Length = 64)]
         public string names { get; set; }
@@ -32,13 +35,13 @@ namespace Com.Scm.Cfg.Export
         /// 文件名称
         /// </summary>
         [StringLength(32)]
-        [SugarColumn(Length = 32)]
+        [SugarColumn(Length = 32, IsNullable = true)]
         public string file { get; set; }
 
         /// <summary>
         /// 
         /// </summary>
-        [SqlSugar.SugarColumn(IsIgnore = true)]
+        [SugarColumn(IsIgnore = true)]
         public List<ExportDetailDao> details { get; set; }
 
         /// <summary>

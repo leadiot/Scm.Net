@@ -1,6 +1,7 @@
 ﻿using Com.Scm.Dao;
 using Com.Scm.Enums;
 using SqlSugar;
+using System.ComponentModel.DataAnnotations;
 
 namespace Com.Scm.Log
 {
@@ -29,6 +30,8 @@ namespace Com.Scm.Log
         /// <summary>
         /// 登录地址
         /// </summary>
+        [StringLength(128)]
+        [SugarColumn(Length = 128, IsNullable = true)]
         public string ip { get; set; }
         /// <summary>
         /// 登录结果
@@ -41,6 +44,8 @@ namespace Com.Scm.Log
         /// <summary>
         /// 备注信息
         /// </summary>
+        [StringLength(256)]
+        [SugarColumn(Length = 256, IsNullable = true)]
         public string remark { get; set; }
     }
 }

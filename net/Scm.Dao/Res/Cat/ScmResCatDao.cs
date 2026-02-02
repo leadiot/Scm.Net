@@ -37,19 +37,24 @@ namespace Com.Scm.Res.Cat
         /// <summary>
         /// 编码
         /// </summary>
+        [Required]
         [StringLength(32)]
+        [SugarColumn(Length = 32)]
         public string codec { get; set; }
 
         /// <summary>
         /// 名称
         /// </summary>
+        [Required]
         [StringLength(32)]
+        [SugarColumn(Length = 32)]
         public string namec { get; set; }
 
         /// <summary>
         /// 图标
         /// </summary>
         [StringLength(256)]
+        [SugarColumn(Length = 256, IsNullable = true)]
         public string image { get; set; }
 
         /// <summary>
@@ -78,6 +83,8 @@ namespace Com.Scm.Res.Cat
         /// <summary>
         /// 跳转链接
         /// </summary>
+        [StringLength(128)]
+        [SugarColumn(Length = 128, IsNullable = true)]
         public string uri { get; set; }
     }
 }

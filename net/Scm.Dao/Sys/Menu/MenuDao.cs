@@ -51,7 +51,7 @@ public class MenuDao : ScmDataDao, ISortableDao, IDeleteDao
     /// 菜单图标
     /// </summary>
     [StringLength(64)]
-    [SugarColumn(Length = 64)]
+    [SugarColumn(Length = 64, IsNullable = true)]
     public string icon { get; set; }
 
     /// <summary>
@@ -62,6 +62,7 @@ public class MenuDao : ScmDataDao, ISortableDao, IDeleteDao
     /// <summary>
     /// 路由地址
     /// </summary>
+    [Required]
     [StringLength(128)]
     [SugarColumn(Length = 128)]
     public string uri { get; set; }

@@ -35,6 +35,7 @@ namespace Com.Scm.Ur
         /// <summary>
         /// 终端名称
         /// </summary>
+        [Required]
         [StringLength(32)]
         [SugarColumn(Length = 32)]
         public string names { get; set; }
@@ -42,6 +43,7 @@ namespace Com.Scm.Ur
         /// <summary>
         /// 
         /// </summary>
+        [Required]
         [StringLength(64)]
         [SugarColumn(Length = 64)]
         public string namec { get; set; }
@@ -50,7 +52,7 @@ namespace Com.Scm.Ur
         /// 终端口令
         /// </summary>
         [StringLength(16)]
-        [SugarColumn(Length = 16)]
+        [SugarColumn(Length = 16, IsNullable = true)]
         public string pass { get; set; }
 
         /// <summary>
@@ -61,7 +63,6 @@ namespace Com.Scm.Ur
         /// <summary>
         /// 终端授权
         /// </summary>
-        [Required]
         [StringLength(32)]
         [SugarColumn(Length = 32, IsNullable = true)]
         public string access_token { get; set; }
@@ -69,7 +70,6 @@ namespace Com.Scm.Ur
         /// <summary>
         /// 刷新授权
         /// </summary>
-        [Required]
         [StringLength(32)]
         [SugarColumn(Length = 32, IsNullable = true)]
         public string refresh_token { get; set; }

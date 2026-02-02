@@ -24,12 +24,14 @@ namespace Com.Scm.Sys.Table
         /// 显示标题
         /// </summary>
         [StringLength(32)]
+        [SugarColumn(Length = 32, IsNullable = true)]
         public string label { get; set; }
 
         /// <summary>
         /// 数据字段
         /// </summary>
         [StringLength(32)]
+        [SugarColumn(Length = 32, IsNullable = true)]
         public string prop { get; set; }
 
         /// <summary>
@@ -46,6 +48,7 @@ namespace Com.Scm.Sys.Table
         /// 对齐
         /// </summary>
         [StringLength(16)]
+        [SugarColumn(Length = 16, IsNullable = true)]
         public string align { get; set; }
 
         /// <summary>

@@ -7,7 +7,7 @@ namespace Com.Scm.Cfg.Export
     /// <summary>
     /// 导出配置明细
     /// </summary>
-    [SqlSugar.SugarTable("scm_cfg_export_detail")]
+    [SugarTable("scm_cfg_export_detail")]
     public class ExportDetailDao : ScmDataDao
     {
         /// <summary>
@@ -22,13 +22,13 @@ namespace Com.Scm.Cfg.Export
         /// 列名称
         /// </summary>
         [StringLength(256)]
-        [SugarColumn(Length = 256)]
+        [SugarColumn(Length = 256, IsNullable = true)]
         public string col { get; set; }
         /// <summary>
         /// 展示名称
         /// </summary>
         [StringLength(64)]
-        [SugarColumn(Length = 64)]
+        [SugarColumn(Length = 64, IsNullable = true)]
         public string namec { get; set; }
         /// <summary>
         /// 默认值

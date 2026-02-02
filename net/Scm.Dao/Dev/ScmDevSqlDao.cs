@@ -18,13 +18,16 @@ namespace Com.Scm.Dev
         /// <summary>
         /// 名称
         /// </summary>
+        [Required]
         [StringLength(128)]
+        [SugarColumn(Length = 128, IsNullable = true)]
         public string namec { get; set; }
 
         /// <summary>
         /// 内容
         /// </summary>
         [StringLength(1024)]
+        [SugarColumn(Length = 1024, IsNullable = true)]
         public string sql { get; set; }
 
         /// <summary>

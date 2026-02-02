@@ -27,5 +27,6 @@ public class RoleConflictDao : ScmDataDao
     /// </summary>
     [Required]
     [StringLength(256)]
+    [SugarColumn(Length = 256)]
     public string remark { get; set; }
 }

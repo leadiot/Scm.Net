@@ -21,12 +21,14 @@ public class VoteDetailDao : ScmDataDao
     /// </summary>
     [Required]
     [StringLength(128)]
+    [SugarColumn(Length = 128)]
     public string title { get; set; }
 
     /// <summary>
     /// 备注
     /// </summary>
     [StringLength(256)]
+    [SugarColumn(Length = 256, IsNullable = true)]
     public string remark { get; set; }
 
     /// <summary>

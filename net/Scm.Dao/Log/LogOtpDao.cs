@@ -15,7 +15,9 @@ namespace Com.Scm.Log
         /// <summary>
         /// 身份标识
         /// </summary>
+        [Required]
         [StringLength(32)]
+        [SugarColumn(Length = 32)]
         public string key { get; set; }
 
         /// <summary>
@@ -27,6 +29,8 @@ namespace Com.Scm.Log
         /// <summary>
         /// 模板代码（冗余）
         /// </summary>
+        [StringLength(16)]
+        [SugarColumn(Length = 16, IsNullable = true)]
         public string sms_codec { get; set; }
 
         /// <summary>
@@ -39,24 +43,28 @@ namespace Com.Scm.Log
         /// 终端号码
         /// </summary>
         [StringLength(128)]
+        [SugarColumn(Length = 128, IsNullable = true)]
         public string code { get; set; }
 
         /// <summary>
         /// 请求序列
         /// </summary>
         [StringLength(32)]
+        [SugarColumn(Length = 32, IsNullable = true)]
         public string seq { get; set; }
 
         /// <summary>
         /// 校验码
         /// </summary>
         [StringLength(8)]
+        [SugarColumn(Length = 8, IsNullable = true)]
         public string pass { get; set; }
 
         /// <summary>
         /// 消息内容
         /// </summary>
         [StringLength(1024)]
+        [SugarColumn(Length = 1024, IsNullable = true)]
         public string content { get; set; }
 
         /// <summary>

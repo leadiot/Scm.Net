@@ -30,6 +30,7 @@ namespace Com.Scm.Msg.Chat
         /// 消息内容
         /// </summary>
         [StringLength(1024)]
+        [SugarColumn(Length = 1024, IsNullable = true)]
         public string content { get; set; }
     }
 }

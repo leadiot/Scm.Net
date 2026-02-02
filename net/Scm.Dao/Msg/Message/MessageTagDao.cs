@@ -1,5 +1,6 @@
 ﻿using Com.Scm.Dao;
 using SqlSugar;
+using System.ComponentModel.DataAnnotations;
 
 namespace Com.Scm.Msg.Message
 {
@@ -21,6 +22,8 @@ namespace Com.Scm.Msg.Message
         /// <summary>
         /// 冗余
         /// </summary>
+        [StringLength(32)]
+        [SugarColumn(Length = 32, IsNullable = true)]
         public string label { get; set; }
     }
 }

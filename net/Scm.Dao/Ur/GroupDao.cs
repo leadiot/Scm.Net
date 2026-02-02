@@ -8,12 +8,13 @@ namespace Com.Scm.Ur
     /// <summary>
     /// 群组表
     /// </summary>
-    [SqlSugar.SugarTable("scm_ur_group")]
+    [SugarTable("scm_ur_group")]
     public class GroupDao : ScmDataDao, IResDao
     {
         /// <summary>
         /// 
         /// </summary>
+        [Required]
         [StringLength(16)]
         [SugarColumn(Length = 16)]
         public string codes { get; set; }
@@ -21,6 +22,7 @@ namespace Com.Scm.Ur
         /// <summary>
         /// 
         /// </summary>
+        [Required]
         [StringLength(32)]
         [SugarColumn(Length = 32)]
         public string codec { get; set; }
@@ -28,6 +30,7 @@ namespace Com.Scm.Ur
         /// <summary>
         /// 
         /// </summary>
+        [Required]
         [StringLength(16)]
         [SugarColumn(Length = 16)]
         public string names { get; set; }
@@ -35,6 +38,7 @@ namespace Com.Scm.Ur
         /// <summary>
         /// 
         /// </summary>
+        [Required]
         [StringLength(32)]
         [SugarColumn(Length = 32)]
         public string namec { get; set; }

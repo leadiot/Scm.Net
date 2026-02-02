@@ -15,7 +15,8 @@ public class CalendarDao : ScmDataDao
     /// 日程标题
     /// </summary>
     [Required]
-    [StringLength(255)]
+    [StringLength(256)]
+    [SugarColumn(Length = 256)]
     public string title { get; set; }
 
     /// <summary>

@@ -1,12 +1,14 @@
 ﻿using Com.Scm.Dao;
 using Com.Scm.Enums;
+using SqlSugar;
+using System.ComponentModel.DataAnnotations;
 
 namespace Com.Scm.Sys.Config
 {
     /// <summary>
     /// 
     /// </summary>
-    [SqlSugar.SugarTable("scm_sys_config_cat")]
+    [SugarTable("scm_sys_config_cat")]
     public class ConfigCatDao : ScmDataDao, ISystemDao
     {
         /// <summary>
@@ -16,10 +18,16 @@ namespace Com.Scm.Sys.Config
         /// <summary>
         /// 
         /// </summary>
+        [Required]
+        [StringLength(32)]
+        [SugarColumn(Length = 32)]
         public string codec { get; set; }
         /// <summary>
         /// 
         /// </summary>
+        [Required]
+        [StringLength(32)]
+        [SugarColumn(Length = 32)]
         public string namec { get; set; }
         /// <summary>
         /// 

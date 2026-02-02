@@ -15,6 +15,7 @@ public class PositionDao : ScmDataDao, IDeleteDao
     /// <summary>
     /// 
     /// </summary>
+    [Required]
     [StringLength(16)]
     [SugarColumn(Length = 16)]
     public string codes { get; set; }
@@ -22,6 +23,7 @@ public class PositionDao : ScmDataDao, IDeleteDao
     /// <summary>
     /// 岗位编码
     /// </summary>
+    [Required]
     [StringLength(32)]
     [SugarColumn(Length = 32)]
     public string codec { get; set; }
@@ -29,6 +31,7 @@ public class PositionDao : ScmDataDao, IDeleteDao
     /// <summary>
     /// 
     /// </summary>
+    [Required]
     [StringLength(32)]
     [SugarColumn(Length = 32)]
     public string names { get; set; }

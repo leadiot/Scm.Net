@@ -49,6 +49,7 @@ public class AdmMenuDao : ScmDataDao, ISortableDao, IDeleteDao
     /// <summary>
     /// 菜单图标
     /// </summary>
+    [StringLength(64)]
     [SugarColumn(Length = 64, IsNullable = true)]
     public string icon { get; set; }
 
@@ -60,7 +61,9 @@ public class AdmMenuDao : ScmDataDao, ISortableDao, IDeleteDao
     /// <summary>
     /// 路由地址
     /// </summary>
-    [SugarColumn(Length = 128, IsNullable = true)]
+    [Required]
+    [StringLength(128)]
+    [SugarColumn(Length = 128)]
     public string uri { get; set; }
 
     /// <summary>

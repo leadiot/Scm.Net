@@ -20,18 +20,22 @@ namespace Com.Scm.Sys.Feedback
         /// 网址
         /// </summary>
         [StringLength(1024)]
+        [SugarColumn(Length = 1024, IsNullable = true)]
         public string url { get; set; }
 
         /// <summary>
         /// 标题
         /// </summary>
+        [Required]
         [StringLength(128)]
+        [SugarColumn(Length = 128)]
         public string title { get; set; }
 
         /// <summary>
         /// 内容
         /// </summary>
         [StringLength(1024)]
+        [SugarColumn(Length = 1024, IsNullable = true)]
         public string remark { get; set; }
 
         /// <summary>

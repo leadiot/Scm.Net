@@ -24,7 +24,9 @@ namespace Com.Scm.Msg.Chat
         /// <summary>
         /// 好友名称
         /// </summary>
+        [Required]
         [StringLength(32)]
+        [SugarColumn(Length = 32)]
         public string namec { get; set; }
     }
 }

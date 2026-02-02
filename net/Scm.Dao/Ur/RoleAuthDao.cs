@@ -31,7 +31,7 @@ public class RoleAuthDao : ScmDataDao
     /// <summary>
     /// 接口权限
     /// </summary>
-    [SugarColumn(IsJson = true)]
+    [SugarColumn(Length = 2048, IsNullable = true, IsJson = true)]
     public List<SysMenuApiUrl> api { get; set; } = new();
 
     /// <summary>

@@ -19,7 +19,9 @@ namespace Com.Scm.Sys.Notes
         /// <summary>
         /// 键
         /// </summary>
+        [Required]
         [StringLength(32)]
+        [SugarColumn(Length = 32)]
         public string key { get; set; }
 
         /// <summary>
@@ -27,6 +29,7 @@ namespace Com.Scm.Sys.Notes
         /// </summary>
         [Required]
         [StringLength(4)]
+        [SugarColumn(Length = 4)]
         public string salt { get; set; }
 
         /// <summary>
@@ -43,13 +46,16 @@ namespace Com.Scm.Sys.Notes
         /// <summary>
         /// 标题
         /// </summary>
+        [Required]
         [StringLength(128)]
+        [SugarColumn(Length = 128)]
         public string title { get; set; }
 
         /// <summary>
         /// 子标题
         /// </summary>
         [StringLength(256)]
+        [SugarColumn(Length = 256, IsNullable = true)]
         public string sub_title { get; set; }
 
         /// <summary>
@@ -75,6 +81,7 @@ namespace Com.Scm.Sys.Notes
         /// </summary>
         [Required]
         [StringLength(1024)]
+        [SugarColumn(Length = 1024)]
         public string summary { get; set; }
 
         /// <summary>
@@ -82,6 +89,7 @@ namespace Com.Scm.Sys.Notes
         /// </summary>
         [Required]
         [StringLength(2048)]
+        [SugarColumn(Length = 2048)]
         public string content { get; set; }
 
         /// <summary>

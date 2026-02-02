@@ -18,7 +18,9 @@ namespace Com.Scm.Sys.Feedback
         /// <summary>
         /// 回复内容
         /// </summary>
+        [Required]
         [StringLength(1024)]
+        [SugarColumn(Length = 1024)]
         public string content { get; set; }
 
         /// <summary>

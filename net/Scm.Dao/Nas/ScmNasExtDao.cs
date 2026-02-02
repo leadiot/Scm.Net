@@ -19,18 +19,24 @@ namespace Com.Scm.Nas
         /// <summary>
         /// 后缀代码
         /// </summary>
+        [Required]
         [StringLength(32)]
+        [SugarColumn(Length = 32)]
         public string codec { get; set; }
 
         /// <summary>
         /// 后缀名称
         /// </summary>
+        [Required]
         [StringLength(64)]
+        [SugarColumn(Length = 64)]
         public string namec { get; set; }
 
         /// <summary>
         /// 文件签名
         /// </summary>
+        [StringLength(256)]
+        [SugarColumn(Length = 256)]
         public string sign { get; set; }
 
         /// <summary>
@@ -47,6 +53,7 @@ namespace Com.Scm.Nas
         /// 备注
         /// </summary>
         [StringLength(256)]
+        [SugarColumn(Length = 256, IsNullable = true)]
         public string remark { get; set; }
 
         public override void PrepareCreate(long userId)

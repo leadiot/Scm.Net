@@ -14,10 +14,16 @@ public class RegionDao : ScmDataDao, ISortableDao
     /// <summary>
     /// 城市编号
     /// </summary>
+    [Required]
+    [StringLength(16)]
+    [SugarColumn(Length = 16)]
     public string codes { get; set; }
     /// <summary>
     /// 
     /// </summary>
+    [Required]
+    [StringLength(32)]
+    [SugarColumn(Length = 32)]
     public string codec { get; set; }
 
     /// <summary>
@@ -25,16 +31,22 @@ public class RegionDao : ScmDataDao, ISortableDao
     /// </summary>
     [Required]
     [StringLength(64)]
+    [SugarColumn(Length = 64)]
     public string names { get; set; }
 
     /// <summary>
     /// 区域全称
     /// </summary>
+    [Required]
+    [StringLength(64)]
+    [SugarColumn(Length = 64)]
     public string namef { get; set; }
 
     /// <summary>
     /// 
     /// </summary>
+    [StringLength(128)]
+    [SugarColumn(Length = 128, IsNullable = true)]
     public string namee { get; set; }
 
     /// <summary>
@@ -52,16 +64,22 @@ public class RegionDao : ScmDataDao, ISortableDao
     /// <summary>
     /// 经度
     /// </summary>
+    [StringLength(64)]
+    [SugarColumn(Length = 64, IsNullable = true)]
     public string lng { get; set; }
 
     /// <summary>
     /// 维度
     /// </summary>
+    [StringLength(64)]
+    [SugarColumn(Length = 64, IsNullable = true)]
     public string lat { get; set; }
 
     /// <summary>
     /// 
     /// </summary>
+    [StringLength(8)]
+    [SugarColumn(Length = 8, IsNullable = true)]
     public string postcode { get; set; }
 
     /// <summary>

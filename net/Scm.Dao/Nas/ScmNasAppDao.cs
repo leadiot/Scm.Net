@@ -18,25 +18,32 @@ namespace Com.Scm.Nas
         /// <summary>
         /// 应用代码
         /// </summary>
+        [Required]
         [StringLength(16)]
+        [SugarColumn(Length = 16)]
         public string codec { get; set; }
 
         /// <summary>
         /// 应用名称
         /// </summary>
+        [Required]
         [StringLength(64)]
+        [SugarColumn(Length = 64)]
         public string namec { get; set; }
 
         /// <summary>
         /// 
         /// </summary>
+        [Required]
         [StringLength(64)]
+        [SugarColumn(Length = 64)]
         public string names { get; set; }
 
         /// <summary>
         /// 应用说明
         /// </summary>
         [StringLength(128)]
+        [SugarColumn(Length = 128, IsNullable = true)]
         public string remark { get; set; }
 
         public override void PrepareCreate(long userId)

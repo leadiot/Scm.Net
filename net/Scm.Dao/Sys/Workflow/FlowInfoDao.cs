@@ -27,13 +27,14 @@ namespace Com.Scm.Sys.Workflow
         /// </summary>
         [Required]
         [StringLength(256)]
+        [SugarColumn(Length = 256)]
         public string title { get; set; }
 
         /// <summary>
         /// 图标
         /// </summary>
-        [Required]
         [StringLength(32)]
+        [SugarColumn(Length = 32, IsNullable = true)]
         public string icon { get; set; }
 
         /// <summary>
@@ -46,6 +47,7 @@ namespace Com.Scm.Sys.Workflow
         /// 流程说明
         /// </summary>
         [StringLength(128)]
+        [SugarColumn(Length = 128, IsNullable = true)]
         public string summary { get; set; }
     }
 }

@@ -7,7 +7,7 @@ namespace Com.Scm.Cfg.UserTheme
     /// <summary>
     /// 用户风格配置
     /// </summary>
-    [SqlSugar.SugarTable("scm_cfg_user_theme")]
+    [SugarTable("scm_cfg_user_theme")]
     public class UserThemeDao : ScmUserDataDao
     {
         /// <summary>

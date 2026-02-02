@@ -1,4 +1,5 @@
 ﻿using Com.Scm.Dao;
+using SqlSugar;
 using System.ComponentModel.DataAnnotations;
 
 namespace Com.Scm.Res.Service
@@ -6,7 +7,7 @@ namespace Com.Scm.Res.Service
     /// <summary>
     /// 
     /// </summary>
-    [SqlSugar.SugarTable("scm_res_service_image")]
+    [SugarTable("scm_res_service_image")]
     public class ScmResServiceImageDao : ScmDataDao
     {
         /// <summary>
@@ -23,6 +24,7 @@ namespace Com.Scm.Res.Service
         /// 
         /// </summary>
         [StringLength(32)]
+        [SugarColumn(Length = 32, IsNullable = true)]
         public string path { get; set; }
     }
 }

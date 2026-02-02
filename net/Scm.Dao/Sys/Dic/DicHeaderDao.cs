@@ -20,6 +20,7 @@ public class DicHeaderDao : ScmDataDao, ISystemDao, IDeleteDao, ISortableDao
     /// <summary>
     /// 分类标识
     /// </summary>
+    [Required]
     [StringLength(64)]
     [SugarColumn(Length = 64)]
     public string codec { get; set; }
@@ -27,6 +28,7 @@ public class DicHeaderDao : ScmDataDao, ISystemDao, IDeleteDao, ISortableDao
     /// <summary>
     /// 分类名称
     /// </summary>
+    [Required]
     [StringLength(64)]
     [SugarColumn(Length = 64)]
     public string namec { get; set; }

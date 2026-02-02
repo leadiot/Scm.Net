@@ -19,32 +19,43 @@ namespace Com.Scm.Sys.Tasks
         /// <summary>
         /// 
         /// </summary>
+        [Required]
         [StringLength(16)]
+        [SugarColumn(Length = 16)]
         public string codes { get; set; }
         /// <summary>
         /// 代码
         /// </summary>
+        [Required]
         [StringLength(32)]
+        [SugarColumn(Length = 32)]
         public string codec { get; set; }
         /// <summary>
         /// 名称
         /// </summary>
+        [Required]
         [StringLength(128)]
+        [SugarColumn(Length = 128)]
         public string names { get; set; }
         /// <summary>
         /// 类名
         /// </summary>
+        [Required]
         [StringLength(256)]
+        [SugarColumn(Length = 256)]
         public string clazz { get; set; }
         /// <summary>
         /// 报文
         /// </summary>
+        [Required]
         [StringLength(1024)]
+        [SugarColumn(Length = 1024)]
         public string json { get; set; }
         /// <summary>
         /// 文件
         /// </summary>
         [StringLength(256)]
+        [SugarColumn(Length = 256, IsNullable = true)]
         public string file { get; set; }
 
         /// <summary>
@@ -59,6 +70,7 @@ namespace Com.Scm.Sys.Tasks
         /// 提示信息
         /// </summary>
         [StringLength(256)]
+        [SugarColumn(Length = 256, IsNullable = true)]
         public string message { get; set; }
 
         /// <summary>

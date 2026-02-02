@@ -1,4 +1,5 @@
 ﻿using Com.Scm.Dao;
+using SqlSugar;
 using System.ComponentModel.DataAnnotations;
 
 namespace Com.Scm.Res.Product
@@ -6,7 +7,7 @@ namespace Com.Scm.Res.Product
     /// <summary>
     /// 
     /// </summary>
-    [SqlSugar.SugarTable("scm_res_product_image")]
+    [SugarTable("scm_res_product_image")]
     public class ScmResProductImageDao : ScmDataDao
     {
         /// <summary>
@@ -22,7 +23,9 @@ namespace Com.Scm.Res.Product
         /// <summary>
         /// 
         /// </summary>
+        [Required]
         [StringLength(32)]
+        [SugarColumn(Length = 32)]
         public string path { get; set; }
     }
 }

@@ -40,6 +40,7 @@ namespace Com.Scm.Sys
         /// 备注
         /// </summary>
         [StringLength(256)]
+        [SugarColumn(Length = 256, IsNullable = true)]
         public string comment { get; set; }
     }
 }

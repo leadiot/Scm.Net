@@ -1,5 +1,6 @@
 ﻿using Com.Scm.Dao.User;
 using Com.Scm.Enums;
+using SqlSugar;
 using System.ComponentModel.DataAnnotations;
 
 namespace Com.Scm.Ur
@@ -7,7 +8,7 @@ namespace Com.Scm.Ur
     /// <summary>
     /// 终端授权
     /// </summary>
-    [SqlSugar.SugarTable("scm_ur_user_token")]
+    [SugarTable("scm_ur_user_token")]
     public class UserTokenDao : ScmUserDataDao
     {
         /// <summary>
@@ -20,18 +21,21 @@ namespace Com.Scm.Ur
         /// </summary>
         [Required]
         [StringLength(32)]
+        [SugarColumn(Length = 32)]
         public string names { get; set; }
 
         /// <summary>
         /// 凭证
         /// </summary>
         [StringLength(32)]
+        [SugarColumn(Length = 32, IsNullable = true)]
         public string token { get; set; }
 
         /// <summary>
         /// 刷新凭证
         /// </summary>
         [StringLength(32)]
+        [SugarColumn(Length = 32, IsNullable = true)]
         public string refresh { get; set; }
 
         /// <summary>

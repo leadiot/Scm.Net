@@ -1,12 +1,14 @@
 ﻿using Com.Scm.Dao;
 using Com.Scm.Enums;
+using SqlSugar;
+using System.ComponentModel.DataAnnotations;
 
 namespace Com.Scm.Sys.Config
 {
     /// <summary>
     /// 系统配置
     /// </summary>
-    [SqlSugar.SugarTable("scm_sys_config")]
+    [SugarTable("scm_sys_config")]
     public class ConfigDao : ScmDataDao
     {
         /// <summary>
@@ -26,10 +28,16 @@ namespace Com.Scm.Sys.Config
         /// <summary>
         /// 键
         /// </summary>
+        [Required]
+        [StringLength(32)]
+        [SugarColumn(Length = 32)]
         public string key { get; set; }
         /// <summary>
         /// 值
         /// </summary>
+        [Required]
+        [StringLength(256)]
+        [SugarColumn(Length = 256)]
         public string value { get; set; }
         /// <summary>
         /// 数据
@@ -38,6 +46,8 @@ namespace Com.Scm.Sys.Config
         /// <summary>
         /// 
         /// </summary>
+        [StringLength(128)]
+        [SugarColumn(Length = 128, IsNullable = true)]
         public string remark { get; set; }
     }
 }

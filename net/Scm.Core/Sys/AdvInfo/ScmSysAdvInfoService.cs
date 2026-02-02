@@ -38,16 +38,16 @@ public class ScmSysAdvInfoService : IApiService
     {
         if (!string.IsNullOrEmpty(param.codec))
         {
-            var typeModel = await _advColumnRepository.GetSingleAsync(m => m.Flag == param.codec);
+            var typeModel = await _advColumnRepository.GetSingleAsync(m => m.flag == param.codec);
             if (typeModel != null)
             {
                 param.id = typeModel.id;
             }
         }
         var query = await _thisRepository.AsQueryable()
-            .WhereIF(!string.IsNullOrEmpty(param.key), m => m.Title.Contains(param.key))
-            .WhereIF(param.id != 0, m => m.ColumnId == param.id)
-            .OrderBy(m => new { m.id, m.Sort }, OrderByType.Desc)
+            .WhereIF(!string.IsNullOrEmpty(param.key), m => m.title.Contains(param.key))
+            .WhereIF(param.id != 0, m => m.column_id == param.id)
+            .OrderBy(m => new { m.id, m.od }, OrderByType.Desc)
             .Select<SysAdvInfoDto>()
             .ToPageAsync(param.page, param.limit);
         return query;

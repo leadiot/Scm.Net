@@ -1,11 +1,13 @@
 ﻿using Com.Scm.Dao;
+using SqlSugar;
+using System.ComponentModel.DataAnnotations;
 
 namespace Com.Scm.Msg.Notice
 {
     /// <summary>
     /// 附件
     /// </summary>
-    [SqlSugar.SugarTable("scm_msg_notice_attachment")]
+    [SugarTable("scm_msg_notice_attachment")]
     public class NoticeAttachmentDao : ScmDataDao
     {
         /// <summary>
@@ -16,11 +18,17 @@ namespace Com.Scm.Msg.Notice
         /// <summary>
         /// 文件名称
         /// </summary>
+        [Required]
+        [StringLength(128)]
+        [SugarColumn(Length = 128)]
         public string namec { get; set; }
 
         /// <summary>
         /// 文件地址
         /// </summary>
+        [Required]
+        [StringLength(1024)]
+        [SugarColumn(Length = 1024)]
         public string url { get; set; }
     }
 }

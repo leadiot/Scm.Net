@@ -26,12 +26,15 @@ public class NoticeDao : ScmDataDao
     /// </summary>
     [Required]
     [StringLength(256)]
+    [SugarColumn(Length = 256)]
     public string title { get; set; }
 
     /// <summary>
     /// 通知内容
     /// </summary>
     [Required]
+    [StringLength(2048)]
+    [SugarColumn(Length = 2048)]
     public string content { get; set; }
 
     /// <summary>

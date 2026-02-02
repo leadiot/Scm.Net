@@ -1,4 +1,5 @@
 ﻿using Com.Scm.Dao;
+using SqlSugar;
 using System.ComponentModel.DataAnnotations;
 
 namespace Com.Scm.Res.Product
@@ -6,7 +7,7 @@ namespace Com.Scm.Res.Product
     /// <summary>
     /// 
     /// </summary>
-    [SqlSugar.SugarTable("scm_res_product")]
+    [SugarTable("scm_res_product")]
     public class ScmResProductDao : ScmDataDao, IResDao
     {
         /// <summary>
@@ -17,25 +18,33 @@ namespace Com.Scm.Res.Product
         /// <summary>
         /// 
         /// </summary>
+        [Required]
         [StringLength(16)]
+        [SugarColumn(Length = 16)]
         public string codes { get; set; }
 
         /// <summary>
         /// 
         /// </summary>
+        [Required]
         [StringLength(32)]
+        [SugarColumn(Length = 32)]
         public string codec { get; set; }
 
         /// <summary>
         /// 
         /// </summary>
+        [Required]
         [StringLength(64)]
+        [SugarColumn(Length = 64)]
         public string names { get; set; }
 
         /// <summary>
         /// 
         /// </summary>
+        [Required]
         [StringLength(128)]
+        [SugarColumn(Length = 128)]
         public string namec { get; set; }
 
         /// <summary>
@@ -47,24 +56,27 @@ namespace Com.Scm.Res.Product
         /// 默认图像
         /// </summary>
         [StringLength(32)]
+        [SugarColumn(Length = 32, IsNullable = true)]
         public string image { get; set; }
 
         /// <summary>
         /// 
         /// </summary>
         [StringLength(32)]
+        [SugarColumn(Length = 32, IsNullable = true)]
         public string barcode { get; set; }
 
         /// <summary>
         /// 
         /// </summary>
         [StringLength(1024)]
+        [SugarColumn(Length = 1024, IsNullable = true)]
         public string description { get; set; }
 
         /// <summary>
         /// 
         /// </summary>
-        [SqlSugar.SugarColumn(IsIgnore = true)]
+        [SugarColumn(IsIgnore = true)]
         public List<ScmResProductImageDao> images { get; set; }
     }
 }

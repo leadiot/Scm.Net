@@ -24,7 +24,9 @@ namespace Com.Scm.Msg.Chat
         /// <summary>
         /// 群组名称
         /// </summary>
+        [Required]
         [StringLength(64)]
+        [SugarColumn(Length = 64)]
         public string namec { get; set; }
 
         /// <summary>
@@ -40,7 +42,9 @@ namespace Com.Scm.Msg.Chat
         /// <summary>
         /// 群组摘要
         /// </summary>
+        [Required]
         [StringLength(256)]
+        [SugarColumn(Length = 256)]
         public string hash { get; set; }
     }
 }

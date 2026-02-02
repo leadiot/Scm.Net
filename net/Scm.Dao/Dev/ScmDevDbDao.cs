@@ -14,12 +14,14 @@ namespace Com.Scm.Dev
         /// 名称
         /// </summary>
         [StringLength(128)]
+        [SugarColumn(Length = 128, IsNullable = true)]
         public string namec { get; set; }
 
         /// <summary>
         /// 主机
         /// </summary>
         [StringLength(256)]
+        [SugarColumn(Length = 256, IsNullable = true)]
         public string host { get; set; }
 
         /// <summary>
@@ -30,23 +32,29 @@ namespace Com.Scm.Dev
         /// <summary>
         /// 数据库
         /// </summary>
+        [StringLength(128)]
+        [SugarColumn(Length = 128, IsNullable = true)]
         public string schame { get; set; }
 
         /// <summary>
         /// 用户
         /// </summary>
         [StringLength(32)]
+        [SugarColumn(Length = 32, IsNullable = true)]
         public string user { get; set; }
 
         /// <summary>
         /// 密码
         /// </summary>
         [StringLength(256)]
+        [SugarColumn(Length = 256, IsNullable = true)]
         public string pass { get; set; }
 
         /// <summary>
         /// 字符集
         /// </summary>
+        [StringLength(32)]
+        [SugarColumn(Length = 32, IsNullable = true)]
         public string charset { get; set; }
 
         /// <summary>

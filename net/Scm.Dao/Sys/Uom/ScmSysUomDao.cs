@@ -39,6 +39,7 @@ namespace Com.Scm.Sys
         /// <summary>
         /// 系统代码
         /// </summary>
+        [Required]
         [StringLength(16)]
         [SugarColumn(Length = 16)]
         public string codes { get; set; }
@@ -46,6 +47,7 @@ namespace Com.Scm.Sys
         /// <summary>
         /// 单位编码
         /// </summary>
+        [Required]
         [StringLength(32)]
         [SugarColumn(Length = 32)]
         public string codec { get; set; }
@@ -54,12 +56,13 @@ namespace Com.Scm.Sys
         /// 显示语言
         /// </summary>
         [StringLength(8)]
-        [SugarColumn(Length = 8)]
+        [SugarColumn(Length = 8, IsNullable = true)]
         public string lang { get; set; }
 
         /// <summary>
         /// 系统名称
         /// </summary>
+        [Required]
         [StringLength(32)]
         [SugarColumn(Length = 32)]
         public string names { get; set; }
@@ -67,6 +70,7 @@ namespace Com.Scm.Sys
         /// <summary>
         /// 单位名称
         /// </summary>
+        [Required]
         [StringLength(32)]
         [SugarColumn(Length = 32)]
         public string namec { get; set; }
@@ -75,6 +79,7 @@ namespace Com.Scm.Sys
         /// 单位符号
         /// </summary>
         [StringLength(8)]
+        [SugarColumn(Length = 8, IsNullable = true)]
         public string symbol { get; set; }
 
         /// <summary>
@@ -85,6 +90,7 @@ namespace Com.Scm.Sys
         /// <summary>
         /// 参照数量
         /// </summary>
+        [SugarColumn(DecimalDigits = 4, Length = 10, IsNullable = true)]
         public decimal refer_qty { get; set; }
 
         /// <summary>
@@ -95,6 +101,7 @@ namespace Com.Scm.Sys
         /// <summary>
         /// 基准数量
         /// </summary>
+        [SugarColumn(DecimalDigits = 4, Length = 10, IsNullable = true)]
         public decimal basic_qty { get; set; }
 
         public override void PrepareCreate(long userId)

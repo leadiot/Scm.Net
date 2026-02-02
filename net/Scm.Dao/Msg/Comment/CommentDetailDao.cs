@@ -21,7 +21,7 @@ namespace Com.Scm.Msg.Comment
         /// </summary>
         [Required]
         [StringLength(1024)]
-        [SugarColumn(Length = = 1024)]
+        [SugarColumn(Length = 1024)]
         public string comment { get; set; }
 
         /// <summary>

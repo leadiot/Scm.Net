@@ -21,11 +21,21 @@ namespace Com.Scm.Ur
         public string codes { get; set; }
 
         /// <summary>
+        /// 
+        /// </summary>
+        public string codec { get; set; }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public string names { get; set; }
+
+        /// <summary>
         /// 终端名称
         /// </summary>
         [Required]
         [StringLength(32)]
-        public string names { get; set; }
+        public string namec { get; set; }
 
         /// <summary>
         /// 终端口令

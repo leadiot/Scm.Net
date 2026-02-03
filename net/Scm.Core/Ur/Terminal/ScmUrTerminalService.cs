@@ -134,7 +134,7 @@ namespace Com.Scm.Scm.Ur
         /// <returns></returns>
         public async Task<bool> AddAsync(ScmUrTerminalDto model)
         {
-            var dao = await _thisRepository.GetFirstAsync(a => a.names == model.names);
+            var dao = await _thisRepository.GetFirstAsync(a => a.namec == model.namec);
             if (dao != null)
             {
                 throw new BusinessException("已存在相同名称的终端！");
@@ -156,7 +156,7 @@ namespace Com.Scm.Scm.Ur
         /// <returns></returns>
         public async Task<bool> UpdateAsync(ScmUrTerminalDto model)
         {
-            var dao = await _thisRepository.GetFirstAsync(a => a.names == model.names && a.id != model.id);
+            var dao = await _thisRepository.GetFirstAsync(a => a.namec == model.namec && a.id != model.id);
             if (dao != null)
             {
                 throw new BusinessException("已存在相同名称的终端！");
@@ -170,7 +170,7 @@ namespace Com.Scm.Scm.Ur
 
             _terminalHolder.Remote(dao.id);
 
-            dao.names = model.names;
+            dao.names = model.namec;
 
             return await _thisRepository.UpdateAsync(dao);
         }

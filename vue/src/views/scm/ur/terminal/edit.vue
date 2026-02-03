@@ -4,8 +4,8 @@
 			<el-form-item label="终端类型" prop="types">
 				<sc-select v-model="formData.types" placeholder="请选择终端类型" :data="types_list" />
 			</el-form-item>
-			<el-form-item label="终端名称" prop="names">
-				<el-input v-model="formData.names" placeholder="请输入终端名称" :maxlength="32" show-word-limit
+			<el-form-item label="终端名称" prop="namec">
+				<el-input v-model="formData.namec" placeholder="请输入终端名称" :maxlength="32" show-word-limit
 					clearable></el-input>
 			</el-form-item>
 		</el-form>
@@ -31,7 +31,7 @@ export default {
 				types: [
 					{ required: true, trigger: "change", message: "请选择终端类型", pattern: this.$SCM.REGEX_INT },
 				],
-				names: [
+				namec: [
 					{ required: true, trigger: "blur", message: "终端名称不能为空" },
 					{ required: true, trigger: "blur", message: "终端名称应4至64个字符", pattern: this.$SCM.REGEX_NAMEC },
 				],
@@ -47,7 +47,7 @@ export default {
 			return {
 				id: this.$SCM.DEF_ID,
 				types: this.$SCM.ID_ONE_INT,
-				names: '',
+				namec: '',
 			}
 		},
 		async open(row) {

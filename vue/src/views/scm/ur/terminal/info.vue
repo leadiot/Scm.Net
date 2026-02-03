@@ -36,6 +36,9 @@ export default {
 		async open(row) {
 			this.formData = row;
 			this.formData.url = this.$CONFIG.SERVER_URL;
+			if (!this.formData.url) {
+				this.formData.url = window.location.host;
+			}
 			this.visible = true;
 		},
 		close() {

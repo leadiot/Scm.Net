@@ -112,6 +112,10 @@ namespace Com.Scm.Ur
             base.PrepareCreate(userId);
 
             this.codes = UidUtils.NextCodes("scm_ur_terminal", (int)this.types);
+            if (string.IsNullOrWhiteSpace(this.names))
+            {
+                this.names = this.namec;
+            }
         }
 
         public bool IsExpired()

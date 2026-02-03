@@ -141,6 +141,7 @@ namespace Com.Scm.Scm.Ur
             }
 
             dao = model.Adapt<ScmUrTerminalDao>();
+            dao.codec = "";
             dao.pass = TextUtils.RandomString(16);
             dao.access_token = "";
             dao.refresh_token = "";

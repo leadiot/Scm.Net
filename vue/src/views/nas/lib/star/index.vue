@@ -1,5 +1,5 @@
 <template>
     <div>
-        <h1>我的收藏</h1>
+        <h1>我的星标</h1>
     </div>
 </template>

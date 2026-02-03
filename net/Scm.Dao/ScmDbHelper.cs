@@ -456,6 +456,7 @@ namespace Com.Scm
             var menuAboutHistoryDao = CreateMenu(1000000000000004400, "about-history", "更新历史", menuAboutDao.id, 4, 4, "/about/ver/scm.net", "about/ver", "sc-file-text-line");
 
             CreateUid(ScmEnv.DEFAULT_ID, "scm", 0, "", "");
+            CreateUid(1000000000000000002, "test", 0, "", "");
             CreateUid(1000000000000000011, "scm_sys_uom", 5, "UOM", "");
             CreateUid(1000000000000000012, "scm_sys_task", 12, "TASK", "");
             //CreateUid(1000000000000001011, "scm_ur_unit", 7, "U", "");

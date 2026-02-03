@@ -42,10 +42,13 @@ namespace Com.Scm.Res.Ext.Dvo
         public string app_name { get; set; }
 
         /// <summary>
+        /// 
+        /// </summary>
+        public string mime { get; set; }
+
+        /// <summary>
         /// 备注
         /// </summary>
         public string remark { get; set; }
-
-
     }
 }

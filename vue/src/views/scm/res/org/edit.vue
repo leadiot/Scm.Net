@@ -60,7 +60,7 @@ export default {
 				this.mode = "add";
 			} else {
 				this.mode = "edit";
-				var res = await this.$API.scmfesorg.edit.get(row.id);
+				var res = await this.$API.scmresorg.edit.get(row.id);
 				this.formData = res.data;
 			}
 			this.visible = true;
@@ -74,9 +74,9 @@ export default {
 				this.isSaveing = true;
 				let res = null;
 				if (this.$SCM.is_valid_id(this.formData.id)) {
-					res = await this.$API.scmfesorg.update.put(this.formData);
+					res = await this.$API.scmresorg.update.put(this.formData);
 				} else {
-					res = await this.$API.scmfesorg.add.post(this.formData);
+					res = await this.$API.scmresorg.add.post(this.formData);
 				}
 				this.isSaveing = false;
 

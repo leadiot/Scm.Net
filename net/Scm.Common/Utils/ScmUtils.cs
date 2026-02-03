@@ -207,7 +207,7 @@ namespace Com.Scm.Utils
         /// <param name="type"></param>
         /// <param name="basePath"></param>
         /// <returns></returns>
-        public static List<ScmFileInfo> GetFiles(string path, ScmFileTypeEnum type, string basePath)
+        public static List<ScmFileInfo> GetFiles(string path, ScmDocTypeEnum type, string basePath)
         {
             var list = new List<ScmFileInfo>();
             var folder = new DirectoryInfo(path);
@@ -222,31 +222,31 @@ namespace Com.Scm.Utils
                     }
 
                     exts = exts.Trim().ToLower();
-                    if (type == ScmFileTypeEnum.None)
+                    if (type == ScmDocTypeEnum.None)
                     {
                         if (FileUtils.IsByteFile(exts))
                         {
-                            list.Add(GetFileInfo(file, ScmFileTypeEnum.Byte, basePath));
+                            list.Add(GetFileInfo(file, ScmDocTypeEnum.Byte, basePath));
                             continue;
                         }
                         if (FileUtils.IsTextFile(exts))
                         {
-                            list.Add(GetFileInfo(file, ScmFileTypeEnum.Text, basePath));
+                            list.Add(GetFileInfo(file, ScmDocTypeEnum.Text, basePath));
                             continue;
                         }
                         if (FileUtils.IsImageFile(exts))
                         {
-                            list.Add(GetFileInfo(file, ScmFileTypeEnum.Image, basePath));
+                            list.Add(GetFileInfo(file, ScmDocTypeEnum.Image, basePath));
                             continue;
                         }
                         if (FileUtils.IsMediaFile(exts))
                         {
-                            list.Add(GetFileInfo(file, ScmFileTypeEnum.Media, basePath));
+                            list.Add(GetFileInfo(file, ScmDocTypeEnum.Media, basePath));
                             continue;
                         }
                         if (FileUtils.IsOfficeFile(exts))
                         {
-                            list.Add(GetFileInfo(file, ScmFileTypeEnum.Office, basePath));
+                            list.Add(GetFileInfo(file, ScmDocTypeEnum.Office, basePath));
                             continue;
                         }
 
@@ -254,29 +254,29 @@ namespace Com.Scm.Utils
                         continue;
                     }
 
-                    if (type == ScmFileTypeEnum.Byte && FileUtils.IsByteFile(exts))
+                    if (type == ScmDocTypeEnum.Byte && FileUtils.IsByteFile(exts))
                     {
-                        list.Add(GetFileInfo(file, ScmFileTypeEnum.Byte, basePath));
+                        list.Add(GetFileInfo(file, ScmDocTypeEnum.Byte, basePath));
                         continue;
                     }
-                    if (type == ScmFileTypeEnum.Text && FileUtils.IsTextFile(exts))
+                    if (type == ScmDocTypeEnum.Text && FileUtils.IsTextFile(exts))
                     {
-                        list.Add(GetFileInfo(file, ScmFileTypeEnum.Text, basePath));
+                        list.Add(GetFileInfo(file, ScmDocTypeEnum.Text, basePath));
                         continue;
                     }
-                    if (type == ScmFileTypeEnum.Image && FileUtils.IsImageFile(exts))
+                    if (type == ScmDocTypeEnum.Image && FileUtils.IsImageFile(exts))
                     {
-                        list.Add(GetFileInfo(file, ScmFileTypeEnum.Image, basePath));
+                        list.Add(GetFileInfo(file, ScmDocTypeEnum.Image, basePath));
                         continue;
                     }
-                    if (type == ScmFileTypeEnum.Media && FileUtils.IsMediaFile(exts))
+                    if (type == ScmDocTypeEnum.Media && FileUtils.IsMediaFile(exts))
                     {
-                        list.Add(GetFileInfo(file, ScmFileTypeEnum.Media, basePath));
+                        list.Add(GetFileInfo(file, ScmDocTypeEnum.Media, basePath));
                         continue;
                     }
-                    if (type == ScmFileTypeEnum.Office && FileUtils.IsOfficeFile(exts))
+                    if (type == ScmDocTypeEnum.Office && FileUtils.IsOfficeFile(exts))
                     {
-                        list.Add(GetFileInfo(file, ScmFileTypeEnum.Office, basePath));
+                        list.Add(GetFileInfo(file, ScmDocTypeEnum.Office, basePath));
                         continue;
                     }
                 }
@@ -291,7 +291,7 @@ namespace Com.Scm.Utils
         /// <param name="type"></param>
         /// <param name="basePath"></param>
         /// <returns></returns>
-        private static ScmFileInfo GetFileInfo(FileInfo file, ScmFileTypeEnum type, string basePath)
+        private static ScmFileInfo GetFileInfo(FileInfo file, ScmDocTypeEnum type, string basePath)
         {
             var item = new ScmFileInfo();
             item.Type = type;

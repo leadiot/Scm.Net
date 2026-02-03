@@ -2,9 +2,6 @@
 	<sc-search ref="search" @search="search">
 		<template #search>
 			<el-form ref="formRef" label-width="80px" :model="param">
-				<el-form-item label="查询选项" prop="org_id">
-					<sc-select v-model="param.org_id" placeholder="请选择" :data="org_list" />
-				</el-form-item>
 				<el-form-item label="数据状态" prop="row_status">
 					<sc-select v-model="param.row_status" placeholder="请选择" :data="row_status_list" />
 				</el-form-item>
@@ -77,16 +74,15 @@
 <script>
 import { defineAsyncComponent } from "vue";
 export default {
-	name: 'scm_fes_app',
+	name: 'scm_fes_org',
 	components: {
 		edit: defineAsyncComponent(() => import("./edit")),
 	},
 	data() {
 		return {
-			tableName: 'scm_fes_app',
-			apiObj: this.$API.scmfesapp.page,
+			tableName: 'scm_fes_org',
+			apiObj: this.$API.scmresorg.page,
 			param: {
-				org_id: this.$SCM.ID_ALL,
 				row_status: this.$SCM.DEF_STATUS,
 				create_time: '',
 				key: ''
@@ -94,9 +90,9 @@ export default {
 			selection: [],
 			column: [
 				{ label: "id", prop: "id", hide: true },
-				{ prop: 'org_name', label: '所属组织', width: 100, align: 'left' },
-				{ prop: 'codec', label: '应用代码', width: 100, align: 'left' },
-				{ prop: 'namec', label: '应用名称', minWidth: 140, align: 'left' },
+				{ prop: 'codec', label: '组织代码', width: 100, align: 'left' },
+				{ prop: 'names', label: '组织简称', width: 100, align: 'left' },
+				{ prop: 'namec', label: '组织全称', minWidth: 140, align: 'left' },
 				{ prop: "row_status", label: "数据状态", width: 80, },
 				{ prop: "update_names", label: "更新人员", width: 100, },
 				{ prop: "update_time", label: "更新时间", width: 160, formatter: this.$TOOL.dateTimeFormat },
@@ -104,12 +100,10 @@ export default {
 				{ prop: "create_time", label: "创建时间", width: 160, formatter: this.$TOOL.dateTimeFormat },
 			],
 			row_status_list: [this.$SCM.OPTION_ALL_INT],
-			org_list: [this.$SCM.OPTION_ALL],
 		};
 	},
 	mounted() {
 		this.$SCM.list_status(this.row_status_list, true);
-		this.$SCM.list_option(this.org_list, this.$API.scmfesorg.option, {}, true);
 	},
 	methods: {
 		complete() {
@@ -119,16 +113,16 @@ export default {
 			this.$refs.table.upData(this.param);
 		},
 		async status_item(e, row) {
-			this.$SCM.status_item(this, this.$API.scmfesapp.status, row, row.row_status);
+			this.$SCM.status_item(this, this.$API.scmresorg.status, row, row.row_status);
 		},
 		status_list(status) {
-			this.$SCM.status_list(this, this.$API.scmfesapp.status, this.selection, status);
+			this.$SCM.status_list(this, this.$API.scmresorg.status, this.selection, status);
 		},
 		async delete_item(row) {
-			this.$SCM.delete_item(this, this.$API.scmfesapp.delete, row);
+			this.$SCM.delete_item(this, this.$API.scmresorg.delete, row);
 		},
 		delete_list() {
-			this.$SCM.delete_list(this, this.$API.scmfesapp.delete, this.selection);
+			this.$SCM.delete_list(this, this.$API.scmresorg.delete, this.selection);
 		},
 		show_search() {
 			this.$refs.search.open(this.param.key);

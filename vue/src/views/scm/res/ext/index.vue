@@ -2,6 +2,12 @@
 	<sc-search ref="search" @search="search">
 		<template #search>
 			<el-form ref="formRef" label-width="80px" :model="param">
+				<el-form-item label="所属组织" prop="org_id" @change="changeOrg">
+					<sc-select v-model="param.org_id" placeholder="请选择" :data="org_list" />
+				</el-form-item>
+				<el-form-item label="所属应用" prop="app_id">
+					<sc-select v-model="param.app_id" placeholder="请选择" :data="app_list" />
+				</el-form-item>
 				<el-form-item label="数据状态" prop="row_status">
 					<sc-select v-model="param.row_status" placeholder="请选择" :data="row_status_list" />
 				</el-form-item>
@@ -74,15 +80,17 @@
 <script>
 import { defineAsyncComponent } from "vue";
 export default {
-	name: 'scm_fes_org',
+	name: 'scm_fes_ext',
 	components: {
 		edit: defineAsyncComponent(() => import("./edit")),
 	},
 	data() {
 		return {
-			tableName: 'scm_fes_org',
-			apiObj: this.$API.scmfesorg.page,
+			tableName: 'scm_fes_ext',
+			apiObj: this.$API.scmresext.page,
 			param: {
+				org_id: this.$SCM.ID_ALL,
+				app_id: this.$SCM.ID_ALL,
 				row_status: this.$SCM.DEF_STATUS,
 				create_time: '',
 				key: ''
@@ -90,9 +98,11 @@ export default {
 			selection: [],
 			column: [
 				{ label: "id", prop: "id", hide: true },
-				{ prop: 'codec', label: '组织代码', width: 100, align: 'left' },
-				{ prop: 'names', label: '组织简称', width: 100, align: 'left' },
-				{ prop: 'namec', label: '组织全称', minWidth: 140, align: 'left' },
+				{ prop: 'types_name', label: '文件类型', width: 80 },
+				{ prop: 'codec', label: '后缀代码', width: 80, align: 'left' },
+				{ prop: 'namec', label: '后缀名称', minWidth: 100, align: 'left' },
+				{ prop: 'org_name', label: '所属组织', width: 100, align: 'left' },
+				{ prop: 'app_name', label: '所属应用', width: 100, align: 'left' },
 				{ prop: "row_status", label: "数据状态", width: 80, },
 				{ prop: "update_names", label: "更新人员", width: 100, },
 				{ prop: "update_time", label: "更新时间", width: 160, formatter: this.$TOOL.dateTimeFormat },
@@ -100,10 +110,13 @@ export default {
 				{ prop: "create_time", label: "创建时间", width: 160, formatter: this.$TOOL.dateTimeFormat },
 			],
 			row_status_list: [this.$SCM.OPTION_ALL_INT],
+			org_list: [this.$SCM.OPTION_ALL],
+			app_list: [this.$SCM.OPTION_ALL],
 		};
 	},
 	mounted() {
 		this.$SCM.list_status(this.row_status_list, true);
+		this.$SCM.list_option(this.org_list, this.$API.scmresorg.option, {}, true);
 	},
 	methods: {
 		complete() {
@@ -113,16 +126,16 @@ export default {
 			this.$refs.table.upData(this.param);
 		},
 		async status_item(e, row) {
-			this.$SCM.status_item(this, this.$API.scmfesorg.status, row, row.row_status);
+			this.$SCM.status_item(this, this.$API.scmresext.status, row, row.row_status);
 		},
 		status_list(status) {
-			this.$SCM.status_list(this, this.$API.scmfesorg.status, this.selection, status);
+			this.$SCM.status_list(this, this.$API.scmresext.status, this.selection, status);
 		},
 		async delete_item(row) {
-			this.$SCM.delete_item(this, this.$API.scmfesorg.delete, row);
+			this.$SCM.delete_item(this, this.$API.scmresext.delete, row);
 		},
 		delete_list() {
-			this.$SCM.delete_list(this, this.$API.scmfesorg.delete, this.selection);
+			this.$SCM.delete_list(this, this.$API.scmresext.delete, this.selection);
 		},
 		show_search() {
 			this.$refs.search.open(this.param.key);
@@ -147,6 +160,9 @@ export default {
 				return;
 			}
 		},
+		changeOrg() {
+			this.$SCM.list_option(this.app_list, this.$API.scmresapp.option, { 'org_id': this.formData.org_id }, true);
+		}
 	},
 };
 </script>

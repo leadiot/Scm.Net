@@ -60,7 +60,7 @@ export default {
 	},
 	mounted() {
 		this.$SCM.list_dic(this.types_list, 'file_type', false);
-		this.$SCM.list_option(this.org_list, this.$API.scmfesorg.option, {}, true);
+		this.$SCM.list_option(this.org_list, this.$API.scmresorg.option, {}, true);
 	},
 	methods: {
 		def_data() {
@@ -79,7 +79,7 @@ export default {
 				this.mode = "add";
 			} else {
 				this.mode = "edit";
-				var res = await this.$API.scmfesext.edit.get(row.id);
+				var res = await this.$API.scmresext.edit.get(row.id);
 				this.formData = res.data;
 			}
 			this.visible = true;
@@ -93,9 +93,9 @@ export default {
 				this.isSaveing = true;
 				let res = null;
 				if (this.$SCM.is_valid_id(this.formData.id)) {
-					res = await this.$API.scmfesext.update.put(this.formData);
+					res = await this.$API.scmresext.update.put(this.formData);
 				} else {
-					res = await this.$API.scmfesext.add.post(this.formData);
+					res = await this.$API.scmresext.add.post(this.formData);
 				}
 				this.isSaveing = false;
 
@@ -114,7 +114,7 @@ export default {
 			this.visible = false;
 		},
 		changeOrg() {
-			this.$SCM.list_option(this.app_list, this.$API.scmfesapp.option, { 'org_id': this.formData.org_id }, true);
+			this.$SCM.list_option(this.app_list, this.$API.scmresapp.option, { 'org_id': this.formData.org_id }, true);
 		}
 	},
 };

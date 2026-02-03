@@ -2,7 +2,7 @@
 
 namespace Com.Scm.Enums
 {
-    public enum ScmFileTypeEnum
+    public enum ScmDocTypeEnum
     {
         None = 0,
 

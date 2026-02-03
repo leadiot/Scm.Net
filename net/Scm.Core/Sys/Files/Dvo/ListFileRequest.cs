@@ -14,6 +14,6 @@ namespace Com.Scm.Sys.Files.Dvo
         /// <summary>
         /// 文件类型
         /// </summary>
-        public ScmFileTypeEnum type { get; set; }
+        public ScmDocTypeEnum type { get; set; }
     }
 }

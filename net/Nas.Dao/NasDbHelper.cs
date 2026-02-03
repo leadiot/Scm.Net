@@ -1,5 +1,4 @@
-﻿using Com.Scm.Dev;
-using Com.Scm.Enums;
+﻿using Com.Scm.Enums;
 using Com.Scm.Ur;
 using Com.Scm.Utils;
 using System.Reflection;
@@ -49,14 +48,7 @@ namespace Com.Scm.Nas
 
         private void InitDml()
         {
-            var appDao = new ScmDevAppDao();
-            appDao.id = 1000000000000002002;
-            appDao.types = 10;
-            appDao.od = 3;
-            appDao.code = "nas.net";
-            appDao.name = "私有云盘";
-            appDao.content = "<p>Nas.Net是一款针对个人、家庭以及小团队的私有云存储软件，可以直接运行于已有的多种设备上，让您的老旧设备再次焕发新的机会。</p><img src=\"/img/loginbg.svg\" alt=\"logo\"/>";
-            SaveDao(appDao);
+            CreateApp(1000000000000002002, 10, 3, "nas.net", "私有云盘", "<p>Nas.Net是一款针对个人、家庭以及小团队的私有云存储软件，可以直接运行于已有的多种设备上，让您的老旧设备再次焕发新的机会。</p><img src=\"/img/loginbg.svg\" alt=\"logo\"/>");
 
             // NAS
             var nasDao = CreateMenu(2000099923089035264, "nas", "NAS", ScmEnv.DEFAULT_ID, 1, 4, "/nas", "", "sc-hard-drive-3-line");

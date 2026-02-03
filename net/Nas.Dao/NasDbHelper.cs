@@ -72,7 +72,7 @@ namespace Com.Scm.Nas
             var nasResDao = CreateMenu(2008530629641244672, "nas-res", "文件管理", nasDao.id, 2, 3, "/nas/res", "nas/res", "");
             var nasResDeviceDao = CreateMenu(2008530926073679872, "nas-res-device", "设备", nasResDao.id, 3, 1, "/nas/res/device", "nas/res/device", "");
             var nasResPublicDao = CreateMenu(2008533412662611968, "nas-res-public", "共享", nasResDao.id, 3, 2, "/nas/res/public", "nas/res/public", "");
-            var nasResDownDao = CreateMenu(2008531097767514112, "nas-res-down", "下载", nasResDao.id, 3, 3, "/nas/res/down", "nas/res/down", "");
+            var nasResDownDao = CreateMenu(2008531097767514112, "nas-res-down", "下载", nasResDao.id, 3, 3, "/nas/res/down", "nas/res/download", "");
             var nasResAppsDao = CreateMenu(2008531271671746560, "nas-res-apps", "应用", nasResDao.id, 3, 4, "/nas/res/apps", "nas/res/apps", "");
 
             // 我的文档

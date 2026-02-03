@@ -8,8 +8,8 @@ namespace Com.Scm.Log
     /// <summary>
     /// 三方登录日志
     /// </summary>
-    [SugarTable("scm_log_oidc")]
-    public class LogOidcDao : ScmDataDao
+    [SugarTable("scm_log_oauth")]
+    public class LogOauthDao : ScmDataDao
     {
         /// <summary>
         /// 登录标识
@@ -23,14 +23,14 @@ namespace Com.Scm.Log
         /// 
         /// </summary>
         [StringLength(128)]
-        [SugarColumn(Length = 32, IsNullable = true)]
+        [SugarColumn(Length = 128, IsNullable = true)]
         public string state { get; set; }
 
         /// <summary>
         /// 
         /// </summary>
         [StringLength(128)]
-        [SugarColumn(Length = 32, IsNullable = true)]
+        [SugarColumn(Length = 128, IsNullable = true)]
         public string scope { get; set; }
 
         /// <summary>
@@ -57,8 +57,8 @@ namespace Com.Scm.Log
         /// <summary>
         /// 头像
         /// </summary>
-        [StringLength(256)]
-        [SugarColumn(Length = 256, IsNullable = true)]
+        [StringLength(512)]
+        [SugarColumn(Length = 512, IsNullable = true)]
         public string avatar { get; set; }
 
         /// <summary>
@@ -95,8 +95,14 @@ namespace Com.Scm.Log
         [SugarColumn(Length = 128, IsNullable = true)]
         public string err_msg { get; set; }
 
+        /// <summary>
+        /// 登录次数
+        /// </summary>
         public int qty { get; set; }
 
+        /// <summary>
+        /// 处理状态
+        /// </summary>
         public int handle { get; set; }
 
         public bool IsExpired(DateTime time)

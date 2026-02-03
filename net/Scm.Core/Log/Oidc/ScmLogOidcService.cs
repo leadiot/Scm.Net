@@ -1,21 +1,21 @@
 using Com.Scm.Dsa;
 using Com.Scm.Enums;
 using Com.Scm.Exceptions;
-using Com.Scm.Log.OAuth.Dvo;
+using Com.Scm.Log.Oidc.Dvo;
 using Com.Scm.Service;
 using Com.Scm.Ur;
 using Com.Scm.Utils;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Com.Scm.Log.OAuth
+namespace Com.Scm.Log.Oidc
 {
     /// <summary>
     /// 三方登录服务接口
     /// </summary>
     [ApiExplorerSettings(GroupName = "Log")]
-    public class ScmLogOauthService : ApiService
+    public class ScmLogOidcService : ApiService
     {
-        private readonly SugarRepository<LogOauthDao> _thisRepository;
+        private readonly SugarRepository<LogOidcDao> _thisRepository;
 
         /// <summary>
         /// 
@@ -23,7 +23,7 @@ namespace Com.Scm.Log.OAuth
         /// <param name="thisRepository"></param>
         /// <param name="resHolder"></param>
         /// <returns></returns>
-        public ScmLogOauthService(SugarRepository<LogOauthDao> thisRepository, IResHolder resHolder)
+        public ScmLogOidcService(SugarRepository<LogOidcDao> thisRepository, IResHolder resHolder)
         {
             _thisRepository = thisRepository;
             _ResHolder = resHolder;
@@ -34,14 +34,14 @@ namespace Com.Scm.Log.OAuth
         /// </summary>
         /// <param name="request"></param>
         /// <returns></returns>
-        public async Task<ScmSearchPageResponse<LogOAuthDvo>> GetPagesAsync(ScmSearchPageRequest request)
+        public async Task<ScmSearchPageResponse<LogOidcDvo>> GetPagesAsync(ScmSearchPageRequest request)
         {
             var result = await _thisRepository.AsQueryable()
                 .WhereIF(!request.IsAllStatus(), a => a.row_status == request.row_status)
                 //.WhereIF(IsValidId(request.option_id), a => a.option_id == request.option_id)
                 //.WhereIF(!string.IsNullOrEmpty(request.key), a => a.text.Contains(request.key))
                 .OrderBy(a => a.id)
-                .Select<LogOAuthDvo>()
+                .Select<LogOidcDvo>()
                 .ToPageAsync(request.page, request.limit);
 
             Prepare(result.Items);
@@ -53,13 +53,13 @@ namespace Com.Scm.Log.OAuth
         /// </summary>
         /// <param name="request"></param>
         /// <returns></returns>
-        public async Task<List<LogOAuthDvo>> GetListAsync(ScmSearchRequest request)
+        public async Task<List<LogOidcDvo>> GetListAsync(ScmSearchRequest request)
         {
             var result = await _thisRepository.AsQueryable()
                 .Where(a => a.row_status == ScmRowStatusEnum.Enabled)
                 //.WhereIF(!string.IsNullOrEmpty(request.key), a => a.text.Contains(request.key))
                 .OrderBy(a => a.id)
-                .Select<LogOAuthDvo>()
+                .Select<LogOidcDvo>()
                 .ToListAsync();
 
             Prepare(result);
@@ -72,10 +72,10 @@ namespace Com.Scm.Log.OAuth
         /// <param name="id"></param>
         /// <returns></returns>
         [HttpGet("{id}")]
-        public async Task<UserOAuthDto> GetAsync(long id)
+        public async Task<UserOidcDto> GetAsync(long id)
         {
             var model = await _thisRepository.GetByIdAsync(id);
-            return model.Adapt<UserOAuthDto>();
+            return model.Adapt<UserOidcDto>();
         }
 
         /// <summary>
@@ -84,11 +84,11 @@ namespace Com.Scm.Log.OAuth
         /// <param name="id"></param>
         /// <returns></returns>
         [HttpGet("{id}")]
-        public async Task<UserOAuthDto> GetEditAsync(long id)
+        public async Task<UserOidcDto> GetEditAsync(long id)
         {
             return await _thisRepository
                 .AsQueryable()
-                .Select<UserOAuthDto>()
+                .Select<UserOidcDto>()
                 .FirstAsync(m => m.id == id);
         }
 
@@ -98,11 +98,11 @@ namespace Com.Scm.Log.OAuth
         /// <param name="id"></param>
         /// <returns></returns>
         [HttpGet("{id}")]
-        public async Task<LogOAuthDvo> GetViewAsync(long id)
+        public async Task<LogOidcDvo> GetViewAsync(long id)
         {
             return await _thisRepository
                 .AsQueryable()
-                .Select<LogOAuthDvo>()
+                .Select<LogOidcDvo>()
                 .FirstAsync(m => m.id == id);
         }
 
@@ -111,7 +111,7 @@ namespace Com.Scm.Log.OAuth
         /// </summary>
         /// <param name="model"></param>
         /// <returns></returns>
-        public async Task<bool> AddAsync(UserOAuthDto model)
+        public async Task<bool> AddAsync(UserOidcDto model)
         {
             //var dao = await _thisRepository.GetFirstAsync(a => a.codec == model.codec);
             //if (dao != null)
@@ -129,7 +129,7 @@ namespace Com.Scm.Log.OAuth
             //    throw new BusinessException($"已存在简称为{model.names}的三方登录！");
             //}
 
-            return await _thisRepository.InsertAsync(model.Adapt<LogOauthDao>());
+            return await _thisRepository.InsertAsync(model.Adapt<LogOidcDao>());
         }
 
         /// <summary>
@@ -137,7 +137,7 @@ namespace Com.Scm.Log.OAuth
         /// </summary>
         /// <param name="model"></param>
         /// <returns></returns>
-        public async Task UpdateAsync(UserOAuthDto model)
+        public async Task UpdateAsync(UserOidcDto model)
         {
             //var dao = await _thisRepository.GetFirstAsync(a => a.codec == model.codec && a.id != model.id);
             //if (dao != null)

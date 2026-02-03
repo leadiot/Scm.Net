@@ -161,7 +161,7 @@ namespace Com.Scm.Nas.Res
             }
 
             var parentDao = await _thisRepository.GetByIdAsync(model.dir_id);
-            if (parentDao == null || parentDao.type != NasTypeEnums.Dir)
+            if (parentDao == null || parentDao.type != ScmFileTypeEnum.Dir)
             {
                 throw new BusinessException("上级目录不存在！");
             }

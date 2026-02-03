@@ -11,7 +11,7 @@ namespace Com.Scm.Utils
         /// <summary>
         /// 文件类型
         /// </summary>
-        public ScmDocTypeEnum Type { get; set; }
+        public ScmFileKindEnum Kind { get; set; }
         /// <summary>
         /// 文件名称
         /// </summary>

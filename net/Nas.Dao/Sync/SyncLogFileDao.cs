@@ -1,4 +1,5 @@
 using Com.Scm.Dao;
+using Com.Scm.Enums;
 using SqlSugar;
 using System.ComponentModel.DataAnnotations;
 
@@ -45,7 +46,7 @@ namespace Com.Scm.Nas.Sync
         /// </summary>
         [Required]
         [SugarColumn(ColumnDataType = "tinyint", IsNullable = false)]
-        public NasTypeEnums type { get; set; }
+        public ScmFileTypeEnum type { get; set; }
 
         /// <summary>
         /// 文件名称

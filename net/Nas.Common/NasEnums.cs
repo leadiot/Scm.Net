@@ -3,26 +3,6 @@
 namespace Com.Scm.Nas
 {
     /// <summary>
-    /// 文件类型
-    /// </summary>
-    public enum NasTypeEnums
-    {
-        None,
-
-        /// <summary>
-        /// 目录
-        /// </summary>
-        [Description("目录")]
-        Dir = 10,
-        
-        /// <summary>
-        /// 文档
-        /// </summary>
-        [Description("文档")]
-        Doc = 20
-    }
-
-    /// <summary>
     /// 同步方向
     /// </summary>
     public enum NasDirEnums

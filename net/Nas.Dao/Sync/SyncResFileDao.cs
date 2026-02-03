@@ -22,13 +22,13 @@ namespace Com.Scm.Nas.Sync
         /// 文件类型
         /// </summary>
         [SugarColumn(ColumnDataType = "tinyint", IsNullable = false)]
-        public NasTypeEnums type { get; set; }
+        public ScmFileTypeEnum type { get; set; }
 
         /// <summary>
         /// 二级类型
         /// </summary>
         [SugarColumn(ColumnDataType = "tinyint", IsNullable = false)]
-        public NasSubTypeEnums sub { get; set; }
+        public ScmFileKindEnum kind { get; set; }
 
         /// <summary>
         /// 目录ID

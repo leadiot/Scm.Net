@@ -1,4 +1,5 @@
 ﻿using Com.Scm.Dto;
+using Com.Scm.Enums;
 using System.ComponentModel.DataAnnotations;
 
 namespace Com.Scm.Nas.Res
@@ -8,12 +9,12 @@ namespace Com.Scm.Nas.Res
         /// <summary>
         /// 主类型
         /// </summary>
-        public NasTypeEnums type { get; set; }
+        public ScmFileTypeEnum type { get; set; }
 
         /// <summary>
         /// 子类型
         /// </summary>
-        public NasSubTypeEnums sub { get; set; }
+        public ScmFileKindEnum kind { get; set; }
 
         /// <summary>
         /// 目录ID

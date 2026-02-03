@@ -98,7 +98,7 @@ export default {
 			selection: [],
 			column: [
 				{ label: "id", prop: "id", hide: true },
-				{ prop: 'types_name', label: '文件类型', width: 80 },
+				{ prop: 'kind_name', label: '文件类型', width: 80 },
 				{ prop: 'codec', label: '后缀代码', width: 80, align: 'left' },
 				{ prop: 'namec', label: '后缀名称', minWidth: 100, align: 'left' },
 				{ prop: 'org_name', label: '所属组织', width: 100, align: 'left' },

@@ -1,4 +1,5 @@
 using Com.Scm.Dto;
+using Com.Scm.Enums;
 using System.ComponentModel.DataAnnotations;
 
 namespace Com.Scm.Nas.Log
@@ -35,7 +36,7 @@ namespace Com.Scm.Nas.Log
         /// 文件类型
         /// </summary>
         [Required]
-        public NasTypeEnums type { get; set; }
+        public ScmFileTypeEnum type { get; set; }
 
         /// <summary>
         /// 文件名称

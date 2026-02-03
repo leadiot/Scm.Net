@@ -12,7 +12,7 @@ namespace Com.Scm.Res.Ext
         /// <summary>
         /// 文件类型
         /// </summary>
-        public ScmDocTypeEnum types { get; set; }
+        public ScmFileKindEnum kind { get; set; }
 
         /// <summary>
         /// 后缀代码

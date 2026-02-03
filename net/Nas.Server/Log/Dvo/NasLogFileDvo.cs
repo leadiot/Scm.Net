@@ -1,4 +1,5 @@
 using Com.Scm.Dvo;
+using Com.Scm.Enums;
 
 namespace Com.Scm.Nas.Log
 {
@@ -25,7 +26,7 @@ namespace Com.Scm.Nas.Log
         /// <summary>
         /// 文件类型
         /// </summary>
-        public NasTypeEnums type { get; set; }
+        public ScmFileTypeEnum type { get; set; }
 
         /// <summary>
         /// 操作类型

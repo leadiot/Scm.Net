@@ -1,4 +1,5 @@
 using Com.Scm.Dvo;
+using Com.Scm.Enums;
 
 namespace Com.Scm.Nas.Res.Dvo
 {
@@ -10,7 +11,7 @@ namespace Com.Scm.Nas.Res.Dvo
         /// <summary>
         /// 文件类型
         /// </summary>
-        public NasTypeEnums type { get; set; }
+        public ScmFileTypeEnum type { get; set; }
 
         /// <summary>
         /// 目录ID

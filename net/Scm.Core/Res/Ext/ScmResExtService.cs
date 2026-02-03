@@ -81,7 +81,7 @@ namespace Com.Scm.Res.Ext
             {
                 Prepare(item);
 
-                item.types_name = dicDao.GetDetail((int)item.types)?.namec;
+                item.kind_name = dicDao.GetDetail((int)item.kind)?.namec;
 
                 ScmResOrgDao orgDao = null;
                 if (orgDict.ContainsKey(item.org_id))

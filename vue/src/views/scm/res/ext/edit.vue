@@ -1,8 +1,8 @@
 <template>
 	<sc-dialog v-model="visible" show-fullscreen destroy-on-close :title="titleMap[mode]" width="450px" @close="close">
 		<el-form ref="formRef" label-width="100px" :model="formData" :rules="rules">
-			<el-form-item label="文件类型" prop="types">
-				<sc-select v-model="formData.types" placeholder="请选择文件类型" :data="types_list"></sc-select>
+			<el-form-item label="文件类型" prop="kind">
+				<sc-select v-model="formData.kind" placeholder="请选择文件类型" :data="kind_list"></sc-select>
 			</el-form-item>
 			<el-form-item label="后缀代码" prop="codec">
 				<el-input v-model="formData.codec" placeholder="请输入后缀代码" :maxlength="32" show-word-limit
@@ -51,27 +51,27 @@ export default {
 			isSaveing: false,
 			formData: this.def_data(),
 			rules: {
-				types: [
+				kind: [
 					{ required: true, trigger: "change", message: "请选择文件类型", pattern: this.$SCM.REGEX_INT },
 				],
 				codec: [
 					{ required: true, trigger: "blur", message: "编码不能为空" },
 				]
 			},
-			types_list: [this.$SCM.OPTION_ONE_INT],
+			kind_list: [this.$SCM.OPTION_ONE_INT],
 			org_list: [this.$SCM.OPTION_ALL],
 			app_list: [this.$SCM.OPTION_ALL],
 		};
 	},
-	mounted() {
-		this.$SCM.list_dic(this.types_list, 'file_type', false);
+		mounted() {
+		this.$SCM.list_dic(this.kind_list, 'file_kind', false);
 		this.$SCM.list_option(this.org_list, this.$API.scmresorg.option, {}, true);
 	},
 	methods: {
 		def_data() {
 			return {
 				id: this.$SCM.DEF_ID,
-				types: this.$SCM.ID_ONE_INT,
+				kind: this.$SCM.ID_ONE_INT,
 				codec: '',
 				mime: '',
 				sign: '',

@@ -1,5 +1,6 @@
 ﻿using Com.Scm.Api;
 using Com.Scm.Config;
+using Com.Scm.Enums;
 using Com.Scm.Filters;
 using Com.Scm.Nas.Cfg;
 using Com.Scm.Nas.Log;
@@ -59,15 +60,15 @@ namespace Com.Scm.Nas.Sync
             }
 
             var dirList = new List<SyncResFileDao>();
-            var dao = CreateSpecialDirDao(terminalDao, NasEnv.NodeDevices, NasEnv.PathDevices, NasSubTypeEnums.DirFolder);
+            var dao = CreateSpecialDirDao(terminalDao, NasEnv.NodeDevices, NasEnv.PathDevices, ScmFileKindEnum.Folder);
             dirList.Add(dao);
-            dao = CreateSpecialDirDao(terminalDao, NasEnv.NodePublic, NasEnv.PathPublic, NasSubTypeEnums.DirFolder);
+            dao = CreateSpecialDirDao(terminalDao, NasEnv.NodePublic, NasEnv.PathPublic, ScmFileKindEnum.Folder);
             dirList.Add(dao);
-            dao = CreateSpecialDirDao(terminalDao, NasEnv.NodeSecret, NasEnv.PathSecret, NasSubTypeEnums.DirFolder);
+            dao = CreateSpecialDirDao(terminalDao, NasEnv.NodeSecret, NasEnv.PathSecret, ScmFileKindEnum.Folder);
             dirList.Add(dao);
-            dao = CreateSpecialDirDao(terminalDao, NasEnv.NodeDownloads, NasEnv.PathDownloads, NasSubTypeEnums.DirFolder);
+            dao = CreateSpecialDirDao(terminalDao, NasEnv.NodeDownloads, NasEnv.PathDownloads, ScmFileKindEnum.Folder);
             dirList.Add(dao);
-            dao = CreateSpecialDirDao(terminalDao, NasEnv.NodeApps, NasEnv.PathApps, NasSubTypeEnums.DirFolder);
+            dao = CreateSpecialDirDao(terminalDao, NasEnv.NodeApps, NasEnv.PathApps, ScmFileKindEnum.Folder);
             dirList.Add(dao);
 
             return dirList;
@@ -232,7 +233,7 @@ namespace Com.Scm.Nas.Sync
 
             var response = await _SqlClient.Queryable<Sync.SyncResFileDao>()
                 .Where(a => a.user_id == terminalDao.user_id &&
-                    a.type == NasTypeEnums.Dir &&
+                    a.type == ScmFileTypeEnum.Dir &&
                     a.row_status == Enums.ScmRowStatusEnum.Enabled)
                 .WhereIF(byPath, a => a.path == request.path)
                 .WhereIF(!byPath, a => a.dir_id == request.dir_id)
@@ -265,7 +266,7 @@ namespace Com.Scm.Nas.Sync
 
             var response = await _SqlClient.Queryable<Sync.SyncResFileDao>()
                 .Where(a => a.user_id == terminalDao.user_id &&
-                    a.type == NasTypeEnums.Doc &&
+                    a.type == ScmFileTypeEnum.Doc &&
                     a.row_status == Enums.ScmRowStatusEnum.Enabled)
                 .WhereIF(byPath, a => a.path == request.path)
                 .WhereIF(!byPath, a => a.dir_id == request.dir_id)
@@ -397,12 +398,12 @@ namespace Com.Scm.Nas.Sync
                 return false;
             }
 
-            if (dto.type == NasTypeEnums.Dir)
+            if (dto.type == ScmFileTypeEnum.Dir)
             {
                 return DeleteDir(token, dto, result);
             }
 
-            if (dto.type == NasTypeEnums.Doc)
+            if (dto.type == ScmFileTypeEnum.Doc)
             {
                 return DeleteDoc(token, dto, result);
             }
@@ -490,7 +491,7 @@ namespace Com.Scm.Nas.Sync
         private void DeleteDirDao(Sync.SyncResFileDao dao)
         {
             var dirList = _SqlClient.Queryable<Sync.SyncResFileDao>()
-                .Where(a => a.type == NasTypeEnums.Dir && a.dir_id == dao.id)
+                .Where(a => a.type == ScmFileTypeEnum.Dir && a.dir_id == dao.id)
                 .ToList();
             foreach (var dir in dirList)
             {
@@ -514,12 +515,12 @@ namespace Com.Scm.Nas.Sync
         {
             LogUtils.Debug("创建文件：" + dto.path);
 
-            if (dto.type == NasTypeEnums.Dir)
+            if (dto.type == ScmFileTypeEnum.Dir)
             {
                 return await CreateDir(token, dto, result);
             }
 
-            if (dto.type == NasTypeEnums.Doc)
+            if (dto.type == ScmFileTypeEnum.Doc)
             {
                 return await CreateDoc(token, dto, result);
             }
@@ -632,12 +633,12 @@ namespace Com.Scm.Nas.Sync
                 return false;
             }
 
-            if (dto.type == NasTypeEnums.Dir)
+            if (dto.type == ScmFileTypeEnum.Dir)
             {
                 return await MoveDir(token, dto, result);
             }
 
-            if (dto.type == NasTypeEnums.Doc)
+            if (dto.type == ScmFileTypeEnum.Doc)
             {
                 return await MoveDoc(token, dto, result);
             }
@@ -839,12 +840,12 @@ namespace Com.Scm.Nas.Sync
                 return false;
             }
 
-            if (dto.type == NasTypeEnums.Dir)
+            if (dto.type == ScmFileTypeEnum.Dir)
             {
                 return await CopyDir(token, dto, result);
             }
 
-            if (dto.type == NasTypeEnums.Doc)
+            if (dto.type == ScmFileTypeEnum.Doc)
             {
                 return await CopyDoc(token, dto, result);
             }
@@ -1026,12 +1027,12 @@ namespace Com.Scm.Nas.Sync
                 return false;
             }
 
-            if (dto.type == NasTypeEnums.Dir)
+            if (dto.type == ScmFileTypeEnum.Dir)
             {
                 return await RenameDir(token, dto, result);
             }
 
-            if (dto.type == NasTypeEnums.Doc)
+            if (dto.type == ScmFileTypeEnum.Doc)
             {
                 return await RenameDoc(token, dto, result);
             }
@@ -1143,12 +1144,12 @@ namespace Com.Scm.Nas.Sync
         {
             LogUtils.Debug("更新文件：" + dto.path);
 
-            if (dto.type == NasTypeEnums.Dir)
+            if (dto.type == ScmFileTypeEnum.Dir)
             {
                 return await ChangeDir(token, dto, result);
             }
 
-            if (dto.type == NasTypeEnums.Doc)
+            if (dto.type == ScmFileTypeEnum.Doc)
             {
                 return await ChangeDoc(token, dto, result);
             }
@@ -1260,7 +1261,7 @@ namespace Com.Scm.Nas.Sync
         /// <param name="path"></param>
         /// <param name="type"></param>
         /// <returns></returns>
-        private List<SyncResFileDao> GetResFileDaoByPath2(long userId, string path, NasTypeEnums type)
+        private List<SyncResFileDao> GetResFileDaoByPath2(long userId, string path, ScmFileTypeEnum type)
         {
             var list = new List<SyncResFileDao>();
             var array = path.Split(NasEnv.WebSeparator);
@@ -1339,7 +1340,7 @@ namespace Com.Scm.Nas.Sync
             _SqlClient.Insertable(list).ExecuteCommand();
         }
 
-        private Sync.SyncResFileDao GetResFileDaoByName(long userId, long dirId, string name, NasTypeEnums type)
+        private Sync.SyncResFileDao GetResFileDaoByName(long userId, long dirId, string name, ScmFileTypeEnum type)
         {
             return _SqlClient.Queryable<Sync.SyncResFileDao>()
                 .Where(a => a.user_id == userId && a.dir_id == dirId && a.name == name && a.type == type)
@@ -1348,7 +1349,7 @@ namespace Com.Scm.Nas.Sync
 
         private Sync.SyncResFileDao GetDirDaoByName(long userId, long dirId, string name)
         {
-            return GetResFileDaoByName(userId, dirId, name, NasTypeEnums.Dir);
+            return GetResFileDaoByName(userId, dirId, name, ScmFileTypeEnum.Dir);
         }
 
         /// <summary>
@@ -1356,7 +1357,7 @@ namespace Com.Scm.Nas.Sync
         /// </summary>
         /// <param name="path">虚拟绝对路径</param>
         /// <returns></returns>
-        private Sync.SyncResFileDao GetResFileDaoByPath(long userId, string path, NasTypeEnums type)
+        private Sync.SyncResFileDao GetResFileDaoByPath(long userId, string path, ScmFileTypeEnum type)
         {
             return _SqlClient.Queryable<Sync.SyncResFileDao>()
                 .Where(a => a.user_id == userId && a.path == path && a.type == type)
@@ -1371,7 +1372,7 @@ namespace Com.Scm.Nas.Sync
         /// <returns></returns>
         private Sync.SyncResFileDao GetDirDaoByPath(long userId, string path)
         {
-            return GetResFileDaoByPath(userId, path, NasTypeEnums.Dir);
+            return GetResFileDaoByPath(userId, path, ScmFileTypeEnum.Dir);
         }
 
         /// <summary>
@@ -1382,7 +1383,7 @@ namespace Com.Scm.Nas.Sync
         /// <returns></returns>
         private Sync.SyncResFileDao GetDocDaoByPath(long userId, string path)
         {
-            return GetResFileDaoByPath(userId, path, NasTypeEnums.Doc);
+            return GetResFileDaoByPath(userId, path, ScmFileTypeEnum.Doc);
         }
 
         private SyncResFileDao UpdateResFileDao(SyncResFileDao dao, string name, string path, long dirId, long userId)
@@ -1401,7 +1402,7 @@ namespace Com.Scm.Nas.Sync
             _SqlClient.Updateable(dao).ExecuteCommand();
         }
 
-        private List<Sync.SyncResFileDao> ListResFileDaoByParent(long dirId, NasTypeEnums type)
+        private List<Sync.SyncResFileDao> ListResFileDaoByParent(long dirId, ScmFileTypeEnum type)
         {
             return _SqlClient.Queryable<Sync.SyncResFileDao>()
                 .Where(a => a.dir_id == dirId && a.type == type)
@@ -1410,12 +1411,12 @@ namespace Com.Scm.Nas.Sync
 
         private List<Sync.SyncResFileDao> ListDirDaoByParent(long dirId)
         {
-            return ListResFileDaoByParent(dirId, NasTypeEnums.Dir);
+            return ListResFileDaoByParent(dirId, ScmFileTypeEnum.Dir);
         }
 
         private List<Sync.SyncResFileDao> ListDocDaoByParent(long dirId)
         {
-            return ListResFileDaoByParent(dirId, NasTypeEnums.Doc);
+            return ListResFileDaoByParent(dirId, ScmFileTypeEnum.Doc);
         }
 
         public long GetParentIdByPath(long userId, string path)
@@ -1500,7 +1501,7 @@ namespace Com.Scm.Nas.Sync
             return path;
         }
 
-        private SyncResFileDao CreateSpecialDirDao(ScmUrTerminalDao token, string name, string path, NasSubTypeEnums subType)
+        private SyncResFileDao CreateSpecialDirDao(ScmUrTerminalDao token, string name, string path, ScmFileKindEnum kind)
         {
             var dao = _SqlClient.Queryable<SyncResFileDao>()
                 .Where(a => a.path == path && a.user_id == token.user_id)
@@ -1510,8 +1511,8 @@ namespace Com.Scm.Nas.Sync
             {
                 dao = new Sync.SyncResFileDao();
                 dao.user_id = token.user_id;
-                dao.type = NasTypeEnums.Dir;
-                dao.sub = subType;
+                dao.type = ScmFileTypeEnum.Dir;
+                dao.kind = kind;
                 dao.name = name;
                 dao.path = path;
                 dao.dir_id = NasEnv.DEF_DIR_ID;
@@ -1615,7 +1616,7 @@ namespace Com.Scm.Nas.Sync
             var dao = new Sync.SyncResFileDao
             {
                 user_id = token.user_id,
-                type = NasTypeEnums.Dir,
+                type = ScmFileTypeEnum.Dir,
                 name = name,
                 path = path,
                 dir_id = dirId, // 根目录
@@ -1637,7 +1638,7 @@ namespace Com.Scm.Nas.Sync
             var dirDao = new Sync.SyncResFileDao
             {
                 user_id = token.user_id,
-                type = NasTypeEnums.Dir,
+                type = ScmFileTypeEnum.Dir,
                 name = dto.name,
                 path = dto.path,
                 dir_id = dirId, // 根目录
@@ -1662,7 +1663,7 @@ namespace Com.Scm.Nas.Sync
             var dirDao = new Sync.SyncResFileDao
             {
                 user_id = token.user_id,
-                type = NasTypeEnums.Doc,
+                type = ScmFileTypeEnum.Doc,
                 name = name,
                 path = path,
                 hash = hash,

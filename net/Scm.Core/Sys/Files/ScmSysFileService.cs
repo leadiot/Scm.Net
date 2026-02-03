@@ -65,7 +65,7 @@ public class ScmSysFileService : IApiService
     {
         var basePath = _envConfig.GetDataPath(request.path);
 
-        return ScmUtils.GetFiles(basePath, request.type, _envConfig.DataDir);
+        return ScmUtils.GetFiles(basePath, request.kind, _envConfig.DataDir);
     }
 
     #region 文件上传

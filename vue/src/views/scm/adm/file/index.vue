@@ -3,7 +3,7 @@
 		<el-aside width="260px" v-loading="showGrouploading">
 			<el-container>
 				<el-header>
-					<sc-select v-model="param.type" @change="typeChange" :data="type_list">
+					<sc-select v-model="param.kind" @change="kindChange" :data="kind_list">
 					</sc-select>
 				</el-header>
 				<el-main class="nopadding">
@@ -57,7 +57,7 @@
 								<el-icon><el-icon-check /></el-icon>
 							</div>
 							<div class="sc-file-select__item__box"></div>
-							<el-image v-if="item.type == 3" :src="serverApi + item.uri"
+							<el-image v-if="item.kind == 3" :src="serverApi + item.uri"
 								:preview-src-list="[serverApi + item.uri]" fit="contain" lazy></el-image>
 							<div v-else class="item-file item-file-doc">
 								<el-icon class="el-icon--upload">
@@ -91,11 +91,11 @@ export default {
 			group: [],//目录列表
 			props: { label: "name" },
 			param: {
-				type: this.$SCM.ID_ALL_INT,
+				kind: this.$SCM.ID_ALL_INT,
 				path: '/',
 				key: "",
 			},
-			type_list: [this.$SCM.OPTION_ALL_INT],//文件类型列表
+			kind_list: [this.$SCM.OPTION_ALL_INT],//文件类型列表
 			files: [],//文件列表
 			previewList: [],//预览列表
 			value: [],
@@ -109,7 +109,7 @@ export default {
 		this.serverApi = this.$API.scmadmfile.view.url + '?file=';
 		this.init();
 		this.initFiles();
-		this.$SCM.list_dic(this.type_list, 'file_type', true);
+		this.$SCM.list_dic(this.kind_list, 'file_kind', true);
 	},
 	methods: {
 		async init() {
@@ -145,11 +145,11 @@ export default {
 			if (!this.selectedFile) {
 				return;
 			}
-			if (this.selectedFile.type == 2) {
+			if (this.selectedFile.kind == 2) {
 				this.viewText();
 				return;
 			}
-			if (this.selectedFile.type == 3) {
+			if (this.selectedFile.kind == 3) {
 				this.viewImage();
 				return;
 			}
@@ -175,7 +175,7 @@ export default {
 				this.selectedFile = row;
 			}
 		},
-		typeChange() {
+		kindChange() {
 			this.initFiles();
 		},
 		groupClick(data) {

@@ -11,8 +11,8 @@ namespace Com.Scm.Res.Ext.Dvo
         /// <summary>
         /// 文件类型
         /// </summary>
-        public ScmDocTypeEnum types { get; set; }
-        public string types_name { get; set; }
+        public ScmFileKindEnum kind { get; set; }
+        public string kind_name { get; set; }
 
         /// <summary>
         /// 后缀代码

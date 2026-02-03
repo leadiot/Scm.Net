@@ -56,7 +56,7 @@ namespace Com.Scm.Nas
             // 设置
             var admId = 1000000000000003000;
             // 配置管理
-            var admFesDao = CreateMenu(1984069861600530432, "adm-fes", "文件类型", admId, 2, 4, "/adm/fes", "adm/fes", "");
+            var admFesDao = CreateMenu(1984069861600530432, "adm-fes", "文件类型", admId, 2, 4, "/adm/fes", "adm/fes", "sc-bill-line");
             roleAdminList.Add(new RoleAuthDao { role_id = roleId, auth_id = admFesDao.id, types = ScmRoleAuthTypesEnum.RoleMenu });
             var admFesOrgDao = CreateMenu(1984070313574535168, "adm-fes-org", "组织管理", admFesDao.id, 3, 1, "/adm/res/org", "scm/res/org", "");
             roleAdminList.Add(new RoleAuthDao { role_id = roleId, auth_id = admFesOrgDao.id, types = ScmRoleAuthTypesEnum.RoleMenu });

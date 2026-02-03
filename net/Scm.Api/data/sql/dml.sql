@@ -246,6 +246,8 @@ insert into scm_sys_dic_detail(id,dic_header_id,codec,namec,value,tag,cat,od,rem
 insert into scm_sys_dic_detail(id,dic_header_id,codec,namec,value,tag,cat,od,remark,row_delete,row_status,update_time,update_user,create_time,create_user) values (2015335560788447232,1546442332772110336,'12','解除隐私',12,2,0,12,NULL,0,1,1769328415473,1000000000000001001,1769328415473,1000000000000001001);
 insert into scm_sys_dic_detail(id,dic_header_id,codec,namec,value,tag,cat,od,remark,row_delete,row_status,update_time,update_user,create_time,create_user) values (2015335595982852096,1546442332772110336,'13','恢复',13,2,0,13,NULL,0,1,1769328423864,1000000000000001001,1769328423864,1000000000000001001);
 
+update scm_sys_dic_detail set row_delete = 1 where row_delete=0;
+
 /** scm_res_icon_cat **/
 insert into scm_res_icon_cat(id,code,name,pid,od,qty,row_status,update_time,update_user,create_time,create_user) values (1000000000000000001,'','',0,0,0,0,0,1000000000000000001,0,1000000000000000001);
 insert into scm_res_icon_cat(id,code,name,pid,od,qty,row_status,update_time,update_user,create_time,create_user) values (1000000000000000101,'vs','Vue内置',0,0,0,1,0,1000000000000000001,0,1000000000000000001);

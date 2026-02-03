@@ -2,14 +2,22 @@ using Com.Scm.Dao;
 using SqlSugar;
 using System.ComponentModel.DataAnnotations;
 
-namespace Com.Scm.Nas
+namespace Com.Scm.Res.Org
 {
     /// <summary>
     /// 
     /// </summary>
-    [SugarTable("scm_fes_org")]
-    public class ScmNasOrgDao : ScmDataDao
+    [SugarTable("scm_res_org")]
+    public class ScmResOrgDao : ScmDataDao, IResDao
     {
+        /// <summary>
+        /// 
+        /// </summary>
+        [Required]
+        [StringLength(16)]
+        [SugarColumn(Length = 16)]
+        public string codes { get; set; }
+
         /// <summary>
         /// 组织代码
         /// </summary>
@@ -42,6 +50,26 @@ namespace Com.Scm.Nas
             {
                 names = namec;
             }
+        }
+
+        public string GetCode()
+        {
+            return codec;
+        }
+
+        public string GetName()
+        {
+            return names ?? namec;
+        }
+
+        public string GetNames()
+        {
+            return names;
+        }
+
+        public string GetNamec()
+        {
+            return namec;
         }
     }
 }

@@ -78,5 +78,25 @@ namespace Com.Scm.Res.Product
         /// </summary>
         [SugarColumn(IsIgnore = true)]
         public List<ScmResProductImageDao> images { get; set; }
+
+        public string GetCode()
+        {
+            return codes;
+        }
+
+        public string GetName()
+        {
+            return names ?? namec;
+        }
+
+        public string GetNames()
+        {
+            return names;
+        }
+
+        public string GetNamec()
+        {
+            return namec;
+        }
     }
 }

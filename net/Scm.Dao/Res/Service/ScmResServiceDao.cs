@@ -71,5 +71,25 @@ namespace Com.Scm.Res.Service
         /// </summary>
         [SugarColumn(IsIgnore = true)]
         public List<ScmResServiceImageDao> images { get; set; }
+
+        public string GetCode()
+        {
+            return codes;
+        }
+
+        public string GetName()
+        {
+            return names ?? namec;
+        }
+
+        public string GetNames()
+        {
+            return names;
+        }
+
+        public string GetNamec()
+        {
+            return namec;
+        }
     }
 }

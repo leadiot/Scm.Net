@@ -1,4 +1,4 @@
-﻿namespace Com.Scm.Nas.FesApp.Dvo
+﻿namespace Com.Scm.Res.App.Dvo
 {
     public class SearchRequest : ScmSearchPageRequest
     {

@@ -107,4 +107,24 @@ public class OrganizeDao : ScmDataDao, ISortableDao, IDeleteDao, IResDao
             names = namec;
         }
     }
+
+    public string GetCode()
+    {
+        return codes;
+    }
+
+    public string GetName()
+    {
+        return names ?? namec;
+    }
+
+    public string GetNames()
+    {
+        return names;
+    }
+
+    public string GetNamec()
+    {
+        return namec;
+    }
 }

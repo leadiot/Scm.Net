@@ -27,13 +27,13 @@ namespace Com.Scm.Holder
         public string GetResNames<T>(long id, bool cached = false) where T : IResDao
         {
             var obj = GetRes<T>(id);
-            return obj?.names;
+            return obj?.GetNames();
         }
 
         public string GetResNamec<T>(long id, bool cached = false) where T : IResDao
         {
             var obj = GetRes<T>(id);
-            return obj?.namec;
+            return obj?.GetNamec();
         }
 
         public void Remove(long id)

@@ -3,13 +3,13 @@ using Com.Scm.Enums;
 using SqlSugar;
 using System.ComponentModel.DataAnnotations;
 
-namespace Com.Scm.Nas
+namespace Com.Scm.Res.Ext
 {
     /// <summary>
     /// 
     /// </summary>
-    [SugarTable("scm_fes_ext")]
-    public class ScmNasExtDao : ScmDataDao
+    [SugarTable("scm_res_ext")]
+    public class ScmResExtDao : ScmDataDao, IResDao
     {
         /// <summary>
         /// 文件类型
@@ -50,6 +50,13 @@ namespace Com.Scm.Nas
         public long app_id { get; set; }
 
         /// <summary>
+        /// 
+        /// </summary>
+        [StringLength(128)]
+        [SugarColumn(Length = 128, IsNullable = true)]
+        public string mime { get; set; }
+
+        /// <summary>
         /// 备注
         /// </summary>
         [StringLength(256)]
@@ -64,6 +71,26 @@ namespace Com.Scm.Nas
             {
                 namec = codec + " 文件";
             }
+        }
+
+        public string GetCode()
+        {
+            return codec;
+        }
+
+        public string GetName()
+        {
+            return "";
+        }
+
+        public string GetNames()
+        {
+            return "";
+        }
+
+        public string GetNamec()
+        {
+            return namec;
         }
     }
 }

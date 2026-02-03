@@ -197,6 +197,26 @@ namespace Com.Scm.Ur
             }
         }
 
+        public string GetCode()
+        {
+            return codes;
+        }
+
+        public string GetName()
+        {
+            return names ?? namec;
+        }
+
+        public string GetNames()
+        {
+            return names;
+        }
+
+        public string GetNamec()
+        {
+            return namec;
+        }
+
         /// <summary>
         /// 
         /// </summary>

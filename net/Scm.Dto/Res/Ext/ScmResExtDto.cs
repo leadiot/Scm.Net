@@ -2,12 +2,12 @@ using Com.Scm.Dto;
 using Com.Scm.Enums;
 using System.ComponentModel.DataAnnotations;
 
-namespace Com.Scm.Nas
+namespace Com.Scm.Res.Ext
 {
     /// <summary>
     /// 
     /// </summary>
-    public class ScmNasExtDto : ScmDataDto
+    public class ScmResExtDto : ScmDataDto
     {
         /// <summary>
         /// 文件类型
@@ -40,6 +40,12 @@ namespace Com.Scm.Nas
         /// 
         /// </summary>
         public long app_id { get; set; }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        [StringLength(128)]
+        public string mime { get; set; }
 
         /// <summary>
         /// 备注

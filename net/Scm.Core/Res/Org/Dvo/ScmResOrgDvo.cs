@@ -1,11 +1,11 @@
 using Com.Scm.Dvo;
 
-namespace Com.Scm.Nas.FesOrg.Dvo
+namespace Com.Scm.Res.Org.Dvo
 {
     /// <summary>
     /// 
     /// </summary>
-    public class ScmFesOrgDvo : ScmDataDvo
+    public class ScmResOrgDvo : ScmDataDvo
     {
         /// <summary>
         /// 组织代码

@@ -1,12 +1,12 @@
 using Com.Scm.Dvo;
 using Com.Scm.Enums;
 
-namespace Com.Scm.Nas.FesExt.Dvo
+namespace Com.Scm.Res.Ext.Dvo
 {
     /// <summary>
     /// 
     /// </summary>
-    public class ScmFesExtDvo : ScmDataDvo
+    public class ScmResExtDvo : ScmDataDvo
     {
         /// <summary>
         /// 文件类型

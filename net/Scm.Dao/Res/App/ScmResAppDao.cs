@@ -2,18 +2,26 @@ using Com.Scm.Dao;
 using SqlSugar;
 using System.ComponentModel.DataAnnotations;
 
-namespace Com.Scm.Nas
+namespace Com.Scm.Res.App
 {
     /// <summary>
     /// 
     /// </summary>
-    [SugarTable("scm_fes_app")]
-    public class ScmNasAppDao : ScmDataDao
+    [SugarTable("scm_res_app")]
+    public class ScmResAppDao : ScmDataDao, IResDao
     {
         /// <summary>
         /// 组织ID
         /// </summary>
         public long org_id { get; set; }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        [Required]
+        [StringLength(16)]
+        [SugarColumn(Length = 16)]
+        public string codes { get; set; }
 
         /// <summary>
         /// 应用代码
@@ -54,6 +62,26 @@ namespace Com.Scm.Nas
             {
                 names = namec;
             }
+        }
+
+        public string GetCode()
+        {
+            return codec;
+        }
+
+        public string GetName()
+        {
+            return names ?? namec;
+        }
+
+        public string GetNames()
+        {
+            return names;
+        }
+
+        public string GetNamec()
+        {
+            return namec;
         }
     }
 }

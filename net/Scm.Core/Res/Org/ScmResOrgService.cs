@@ -1,31 +1,29 @@
 using Com.Scm.Dsa;
 using Com.Scm.Dvo;
 using Com.Scm.Exceptions;
-using Com.Scm.Nas.FesExt.Dvo;
+using Com.Scm.Res.Org.Dvo;
 using Com.Scm.Service;
 using Com.Scm.Utils;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Com.Scm.Nas.FesExt
+namespace Com.Scm.Res.Org
 {
     /// <summary>
     /// 服务接口
     /// </summary>
     [ApiExplorerSettings(GroupName = "Scm")]
-    public class ScmFesExtService : ApiService
+    public class ScmResOrgService : ApiService
     {
-        private readonly SugarRepository<ScmNasExtDao> _thisRepository;
-        private readonly IDicService _dicService;
+        private readonly SugarRepository<ScmResOrgDao> _thisRepository;
 
         /// <summary>
         /// 
         /// </summary>
         /// <param name="thisRepository"></param>
-        public ScmFesExtService(SugarRepository<ScmNasExtDao> thisRepository, IResHolder resHolder, IDicService dicService)
+        public ScmResOrgService(SugarRepository<ScmResOrgDao> thisRepository, IResHolder resHolder)
         {
             _thisRepository = thisRepository;
             _ResHolder = resHolder;
-            _dicService = dicService;
         }
 
         /// <summary>
@@ -33,15 +31,13 @@ namespace Com.Scm.Nas.FesExt
         /// </summary>
         /// <param name="request"></param>
         /// <returns></returns>
-        public async Task<ScmSearchPageResponse<ScmFesExtDvo>> GetPagesAsync(SearchRequest request)
+        public async Task<ScmSearchPageResponse<ScmResOrgDvo>> GetPagesAsync(ScmSearchPageRequest request)
         {
             var result = await _thisRepository.AsQueryable()
                 .WhereIF(!request.IsAllStatus(), a => a.row_status == request.row_status)
-                .WhereIF(IsNormalId(request.org_id), a => a.org_id == request.org_id)
-                .WhereIF(IsNormalId(request.app_id), a => a.app_id == request.app_id)
-                .WhereIF(!string.IsNullOrEmpty(request.key), a => a.codec.Contains(request.key))
+                .WhereIF(!string.IsNullOrEmpty(request.key), a => a.namec.Contains(request.key))
                 .OrderBy(m => m.id)
-                .Select<ScmFesExtDvo>()
+                .Select<ScmResOrgDvo>()
                 .ToPageAsync(request.page, request.limit);
 
             Prepare(result.Items);
@@ -53,58 +49,17 @@ namespace Com.Scm.Nas.FesExt
         /// </summary>
         /// <param name="request"></param>
         /// <returns></returns>
-        public async Task<List<ScmFesExtDvo>> GetListAsync(SearchRequest request)
+        public async Task<List<ScmResOrgDvo>> GetListAsync(ScmSearchRequest request)
         {
             var result = await _thisRepository.AsQueryable()
                 .Where(a => a.row_status == Enums.ScmRowStatusEnum.Enabled)
-                .WhereIF(IsNormalId(request.org_id), a => a.org_id == request.org_id)
-                .WhereIF(IsNormalId(request.app_id), a => a.app_id == request.app_id)
-                .WhereIF(!string.IsNullOrEmpty(request.key), a => a.codec.Contains(request.key))
+                .WhereIF(!string.IsNullOrEmpty(request.key), a => a.namec.Contains(request.key))
                 .OrderBy(m => m.id)
-                .Select<ScmFesExtDvo>()
+                .Select<ScmResOrgDvo>()
                 .ToListAsync();
 
             Prepare(result);
             return result;
-        }
-
-        private void Prepare(List<ScmFesExtDvo> list)
-        {
-            var dicDao = _dicService.GetDic("file_type");
-            var orgRepository = _thisRepository.Change<ScmNasOrgDao>();
-            var orgDict = new Dictionary<long, ScmNasOrgDao>();
-            var appRepository = _thisRepository.Change<ScmNasAppDao>();
-            var appDict = new Dictionary<long, ScmNasAppDao>();
-            foreach (var item in list)
-            {
-                Prepare(item);
-
-                item.types_name = dicDao.GetDetail((int)item.types)?.namec;
-
-                ScmNasOrgDao orgDao = null;
-                if (orgDict.ContainsKey(item.org_id))
-                {
-                    orgDao = orgDict[item.org_id];
-                }
-                else
-                {
-                    orgDao = orgRepository.GetById(item.org_id);
-                    orgDict[item.org_id] = orgDao;
-                }
-                item.org_name = orgDao?.names;
-
-                ScmNasAppDao appDao = null;
-                if (appDict.ContainsKey(item.app_id))
-                {
-                    appDao = appDict[item.app_id];
-                }
-                else
-                {
-                    appDao = appRepository.GetById(item.app_id);
-                    appDict[item.app_id] = appDao;
-                }
-                item.app_name = appDao?.names;
-            }
         }
 
         /// <summary>
@@ -112,14 +67,12 @@ namespace Com.Scm.Nas.FesExt
         /// </summary>
         /// <param name="request"></param>
         /// <returns></returns>
-        public async Task<List<ResOptionDvo>> GetOptionAsync(SearchRequest request)
+        public async Task<List<ResOptionDvo>> GetOptionAsync(ScmSearchRequest request)
         {
             var result = await _thisRepository.AsQueryable()
                 .Where(a => a.row_status == Enums.ScmRowStatusEnum.Enabled)
-                .WhereIF(IsNormalId(request.org_id), a => a.org_id == request.org_id)
-                .WhereIF(IsNormalId(request.app_id), a => a.app_id == request.app_id)
                 .OrderBy(a => a.id)
-                .Select(a => new ResOptionDvo { id = a.id, label = a.namec, value = a.id })
+                .Select(a => new ResOptionDvo { id = a.id, label = a.names, value = a.id })
                 .ToListAsync();
 
             return result;
@@ -131,11 +84,11 @@ namespace Com.Scm.Nas.FesExt
         /// <param name="id"></param>
         /// <returns></returns>
         [HttpGet("{id}")]
-        public async Task<ScmNasExtDto> GetAsync(long id)
+        public async Task<ScmResOrgDto> GetAsync(long id)
         {
             return await _thisRepository
                 .AsQueryable()
-                .Select<ScmNasExtDto>()
+                .Select<ScmResOrgDto>()
                 .FirstAsync(m => m.id == id);
         }
 
@@ -145,11 +98,11 @@ namespace Com.Scm.Nas.FesExt
         /// <param name="id"></param>
         /// <returns></returns>
         [HttpGet("{id}")]
-        public async Task<ScmNasExtDto> GetEditAsync(long id)
+        public async Task<ScmResOrgDto> GetEditAsync(long id)
         {
             return await _thisRepository
                 .AsQueryable()
-                .Select<ScmNasExtDto>()
+                .Select<ScmResOrgDto>()
                 .FirstAsync(m => m.id == id);
         }
 
@@ -159,11 +112,11 @@ namespace Com.Scm.Nas.FesExt
         /// <param name="id"></param>
         /// <returns></returns>
         [HttpGet("{id}")]
-        public async Task<ScmFesExtDvo> GetViewAsync(long id)
+        public async Task<ScmResOrgDvo> GetViewAsync(long id)
         {
             return await _thisRepository
                 .AsQueryable()
-                .Select<ScmFesExtDvo>()
+                .Select<ScmResOrgDvo>()
                 .FirstAsync(m => m.id == id);
         }
 
@@ -172,15 +125,20 @@ namespace Com.Scm.Nas.FesExt
         /// </summary>
         /// <param name="model"></param>
         /// <returns></returns>
-        public async Task<bool> AddAsync(ScmNasExtDto model)
+        public async Task<bool> AddAsync(ScmResOrgDto model)
         {
             var dao = await _thisRepository.GetFirstAsync(a => a.codec == model.codec);
             if (dao != null)
             {
-                throw new BusinessException("已存在相同编码的后缀！");
+                throw new BusinessException("已存在相同编码的组织！");
+            }
+            dao = await _thisRepository.GetFirstAsync(a => a.namec == model.namec);
+            if (dao != null)
+            {
+                throw new BusinessException("已存在相同名称的组织！");
             }
 
-            dao = model.Adapt<ScmNasExtDao>();
+            dao = model.Adapt<ScmResOrgDao>();
             return await _thisRepository.InsertAsync(dao);
         }
 
@@ -189,18 +147,23 @@ namespace Com.Scm.Nas.FesExt
         /// </summary>
         /// <param name="model"></param>
         /// <returns></returns>
-        public async Task<bool> UpdateAsync(ScmNasExtDto model)
+        public async Task<bool> UpdateAsync(ScmResOrgDto model)
         {
             var dao = await _thisRepository.GetFirstAsync(a => a.codec == model.codec && a.id != model.id);
             if (dao != null)
             {
-                throw new BusinessException("已存在相同编码的后缀！");
+                throw new BusinessException("已存在相同编码的组织！");
+            }
+            dao = await _thisRepository.GetFirstAsync(a => a.namec == model.namec && a.id != model.id);
+            if (dao != null)
+            {
+                throw new BusinessException("已存在相同名称的组织！");
             }
 
             dao = await _thisRepository.GetByIdAsync(model.id);
             if (dao == null)
             {
-                throw new BusinessException("无效的后缀！");
+                throw new BusinessException("无效的组织！");
             }
 
             dao = model.Adapt(dao);

@@ -16,14 +16,6 @@ namespace Com.Scm.Res.App
         public long org_id { get; set; }
 
         /// <summary>
-        /// 
-        /// </summary>
-        [Required]
-        [StringLength(16)]
-        [SugarColumn(Length = 16)]
-        public string codes { get; set; }
-
-        /// <summary>
         /// 应用代码
         /// </summary>
         [Required]

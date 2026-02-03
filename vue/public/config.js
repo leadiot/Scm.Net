@@ -7,10 +7,10 @@ const APP_CONFIG = {
 	APP_DESC: "这是应用的简单介绍。",
 
 	/** 服务路径(含端口)，可以根据需要修改 */
-	SERVER_URL: '',
+	//SERVER_URL: '',
 
 	/** API调用路径(含端口)，可以根据需要修改 */
-	API_URL: '/api',
+	//API_URL: '/api',
 
 	/** 默认登录模式，可以修改，支持10，20，30，40四种方式 */
 	DEF_LOGIN_MODE: [10, 20, 30],

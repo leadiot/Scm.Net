@@ -21,7 +21,8 @@
 					clearable></el-input>
 			</el-form-item>
 			<el-form-item label="所属组织" prop="org_id">
-				<sc-select v-model="formData.org_id" placeholder="请选择所属组织" :data="org_list"></sc-select>
+				<sc-select v-model="formData.org_id" placeholder="请选择所属组织" :data="org_list"
+					@change="changeOrg"></sc-select>
 			</el-form-item>
 			<el-form-item label="所属应用" prop="app_id">
 				<sc-select v-model="formData.app_id" placeholder="请选择所属应用" :data="app_list"></sc-select>
@@ -58,8 +59,8 @@ export default {
 				]
 			},
 			types_list: [this.$SCM.OPTION_ONE_INT],
-			org_list: [this.$SCM.OPTION_ONE],
-			app_list: [this.$SCM.OPTION_ONE],
+			org_list: [this.$SCM.OPTION_ALL],
+			app_list: [this.$SCM.OPTION_ALL],
 		};
 	},
 	mounted() {

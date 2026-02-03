@@ -474,58 +474,58 @@ namespace Com.Scm
             var roleAdminList = new List<RoleAuthDao>();
 
             // Root
-            var menuRootDao = CreateMenu(ScmEnv.DEFAULT_ID, "", "", 0, 0, 0, "/", "", "");
-            menuRootDao.row_status = ScmRowStatusEnum.Normal;
-            _SqlClient.Updateable(menuRootDao).ExecuteCommand();
-            roleAdminList.Add(new RoleAuthDao { role_id = roleAdminDao.id, auth_id = menuRootDao.id, types = ScmRoleAuthTypesEnum.RoleMenu });
+            var rootDao = CreateMenu(ScmEnv.DEFAULT_ID, "", "", 0, 0, 0, "/", "", "");
+            rootDao.row_status = ScmRowStatusEnum.Normal;
+            _SqlClient.Updateable(rootDao).ExecuteCommand();
+            roleAdminList.Add(new RoleAuthDao { role_id = roleAdminDao.id, auth_id = rootDao.id, types = ScmRoleAuthTypesEnum.RoleMenu });
 
             // 主页
-            var menuHomeDao = CreateMenu(1000000000000001000, "home", "主页", menuRootDao.id, 1, 1, "/home", "home", "sc-home-4-line");
-            roleAdminList.Add(new RoleAuthDao { role_id = roleAdminDao.id, auth_id = menuHomeDao.id, types = ScmRoleAuthTypesEnum.RoleMenu });
+            var homeDao = CreateMenu(1000000000000001000, "home", "主页", rootDao.id, 1, 1, "/home", "home", "sc-home-4-line");
+            roleAdminList.Add(new RoleAuthDao { role_id = roleAdminDao.id, auth_id = homeDao.id, types = ScmRoleAuthTypesEnum.RoleMenu });
             // 工作台
-            var menuDashboardDao = CreateMenu(1000000000000001100, "dashboard", "工作台", menuHomeDao.id, 2, 1, "/dashboard", "home", "sc-menu-line");
-            roleAdminList.Add(new RoleAuthDao { role_id = roleAdminDao.id, auth_id = menuDashboardDao.id, types = ScmRoleAuthTypesEnum.RoleMenu });
+            var homeDashboardDao = CreateMenu(1000000000000001100, "dashboard", "工作台", homeDao.id, 2, 1, "/dashboard", "home", "sc-menu-line");
+            roleAdminList.Add(new RoleAuthDao { role_id = roleAdminDao.id, auth_id = homeDashboardDao.id, types = ScmRoleAuthTypesEnum.RoleMenu });
             // 我的收藏
-            var menuFavoritesDao = CreateMenu(1000000000000001200, "favorites", "我的收藏", menuHomeDao.id, 2, 2, "/favorites", "", "sc-heart-3-line");
-            roleAdminList.Add(new RoleAuthDao { role_id = roleAdminDao.id, auth_id = menuFavoritesDao.id, types = ScmRoleAuthTypesEnum.RoleMenu });
+            var homeFavoritesDao = CreateMenu(1000000000000001200, "favorites", "我的收藏", homeDao.id, 2, 2, "/favorites", "", "sc-heart-3-line");
+            roleAdminList.Add(new RoleAuthDao { role_id = roleAdminDao.id, auth_id = homeFavoritesDao.id, types = ScmRoleAuthTypesEnum.RoleMenu });
             // 账户信息
-            var menuProfilesDao = CreateMenu(1000000000000001300, "profiles", "账户信息", menuHomeDao.id, 2, 3, "/profiles", "", "sc-coffee-cup-line");
-            roleAdminList.Add(new RoleAuthDao { role_id = roleAdminDao.id, auth_id = menuProfilesDao.id, types = ScmRoleAuthTypesEnum.RoleMenu });
+            var homeProfilesDao = CreateMenu(1000000000000001300, "profiles", "账户信息", homeDao.id, 2, 3, "/profiles", "", "sc-coffee-cup-line");
+            roleAdminList.Add(new RoleAuthDao { role_id = roleAdminDao.id, auth_id = homeProfilesDao.id, types = ScmRoleAuthTypesEnum.RoleMenu });
             // 机构信息
-            var menuHomeUnitDao = CreateMenu(1000000000000001310, "profiles-unit", "机构信息", menuProfilesDao.id, 3, 1, "/profiles/unitCenter", "home/unitinfo", "sc-settings-3-line");
-            roleAdminList.Add(new RoleAuthDao { role_id = roleAdminDao.id, auth_id = menuHomeUnitDao.id, types = ScmRoleAuthTypesEnum.RoleMenu });
-            var menuHomeUserDao = CreateMenu(1000000000000001320, "profiles-user", "个人信息", menuProfilesDao.id, 3, 2, "/profiles/usercenter", "home/userinfo", "sc-user-line");
-            roleAdminList.Add(new RoleAuthDao { role_id = roleAdminDao.id, auth_id = menuHomeUserDao.id, types = ScmRoleAuthTypesEnum.RoleMenu });
-            var menuHomeOAuthDao = CreateMenu(1000000000000001330, "profiles-oauth", "联合登录", menuProfilesDao.id, 3, 3, "/profiles/oauth", "home/oauth", "sc-bubble-chart-line");
-            roleAdminList.Add(new RoleAuthDao { role_id = roleAdminDao.id, auth_id = menuHomeOAuthDao.id, types = ScmRoleAuthTypesEnum.RoleMenu });
-            var menuHomeOtpDao = CreateMenu(1000000000000001340, "profiles-otp", "凭证登录", menuProfilesDao.id, 3, 4, "/profiles/otp", "home/otp", "sc-bubble-chart-line");
-            roleAdminList.Add(new RoleAuthDao { role_id = roleAdminDao.id, auth_id = menuHomeOtpDao.id, types = ScmRoleAuthTypesEnum.RoleMenu });
+            var homeUnitDao = CreateMenu(1000000000000001310, "profiles-unit", "机构信息", homeProfilesDao.id, 3, 1, "/profiles/unitCenter", "home/unitinfo", "sc-settings-3-line");
+            roleAdminList.Add(new RoleAuthDao { role_id = roleAdminDao.id, auth_id = homeUnitDao.id, types = ScmRoleAuthTypesEnum.RoleMenu });
+            var homeUserDao = CreateMenu(1000000000000001320, "profiles-user", "个人信息", homeProfilesDao.id, 3, 2, "/profiles/usercenter", "home/userinfo", "sc-user-line");
+            roleAdminList.Add(new RoleAuthDao { role_id = roleAdminDao.id, auth_id = homeUserDao.id, types = ScmRoleAuthTypesEnum.RoleMenu });
+            var homeOAuthDao = CreateMenu(1000000000000001330, "profiles-oauth", "联合登录", homeProfilesDao.id, 3, 3, "/profiles/oauth", "home/oauth", "sc-bubble-chart-line");
+            roleAdminList.Add(new RoleAuthDao { role_id = roleAdminDao.id, auth_id = homeOAuthDao.id, types = ScmRoleAuthTypesEnum.RoleMenu });
+            var homeOtpDao = CreateMenu(1000000000000001340, "profiles-otp", "凭证登录", homeProfilesDao.id, 3, 4, "/profiles/otp", "home/otp", "sc-bubble-chart-line");
+            roleAdminList.Add(new RoleAuthDao { role_id = roleAdminDao.id, auth_id = homeOtpDao.id, types = ScmRoleAuthTypesEnum.RoleMenu });
             // 我的反馈
-            var menuFeedbackDao = CreateMenu(1000000000000001400, "feedback", "我的反馈", menuHomeDao.id, 2, 4, "/feedback", "scm/sys/feedback", "sc-chat-quote-line");
-            roleAdminList.Add(new RoleAuthDao { role_id = roleAdminDao.id, auth_id = menuFeedbackDao.id, types = ScmRoleAuthTypesEnum.RoleMenu });
+            var homeFeedbackDao = CreateMenu(1000000000000001400, "feedback", "我的反馈", homeDao.id, 2, 4, "/feedback", "scm/sys/feedback", "sc-chat-quote-line");
+            roleAdminList.Add(new RoleAuthDao { role_id = roleAdminDao.id, auth_id = homeFeedbackDao.id, types = ScmRoleAuthTypesEnum.RoleMenu });
             // 我的终端
-            var menuTerminalDao = CreateMenu(1000000000000001500, "terminal", "我的终端", menuHomeDao.id, 2, 5, "/terminal", "scm/ur/terminal", "sc-device-line");
-            roleAdminList.Add(new RoleAuthDao { role_id = roleAdminDao.id, auth_id = menuTerminalDao.id, types = ScmRoleAuthTypesEnum.RoleMenu });
+            var homeTerminalDao = CreateMenu(1000000000000001500, "terminal", "我的终端", homeDao.id, 2, 5, "/terminal", "scm/ur/terminal", "sc-device-line");
+            roleAdminList.Add(new RoleAuthDao { role_id = roleAdminDao.id, auth_id = homeTerminalDao.id, types = ScmRoleAuthTypesEnum.RoleMenu });
             // 下载中心
-            var menuDownloadDao = CreateMenu(1000000000000001600, "download", "下载中心", menuHomeDao.id, 2, 6, "/download", "scm/down", "sc-device-line");
-            roleAdminList.Add(new RoleAuthDao { role_id = roleAdminDao.id, auth_id = menuDownloadDao.id, types = ScmRoleAuthTypesEnum.RoleMenu });
+            var homeDownloadDao = CreateMenu(1000000000000001600, "download", "下载中心", homeDao.id, 2, 6, "/download", "scm/down", "sc-device-line");
+            roleAdminList.Add(new RoleAuthDao { role_id = roleAdminDao.id, auth_id = homeDownloadDao.id, types = ScmRoleAuthTypesEnum.RoleMenu });
 
             // 设置
-            var menuSettingsDao = CreateMenu(1000000000000003000, "setting", "设置", menuRootDao.id, 1, 3, "/setting", "", "sc-settings-line");
-            roleAdminList.Add(new RoleAuthDao { role_id = roleAdminDao.id, auth_id = menuSettingsDao.id, types = ScmRoleAuthTypesEnum.RoleMenu });
+            var admDao = CreateMenu(1000000000000003000, "setting", "设置", rootDao.id, 1, 3, "/setting", "", "sc-settings-line");
+            roleAdminList.Add(new RoleAuthDao { role_id = roleAdminDao.id, auth_id = admDao.id, types = ScmRoleAuthTypesEnum.RoleMenu });
             // 研发管理
-            var menuDevDao = CreateMenu(1000000000000003100, "setting-dev", "研发管理", menuSettingsDao.id, 2, 1, "/setting/dev", "dev", "sc-bug-line");
-            roleAdminList.Add(new RoleAuthDao { role_id = roleAdminDao.id, auth_id = menuDevDao.id, types = ScmRoleAuthTypesEnum.RoleMenu });
-            var menuDevMenuDao = CreateMenu(1000000000000003110, "setting-dev-menu", "资源管理", menuDevDao.id, 3, 1, "/setting/dev/menu", "scm/dev/menu", "sc-menu-fill");
-            roleAdminList.Add(new RoleAuthDao { role_id = roleAdminDao.id, auth_id = menuDevMenuDao.id, types = ScmRoleAuthTypesEnum.RoleMenu });
-            var menuDevAppDao = CreateMenu(1000000000000003120, "setting-dev-app", "应用管理", menuDevDao.id, 3, 2, "/setting/dev/app", "scm/dev/app", "sc-apple");
-            roleAdminList.Add(new RoleAuthDao { role_id = roleAdminDao.id, auth_id = menuDevAppDao.id, types = ScmRoleAuthTypesEnum.RoleMenu });
-            var menuDevVerDao = CreateMenu(1000000000000003130, "setting-dev-version", "版本管理", menuDevDao.id, 3, 3, "/setting/dev/version", "scm/dev/version", "sc-file-text-line");
-            roleAdminList.Add(new RoleAuthDao { role_id = roleAdminDao.id, auth_id = menuDevVerDao.id, types = ScmRoleAuthTypesEnum.RoleMenu });
-            var menuDevUidDao = CreateMenu(1000000000000003140, "setting-dev-_uid", "编码管理", menuDevDao.id, 3, 4, "/setting/dev/uid", "scm/dev/uid", "sc-list-ordered");
-            roleAdminList.Add(new RoleAuthDao { role_id = roleAdminDao.id, auth_id = menuDevUidDao.id, types = ScmRoleAuthTypesEnum.RoleMenu });
-            var menuDevGenDao = CreateMenu(1000000000000003150, "setting-dev-gen", "代码生成", menuDevDao.id, 3, 5, "/setting/dev/generate", "scm/dev/generate", "sc-code-fill");
-            roleAdminList.Add(new RoleAuthDao { role_id = roleAdminDao.id, auth_id = menuDevGenDao.id, types = ScmRoleAuthTypesEnum.RoleMenu });
+            var admDevDao = CreateMenu(1000000000000003100, "setting-dev", "研发管理", admDao.id, 2, 1, "/setting/dev", "dev", "sc-bug-line");
+            roleAdminList.Add(new RoleAuthDao { role_id = roleAdminDao.id, auth_id = admDevDao.id, types = ScmRoleAuthTypesEnum.RoleMenu });
+            var admDevMenuDao = CreateMenu(1000000000000003110, "setting-dev-menu", "资源管理", admDevDao.id, 3, 1, "/setting/dev/menu", "scm/dev/menu", "sc-menu-fill");
+            roleAdminList.Add(new RoleAuthDao { role_id = roleAdminDao.id, auth_id = admDevMenuDao.id, types = ScmRoleAuthTypesEnum.RoleMenu });
+            var admDevAppDao = CreateMenu(1000000000000003120, "setting-dev-app", "应用管理", admDevDao.id, 3, 2, "/setting/dev/app", "scm/dev/app", "sc-apple");
+            roleAdminList.Add(new RoleAuthDao { role_id = roleAdminDao.id, auth_id = admDevAppDao.id, types = ScmRoleAuthTypesEnum.RoleMenu });
+            var admDevVerDao = CreateMenu(1000000000000003130, "setting-dev-version", "版本管理", admDevDao.id, 3, 3, "/setting/dev/version", "scm/dev/version", "sc-file-text-line");
+            roleAdminList.Add(new RoleAuthDao { role_id = roleAdminDao.id, auth_id = admDevVerDao.id, types = ScmRoleAuthTypesEnum.RoleMenu });
+            var admDevUidDao = CreateMenu(1000000000000003140, "setting-dev-_uid", "编码管理", admDevDao.id, 3, 4, "/setting/dev/uid", "scm/dev/uid", "sc-list-ordered");
+            roleAdminList.Add(new RoleAuthDao { role_id = roleAdminDao.id, auth_id = admDevUidDao.id, types = ScmRoleAuthTypesEnum.RoleMenu });
+            var admDevGenDao = CreateMenu(1000000000000003150, "setting-dev-gen", "代码生成", admDevDao.id, 3, 5, "/setting/dev/generate", "scm/dev/generate", "sc-code-fill");
+            roleAdminList.Add(new RoleAuthDao { role_id = roleAdminDao.id, auth_id = admDevGenDao.id, types = ScmRoleAuthTypesEnum.RoleMenu });
             //var menuDevDbaDao = CreateMenu(1000000000000003160, "setting-dev-db", "数据库管理", menuDevDao.id, 3, 6, "/setting/dev/db", "scm/dev/db", "sc-coin-line");
             //roleAdminList.Add(new RoleAuthDao { role_id = roleAdminDao.id, auth_id = menuDevDbaDao.id, types = ScmRoleAuthTypesEnum.RoleMenu });
             //var menuDevSqlDao = CreateMenu(1000000000000003170, "setting-dev-sql", "数据库脚本", menuDevDao.id, 3, 7, "/setting/dev/sql", "scm/dev/sql", "sc-file-paper-2-line");
@@ -534,49 +534,48 @@ namespace Com.Scm
             //roleAdminList.Add(new RoleAuthDao { role_id = roleAdminDao.id, auth_id = menuDevQtzDao.id, types = ScmRoleAuthTypesEnum.RoleMenu });
 
             // 全局配置
-            var menuCfgDao = CreateMenu(1000000000000003200, "setting-adm", "全局配置", menuSettingsDao.id, 2, 2, "/setting/adm", "scm/cfg", "sc-settings-3-line");
-            roleAdminList.Add(new RoleAuthDao { role_id = roleAdminDao.id, auth_id = menuCfgDao.id, types = ScmRoleAuthTypesEnum.RoleMenu });
-            var menuCfgAdmDao = CreateMenu(1000000000000003210, "setting-adm-cfg", "参数配置", menuCfgDao.id, 3, 1, "/setting/adm/cfg", "scm/adm/cfg", "sc-file-text-line");
-            roleAdminList.Add(new RoleAuthDao { role_id = roleAdminDao.id, auth_id = menuCfgAdmDao.id, types = ScmRoleAuthTypesEnum.RoleMenu });
-            var menuCfgDicDao = CreateMenu(1000000000000003220, "setting-adm-dic", "数据字典", menuCfgDao.id, 3, 2, "/setting/adm/dic", "scm/adm/dic", "sc-file-copy-2-line");
-            roleAdminList.Add(new RoleAuthDao { role_id = roleAdminDao.id, auth_id = menuCfgDicDao.id, types = ScmRoleAuthTypesEnum.RoleMenu });
-            var menuCfgCatDao = CreateMenu(1000000000000003230, "setting-adm-cat", "分类管理", menuCfgDao.id, 3, 3, "/setting/adm/cat", "scm/res/cat", "sc-layers-line");
-            roleAdminList.Add(new RoleAuthDao { role_id = roleAdminDao.id, auth_id = menuCfgCatDao.id, types = ScmRoleAuthTypesEnum.RoleMenu });
-            var menuCfgUomDao = CreateMenu(1000000000000003240, "setting-adm-uom", "计量单位", menuCfgDao.id, 3, 4, "/setting/adm/uom", "scm/sys/uom", "sc-signpost-line");
-            roleAdminList.Add(new RoleAuthDao { role_id = roleAdminDao.id, auth_id = menuCfgUomDao.id, types = ScmRoleAuthTypesEnum.RoleMenu });
-            var menuCfgSecDao = CreateMenu(1000000000000003250, "setting-adm-safety", "安全设置", menuCfgDao.id, 3, 5, "/setting/adm/safety", "scm/adm/safety", "sc-verified-badge-line");
-            roleAdminList.Add(new RoleAuthDao { role_id = roleAdminDao.id, auth_id = menuCfgSecDao.id, types = ScmRoleAuthTypesEnum.RoleMenu });
+            var admCfgDao = CreateMenu(1000000000000003200, "setting-adm", "全局配置", admDao.id, 2, 2, "/setting/adm", "scm/cfg", "sc-settings-3-line");
+            roleAdminList.Add(new RoleAuthDao { role_id = roleAdminDao.id, auth_id = admCfgDao.id, types = ScmRoleAuthTypesEnum.RoleMenu });
+            var admCfgAdmDao = CreateMenu(1000000000000003210, "setting-adm-cfg", "参数配置", admCfgDao.id, 3, 1, "/setting/adm/cfg", "scm/adm/cfg", "sc-file-text-line");
+            roleAdminList.Add(new RoleAuthDao { role_id = roleAdminDao.id, auth_id = admCfgAdmDao.id, types = ScmRoleAuthTypesEnum.RoleMenu });
+            var admCfgDicDao = CreateMenu(1000000000000003220, "setting-adm-dic", "数据字典", admCfgDao.id, 3, 2, "/setting/adm/dic", "scm/adm/dic", "sc-file-copy-2-line");
+            roleAdminList.Add(new RoleAuthDao { role_id = roleAdminDao.id, auth_id = admCfgDicDao.id, types = ScmRoleAuthTypesEnum.RoleMenu });
+            var admCfgCatDao = CreateMenu(1000000000000003230, "setting-adm-cat", "分类管理", admCfgDao.id, 3, 3, "/setting/adm/cat", "scm/res/cat", "sc-layers-line");
+            roleAdminList.Add(new RoleAuthDao { role_id = roleAdminDao.id, auth_id = admCfgCatDao.id, types = ScmRoleAuthTypesEnum.RoleMenu });
+            var admCfgUomDao = CreateMenu(1000000000000003240, "setting-adm-uom", "计量单位", admCfgDao.id, 3, 4, "/setting/adm/uom", "scm/sys/uom", "sc-signpost-line");
+            roleAdminList.Add(new RoleAuthDao { role_id = roleAdminDao.id, auth_id = admCfgUomDao.id, types = ScmRoleAuthTypesEnum.RoleMenu });
+            var admCfgSecDao = CreateMenu(1000000000000003250, "setting-adm-safety", "安全设置", admCfgDao.id, 3, 5, "/setting/adm/safety", "scm/adm/safety", "sc-verified-badge-line");
+            roleAdminList.Add(new RoleAuthDao { role_id = roleAdminDao.id, auth_id = admCfgSecDao.id, types = ScmRoleAuthTypesEnum.RoleMenu });
 
             // 权限管理
-            var menuUrDao = CreateMenu(1000000000000003300, "ur", "权限管理", menuSettingsDao.id, 2, 3, "/scm/ur", "scm/ur", "sc-user-settings-line");
-            roleAdminList.Add(new RoleAuthDao { role_id = roleAdminDao.id, auth_id = menuUrDao.id, types = ScmRoleAuthTypesEnum.RoleMenu });
-            var menuUrOrganizeDao = CreateMenu(1000000000000003310, "scm-ur-organize", "组织管理", menuUrDao.id, 3, 1, "/scm/ur/organize", "scm/ur/organize", "sc-company-line");
-            roleAdminList.Add(new RoleAuthDao { role_id = roleAdminDao.id, auth_id = menuUrOrganizeDao.id, types = ScmRoleAuthTypesEnum.RoleMenu });
-            var menuUrPositionDao = CreateMenu(1000000000000003320, "scm-ur-position", "岗位管理", menuUrDao.id, 3, 2, "/scm/ur/position", "scm/ur/position", "sc-place");
-            roleAdminList.Add(new RoleAuthDao { role_id = roleAdminDao.id, auth_id = menuUrPositionDao.id, types = ScmRoleAuthTypesEnum.RoleMenu });
-            var menuUrGroupDao = CreateMenu(1000000000000003330, "scm-ur-group", "群组管理", menuUrDao.id, 3, 3, "/scm/ur/group", "scm/ur/group", "sc-user-2-line");
-            roleAdminList.Add(new RoleAuthDao { role_id = roleAdminDao.id, auth_id = menuUrGroupDao.id, types = ScmRoleAuthTypesEnum.RoleMenu });
-            var menuUrRoleDao = CreateMenu(1000000000000003340, "scm-ur-role", "角色管理", menuUrDao.id, 3, 4, "/scm/ur/role", "scm/ur/role", "sc-contacts-book-upload-line");
-            roleAdminList.Add(new RoleAuthDao { role_id = roleAdminDao.id, auth_id = menuUrRoleDao.id, types = ScmRoleAuthTypesEnum.RoleMenu });
-            var menuUrAuthDao = CreateMenu(1000000000000003350, "scm-ur-roleauth", "角色权限", menuUrDao.id, 3, 5, "/scm/ur/roleauth", "scm/ur/roleauth", "sc-verified-badge-line");
-            roleAdminList.Add(new RoleAuthDao { role_id = roleAdminDao.id, auth_id = menuUrAuthDao.id, types = ScmRoleAuthTypesEnum.RoleMenu });
-            var menuUrAuthCDao = CreateMenu(1000000000000003360, "scm-ur-roleconflict", "角色互斥", menuUrDao.id, 3, 6, "/scm/ur/roleconflict", "scm/ur/roleconflict", "sc-cherry");
-            roleAdminList.Add(new RoleAuthDao { role_id = roleAdminDao.id, auth_id = menuUrAuthCDao.id, types = ScmRoleAuthTypesEnum.RoleMenu });
-
-            var menuUrUserDao = CreateMenu(1000000000000003370, "scm-ur-user", "用户管理", menuUrDao.id, 3, 7, "/scm/ur/user", "scm/ur/user", "sc-user-line");
-            roleAdminList.Add(new RoleAuthDao { role_id = roleAdminDao.id, auth_id = menuUrUserDao.id, types = ScmRoleAuthTypesEnum.RoleMenu });
+            var admUrDao = CreateMenu(1000000000000003300, "ur", "权限管理", admDao.id, 2, 3, "/scm/ur", "scm/ur", "sc-user-settings-line");
+            roleAdminList.Add(new RoleAuthDao { role_id = roleAdminDao.id, auth_id = admUrDao.id, types = ScmRoleAuthTypesEnum.RoleMenu });
+            var admUrOrganizeDao = CreateMenu(1000000000000003310, "scm-ur-organize", "组织管理", admUrDao.id, 3, 1, "/scm/ur/organize", "scm/ur/organize", "sc-company-line");
+            roleAdminList.Add(new RoleAuthDao { role_id = roleAdminDao.id, auth_id = admUrOrganizeDao.id, types = ScmRoleAuthTypesEnum.RoleMenu });
+            var admUrPositionDao = CreateMenu(1000000000000003320, "scm-ur-position", "岗位管理", admUrDao.id, 3, 2, "/scm/ur/position", "scm/ur/position", "sc-place");
+            roleAdminList.Add(new RoleAuthDao { role_id = roleAdminDao.id, auth_id = admUrPositionDao.id, types = ScmRoleAuthTypesEnum.RoleMenu });
+            var admUrGroupDao = CreateMenu(1000000000000003330, "scm-ur-group", "群组管理", admUrDao.id, 3, 3, "/scm/ur/group", "scm/ur/group", "sc-user-2-line");
+            roleAdminList.Add(new RoleAuthDao { role_id = roleAdminDao.id, auth_id = admUrGroupDao.id, types = ScmRoleAuthTypesEnum.RoleMenu });
+            var admUrRoleDao = CreateMenu(1000000000000003340, "scm-ur-role", "角色管理", admUrDao.id, 3, 4, "/scm/ur/role", "scm/ur/role", "sc-contacts-book-upload-line");
+            roleAdminList.Add(new RoleAuthDao { role_id = roleAdminDao.id, auth_id = admUrRoleDao.id, types = ScmRoleAuthTypesEnum.RoleMenu });
+            var admUrAuthDao = CreateMenu(1000000000000003350, "scm-ur-roleauth", "角色权限", admUrDao.id, 3, 5, "/scm/ur/roleauth", "scm/ur/roleauth", "sc-verified-badge-line");
+            roleAdminList.Add(new RoleAuthDao { role_id = roleAdminDao.id, auth_id = admUrAuthDao.id, types = ScmRoleAuthTypesEnum.RoleMenu });
+            var admUrAuthCDao = CreateMenu(1000000000000003360, "scm-ur-roleconflict", "角色互斥", admUrDao.id, 3, 6, "/scm/ur/roleconflict", "scm/ur/roleconflict", "sc-cherry");
+            roleAdminList.Add(new RoleAuthDao { role_id = roleAdminDao.id, auth_id = admUrAuthCDao.id, types = ScmRoleAuthTypesEnum.RoleMenu });
+            var admUrUserDao = CreateMenu(1000000000000003370, "scm-ur-user", "用户管理", admUrDao.id, 3, 7, "/scm/ur/user", "scm/ur/user", "sc-user-line");
+            roleAdminList.Add(new RoleAuthDao { role_id = roleAdminDao.id, auth_id = admUrUserDao.id, types = ScmRoleAuthTypesEnum.RoleMenu });
 
             // 关于
-            var menuAboutDao = CreateMenu(1000000000000004000, "about", "关于", menuRootDao.id, 1, 999, "/about", "about", "sc-info");
-            roleAdminList.Add(new RoleAuthDao { role_id = roleAdminDao.id, auth_id = menuAboutDao.id, types = ScmRoleAuthTypesEnum.RoleMenu });
-            var menuAboutSiteDao = CreateMenu(1000000000000004100, "about-site", "关于网站", menuAboutDao.id, 4, 1, "/about/app/site/scm.net", "about/app", "sc-global-line");
-            roleAdminList.Add(new RoleAuthDao { role_id = roleAdminDao.id, auth_id = menuAboutSiteDao.id, types = ScmRoleAuthTypesEnum.RoleMenu });
-            var menuAboutAuthorDao = CreateMenu(1000000000000004200, "about-author", "关于作者", menuAboutDao.id, 4, 2, "/about/app/author/scm.net", "about/app", "sc-user-line");
-            roleAdminList.Add(new RoleAuthDao { role_id = roleAdminDao.id, auth_id = menuAboutAuthorDao.id, types = ScmRoleAuthTypesEnum.RoleMenu });
-            var menuAboutContactDao = CreateMenu(1000000000000004300, "about-contact", "联系作者", menuAboutDao.id, 4, 3, "/about/app/contact/scm.net", "about/app", "sc-postcard");
-            roleAdminList.Add(new RoleAuthDao { role_id = roleAdminDao.id, auth_id = menuAboutContactDao.id, types = ScmRoleAuthTypesEnum.RoleMenu });
-            var menuAboutHistoryDao = CreateMenu(1000000000000004400, "about-history", "更新历史", menuAboutDao.id, 4, 4, "/about/ver/scm.net", "about/ver", "sc-file-text-line");
-            roleAdminList.Add(new RoleAuthDao { role_id = roleAdminDao.id, auth_id = menuAboutHistoryDao.id, types = ScmRoleAuthTypesEnum.RoleMenu });
+            var aboutDao = CreateMenu(1000000000000004000, "about", "关于", rootDao.id, 1, 999, "/about", "about", "sc-info");
+            roleAdminList.Add(new RoleAuthDao { role_id = roleAdminDao.id, auth_id = aboutDao.id, types = ScmRoleAuthTypesEnum.RoleMenu });
+            var aboutSiteDao = CreateMenu(1000000000000004100, "about-site", "关于网站", aboutDao.id, 4, 1, "/about/app/site/scm.net", "about/app", "sc-global-line");
+            roleAdminList.Add(new RoleAuthDao { role_id = roleAdminDao.id, auth_id = aboutSiteDao.id, types = ScmRoleAuthTypesEnum.RoleMenu });
+            var aboutAuthorDao = CreateMenu(1000000000000004200, "about-author", "关于作者", aboutDao.id, 4, 2, "/about/app/author/scm.net", "about/app", "sc-user-line");
+            roleAdminList.Add(new RoleAuthDao { role_id = roleAdminDao.id, auth_id = aboutAuthorDao.id, types = ScmRoleAuthTypesEnum.RoleMenu });
+            var aboutContactDao = CreateMenu(1000000000000004300, "about-contact", "联系作者", aboutDao.id, 4, 3, "/about/app/contact/scm.net", "about/app", "sc-postcard");
+            roleAdminList.Add(new RoleAuthDao { role_id = roleAdminDao.id, auth_id = aboutContactDao.id, types = ScmRoleAuthTypesEnum.RoleMenu });
+            var aboutHistoryDao = CreateMenu(1000000000000004400, "about-history", "更新历史", aboutDao.id, 4, 4, "/about/ver/scm.net", "about/ver", "sc-file-text-line");
+            roleAdminList.Add(new RoleAuthDao { role_id = roleAdminDao.id, auth_id = aboutHistoryDao.id, types = ScmRoleAuthTypesEnum.RoleMenu });
 
             _SqlClient.Insertable(roleAdminList).ExecuteCommand();
 

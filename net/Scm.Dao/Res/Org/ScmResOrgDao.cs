@@ -11,14 +11,6 @@ namespace Com.Scm.Res.Org
     public class ScmResOrgDao : ScmDataDao, IResDao
     {
         /// <summary>
-        /// 
-        /// </summary>
-        [Required]
-        [StringLength(16)]
-        [SugarColumn(Length = 16)]
-        public string codes { get; set; }
-
-        /// <summary>
         /// 组织代码
         /// </summary>
         [Required]

@@ -65,7 +65,7 @@
 					</template>
 				</el-table-column>
 				<template #names="scope">
-					<el-button type="text" link @click="open(scope.row)">
+					<el-button type="primary" size="small" @click="open(scope.row)">
 						{{ scope.row.names }}
 					</el-button>
 				</template>

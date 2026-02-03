@@ -72,7 +72,7 @@ namespace Com.Scm.Res.Ext
 
         private void Prepare(List<ScmResExtDvo> list)
         {
-            var dicDao = _dicService.GetDic("file_type");
+            var dicDao = _dicService.GetDic("file_kind");
             var orgRepository = _thisRepository.Change<ScmResOrgDao>();
             var orgDict = new Dictionary<long, ScmResOrgDao>();
             var appRepository = _thisRepository.Change<ScmResAppDao>();

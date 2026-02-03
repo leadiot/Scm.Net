@@ -59,13 +59,15 @@ namespace Com.Scm.Nas.Sync
             }
 
             var dirList = new List<SyncResFileDao>();
-            var dao = CreateSpecialDirDao(terminalDao, NasEnv.NodeDownloads, NasEnv.PathDownloads, NasSubTypeEnums.DirFolder);
+            var dao = CreateSpecialDirDao(terminalDao, NasEnv.NodeDevices, NasEnv.PathDevices, NasSubTypeEnums.DirFolder);
             dirList.Add(dao);
-            dao = CreateSpecialDirDao(terminalDao, NasEnv.NodeDevices, NasEnv.PathDevices, NasSubTypeEnums.DirFolder);
+            dao = CreateSpecialDirDao(terminalDao, NasEnv.NodePublic, NasEnv.PathPublic, NasSubTypeEnums.DirFolder);
             dirList.Add(dao);
             dao = CreateSpecialDirDao(terminalDao, NasEnv.NodeSecret, NasEnv.PathSecret, NasSubTypeEnums.DirFolder);
             dirList.Add(dao);
-            dao = CreateSpecialDirDao(terminalDao, NasEnv.NodePublic, NasEnv.PathPublic, NasSubTypeEnums.DirFolder);
+            dao = CreateSpecialDirDao(terminalDao, NasEnv.NodeDownloads, NasEnv.PathDownloads, NasSubTypeEnums.DirFolder);
+            dirList.Add(dao);
+            dao = CreateSpecialDirDao(terminalDao, NasEnv.NodeApps, NasEnv.PathApps, NasSubTypeEnums.DirFolder);
             dirList.Add(dao);
 
             return dirList;

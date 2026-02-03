@@ -12,6 +12,10 @@
 				<el-input v-model="formData.namec" placeholder="请输入后缀名称" :maxlength="64" show-word-limit
 					clearable></el-input>
 			</el-form-item>
+			<el-form-item label="MIME类型" prop="mime">
+				<el-input v-model="formData.mime" placeholder="请输入MIME类型" :maxlength="128" show-word-limit
+					clearable></el-input>
+			</el-form-item>
 			<el-form-item label="文件签名" prop="sign">
 				<el-input v-model="formData.sign" placeholder="请输入文件签名" :maxlength="1" show-word-limit
 					clearable></el-input>
@@ -68,6 +72,7 @@ export default {
 				id: this.$SCM.DEF_ID,
 				types: this.$SCM.ID_ONE_INT,
 				codec: '',
+				mime: '',
 				sign: '',
 				org_id: this.$SCM.ID_ALL,
 				app_id: this.$SCM.ID_ALL,

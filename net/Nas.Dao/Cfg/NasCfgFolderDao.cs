@@ -21,12 +21,14 @@ namespace Com.Scm.Nas.Cfg
         /// </summary>
         [Required]
         [StringLength(256)]
+        [SugarColumn(Length = 256)]
         public string name { get; set; }
 
         /// <summary>
         /// 远端路径
         /// </summary>
-        [StringLength(2048)]
+        [StringLength(1024)]
+        [SugarColumn(Length = 1024, IsNullable = true)]
         public string path { get; set; }
 
         /// <summary>

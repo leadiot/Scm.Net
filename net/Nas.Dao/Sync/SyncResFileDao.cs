@@ -21,11 +21,13 @@ namespace Com.Scm.Nas.Sync
         /// <summary>
         /// 文件类型
         /// </summary>
+        [SugarColumn(ColumnDataType = "tinyint", IsNullable = false)]
         public NasTypeEnums type { get; set; }
 
         /// <summary>
-        /// 
+        /// 二级类型
         /// </summary>
+        [SugarColumn(ColumnDataType = "tinyint", IsNullable = false)]
         public NasSubTypeEnums sub { get; set; }
 
         /// <summary>
@@ -39,18 +41,22 @@ namespace Com.Scm.Nas.Sync
         /// </summary>
         [Required]
         [StringLength(256)]
+        [SugarColumn(Length = 256)]
         public string name { get; set; }
 
         /// <summary>
         /// 路径
         /// </summary>
-        [StringLength(2048)]
+        [Required]
+        [StringLength(1024)]
+        [SugarColumn(Length = 1024)]
         public string path { get; set; }
 
         /// <summary>
         /// 文档摘要
         /// </summary>
         [StringLength(64)]
+        [SugarColumn(Length = 64, IsNullable = true)]
         public string hash { get; set; }
 
         /// <summary>
@@ -63,15 +69,18 @@ namespace Com.Scm.Nas.Sync
         /// </summary>
         public long modify_time { get; set; }
 
-        public ScmBoolEnum p_delete { get; set; }
-        public ScmBoolEnum s_delete { get; set; }
-        public ScmBoolEnum is_delete { get; set; }
-
         /// <summary>
         /// 版本
         /// </summary>
         [Required]
         public long ver { get; set; }
+
+        [SugarColumn(ColumnDataType = "tinyint", IsNullable = false)]
+        public ScmBoolEnum p_delete { get; set; }
+        [SugarColumn(ColumnDataType = "tinyint", IsNullable = false)]
+        public ScmBoolEnum s_delete { get; set; }
+        [SugarColumn(ColumnDataType = "tinyint", IsNullable = false)]
+        public ScmBoolEnum is_delete { get; set; }
 
         public override void PrepareCreate(long userId)
         {

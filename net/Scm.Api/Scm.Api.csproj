@@ -6,7 +6,12 @@
     <Nullable>disable</Nullable>
     <RootNamespace>Com.Scm.Api</RootNamespace>
     <StartupObject>Com.Scm.Api.Program</StartupObject>
+    <ApplicationIcon>Resources\logo.ico</ApplicationIcon>
   </PropertyGroup>
+
+  <ItemGroup>
+    <Content Include="Resources\logo.ico" />
+  </ItemGroup>
 
   <ItemGroup>
     <Compile Remove="dev\**" />

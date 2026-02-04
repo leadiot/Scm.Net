@@ -174,7 +174,20 @@ export default {
 			if (this.selection.length != 1) {
 				return;
 			}
-			this.$API.scmurterminal.unbind.post(this.selection[0].id);
+			this.$confirm(`确定要解绑选中的 ${this.selection[0].names} 项吗，解绑后原终端将无法使用？`, "提示", {
+				type: "warning",
+				confirmButtonText: "确定",
+				cancelButtonText: "取消",
+			}).then(async () => {
+				const loading = this.$loading();
+				var res = await this.$API.scmurterminal.unbind.post(this.selection[0].id);
+				if (res.code == 200) {
+					loading.close();
+					this.$message.success("解绑成功");
+				} else {
+					this.$alert(res.message, "提示", { type: "error" });
+				}
+			}).catch(() => { });
 		}
 	},
 };

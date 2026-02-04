@@ -10,12 +10,12 @@
         /// <summary>
         /// 次版本号
         /// </summary>
-        public const int MINOR = 0;
+        public const int MINOR = 9;
 
         /// <summary>
         /// 修订号
         /// </summary>
-        public const int PATCH = 0;
+        public const int PATCH = 16;
 
         /// <summary>
         /// 构建号

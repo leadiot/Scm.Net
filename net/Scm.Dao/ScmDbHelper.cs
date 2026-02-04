@@ -16,8 +16,8 @@ namespace Com.Scm
     public class ScmDbHelper : IModelHelper
     {
         private const int MAJOR = 10;
-        private const int MINOR = 0;
-        private const int PATCH = 0;
+        private const int MINOR = 9;
+        private const int PATCH = 16;
         private const string BUILD = "2026020601";
         private const string RELEASE_DATE = "2026-02-06";
 

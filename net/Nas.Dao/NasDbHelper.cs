@@ -7,7 +7,7 @@ namespace Com.Scm.Nas
 {
     public class NasDbHelper : ScmDbHelper
     {
-        private const int MAJOR = 10;
+        private const int MAJOR = 1;
         private const int MINOR = 0;
         private const int PATCH = 0;
         private const string BUILD = "2026020601";

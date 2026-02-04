@@ -1,8 +1,8 @@
 const APP_CONFIG = {
 	/** 应用代码，默认不需要修改 */
-	APP_CODE: "Scm.Net",
+	APP_CODE: "scm.net",
 	/** 应用名称，可以根据需要修改 */
-	APP_NAME: "AppName",
+	APP_NAME: "Scm.Net",
 	/** 产品描述，可以根据需要修改 */
 	APP_DESC: "这是应用的简单介绍。",
 
@@ -13,7 +13,7 @@ const APP_CONFIG = {
 	//API_URL: '/api',
 
 	/** 默认登录模式，可以修改，支持10，20，30，40四种方式 */
-	DEF_LOGIN_MODE: [10, 20, 30],
+	DEF_LOGIN_MODE: [10, 30],
 	/** 默认登录用户，便于开发时减少输入，可以修改或置空 */
 	DEF_LOGIN_USER: "admin",
 	/** 默认登录口令，便于开发时减少输入，可以修改或置空 */

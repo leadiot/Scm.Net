@@ -93,7 +93,7 @@ namespace Com.Scm
 
                 return _SqlClient.Queryable<ScmVerDao>().First(a => a.key == key);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 return null;
             }

@@ -128,8 +128,7 @@ export default {
 				return;
 			}
 
-			alert(row.type);
-			//window.open(row.url);
+			window.open('/api/nas/vs/' + row.id);
 		},
 		changeDir(item) {
 			if (!item) {

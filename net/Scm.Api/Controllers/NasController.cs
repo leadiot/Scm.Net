@@ -5,6 +5,7 @@ using Com.Scm.Http;
 using Com.Scm.Nas;
 using Com.Scm.Nas.Sync;
 using Com.Scm.Res.Ext;
+using Com.Scm.Ur;
 using Com.Scm.Utils;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -15,13 +16,13 @@ namespace Com.Scm.Api.Controllers
 {
     /// <summary>
     /// 文件下载服务
-    /// /Api/NasFile/ds/i，小文件下载
-    /// /Api/NasFile/dl/id，大文件下载
-    /// /Api/NasFile/v/id，文件查看
-    /// /Api/NasFile/file，小文件上传
-    /// /Api/NasFile/chunk，分块上传
-    /// /Api/NasFile/check，上传校验
-    /// /Api/NasFile/merge，
+    /// /Api/Nas/ds/i，小文件下载
+    /// /Api/Nas/dl/id，大文件下载
+    /// /Api/Nas/vs/id，文件查看
+    /// /Api/Nas/file，小文件上传
+    /// /Api/Nas/chunk，分块上传
+    /// /Api/Nas/check，上传校验
+    /// /Api/Nas/merge，
     /// </summary>
     [AllowAnonymous]
     [ApiExplorerSettings(GroupName = "Scm")]
@@ -56,8 +57,16 @@ namespace Com.Scm.Api.Controllers
                 return Empty;
             }
 
+            var userDao = await _SqlClient.Queryable<UserDao>()
+                .Where(a => a.id == docDao.user_id)
+                .FirstAsync();
+            if (userDao == null)
+            {
+                return Empty;
+            }
+
             // 1. 定义文件存储的根路径
-            var filePath = _EnvConfig.GetDataPath("/Nas" + docDao.path);
+            var filePath = _EnvConfig.GetDataPath($"/Nas/{userDao.codes}" + docDao.path);
 
             // 2. 校验文件是否存在
             if (!System.IO.File.Exists(filePath))
@@ -91,8 +100,16 @@ namespace Com.Scm.Api.Controllers
                 return Empty;
             }
 
+            var userDao = await _SqlClient.Queryable<UserDao>()
+                .Where(a => a.id == docDao.user_id)
+                .FirstAsync();
+            if (userDao == null)
+            {
+                return Empty;
+            }
+
             // 1. 定义文件存储的根路径
-            var filePath = _EnvConfig.GetDataPath("/Nas" + docDao.path);
+            var filePath = _EnvConfig.GetDataPath($"/Nas/{userDao.codes}" + docDao.path);
 
             // 2. 校验文件是否存在
             if (!System.IO.File.Exists(filePath))
@@ -226,7 +243,7 @@ namespace Com.Scm.Api.Controllers
         /// <param name="id"></param>
         /// <returns></returns>
         [NoJsonResult]
-        [HttpGet("v/{id}")]
+        [HttpGet("vs/{id}")]
         public async Task<IActionResult> ViewFile(long id)
         {
             LogUtils.Debug("文件查看：" + id);
@@ -239,8 +256,16 @@ namespace Com.Scm.Api.Controllers
                 return Empty;
             }
 
+            var userDao = await _SqlClient.Queryable<UserDao>()
+                .Where(a => a.id == docDao.user_id)
+                .FirstAsync();
+            if (userDao == null)
+            {
+                return Empty;
+            }
+
             // 1. 定义文件存储的根路径
-            var filePath = _EnvConfig.GetDataPath("/Nas" + docDao.path);
+            var filePath = _EnvConfig.GetDataPath($"/Nas/{userDao.codes}" + docDao.path);
 
             // 2. 校验文件是否存在
             if (!System.IO.File.Exists(filePath))
@@ -249,14 +274,18 @@ namespace Com.Scm.Api.Controllers
             }
 
             // 3. 获取文件的MIME类型
-            var ext = FileUtils.GetExtension(filePath);
-            var extDao = await _SqlClient.Queryable<ScmResExtDao>()
-                .Where(a => a.codec == ext)
-                .FirstAsync();
             var contentType = "";
-            if (extDao == null)
+            var ext = FileUtils.GetExtension(filePath);
+            if (ext != null)
             {
-                contentType = extDao.mime;
+                ext = ext.TrimStart('.');
+                var extDao = await _SqlClient.Queryable<ScmResExtDao>()
+                    .Where(a => a.codec == ext)
+                    .FirstAsync();
+                if (extDao != null)
+                {
+                    contentType = extDao.mime;
+                }
             }
             if (string.IsNullOrWhiteSpace(contentType))
             {

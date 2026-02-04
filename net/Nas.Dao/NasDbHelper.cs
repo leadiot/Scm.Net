@@ -70,19 +70,19 @@ namespace Com.Scm.Nas
             roleAdminList.Add(new RoleAuthDao { role_id = roleId, auth_id = nasDao.id, types = ScmRoleAuthTypesEnum.RoleMenu });
 
             // 配置管理
-            var nasCfgDao = CreateMenu(2000099923089234567, "nas-cfg", "配置管理", nasDao.id, 2, 1, "/nas/cfg", "nas/cfg", "");
+            var nasCfgDao = CreateMenu(2000099923089234567, "nas-cfg", "配置管理", nasDao.id, 2, 1, "/nas/cfg", "nas/cfg", "sc-settings-line");
             roleAdminList.Add(new RoleAuthDao { role_id = roleId, auth_id = nasCfgDao.id, types = ScmRoleAuthTypesEnum.RoleMenu });
             var nasCfgFolderDao = CreateMenu(2000099923089526478, "nas-cfg-folder", "驱动管理", nasCfgDao.id, 2, 1, "/nas/cfg/folder", "nas/cfg/folder", "");
             roleAdminList.Add(new RoleAuthDao { role_id = roleId, auth_id = nasCfgFolderDao.id, types = ScmRoleAuthTypesEnum.RoleMenu });
 
             // 日志管理
-            var nasLogDao = CreateMenu(2000100080060862464, "nas-log", "日志管理", nasDao.id, 2, 2, "/nas/log", "nas/log", "");
+            var nasLogDao = CreateMenu(2000100080060862464, "nas-log", "日志管理", nasDao.id, 2, 2, "/nas/log", "nas/log", "sc-file-copy-2-line");
             roleAdminList.Add(new RoleAuthDao { role_id = roleId, auth_id = nasLogDao.id, types = ScmRoleAuthTypesEnum.RoleMenu });
             var nasLogSyncDao = CreateMenu(2000100181730791424, "nas-log-file", "同步日志", nasLogDao.id, 3, 1, "/nas/log/file", "nas/log/file", "");
             roleAdminList.Add(new RoleAuthDao { role_id = roleId, auth_id = nasLogSyncDao.id, types = ScmRoleAuthTypesEnum.RoleMenu });
 
             // 文件管理
-            var nasResDao = CreateMenu(2008530629641244672, "nas-res", "文件管理", nasDao.id, 2, 3, "/nas/res", "nas/res", "");
+            var nasResDao = CreateMenu(2008530629641244672, "nas-res", "文件管理", nasDao.id, 2, 3, "/nas/res", "nas/res", "sc-folder-open-line");
             roleAdminList.Add(new RoleAuthDao { role_id = roleId, auth_id = nasResDao.id, types = ScmRoleAuthTypesEnum.RoleMenu });
             var nasResDeviceDao = CreateMenu(2008530926073679872, "nas-res-device", "设备", nasResDao.id, 3, 1, "/nas/res/device", "nas/res/device", "");
             roleAdminList.Add(new RoleAuthDao { role_id = roleId, auth_id = nasResDeviceDao.id, types = ScmRoleAuthTypesEnum.RoleMenu });
@@ -96,7 +96,7 @@ namespace Com.Scm.Nas
             roleAdminList.Add(new RoleAuthDao { role_id = roleId, auth_id = nasResAppsDao.id, types = ScmRoleAuthTypesEnum.RoleMenu });
 
             // 我的文档
-            var nasDocDao = CreateMenu(2008531430107385856, "nas-doc", "我的文档", nasDao.id, 2, 4, "/nas/doc", "nas/doc", "");
+            var nasDocDao = CreateMenu(2008531430107385856, "nas-doc", "我的文档", nasDao.id, 2, 4, "/nas/doc", "nas/doc", "sc-book-line");
             roleAdminList.Add(new RoleAuthDao { role_id = roleId, auth_id = nasDocDao.id, types = ScmRoleAuthTypesEnum.RoleMenu });
             var nasDocImageDao = CreateMenu(2008531521073451008, "nas-doc-image", "图片", nasDocDao.id, 3, 1, "/nas/doc/image", "nas/doc/image", "");
             roleAdminList.Add(new RoleAuthDao { role_id = roleId, auth_id = nasDocImageDao.id, types = ScmRoleAuthTypesEnum.RoleMenu });
@@ -112,7 +112,7 @@ namespace Com.Scm.Nas
             roleAdminList.Add(new RoleAuthDao { role_id = roleId, auth_id = nasDocArchiveDao.id, types = ScmRoleAuthTypesEnum.RoleMenu });
 
             // 快捷访问
-            var nasLibDao = CreateMenu(2008532217747345408, "nas-lib", "快捷访问", nasDao.id, 2, 5, "/nas/lib", "nas/lib", "");
+            var nasLibDao = CreateMenu(2008532217747345408, "nas-lib", "快捷访问", nasDao.id, 2, 5, "/nas/lib", "nas/lib", "sc-command-line");
             roleAdminList.Add(new RoleAuthDao { role_id = roleId, auth_id = nasLibDao.id, types = ScmRoleAuthTypesEnum.RoleMenu });
             var nasLibRecentDao = CreateMenu(2008532387000094720, "nas-lib-recent", "最近", nasLibDao.id, 3, 1, "/nas/lib/recent", "nas/lib/recent", "");
             roleAdminList.Add(new RoleAuthDao { role_id = roleId, auth_id = nasLibRecentDao.id, types = ScmRoleAuthTypesEnum.RoleMenu });
@@ -126,11 +126,11 @@ namespace Com.Scm.Nas
             //roleAdminList.Add(new RoleAuthDao { role_id = roleId, auth_id = nasLibShareDao.id, types = ScmRoleAuthTypesEnum.RoleMenu });
 
             // 我的标签
-            var nasTagsDao = CreateMenu(2008533524591808512, "nas-tags", "我的标签", nasDao.id, 2, 6, "/nas/tags", "nas/tags", "");
+            var nasTagsDao = CreateMenu(2008533524591808512, "nas-tags", "我的标签", nasDao.id, 2, 6, "/nas/tags", "nas/tags", "sc-price-tag-line");
             roleAdminList.Add(new RoleAuthDao { role_id = roleId, auth_id = nasTagsDao.id, types = ScmRoleAuthTypesEnum.RoleMenu });
 
             // 我的分享
-            var nasShareDao = CreateMenu(2008533617885712384, "nas-share", "我的分享", nasDao.id, 2, 7, "/nas/share", "nas/share", "");
+            var nasShareDao = CreateMenu(2008533617885712384, "nas-share", "我的分享", nasDao.id, 2, 7, "/nas/share", "nas/share", "sc-stackshare-line");
             roleAdminList.Add(new RoleAuthDao { role_id = roleId, auth_id = nasShareDao.id, types = ScmRoleAuthTypesEnum.RoleMenu });
 
             _SqlClient.Insertable(roleAdminList).ExecuteCommand();

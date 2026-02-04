@@ -43,7 +43,8 @@ module.exports = defineConfig({
 	},
 
 	configureWebpack: {
-		devtool: 'source-map',
+		//devtool: 'source-map',
+		devtool: process.env.NODE_ENV === 'development' ? 'eval-cheap-module-source-map' : false,
 		//性能提示
 		performance: {
 			hints: false
@@ -51,6 +52,9 @@ module.exports = defineConfig({
 		optimization: {
 			splitChunks: {
 				chunks: "all",
+				maxInitialRequests: 20,
+				maxAsyncRequests: 20,
+				maxSize: 244000,
 				automaticNameDelimiter: '~',
 				name: "scmChunks",
 				cacheGroups: {

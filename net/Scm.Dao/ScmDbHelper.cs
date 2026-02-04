@@ -15,6 +15,12 @@ namespace Com.Scm
 {
     public class ScmDbHelper : IModelHelper
     {
+        private const int MAJOR = 10;
+        private const int MINOR = 0;
+        private const int PATCH = 0;
+        private const string BUILD = "2026020601";
+        private const string RELEASE_DATE = "2026-02-06";
+
         protected ISqlSugarClient _SqlClient;
         protected string _BaseDir;
 
@@ -64,6 +70,12 @@ namespace Com.Scm
             var dmlFile = Path.Combine(_BaseDir, "dml.sql");
             ExecuteSql(dmlFile, verDao.major);
 
+            verDao.major = MAJOR;
+            verDao.minor = MINOR;
+            verDao.patch = PATCH;
+            verDao.build = BUILD;
+            verDao.release_date = RELEASE_DATE;
+            verDao.update_time = TimeUtils.GetUnixTime();
             SaveDbVer(verDao);
             return true;
         }
@@ -93,12 +105,6 @@ namespace Com.Scm
         /// <param name="verDao"></param>
         protected void SaveDbVer(ScmVerDao verDao)
         {
-            verDao.update_time = TimeUtils.GetUnixTime();
-            verDao.major = ScmVerDao.VER_MAJOR;
-            verDao.minor = ScmVerDao.VER_MINOR;
-            verDao.patch = ScmVerDao.VER_PATCH;
-            verDao.build = ScmVerDao.VER_BUILD;
-
             if (verDao.id == 0)
             {
                 _SqlClient.Insertable(verDao).ExecuteCommand();

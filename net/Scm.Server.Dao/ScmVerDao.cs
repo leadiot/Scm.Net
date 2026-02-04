@@ -7,11 +7,6 @@ namespace Com.Scm
     [SugarTable("scm_ver")]
     public class ScmVerDao : ScmDao
     {
-        public const int VER_MAJOR = 10;
-        public const int VER_MINOR = 0;
-        public const int VER_PATCH = 0;
-        public const int VER_BUILD = 0;
-
         /// <summary>
         /// 关键字
         /// </summary>
@@ -38,7 +33,12 @@ namespace Com.Scm
         /// <summary>
         /// 构建版本
         /// </summary>
-        public int build { get; set; }
+        public string build { get; set; }
+
+        /// <summary>
+        /// 发行日期
+        /// </summary>
+        public string release_date { get; set; }
 
         /// <summary>
         /// 更新时间

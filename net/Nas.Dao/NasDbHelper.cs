@@ -7,6 +7,12 @@ namespace Com.Scm.Nas
 {
     public class NasDbHelper : ScmDbHelper
     {
+        private const int MAJOR = 10;
+        private const int MINOR = 0;
+        private const int PATCH = 0;
+        private const string BUILD = "2026020601";
+        private const string RELEASE_DATE = "2026-02-06";
+
         public NasDbHelper()
         {
             //ScmServerHelper.Register(new NasDbHelper());
@@ -42,6 +48,12 @@ namespace Com.Scm.Nas
             var dmlFile = Path.Combine(_BaseDir, "dml-nas.sql");
             ExecuteSql(dmlFile, verDao.major);
 
+            verDao.major = MAJOR;
+            verDao.minor = MINOR;
+            verDao.patch = PATCH;
+            verDao.build = BUILD;
+            verDao.release_date = RELEASE_DATE;
+            verDao.update_time = TimeUtils.GetUnixTime();
             SaveDbVer(verDao);
             return true;
         }

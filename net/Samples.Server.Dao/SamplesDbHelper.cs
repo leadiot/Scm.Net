@@ -5,6 +5,12 @@ namespace Com.Scm.Samples
 {
     public class SamplesDbHelper : ScmDbHelper
     {
+        private const int MAJOR = 10;
+        private const int MINOR = 0;
+        private const int PATCH = 0;
+        private const string BUILD = "2026010101";
+        private const string RELEASE_DATE = "2026-01-01";
+
         public SamplesDbHelper()
         {
             //ScmServerHelper.Register(new SamplesDbHelper());
@@ -40,6 +46,12 @@ namespace Com.Scm.Samples
             var dmlFile = Path.Combine(_BaseDir, "dml-samples.sql");
             ExecuteSql(dmlFile, verDao.major);
 
+            verDao.major = MAJOR;
+            verDao.minor = MINOR;
+            verDao.patch = PATCH;
+            verDao.build = BUILD;
+            verDao.release_date = RELEASE_DATE;
+            verDao.update_time = TimeUtils.GetUnixTime();
             SaveDbVer(verDao);
             return true;
         }

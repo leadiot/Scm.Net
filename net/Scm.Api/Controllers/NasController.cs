@@ -77,6 +77,8 @@ namespace Com.Scm.Api.Controllers
             // 3. 获取文件的MIME类型
             var contentType = HttpContentType.APPLICATION_OCTET_STREAM;
 
+            // Response.Headers.Append($"Content-Disposition", $"attachment; filename=\"{FileUtils.GetFileName(filePath)}\"");
+
             // 4. 返回文件流（第三个参数是下载时显示的文件名）
             return PhysicalFile(filePath, contentType, Path.GetFileName(filePath));
         }
@@ -292,8 +294,10 @@ namespace Com.Scm.Api.Controllers
                 contentType = HttpContentType.APPLICATION_OCTET_STREAM;
             }
 
+            Response.Headers.Append($"Content-Disposition", $"inline; filename=\"{FileUtils.GetFileName(filePath)}\"");
+
             // 4. 返回文件流（第三个参数是下载时显示的文件名）
-            return PhysicalFile(filePath, contentType, Path.GetFileName(filePath));
+            return PhysicalFile(filePath, contentType);
         }
         #endregion
     }

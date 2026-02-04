@@ -71,4 +71,11 @@ export default {
 			return await http.get(this.url, data);
 		}
 	},
+	unbind: {
+		url: `${config.API_URL}/scmurterminal/release/`,
+		name: "解绑",
+		post: async function (data) {
+			return await http.post(this.url + data);
+		}
+	},
 }

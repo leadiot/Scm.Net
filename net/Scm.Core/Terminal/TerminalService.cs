@@ -57,7 +57,7 @@ namespace Com.Scm.Terminal
             terminalDao.os = request.os;
             terminalDao.dn = request.dn;
             terminalDao.dm = request.dm;
-            terminalDao.binded = ScmBoolEnum.False;
+            terminalDao.binded = ScmBoolEnum.True;
             await _SqlClient.UpdateAsync(terminalDao);
 
             var userDao = await _SqlClient.Queryable<UserDao>()

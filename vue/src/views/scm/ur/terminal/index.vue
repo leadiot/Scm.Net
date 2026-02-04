@@ -35,7 +35,7 @@
 					</el-tooltip>
 				</el-button-group>
 				<el-divider direction="vertical"></el-divider>
-				<el-button icon="el-icon-plus" type="danger" :disabled="selection.length != 1" @click="unbind()" />
+				<el-button type="danger" :disabled="selection.length != 1" @click="unbind()">解绑</el-button>
 			</div>
 			<div class="right-panel">
 				<el-input v-model="param.key" clearable placeholder="关键字">

@@ -69,7 +69,7 @@ public class RoleDao : ScmDataDao, ISortableDao, ISystemDao, IDeleteDao
     /// 系统标识
     /// </summary>
     [SugarColumn(ColumnDataType = "tinyint", IsNullable = false)]
-    public ScmRowSystemEnum row_system { get; set; }
+    public ScmRowSystemEnum row_system { get; set; } = ScmRowSystemEnum.No;
 
     /// <summary>
     /// 
@@ -85,6 +85,7 @@ public class RoleDao : ScmDataDao, ISortableDao, ISystemDao, IDeleteDao
     {
         base.PrepareCreate(userId);
 
+        row_delete = ScmRowDeleteEnum.No;
         if (string.IsNullOrWhiteSpace(names))
         {
             names = namec;

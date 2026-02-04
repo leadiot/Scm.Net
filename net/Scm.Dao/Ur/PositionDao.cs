@@ -71,6 +71,7 @@ public class PositionDao : ScmDataDao, IDeleteDao
     {
         base.PrepareCreate(userId);
 
+        row_delete = ScmRowDeleteEnum.No;
         codes = UidUtils.NextCodes("scm_ur_position");
     }
 }

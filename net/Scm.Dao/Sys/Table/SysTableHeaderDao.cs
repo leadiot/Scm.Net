@@ -50,6 +50,7 @@ namespace Com.Scm.Sys.Table
         {
             base.PrepareCreate(userId);
 
+            row_delete = ScmRowDeleteEnum.No;
             codes = UidUtils.NextCodes("scm_sys_table_header");
         }
     }

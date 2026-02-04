@@ -105,6 +105,7 @@ namespace Com.Scm.Sys.Tasks
         {
             base.PrepareCreate(userId);
 
+            row_delete = ScmRowDeleteEnum.No;
             codes = UidUtils.NextCodes("scm_sys_task");
         }
     }

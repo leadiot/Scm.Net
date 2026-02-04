@@ -62,7 +62,7 @@ namespace Com.Scm.Samples.Demo
         /// 系统记录标识（不是必需）
         /// </summary>
         [SugarColumn(ColumnDataType = "tinyint", IsNullable = false)]
-        public ScmRowSystemEnum row_system { get; set; }
+        public ScmRowSystemEnum row_system { get; set; } = ScmRowSystemEnum.No;
 
         /// <summary>
         /// 数据删除标识（不是必需）
@@ -73,6 +73,8 @@ namespace Com.Scm.Samples.Demo
         public override void PrepareCreate(long userId)
         {
             base.PrepareCreate(userId);
+
+            row_delete = ScmRowDeleteEnum.No;
 
             // 新增时，自动生成系统编码
             codes = UidUtils.NextCodes("samples_demo");

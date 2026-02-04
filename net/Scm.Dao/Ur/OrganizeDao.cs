@@ -88,6 +88,8 @@ public class OrganizeDao : ScmDataDao, ISortableDao, IDeleteDao, IResDao
     {
         base.PrepareCreate(userId);
 
+        row_delete = ScmRowDeleteEnum.No;
+
         codes = UidUtils.NextCodes("scm_ur_organize");
         if (string.IsNullOrEmpty(names))
         {

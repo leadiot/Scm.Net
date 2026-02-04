@@ -27,6 +27,6 @@ namespace Com.Scm.Sys.Config
         /// <summary>
         /// 
         /// </summary>
-        public ScmRowSystemEnum row_system { get; set; }
+        public ScmRowSystemEnum row_system { get; set; } = ScmRowSystemEnum.No;
     }
 }

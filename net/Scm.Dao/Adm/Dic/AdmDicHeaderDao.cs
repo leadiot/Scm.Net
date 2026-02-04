@@ -54,7 +54,7 @@ public class AdmDicHeaderDao : ScmDataDao, ISystemDao, IDeleteDao, ISortableDao
     /// </summary>
     [Required]
     [SugarColumn(ColumnDataType = "tinyint", IsNullable = false)]
-    public ScmRowSystemEnum row_system { get; set; }
+    public ScmRowSystemEnum row_system { get; set; } = ScmRowSystemEnum.No;
 
     /// <summary>
     /// 
@@ -67,6 +67,13 @@ public class AdmDicHeaderDao : ScmDataDao, ISystemDao, IDeleteDao, ISortableDao
     /// </summary>
     [SugarColumn(IsIgnore = true)]
     public List<AdmDicDetailDao> details { get; set; }
+
+    public override void PrepareCreate(long userId)
+    {
+        base.PrepareCreate(userId);
+
+        row_delete = ScmRowDeleteEnum.No;
+    }
 
     /// <summary>
     /// 

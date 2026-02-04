@@ -158,7 +158,7 @@ namespace Com.Scm.Ur
         /// 
         /// </summary>
         [SugarColumn(ColumnDataType = "tinyint", IsNullable = false)]
-        public ScmRowSystemEnum row_system { get; set; }
+        public ScmRowSystemEnum row_system { get; set; } = ScmRowSystemEnum.No;
         /// <summary>
         /// 
         /// </summary>
@@ -173,8 +173,9 @@ namespace Com.Scm.Ur
         {
             base.PrepareCreate(userId);
 
-            codes = UidUtils.NextCodes("scm_ur_user", (int)types);
             row_delete = ScmRowDeleteEnum.No;
+
+            codes = UidUtils.NextCodes("scm_ur_user", (int)types);
             if (string.IsNullOrEmpty(names))
             {
                 names = namec;

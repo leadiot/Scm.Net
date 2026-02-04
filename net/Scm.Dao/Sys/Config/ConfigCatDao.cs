@@ -37,6 +37,6 @@ namespace Com.Scm.Sys.Config
         /// 
         /// </summary>
         [SugarColumn(ColumnDataType = "tinyint", IsNullable = false)]
-        public ScmRowSystemEnum row_system { get; set; }
+        public ScmRowSystemEnum row_system { get; set; } = ScmRowSystemEnum.No;
     }
 }

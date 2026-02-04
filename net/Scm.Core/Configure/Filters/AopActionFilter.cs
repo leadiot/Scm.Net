@@ -272,7 +272,7 @@ namespace Com.Scm.Api.Configure.Filters
             {
                 actionResult.Result = new JsonResult(ServerUtils.Success(actionData));
             }
-            LogUtils.Info("Aop-Success");
+            LogUtils.Debug("Aop-Success");
         }
 
         /// <summary>

@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>数据库连接配置</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f5f7fa;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 50px auto;
+            padding: 30px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            text-align: center;
+            color: #2c3e50;
+            margin-bottom: 30px;
+            font-size: 24px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: #555;
+        }
+
+        input[type="text"],
+        input[type="password"],
+        select {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 14px;
+            transition: border-color 0.3s;
+        }
+
+        input[type="text"]:focus,
+        input[type="password"]:focus,
+        select:focus {
+            outline: none;
+            border-color: #409eff;
+            box-shadow: 0 0 0 2px rgba(64, 158, 255, 0.1);
+        }
+
+        .form-row {
+            display: flex;
+            gap: 15px;
+        }
+
+        .form-row .form-group {
+            flex: 1;
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 15px;
+            margin-top: 30px;
+        }
+
+        button {
+            flex: 1;
+            padding: 12px;
+            border: none;
+            border-radius: 4px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .btn-test {
+            background-color: #67c23a;
+            color: #fff;
+        }
+
+        .btn-test:hover {
+            background-color: #85ce61;
+        }
+
+        .btn-save {
+            background-color: #409eff;
+            color: #fff;
+        }
+
+        .btn-save:hover {
+            background-color: #66b1ff;
+        }
+
+        .btn-reset {
+            background-color: #909399;
+            color: #fff;
+        }
+
+        .btn-reset:hover {
+            background-color: #a6a9ad;
+        }
+
+        .message {
+            margin-top: 20px;
+            padding: 12px;
+            border-radius: 4px;
+            text-align: center;
+            font-size: 14px;
+        }
+
+        .message.success {
+            background-color: #f0f9eb;
+            color: #67c23a;
+            border: 1px solid #e1f3d8;
+        }
+
+        .message.error {
+            background-color: #fef0f0;
+            color: #f56c6c;
+            border: 1px solid #fbc4c4;
+        }
+
+        .message.info {
+            background-color: #ecf5ff;
+            color: #409eff;
+            border: 1px solid #d9ecff;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                margin: 20px;
+                padding: 20px;
+            }
+
+            .form-row {
+                flex-direction: column;
+            }
+
+            .btn-group {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>数据库连接配置</h1>
+
+        <form id="dbConfigForm">
+            <!-- 数据库类型选择 -->
+            <div class="form-group">
+                <label for="dbType">数据库类型</label>
+                <select id="dbType" name="dbType" required>
+                    <option value="">请选择</option>
+                    <option value="sqlite">SQLite</option>
+                    <option value="mysql">MySQL</option>
+                    <option value="sqlserver">SQL Server</option>
+                    <option value="postgresql">PostgreSQL</option>
+                    <option value="oracle">Oracle</option>
+                    <option value="db2">DB2</option>
+                    <option value="dm">达梦数据库</option>
+                </select>
+            </div>
+
+            <!-- 连接信息 -->
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="host">主机地址</label>
+                    <input type="text" id="host" name="host" value="localhost" required>
+                </div>
+                <div class="form-group">
+                    <label for="port">端口</label>
+                    <input type="text" id="port" name="port" value="3306" required>
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="username">用户名</label>
+                    <input type="text" id="username" name="username" value="root" required>
+                </div>
+                <div class="form-group">
+                    <label for="password">密码</label>
+                    <input type="password" id="password" name="password" value="">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="database">数据库名</label>
+                <input type="text" id="database" name="database" value="scm_net" required>
+            </div>
+
+            <!-- 按钮组 -->
+            <div class="btn-group">
+                <button type="button" class="btn-test" onclick="testConnection()">测试连接</button>
+                <button type="button" class="btn-save" onclick="saveConfig()">保存配置</button>
+                <button type="reset" class="btn-reset">重置</button>
+            </div>
+        </form>
+
+        <!-- 消息提示 -->
+        <div id="message" class="message" style="display: none;"></div>
+    </div>
+
+    <script>
+        // 数据库默认端口
+        const defaultPorts = {
+            '': '',
+            sqlite: '',
+            mysql: '3306',
+            sqlserver: '1433',
+            postgresql: '5432',
+            oracle: '1521',
+            db2: '50000',
+            dm: '5236'
+        };
+
+        // 数据库类型选择
+        document.getElementById('dbType').addEventListener('change', function () {
+            const dbType = this.value;
+            // 更新默认端口
+            document.getElementById('port').value = defaultPorts[dbType];
+
+            // 控制连接信息字段的显示/隐藏
+            const isSqlite = dbType === 'sqlite';
+
+            // 获取需要控制的字段容器
+            const hostField = document.querySelector('label[for="host"]').parentElement;
+            const portField = document.querySelector('label[for="port"]').parentElement;
+            const usernameField = document.querySelector('label[for="username"]').parentElement;
+            const passwordField = document.querySelector('label[for="password"]').parentElement;
+
+            // 显示或隐藏字段
+            if (isSqlite) {
+                hostField.style.display = 'none';
+                portField.style.display = 'none';
+                usernameField.style.display = 'none';
+                passwordField.style.display = 'none';
+            } else {
+                hostField.style.display = 'block';
+                portField.style.display = 'block';
+                usernameField.style.display = 'block';
+                passwordField.style.display = 'block';
+            }
+        });
+
+        function checkInput(config) {
+            if (config.dbType != 'sqlite') {
+                if (!config.host || !config.port || !config.username || !config.password) {
+                    showMessage('error', '请填写完整的数据库连接信息');
+                    return false;
+                }
+            }
+            if (!config.database) {
+                showMessage('error', '请填写数据库名称！');
+                return false;
+            }
+
+            return true;
+        }
+
+        // 测试连接
+        async function testConnection() {
+            const formData = new FormData(document.getElementById('dbConfigForm'));
+            const config = Object.fromEntries(formData);
+            if (!checkInput(config)) {
+                return;
+            }
+
+            showMessage('info', '正在测试连接，请稍候...');
+
+            var url = '/api/db/test';
+            var data = {};
+            // 连接测试
+            try {
+                const response = await asyncRequest(url, {
+                    method: 'POST',
+                    data: config
+                });
+
+                if (response.success) {
+                    showMessage('success', '连接测试成功！');
+                } else {
+                    showMessage('error', '连接测试失败：' + response.error);
+                }
+            } catch (error) {
+                showMessage('error', '连接测试失败：' + error.message);
+            }
+        }
+
+        // 保存配置
+        function saveConfig() {
+            const formData = new FormData(document.getElementById('dbConfigForm'));
+            const config = Object.fromEntries(formData);
+            if (!checkInput(config)) {
+                return;
+            }
+
+            showMessage('info', '正在保存配置，请稍候...');
+
+            // 模拟保存操作
+            setTimeout(() => {
+                // 将配置保存到localStorage
+                localStorage.setItem('dbConfig', JSON.stringify(config));
+                showMessage('success', '配置保存成功！');
+            }, 1000);
+        }
+
+        // 显示消息
+        function showMessage(type, text) {
+            const messageElement = document.getElementById('message');
+            messageElement.className = `message ${type}`;
+            messageElement.textContent = text;
+            messageElement.style.display = 'block';
+
+            // 3秒后自动隐藏
+            setTimeout(() => {
+                messageElement.style.display = 'none';
+            }, 3000);
+        }
+
+        // 加载保存的配置
+        function loadSavedConfig() {
+            const savedConfig = localStorage.getItem('dbConfig');
+            if (savedConfig) {
+                const config = JSON.parse(savedConfig);
+
+                // 设置数据库类型
+                document.getElementById('dbType').value = config.dbType;
+                document.querySelectorAll('.database-option').forEach(option => {
+                    option.classList.remove('active');
+                    if (option.getAttribute('data-type') === config.dbType) {
+                        option.classList.add('active');
+                    }
+                });
+
+                // 设置其他配置
+                document.getElementById('host').value = config.host;
+                document.getElementById('port').value = config.port;
+                document.getElementById('username').value = config.username;
+                document.getElementById('password').value = config.password;
+                document.getElementById('database').value = config.database;
+
+                showMessage('info', '已加载保存的配置');
+            }
+        }
+
+        // 异步网络请求方法
+        async function asyncRequest(url, options = {}) {
+            try {
+                // 默认配置
+                const defaultOptions = {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    credentials: 'include'
+                };
+
+                // 合并配置
+                const finalOptions = {
+                    ...defaultOptions,
+                    ...options,
+                    headers: {
+                        ...defaultOptions.headers,
+                        ...options.headers
+                    }
+                };
+
+                // 处理请求数据
+                if (options.data && (finalOptions.method === 'POST' || finalOptions.method === 'PUT' || finalOptions.method === 'PATCH')) {
+                    finalOptions.body = JSON.stringify(options.data);
+                }
+
+                // 发送请求
+                const response = await fetch(url, finalOptions);
+
+                // 检查响应状态
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+
+                // 解析响应数据
+                const contentType = response.headers.get('content-type');
+                let data;
+                if (contentType && contentType.includes('application/json')) {
+                    data = await response.json();
+                } else {
+                    data = await response.text();
+                }
+
+                return {
+                    success: true,
+                    data: data,
+                    status: response.status,
+                    statusText: response.statusText
+                };
+            } catch (error) {
+                showMessage('error', `请求失败: ${error.message}`);
+                return {
+                    success: false,
+                    error: error.message,
+                    data: null
+                };
+            }
+        }
+
+        // 初始化数据库类型相关字段显示
+        function initDbTypeFields() {
+            const dbType = document.getElementById('dbType').value;
+            const isSqlite = dbType === 'sqlite';
+
+            // 获取需要控制的字段容器
+            const hostField = document.querySelector('label[for="host"]').parentElement;
+            const portField = document.querySelector('label[for="port"]').parentElement;
+            const usernameField = document.querySelector('label[for="username"]').parentElement;
+            const passwordField = document.querySelector('label[for="password"]').parentElement;
+
+            // 显示或隐藏字段
+            if (isSqlite) {
+                hostField.style.display = 'none';
+                portField.style.display = 'none';
+                usernameField.style.display = 'none';
+                passwordField.style.display = 'none';
+            } else {
+                hostField.style.display = 'block';
+                portField.style.display = 'block';
+                usernameField.style.display = 'block';
+                passwordField.style.display = 'block';
+            }
+        }
+
+        // 页面加载时加载配置
+        window.onload = function () {
+            loadSavedConfig();
+            initDbTypeFields();
+        };
+    </script>
+</body>
+
+</html>

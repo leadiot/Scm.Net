@@ -58,7 +58,7 @@ namespace Com.Scm.Nas.Res
         private List<NasCfgFolderDao> ListFolderDao(long userId)
         {
             return _SqlClient.Queryable<NasCfgFolderDao>()
-                .Where(a => a.user_id == userId)
+                .Where(a => a.user_id == userId && a.row_status == Enums.ScmRowStatusEnum.Enabled)
                 .ToList();
         }
 
@@ -67,44 +67,16 @@ namespace Com.Scm.Nas.Res
             var list = new List<NasResFileDao>();
             while (dao.dir_id != NasEnv.DEF_DIR_ID)
             {
-                dao = GetDaoByPath(dao.dir_id);
+                dao = GetDaoById(dao.dir_id);
                 list.Add(dao);
             }
             return list;
         }
 
-        private NasResFileDao GetDaoByPath(long id)
+        private NasResFileDao GetDaoById(long id)
         {
             return _SqlClient.Queryable<NasResFileDao>()
                 .Where(a => a.id == id)
-                .First();
-        }
-
-        private List<NasResFileDao> ListParentDao(long userId, string path)
-        {
-            var list = new List<NasResFileDao>();
-
-            var tmp = "";
-            var array = path.Split(NasEnv.WebSeparator);
-            foreach (var item in array)
-            {
-                if (string.IsNullOrEmpty(item))
-                {
-                    continue;
-                }
-
-                tmp += NasEnv.WebSeparator + item;
-                var dao = GetDaoByPath(tmp);
-                list.Add(dao);
-            }
-
-            return list;
-        }
-
-        private NasResFileDao GetDaoByPath(string path)
-        {
-            return _SqlClient.Queryable<NasResFileDao>()
-                .Where(a => a.path == path)
                 .First();
         }
 

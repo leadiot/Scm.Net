@@ -1247,10 +1247,10 @@ namespace Com.Scm.Nas.Sync
         /// </summary>
         /// <param name="userId"></param>
         /// <returns></returns>
-        private List<SyncCfgFolderDao> GetFolderList(long userId)
+        private List<SyncCfgFolderDao> ListFolderDao(long userId)
         {
             return _SqlClient.Queryable<SyncCfgFolderDao>()
-                .Where(a => a.user_id == userId)
+                .Where(a => a.user_id == userId && a.row_status == ScmRowStatusEnum.Enabled)
                 .ToList();
         }
 
@@ -1709,7 +1709,7 @@ namespace Com.Scm.Nas.Sync
             }
 
             // 按文件夹记录日志
-            var folderList = GetFolderList(token.user_id);
+            var folderList = ListFolderDao(token.user_id);
             foreach (var folder in folderList)
             {
                 if (folder.id == logDto.folder_id)

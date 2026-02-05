@@ -18,8 +18,6 @@
 	<el-container>
 		<el-header>
 			<div class="left-panel">
-				<el-button icon="el-icon-plus" type="primary" @click="open_dialog()" />
-				<el-divider direction="vertical"></el-divider>
 				<el-button-group>
 					<el-tooltip content="启用">
 						<el-button type="primary" icon="el-icon-circle-check" plain :disabled="selection.length == 0"

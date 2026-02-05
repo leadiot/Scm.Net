@@ -24,5 +24,16 @@ namespace Com.Scm.Api.Controllers
 
             return response;
         }
+
+        [HttpPost("Mime")]
+        public ScmApiResponse MimeAsync()
+        {
+            var token = _ScmHolder.GetToken();
+            var response = new ScmApiDataResponse<long>();
+            response.Data = token.terminal_id;
+            response.SetSuccess();
+
+            return response;
+        }
     }
 }

@@ -14,11 +14,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Scm.Common\Scm.Common.csproj" />
-    <ProjectReference Include="..\Scm.Core\Scm.Core.csproj" />
-    <ProjectReference Include="..\Scm.Email\Scm.Email.csproj" />
-    <ProjectReference Include="..\Scm.Plugin.Audio\Scm.Plugin.Audio.csproj" />
-    <ProjectReference Include="..\Scm.Server.Service\Scm.Server.Service.csproj" />
+    <ProjectReference Include="..\Scm.Dao\Scm.Dao.csproj" />
+    <ProjectReference Include="..\Scm.Server.Dao\Scm.Server.Dao.csproj" />
   </ItemGroup>
 
   <ItemGroup>

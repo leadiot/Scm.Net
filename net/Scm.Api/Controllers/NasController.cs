@@ -4,11 +4,11 @@ using Com.Scm.Filters;
 using Com.Scm.Http;
 using Com.Scm.Nas;
 using Com.Scm.Nas.Sync;
-using Com.Scm.Res.Ext;
 using Com.Scm.Ur;
 using Com.Scm.Utils;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using MimeKit;
 using SqlSugar;
 using System.Text.RegularExpressions;
 
@@ -276,19 +276,7 @@ namespace Com.Scm.Api.Controllers
             }
 
             // 3. 获取文件的MIME类型
-            var contentType = "";
-            var ext = FileUtils.GetExtension(filePath);
-            if (ext != null)
-            {
-                ext = ext.TrimStart('.');
-                var extDao = await _SqlClient.Queryable<ScmResExtDao>()
-                    .Where(a => a.codec == ext)
-                    .FirstAsync();
-                if (extDao != null)
-                {
-                    contentType = extDao.mime;
-                }
-            }
+            var contentType = MimeTypes.GetMimeType(filePath);
             if (string.IsNullOrWhiteSpace(contentType))
             {
                 contentType = HttpContentType.APPLICATION_OCTET_STREAM;

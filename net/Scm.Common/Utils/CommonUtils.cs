@@ -1,5 +1,7 @@
-﻿using System;
+﻿using Com.Scm.Attributes;
+using System;
 using System.Linq;
+using System.Reflection;
 
 namespace Com.Scm.Utils
 {
@@ -40,6 +42,8 @@ namespace Com.Scm.Utils
                 => generic == (test.IsGenericType ? test.GetGenericTypeDefinition() : test);
         }
 
+
+        #region 对象转换
         /// <summary>
         /// 浅复制到指定对象
         /// </summary>
@@ -79,21 +83,30 @@ namespace Com.Scm.Utils
             }
 
             var dstType = dst.GetType();
-            var props = dstType.GetProperties(System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.DeclaredOnly);
-            if (props == null)
+            var dstProps = dstType.GetProperties(System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.DeclaredOnly);
+            if (dstProps == null)
             {
                 return dst;
             }
 
-            foreach (var prop in props)
+            foreach (var dstProp in dstProps)
             {
-                var srcProp = srcType.GetProperty(prop.Name);
+                var srcPropName = dstProp.Name;
+                object srcPropValue = null;
+                var attr = dstProp.GetCustomAttribute<ScmMappingAttribute>();
+                if (attr != null)
+                {
+                    srcPropName = attr.Name ?? dstProp.Name;
+                    srcPropValue = attr.Value;
+                }
+
+                var srcProp = srcType.GetProperty(srcPropName);
                 if (srcProp == null)
                 {
                     continue;
                 }
 
-                prop.SetValue(dst, srcProp.GetValue(src));
+                dstProp.SetValue(dst, srcProp.GetValue(src) ?? srcPropValue);
             }
 
             return dst;
@@ -139,24 +152,34 @@ namespace Com.Scm.Utils
             }
 
             var dstType = dst.GetType();
-            var props = dstType.GetProperties(System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Instance);
-            if (props == null)
+            var dstProps = dstType.GetProperties(System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Instance);
+            if (dstProps == null)
             {
                 return dst;
             }
 
-            foreach (var prop in props)
+            foreach (var dstProp in dstProps)
             {
-                var srcProp = srcType.GetProperty(prop.Name);
+                var srcPropName = dstProp.Name;
+                object srcPropValue = null;
+                var attr = dstProp.GetCustomAttribute<ScmMappingAttribute>();
+                if (attr != null)
+                {
+                    srcPropName = attr.Name ?? dstProp.Name;
+                    srcPropValue = attr.Value;
+                }
+
+                var srcProp = srcType.GetProperty(srcPropName);
                 if (srcProp == null)
                 {
                     continue;
                 }
 
-                prop.SetValue(dst, srcProp.GetValue(src));
+                dstProp.SetValue(dst, srcProp.GetValue(src) ?? srcPropValue);
             }
 
             return dst;
         }
+        #endregion
     }
 }

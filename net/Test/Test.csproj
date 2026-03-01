@@ -16,6 +16,7 @@
   <ItemGroup>
     <ProjectReference Include="..\Scm.Dao\Scm.Dao.csproj" />
     <ProjectReference Include="..\Scm.Server.Dao\Scm.Server.Dao.csproj" />
+    <ProjectReference Include="..\Scm.Server\Scm.Server.csproj" />
   </ItemGroup>
 
   <ItemGroup>

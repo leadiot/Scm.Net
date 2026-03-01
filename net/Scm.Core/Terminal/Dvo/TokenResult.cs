@@ -20,6 +20,9 @@
 
         public string refresh_token { get; set; }
 
+        /// <summary>
+        /// 将要过期的时长，单位：秒
+        /// </summary>
         public long expires_in { get; set; }
     }
 }

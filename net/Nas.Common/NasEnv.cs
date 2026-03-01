@@ -35,7 +35,7 @@
         /// <summary>
         /// 默认目录ID
         /// </summary>
-        public const long DEF_DIR_ID = 0;
+        public const long DEF_DIR_ID = 1000000000000000001L;
 
         /// <summary>
         /// Nas数据目录

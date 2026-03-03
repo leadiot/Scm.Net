@@ -54,7 +54,7 @@ export default {
 				this.formData.url = window.location.host;
 			}
 			this.visible = true;
-			this.qrCode = this.formData.url + '\n' + this.formData.codes + '\n' + this.formData.pass;
+			this.qrCode = this.formData.url + ';' + this.formData.codes + ';' + this.formData.pass;
 		},
 		close() {
 			this.formData = {};

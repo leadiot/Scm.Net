@@ -38,6 +38,7 @@
     "yarn": "^1.22.22"
   },
   "devDependencies": {
+    "@types/body-parser": "^1.19.6",
     "@vue/cli-plugin-babel": "^5.0.9",
     "@vue/cli-service": "5.0.8",
     "baseline-browser-mapping": "^2.9.19",

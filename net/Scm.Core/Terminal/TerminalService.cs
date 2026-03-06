@@ -114,18 +114,18 @@ namespace Com.Scm.Terminal
         private void GenToken(AdmTerminalDao terminalDao, TokenResult token)
         {
             // 30天
-            var expiresIn = 60 * 60 * 24 * 30;
+            var expires = 60 * 60 * 24 * 30;
 
             terminalDao.access_token = TextUtils.RandomString(16, false);
             terminalDao.refresh_token = TextUtils.RandomString(16, false);
-            terminalDao.expired = TimeUtils.GetUnixTime(DateTime.UtcNow.AddSeconds(expiresIn));
+            terminalDao.expired = TimeUtils.GetUnixTime(DateTime.UtcNow.AddSeconds(expires));
 
             token.terminal_id = terminalDao.id;
             token.terminal_codes = terminalDao.codes;
             token.terminal_names = terminalDao.names;
             token.access_token = terminalDao.access_token;
             token.refresh_token = terminalDao.refresh_token;
-            token.expires_in = expiresIn;
+            token.expires = expires;
         }
     }
 }

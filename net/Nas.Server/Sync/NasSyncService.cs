@@ -112,7 +112,7 @@ namespace Com.Scm.Nas.Sync
                 return null;
             }
 
-            dto.path = GetStoragePath(dto.path);
+            dto.path = SyncCfgFolderDao.GetStoragePath(dto.node, dto.path);
 
             var cfgDao = await _SqlClient.Queryable<SyncCfgFolderDao>()
                 .Where(a => a.terminal_id == token.terminal_id && a.name == dto.name)
@@ -331,13 +331,26 @@ namespace Com.Scm.Nas.Sync
 
             var token = ScmToken.FromAppToken(appToken);
             var terminalDao = _ResHolder.GetRes<ScmUrTerminalDao>(token.terminal_id);
-            if (terminalDao == null || terminalDao.IsExpired())
+            if (terminalDao == null)
             {
-                return null;
+                LogUtils.Debug("终端信息异常！");
+                return SyncResult.Failure("终端信息异常！");
+            }
+            if (terminalDao.IsExpired())
+            {
+                LogUtils.Debug("终端授权异常！");
+                return SyncResult.Failure("终端授权异常！");
             }
 
-            dto.path = GetStoragePath(dto.path);
-            dto.src = GetStoragePath(dto.src);
+            var folderDao = GetCfgFolderDaoById(dto.folder_id);
+            if (folderDao == null)
+            {
+                LogUtils.Debug("目录信息异常！");
+                return SyncResult.Failure("目录信息异常！");
+            }
+
+            dto.path = folderDao.GetStoragePath(dto.path);
+            dto.src = folderDao.GetStoragePath(dto.src);
 
             var result = new SyncResult();
             if (dto.opt == NasOptEnums.Delete)
@@ -1474,8 +1487,35 @@ namespace Com.Scm.Nas.Sync
             return _EnvConfig.GetDataPath($"/{NasEnv.DEF_NAS_DIR}/{userDao.codes}" + path);
         }
 
-        private string GetStoragePath(string path)
+        private string GetStoragePath(NasNodeEnums node, string path)
         {
+            if (node == NasNodeEnums.Devices)
+            {
+                if (!path.StartsWith(NasEnv.PathDevices, StringComparison.OrdinalIgnoreCase))
+                {
+                    path = NasEnv.PathDevices + path;
+                }
+                return path;
+            }
+
+            if (node == NasNodeEnums.Public)
+            {
+                if (!path.StartsWith(NasEnv.PathPublic, StringComparison.OrdinalIgnoreCase))
+                {
+                    path = NasEnv.PathPublic + path;
+                }
+                return path;
+            }
+
+            if (node == NasNodeEnums.Secret)
+            {
+                if (!path.StartsWith(NasEnv.PathSecret, StringComparison.OrdinalIgnoreCase))
+                {
+                    path = NasEnv.PathSecret + path;
+                }
+                return path;
+            }
+
             return path;
         }
 
@@ -1730,6 +1770,13 @@ namespace Com.Scm.Nas.Sync
                 tmpDao.PrepareCreate(token.user_id);
                 _SqlClient.Insertable(tmpDao).ExecuteCommand();
             }
+        }
+
+        private SyncCfgFolderDao GetCfgFolderDaoById(long folderId)
+        {
+            return _SqlClient.Queryable<SyncCfgFolderDao>()
+                 .Where(a => a.id == folderId && a.row_status == ScmRowStatusEnum.Enabled)
+                 .First();
         }
         #endregion
     }

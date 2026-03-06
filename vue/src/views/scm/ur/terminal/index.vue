@@ -182,6 +182,7 @@ export default {
 				const loading = this.$loading();
 				var res = await this.$API.scmurterminal.unbind.post(this.selection[0].id);
 				if (res.code == 200) {
+					this.$refs.table.refresh();
 					loading.close();
 					this.$message.success("解绑成功");
 				} else {

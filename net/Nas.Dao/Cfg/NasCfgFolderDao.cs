@@ -25,6 +25,11 @@ namespace Com.Scm.Nas.Cfg
         public string name { get; set; }
 
         /// <summary>
+        /// 远端节点
+        /// </summary>
+        public NasNodeEnums node { get; set; }
+
+        /// <summary>
         /// 远端路径
         /// </summary>
         [StringLength(1024)]

@@ -174,6 +174,7 @@ namespace Com.Scm.Nas.Res
             var parentPath = parentDao.path;
 
             dao = model.Adapt<NasResFileDao>();
+            dao.type = ScmFileTypeEnum.Dir;
             dao.modify_time = TimeUtils.GetUnixTime(true);
             dao.path = NasUtils.CombinePath(parentPath, model.name);
 

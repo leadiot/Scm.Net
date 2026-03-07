@@ -38,21 +38,21 @@ public class ScmAdmFileService : IApiService
     /// </summary>
     /// <param name="request"></param>
     /// <returns></returns>
-    public List<ScmFolderInfo> GetFolders(ListFileRequest request)
+    public List<ScmDirInfo> GetFolders(ListFileRequest request)
     {
         var basePath = _envConfig.GetDataPath(request.path);
 
-        var root = new ScmFolderInfo() { Name = "根目录", Uri = "/" };
+        var root = new ScmDirInfo() { Name = "根目录", Uri = "/" };
         root.Children = ScmUtils.GetFolders(basePath);
 
-        return new List<ScmFolderInfo> { root };
+        return new List<ScmDirInfo> { root };
     }
 
     /// <summary>
     /// 根据目录查询文件
     /// </summary>
     /// <returns></returns>
-    public List<ScmFileInfo> GetFiles(ListFileRequest request)
+    public List<ScmDocInfo> GetFiles(ListFileRequest request)
     {
         var basePath = _envConfig.GetDataPath(request.path);
         return ScmUtils.GetFiles(basePath, request.kind, _envConfig.DataDir);

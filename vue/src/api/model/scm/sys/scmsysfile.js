@@ -23,7 +23,7 @@ export default {
 		},
 	},
 	upload: {
-		url: `${config.API_URL}/upload/upload`,
+		url: `${config.API_URL}/scmsysfile/upload`,
 		name: "文件上传",
 		post: async function (data, config) {
 			return await http.post(this.url, data, config);

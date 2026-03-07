@@ -44,6 +44,8 @@ namespace Com.Scm.Enums
         Exe = 21,
         [Description("类库文件")]
         Dll = 22,
+        [Description("字体文件")]
+        Font = 23,
 
         [Description("字符文件")]
         Text = 30,

@@ -157,7 +157,7 @@ namespace Com.Scm.Utils
         }
 
         #region 目录操作
-        public static List<ScmFolderInfo> GetFolders(string path)
+        public static List<ScmDirInfo> GetFolders(string path)
         {
             if (string.IsNullOrWhiteSpace(path))
             {
@@ -179,17 +179,17 @@ namespace Com.Scm.Utils
         /// <param name="dir"></param>
         /// <param name="baseUri"></param>
         /// <returns></returns>
-        public static List<ScmFolderInfo> GetFolders(DirectoryInfo dir, string baseUri)
+        public static List<ScmDirInfo> GetFolders(DirectoryInfo dir, string baseUri)
         {
             if (dir == null || !dir.Exists)
             {
                 return null;
             }
 
-            var list = new List<ScmFolderInfo>();
+            var list = new List<ScmDirInfo>();
             foreach (var sub in dir.GetDirectories())
             {
-                var folder = new ScmFolderInfo();
+                var folder = new ScmDirInfo();
                 folder.Name = sub.Name;
                 folder.Uri = baseUri + "/" + sub.Name;
                 folder.Children = GetFolders(sub, folder.Uri);
@@ -207,9 +207,9 @@ namespace Com.Scm.Utils
         /// <param name="kind"></param>
         /// <param name="basePath"></param>
         /// <returns></returns>
-        public static List<ScmFileInfo> GetFiles(string path, ScmFileKindEnum kind, string basePath)
+        public static List<ScmDocInfo> GetFiles(string path, ScmFileKindEnum kind, string basePath)
         {
-            var list = new List<ScmFileInfo>();
+            var list = new List<ScmDocInfo>();
             var folder = new DirectoryInfo(path);
             if (folder.Exists)
             {
@@ -291,9 +291,9 @@ namespace Com.Scm.Utils
         /// <param name="kind"></param>
         /// <param name="basePath"></param>
         /// <returns></returns>
-        private static ScmFileInfo GetFileInfo(FileInfo file, ScmFileKindEnum kind, string basePath)
+        private static ScmDocInfo GetFileInfo(FileInfo file, ScmFileKindEnum kind, string basePath)
         {
-            var item = new ScmFileInfo();
+            var item = new ScmDocInfo();
             item.Kind = kind;
             item.Name = file.Name;
             //item.FullName = file.FullName;

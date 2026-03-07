@@ -37,7 +37,7 @@ export default {
 			rules: {},
 			formData: {
 				path: '',
-				type: 1
+				type: 1 //文件上传
 			},
 		};
 	},
@@ -60,14 +60,13 @@ export default {
 			data.append('filesize', param.file.size);
 			data.append('filetime', param.file.lastModified);
 			data.append('path', this.formData.path);
-			data.append('type', 1);
+			data.append('type', this.formData.type);
 			for (const key in param.data) {
 				data.append(key, param.data[key]);
 			}
 			let config = {
-				headers: {
-					'Content-Type': 'multipart/form-data'
-				}
+				headers: { 'Content-Type': 'multipart/form-data' },//定义内容格式,很重要
+				timeout: 20000,
 			};
 			await this.$API.scmsysfile.upload.post(data, config);
 		},

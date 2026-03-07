@@ -3,14 +3,14 @@
 namespace Com.Scm.Utils
 {
     /// <summary>
-    /// 文件目录
+    /// 目录信息
     /// </summary>
-    public class ScmFolderInfo
+    public class ScmDirInfo
     {
         public string Name { get; set; }
 
         public string Uri { get; set; }
 
-        public List<ScmFolderInfo> Children { get; set; }
+        public List<ScmDirInfo> Children { get; set; }
     }
 }

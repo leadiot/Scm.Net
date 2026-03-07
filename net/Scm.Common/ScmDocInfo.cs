@@ -4,9 +4,9 @@ using System;
 namespace Com.Scm.Utils
 {
     /// <summary>
-    /// 文件内容
+    /// 文档信息
     /// </summary>
-    public class ScmFileInfo
+    public class ScmDocInfo
     {
         /// <summary>
         /// 文件类型

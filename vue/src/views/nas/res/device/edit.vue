@@ -40,7 +40,7 @@ export default {
 				id: this.$SCM.DEF_ID,
 				terminal_id: this.$SCM.DEF_ID,
 				drive_id: this.$SCM.DEF_ID,
-				dir_id: this.$SCM.DEF_ID,
+				dir_id: this.$SCM.SYS_ID,
 				name: '',
 				path: '',
 				size: '',

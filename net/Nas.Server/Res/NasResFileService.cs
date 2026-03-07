@@ -39,7 +39,7 @@ namespace Com.Scm.Nas.Res
         /// <returns></returns>
         public async Task<ScmSearchPageResponse<NasResFileDvo>> GetPagesAsync(SearchRequest request)
         {
-            if (!IsValidId(request.dir_id))
+            if (!IsNormalId(request.dir_id))
             {
                 request.dir_id = GetRootDirId();
             }
@@ -70,7 +70,7 @@ namespace Com.Scm.Nas.Res
         /// <returns></returns>
         public async Task<List<NasResFileDvo>> GetListAsync(SearchRequest request)
         {
-            if (!IsValidId(request.dir_id))
+            if (!IsNormalId(request.dir_id))
             {
                 request.dir_id = GetRootDirId();
             }
@@ -160,6 +160,11 @@ namespace Com.Scm.Nas.Res
                 throw new BusinessException("已存在相同名称的文档！");
             }
 
+            if (!IsNormalId(model.dir_id))
+            {
+                model.dir_id = GetRootDirId();
+            }
+
             var parentDao = await _thisRepository.GetByIdAsync(model.dir_id);
             if (parentDao == null || parentDao.type != ScmFileTypeEnum.Dir)
             {
@@ -200,6 +205,10 @@ namespace Com.Scm.Nas.Res
             }
 
             var parentDao = await _thisRepository.GetByIdAsync(model.dir_id);
+            if (parentDao == null || parentDao.type != ScmFileTypeEnum.Dir)
+            {
+                throw new BusinessException("上级目录不存在！");
+            }
 
             var src = dao.path;
             var parentPath = NasUtils.GetParentPath(src);

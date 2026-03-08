@@ -325,7 +325,7 @@ namespace Com.Scm.Nas.Sync
         {
             if (dto == null)
             {
-                LogUtils.Debug("上传对象为空！");
+                LogUtils.Error("PostSync", "上传对象为空！");
                 return SyncResult.Failure("上传对象为空！");
             }
 
@@ -333,19 +333,19 @@ namespace Com.Scm.Nas.Sync
             var terminalDao = _ResHolder.GetRes<ScmUrTerminalDao>(token.terminal_id);
             if (terminalDao == null)
             {
-                LogUtils.Debug("终端信息异常！");
+                LogUtils.Error("PostSync", "终端信息异常！");
                 return SyncResult.Failure("终端信息异常！");
             }
             if (terminalDao.IsExpired())
             {
-                LogUtils.Debug("终端授权异常！");
+                LogUtils.Error("PostSync", "终端授权异常！");
                 return SyncResult.Failure("终端授权异常！");
             }
 
             var folderDao = GetCfgFolderDaoById(dto.folder_id);
             if (folderDao == null)
             {
-                LogUtils.Debug("目录信息异常！");
+                LogUtils.Error("PostSync", "目录信息异常！");
                 return SyncResult.Failure("目录信息异常！");
             }
 
@@ -389,13 +389,15 @@ namespace Com.Scm.Nas.Sync
                 return result;
             }
 
-            LogUtils.Debug("不支持的操作：" + dto.opt);
+            LogUtils.Error("PostSync", "不支持的操作：" + dto.opt);
             result.SetFailure("不支持的操作：" + dto.opt);
             return result;
         }
         #endregion
 
         #region 删除文件
+        private const string TAG_DELETE_FILE = "删除文件";
+
         /// <summary>
         /// 删除文件
         /// </summary>
@@ -404,7 +406,7 @@ namespace Com.Scm.Nas.Sync
         /// <returns></returns>
         private bool DeleteFile(ScmUrTerminalDao token, NasLogFileDto dto, SyncResult result)
         {
-            LogUtils.Debug("删除文件：" + dto.path);
+            LogUtils.Info(TAG_DELETE_FILE, "删除文件", dto.path);
 
             if (dto == null)
             {
@@ -421,7 +423,7 @@ namespace Com.Scm.Nas.Sync
                 return DeleteDoc(token, dto, result);
             }
 
-            LogUtils.Debug("未知的文件类型：" + dto.type);
+            LogUtils.Error(TAG_DELETE_FILE, "未知的文件类型：" + dto.type);
             result.SetFailure("未知的文件类型：" + dto.type);
             return false;
         }
@@ -434,7 +436,7 @@ namespace Com.Scm.Nas.Sync
         /// <returns></returns>
         private bool DeleteDoc(ScmUrTerminalDao token, NasLogFileDto dto, SyncResult result)
         {
-            LogUtils.Debug("删除文档：" + dto.path);
+            LogUtils.Info(TAG_DELETE_FILE, "删除文档", dto.path);
 
             var dstFile = GetNativePath(token, dto.path);
             FileUtils.DeleteDoc(dstFile);
@@ -456,6 +458,7 @@ namespace Com.Scm.Nas.Sync
 
             AddLogFileByDto(token, dto, resId, dirId, parentList);
 
+            LogUtils.Info(TAG_DELETE_FILE, "文档删除完成", dto.path);
             result.SetSuccess(resId, ver);
             return true;
         }
@@ -473,7 +476,7 @@ namespace Com.Scm.Nas.Sync
         /// <returns></returns>
         private bool DeleteDir(ScmUrTerminalDao token, NasLogFileDto dto, SyncResult result)
         {
-            LogUtils.Debug("删除目录：" + dto.path);
+            LogUtils.Info(TAG_DELETE_FILE, "删除目录", dto.path);
 
             var dstFile = GetNativePath(token, dto.path);
             FileUtils.DeleteDir(dstFile);
@@ -497,6 +500,7 @@ namespace Com.Scm.Nas.Sync
 
             AddLogFileByDto(token, dto, resId, dirId, parentList);
 
+            LogUtils.Info(TAG_DELETE_FILE, "目录删除完成", dto.path);
             result.SetSuccess(resId, ver);
             return true;
         }
@@ -518,6 +522,8 @@ namespace Com.Scm.Nas.Sync
         #endregion
 
         #region 创建文件
+        private const string TAG_CREATE_FILE = "创建文件";
+
         /// <summary>
         /// 创建文件
         /// </summary>
@@ -526,7 +532,7 @@ namespace Com.Scm.Nas.Sync
         /// <returns></returns>
         private async Task<bool> CreateFile(ScmUrTerminalDao token, NasLogFileDto dto, SyncResult result)
         {
-            LogUtils.Debug("创建文件：" + dto.path);
+            LogUtils.Info(TAG_CREATE_FILE, "文件路径：" + dto.path);
 
             if (dto.type == ScmFileTypeEnum.Dir)
             {
@@ -538,6 +544,7 @@ namespace Com.Scm.Nas.Sync
                 return await CreateDoc(token, dto, result);
             }
 
+            LogUtils.Error(TAG_CREATE_FILE, "未知的文件类型：" + dto.type);
             result.SetFailure("未知的文件类型：" + dto.type);
             return false;
         }
@@ -550,10 +557,10 @@ namespace Com.Scm.Nas.Sync
         /// <returns></returns>
         private async Task<bool> CreateDir(ScmUrTerminalDao token, NasLogFileDto dto, SyncResult result)
         {
-            LogUtils.Debug("创建目录：" + dto.path);
+            LogUtils.Info(TAG_CREATE_FILE, "创建目录", dto.path);
 
             var path = GetNativePath(token, dto.path);
-            LogUtils.Debug("路径目录：" + path);
+            LogUtils.Debug(TAG_CREATE_FILE, "目录物理路径", path);
             if (!Directory.Exists(path))
             {
                 Directory.CreateDirectory(path);
@@ -564,6 +571,7 @@ namespace Com.Scm.Nas.Sync
 
             AddLogFileByDto(token, dto, dirDao.id, dirDao.dir_id, parentList);
 
+            LogUtils.Info(TAG_CREATE_FILE, "目录创建完成", dto.path);
             result.SetSuccess(dirDao.id, dirDao.ver);
             return true;
         }
@@ -576,16 +584,18 @@ namespace Com.Scm.Nas.Sync
         /// <returns></returns>
         private async Task<bool> CreateDoc(ScmUrTerminalDao token, NasLogFileDto dto, SyncResult result)
         {
-            LogUtils.Debug("创建文档：" + dto.path);
+            LogUtils.Info(TAG_CREATE_FILE, "创建文档", dto.path);
 
             if (string.IsNullOrEmpty(dto.src))
             {
+                LogUtils.Error(TAG_CREATE_FILE, "上传文档来源路径为空", dto.src);
                 return false;
             }
 
             var tmpFile = _EnvConfig.GetTempPath(dto.src);
             if (!FileUtils.ExistsDoc(tmpFile))
             {
+                LogUtils.Error(TAG_CREATE_FILE, "上传文档不存在", tmpFile);
                 result.SetFailure($"上传文档不存在！");
                 return false;
             }
@@ -593,6 +603,7 @@ namespace Com.Scm.Nas.Sync
             var dstFile = GetNativePath(token, dto.path);
             if (!FileUtils.MoveDoc(tmpFile, dstFile, true))
             {
+                LogUtils.Error(TAG_CREATE_FILE, "上传文档移动异常！");
                 SyncResult.Failure("上传文档移动异常！");
                 return false;
             }
@@ -604,6 +615,7 @@ namespace Com.Scm.Nas.Sync
 
             AddLogFileByDto(token, dto, docDao.id, dirDao.id, parentList);
 
+            LogUtils.Info(TAG_CREATE_FILE, "文档创建完成", dto.path);
             result.SetSuccess(docDao.id, docDao.ver);
             return true;
         }
@@ -631,6 +643,8 @@ namespace Com.Scm.Nas.Sync
         #endregion
 
         #region 移动文件
+        private const string TAG_MOVE_FILE = "移动文件";
+
         /// <summary>
         /// 移动文件
         /// </summary>
@@ -639,7 +653,7 @@ namespace Com.Scm.Nas.Sync
         /// <returns></returns>
         private async Task<bool> MoveFile(ScmUrTerminalDao token, NasLogFileDto dto, SyncResult result)
         {
-            LogUtils.Debug("移动文件：" + dto.path);
+            LogUtils.Info(TAG_MOVE_FILE, $"移动文件", $"{dto.src} -> {dto.path}");
 
             if (dto == null)
             {
@@ -656,6 +670,7 @@ namespace Com.Scm.Nas.Sync
                 return await MoveDoc(token, dto, result);
             }
 
+            LogUtils.Error(TAG_MOVE_FILE, "未知的文件类型：" + dto.type);
             result.SetFailure("未知的文件类型：" + dto.type);
             return false;
         }
@@ -668,11 +683,12 @@ namespace Com.Scm.Nas.Sync
         /// <returns></returns>
         private async Task<bool> MoveDir(ScmUrTerminalDao token, NasLogFileDto dto, SyncResult result)
         {
-            LogUtils.Debug("移动目录：" + dto.path);
+            LogUtils.Info(TAG_MOVE_FILE, "移动目录", dto.path);
 
             var srcDir = GetNativePath(token, dto.src);
             if (!FileUtils.ExistsDir(srcDir))
             {
+                LogUtils.Error(TAG_MOVE_FILE, "来源目录不存在", srcDir);
                 result.SetFailure($"来源目录 {dto.src} 不存在！");
                 return false;
             }
@@ -700,6 +716,7 @@ namespace Com.Scm.Nas.Sync
 
             AddLogFileByDto(token, dto, srcDao.id, srcDao.dir_id, parentList);
 
+            LogUtils.Info(TAG_MOVE_FILE, "目录移动完成", dto.path);
             result.SetSuccess(srcDao.id, srcDao.ver);
             return true;
         }
@@ -798,11 +815,12 @@ namespace Com.Scm.Nas.Sync
         /// <returns></returns>
         private async Task<bool> MoveDoc(ScmUrTerminalDao token, NasLogFileDto dto, SyncResult result)
         {
-            LogUtils.Debug("移动文档：" + dto.path);
+            LogUtils.Info(TAG_MOVE_FILE, $"移动文档", $"{dto.src} -> {dto.path}");
 
             var srcFile = GetNativePath(token, dto.src);
             if (!FileUtils.ExistsDoc(srcFile))
             {
+                LogUtils.Error(TAG_MOVE_FILE, "来源文档不存在", srcFile);
                 result.SetFailure($"来源文档 {dto.src} 不存在！");
                 return false;
             }
@@ -832,21 +850,24 @@ namespace Com.Scm.Nas.Sync
 
             AddLogFileByDto(token, dto, srcDao.id, srcDao.dir_id, parentList);
 
+            LogUtils.Info(TAG_MOVE_FILE, "文档移动完成", dto.path);
             result.SetSuccess(srcDao.id, srcDao.ver);
             return true;
         }
         #endregion
 
         #region 复件文件
+        private const string TAG_COPY_FILE = "复制文件";
+
         /// <summary>
-        /// 移动文件
+        /// 复件文件
         /// </summary>
         /// <param name="dto"></param>
         /// <param name="result"></param>
         /// <returns></returns>
         private async Task<bool> CopyFile(ScmUrTerminalDao token, NasLogFileDto dto, SyncResult result)
         {
-            LogUtils.Debug("复制文件：" + dto.path);
+            LogUtils.Info(TAG_COPY_FILE, $"复制文件", $"{dto.src} -> {dto.path}");
 
             if (dto == null)
             {
@@ -863,24 +884,25 @@ namespace Com.Scm.Nas.Sync
                 return await CopyDoc(token, dto, result);
             }
 
+            LogUtils.Error(TAG_COPY_FILE, "未知的文件类型：" + dto.type);
             result.SetFailure("未知的文件类型：" + dto.type);
             return false;
         }
 
         /// <summary>
-        /// 移动目录
+        /// 复件目录
         /// </summary>
         /// <param name="dto"></param>
         /// <param name="result"></param>
         /// <returns></returns>
         private async Task<bool> CopyDir(ScmUrTerminalDao token, NasLogFileDto dto, SyncResult result)
         {
-            LogUtils.Debug("复制目录：" + dto.path);
+            LogUtils.Info(TAG_COPY_FILE, $"复制目录", $"{dto.src} -> {dto.path}");
 
             var srcPath = GetNativePath(token, dto.src);
             if (!FileUtils.ExistsDir(srcPath))
             {
-                LogUtils.Debug($"来源目录 {dto.src} 不存在！");
+                LogUtils.Error(TAG_COPY_FILE, "来源目录不存在", srcPath);
                 result.SetFailure($"来源目录 {dto.src} 不存在！");
                 return false;
             }
@@ -903,6 +925,7 @@ namespace Com.Scm.Nas.Sync
 
             AddLogFileByDto(token, dto, dstDao.id, dstDao.dir_id, parentList);
 
+            LogUtils.Info(TAG_COPY_FILE, "目录复制完成", dto.path);
             result.SetSuccess(dstDao.id, dstDao.ver);
             return true;
         }
@@ -978,19 +1001,19 @@ namespace Com.Scm.Nas.Sync
         }
 
         /// <summary>
-        /// 移动文档
+        /// 复制文档
         /// </summary>
         /// <param name="dto"></param>
         /// <param name="result"></param>
         /// <returns></returns>
         private async Task<bool> CopyDoc(ScmUrTerminalDao token, NasLogFileDto dto, SyncResult result)
         {
-            LogUtils.Debug("复制文档：" + dto.path);
+            LogUtils.Info(TAG_COPY_FILE, "复制文档", $"{dto.src} -> {dto.path}");
 
             var srcFile = GetNativePath(token, dto.src);
             if (!FileUtils.ExistsDoc(srcFile))
             {
-                LogUtils.Debug($"来源文档 {dto.src} 不存在！");
+                LogUtils.Error(TAG_COPY_FILE, "来源文档不存在", srcFile);
                 result.SetFailure($"来源文档 {dto.src} 不存在！");
                 return false;
             }
@@ -1019,12 +1042,15 @@ namespace Com.Scm.Nas.Sync
 
             AddLogFileByDto(token, dto, dstDao.id, parentDao.id, parentList);
 
+            LogUtils.Info(TAG_COPY_FILE, "文档复制完成", dto.path);
             result.SetSuccess(dstDao.id, dstDao.ver);
             return true;
         }
         #endregion
 
         #region 更名文件
+        private const string TAG_RENAME_FILE = "更名文件";
+
         /// <summary>
         /// 更名文件
         /// </summary>
@@ -1033,7 +1059,7 @@ namespace Com.Scm.Nas.Sync
         /// <returns></returns>
         private async Task<bool> RenameFile(ScmUrTerminalDao token, NasLogFileDto dto, SyncResult result)
         {
-            LogUtils.Debug("更名文件：" + dto.path);
+            LogUtils.Info(TAG_RENAME_FILE, "更名文件", $"{dto.src} -> {dto.path}");
 
             if (dto == null)
             {
@@ -1050,6 +1076,7 @@ namespace Com.Scm.Nas.Sync
                 return await RenameDoc(token, dto, result);
             }
 
+            LogUtils.Error(TAG_RENAME_FILE, "未知的文件类型：" + dto.type);
             result.SetFailure("未知的文件类型：" + dto.type);
             return false;
         }
@@ -1062,11 +1089,12 @@ namespace Com.Scm.Nas.Sync
         /// <returns></returns>
         private async Task<bool> RenameDir(ScmUrTerminalDao token, NasLogFileDto dto, SyncResult result)
         {
-            LogUtils.Debug("更名目录：" + dto.path);
+            LogUtils.Info(TAG_RENAME_FILE, "更名目录", $"{dto.src} -> {dto.path}");
 
             var srcDir = GetNativePath(token, dto.src);
             if (!FileUtils.ExistsDir(srcDir))
             {
+                LogUtils.Error(TAG_RENAME_FILE, "来源目录不存在", srcDir);
                 result.SetFailure($"来源目录 {dto.src} 不存在！");
                 return false;
             }
@@ -1095,6 +1123,7 @@ namespace Com.Scm.Nas.Sync
 
             AddLogFileByDto(token, dto, srcDao.id, srcDao.dir_id, parentList);
 
+            LogUtils.Info(TAG_RENAME_FILE, "目录更名完成", dto.path);
             result.SetSuccess(srcDao.id, srcDao.ver);
             return true;
         }
@@ -1107,11 +1136,12 @@ namespace Com.Scm.Nas.Sync
         /// <returns></returns>
         private async Task<bool> RenameDoc(ScmUrTerminalDao token, NasLogFileDto dto, SyncResult result)
         {
-            LogUtils.Debug("更名文档：" + dto.path);
+            LogUtils.Info(TAG_RENAME_FILE, "更名文档", $"{dto.src} -> {dto.path}");
 
             var srcFile = GetNativePath(token, dto.src);
             if (!FileUtils.ExistsDoc(srcFile))
             {
+                LogUtils.Error(TAG_RENAME_FILE, "来源文档不存在", srcFile);
                 result.SetFailure($"来源文档 {dto.src} 不存在！");
                 return false;
             }
@@ -1141,12 +1171,15 @@ namespace Com.Scm.Nas.Sync
 
             AddLogFileByDto(token, dto, srcDao.id, paretnDao.id, parentList);
 
+            LogUtils.Info(TAG_RENAME_FILE, "文档更名完成", dto.path);
             result.SetSuccess(srcDao.id, srcDao.ver);
             return true;
         }
         #endregion
 
         #region 更新文件
+        private const string TAG_CHANGE_FILE = "更新文件";
+
         /// <summary>
         /// 更新文件
         /// </summary>
@@ -1155,7 +1188,7 @@ namespace Com.Scm.Nas.Sync
         /// <returns></returns>
         private async Task<bool> ChangeFile(ScmUrTerminalDao token, NasLogFileDto dto, SyncResult result)
         {
-            LogUtils.Debug("更新文件：" + dto.path);
+            LogUtils.Info(TAG_CHANGE_FILE, "更新文件", dto.path);
 
             if (dto.type == ScmFileTypeEnum.Dir)
             {
@@ -1167,6 +1200,7 @@ namespace Com.Scm.Nas.Sync
                 return await ChangeDoc(token, dto, result);
             }
 
+            LogUtils.Error(TAG_CHANGE_FILE, "未知的文件类型：" + dto.type);
             result.SetFailure("未知的文件类型：" + dto.type);
             return false;
         }
@@ -1179,16 +1213,18 @@ namespace Com.Scm.Nas.Sync
         /// <returns></returns>
         private async Task<bool> ChangeDoc(ScmUrTerminalDao token, NasLogFileDto dto, SyncResult result)
         {
-            LogUtils.Debug("更新文档：" + dto.path);
+            LogUtils.Info(TAG_CHANGE_FILE, "更新文档", dto.path);
 
             if (string.IsNullOrEmpty(dto.src))
             {
+                LogUtils.Error(TAG_CHANGE_FILE, "上传文档来源路径为空", dto.src);
                 return false;
             }
 
             var tmpFile = _EnvConfig.GetTempPath(dto.src);
             if (!FileUtils.ExistsDoc(tmpFile))
             {
+                LogUtils.Error(TAG_CHANGE_FILE, "上传文档不存在", tmpFile);
                 result.SetFailure($"上传文档不存在！");
                 return false;
             }
@@ -1202,6 +1238,7 @@ namespace Com.Scm.Nas.Sync
 
             if (!FileUtils.MoveDoc(tmpFile, dstFile, true))
             {
+                LogUtils.Error(TAG_CHANGE_FILE, "上传文档移动异常！");
                 SyncResult.Failure("上传文档移动异常！");
                 return false;
             }
@@ -1224,6 +1261,7 @@ namespace Com.Scm.Nas.Sync
 
             AddLogFileByDto(token, dto, docDao.id, parentDao.id, parentList);
 
+            LogUtils.Info(TAG_CHANGE_FILE, "文档更新完成", dto.path);
             result.SetSuccess(docDao.id, docDao.ver);
             return true;
         }
@@ -1236,7 +1274,7 @@ namespace Com.Scm.Nas.Sync
         /// <returns></returns>
         private async Task<bool> ChangeDir(ScmUrTerminalDao token, NasLogFileDto dto, SyncResult result)
         {
-            LogUtils.Debug("更新目录：" + dto.path);
+            LogUtils.Info(TAG_CHANGE_FILE, "更新目录", dto.path);
 
             var tmpFile = GetNativePath(token, dto.path);
             if (!Directory.Exists(tmpFile))
@@ -1249,6 +1287,7 @@ namespace Com.Scm.Nas.Sync
 
             AddLogFileByDto(token, dto, dirDao.id, dirDao.dir_id, parentList);
 
+            LogUtils.Info(TAG_CHANGE_FILE, "目录更新完成", dto.path);
             result.SetSuccess(dirDao.id, dirDao.ver);
             return true;
         }

@@ -50,14 +50,14 @@ namespace Com.Scm.Utils
         /// </summary>
         /// <param name="msg"></param>
         /// <param name="fileName"></param>
-        public static void Debug(string msg, string fileName = null)
+        public static void Debug(string msg)
         {
-            if (string.IsNullOrWhiteSpace(fileName))
-            {
-                fileName = ApiLog;
-            }
+            Log.Debug($"{{position}}:{msg}", ApiLog);
+        }
 
-            Log.Debug($"{{position}}:{msg}", fileName);
+        public static void Debug(string tag, string msg, string args = null)
+        {
+            Log.Debug($"【{tag}】:{msg} - {args}", ApiLog);
         }
 
         /// <summary>
@@ -65,33 +65,23 @@ namespace Com.Scm.Utils
         /// </summary>
         /// <param name="msg"></param>
         /// <param name="fileName"></param>
-        public static void Info(string msg, string fileName = null)
+        public static void Info(string msg)
         {
-            if (string.IsNullOrWhiteSpace(fileName))
-            {
-                fileName = ApiLog;
-            }
-
             //输入其他的话，还是存放到ApiLog文件夹
-            Log.Information($"{{position}}:{msg}", fileName);
+            Log.Information($"{{position}}:{msg}", ApiLog);
         }
 
-        ///// <summary>
-        ///// 消息日志
-        ///// </summary>
-        ///// <param name="msg"></param>
-        ///// <param name="obj">对象</param>
-        ///// <param name="fileName"></param>
-        //public static void Info(string msg, object obj, string fileName = null)
-        //{
-        //    if (string.IsNullOrWhiteSpace(fileName))
-        //    {
-        //        fileName = ApiLog;
-        //    }
-
-        //    //输入其他的话，还是存放到ApiLog文件夹
-        //    Log.Information($"{{position}}:{msg}-{obj.ToJsonString()}", fileName);
-        //}
+        /// <summary>
+        /// 消息日志
+        /// </summary>
+        /// <param name="msg"></param>
+        /// <param name="obj">对象</param>
+        /// <param name="fileName"></param>
+        public static void Info(string tag, string msg, string args = null)
+        {
+            //输入其他的话，还是存放到ApiLog文件夹
+            Log.Information($"【{tag}】:{msg} - {args}", ApiLog);
+        }
 
         /// <summary>
         /// 异常日志
@@ -109,6 +99,11 @@ namespace Com.Scm.Utils
         public static void Error(string msg)
         {
             Log.Error($"{{position}}:{msg}", ErrorLog);
+        }
+
+        public static void Error(string tag, string msg, string args = null)
+        {
+            Log.Error($"【{tag}】:{msg} - {args}", ErrorLog);
         }
 
         private static void CreateFolder(string path)

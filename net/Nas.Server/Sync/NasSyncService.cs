@@ -330,6 +330,8 @@ namespace Com.Scm.Nas.Sync
                 return SyncResult.Failure("上传对象为空！");
             }
 
+            LogUtils.Debug("PostSync", "上传同步日志", dto.ToJsonString());
+
             var token = ScmToken.FromAppToken(appToken);
             var terminalDao = _ResHolder.GetRes<ScmUrTerminalDao>(token.terminal_id);
             if (terminalDao == null)
@@ -533,7 +535,7 @@ namespace Com.Scm.Nas.Sync
         /// <returns></returns>
         private async Task<bool> CreateFile(ScmUrTerminalDao token, NasLogFileDto dto, SyncResult result)
         {
-            LogUtils.Info(TAG_CREATE_FILE, "文件路径：" + dto.path);
+            LogUtils.Info(TAG_CREATE_FILE, "文件路径", dto.path);
 
             if (dto.type == ScmFileTypeEnum.Dir)
             {
@@ -699,7 +701,7 @@ namespace Com.Scm.Nas.Sync
             var srcDao = GetDirDaoByPath(token.user_id, dto.src);
             if (srcDao != null)
             {
-                UpdateResFileDao(srcDao, dto.name, dto.path, parentDao.id, token.user_id);
+                UpdateResDirDao(srcDao, token, dto.name, dto.path, parentDao.id);
             }
             else
             {
@@ -750,7 +752,7 @@ namespace Com.Scm.Nas.Sync
                 var dirDao = GetDirDaoByPath(token.user_id, srcUri);
                 if (dirDao != null)
                 {
-                    UpdateResFileDao(dirDao, name, dstUri, parentDao.id, token.user_id);
+                    UpdateResDirDao(dirDao, token, name, dstUri, parentDao.id);
                 }
                 else
                 {
@@ -783,7 +785,8 @@ namespace Com.Scm.Nas.Sync
                 var docDao = GetDocDaoByPath(token.user_id, srcUri);
                 if (docDao != null)
                 {
-                    UpdateResFileDao(docDao, name, dstUri, parentDao.id, token.user_id);
+                    var kind = GetFileKind(name);
+                    UpdateResFileDao(docDao, token, name, dstUri, kind, parentDao.id);
                 }
                 else
                 {
@@ -836,7 +839,7 @@ namespace Com.Scm.Nas.Sync
             var srcDao = GetDocDaoByPath(token.user_id, dto.src);
             if (srcDao != null)
             {
-                UpdateResFileDao(srcDao, dto.name, dto.path, parentDao.id, token.user_id);
+                UpdateResFileDao(srcDao, token, dto.name, dto.path, dto.kind, parentDao.id);
             }
             else
             {
@@ -908,7 +911,7 @@ namespace Com.Scm.Nas.Sync
             var dstDao = GetDirDaoByPath(token.user_id, dto.path);
             if (dstDao != null)
             {
-                UpdateResFileDao(dstDao, dto.name, dto.path, parentDao.id, token.user_id);
+                UpdateResDirDao(dstDao, token, dto.name, dto.path, parentDao.id);
             }
             else
             {
@@ -952,7 +955,7 @@ namespace Com.Scm.Nas.Sync
                 var dstDao = GetDirDaoByPath(token.user_id, dstUri);
                 if (dstDao != null)
                 {
-                    UpdateResFileDao(dstDao, name, dstUri, parentDao.id, token.user_id);
+                    UpdateResDirDao(dstDao, token, name, dstUri, parentDao.id);
                 }
                 else
                 {
@@ -978,7 +981,8 @@ namespace Com.Scm.Nas.Sync
                 var dstDao = GetDocDaoByPath(token.user_id, dstUri);
                 if (dstDao != null)
                 {
-                    UpdateResFileDao(dstDao, name, dstUri, parentDao.id, token.user_id);
+                    var kind = GetFileKind(name);
+                    UpdateResFileDao(dstDao, token, name, dstUri, kind, parentDao.id);
                 }
                 else
                 {
@@ -1106,7 +1110,7 @@ namespace Com.Scm.Nas.Sync
             var srcDao = GetDirDaoByPath(token.user_id, dto.src);
             if (srcDao != null)
             {
-                UpdateResFileDao(srcDao, dto.name, dto.path, parentDao.id, token.user_id);
+                UpdateResDirDao(srcDao, token, dto.name, dto.path, parentDao.id);
             }
             else
             {
@@ -1156,7 +1160,7 @@ namespace Com.Scm.Nas.Sync
             var srcDao = GetDocDaoByPath(token.user_id, dto.src);
             if (srcDao != null)
             {
-                UpdateResFileDao(srcDao, dto.name, dto.path, paretnDao.id, token.user_id);
+                UpdateResFileDao(srcDao, token, dto.name, dto.path, dto.kind, paretnDao.id);
             }
             else
             {
@@ -1347,12 +1351,28 @@ namespace Com.Scm.Nas.Sync
             return GetResFileDaoByPath(userId, path, ScmFileTypeEnum.Doc);
         }
 
-        private SyncResFileDao UpdateResFileDao(SyncResFileDao dao, string name, string path, long dirId, long userId)
+        private SyncResFileDao UpdateResDirDao(SyncResFileDao dao, ScmUrTerminalDao token, string name, string path, long dirId)
         {
+            LogUtils.Debug("更新目录记录" + path);
+
             dao.name = name;
             dao.path = path;
+            dao.kind = ScmFileKindEnum.None;
             dao.dir_id = dirId;
-            dao.PrepareUpdate(userId);
+            dao.PrepareUpdate(token.user_id);
+            _SqlClient.Updateable(dao).ExecuteCommand();
+            return dao;
+        }
+
+        private SyncResFileDao UpdateResFileDao(SyncResFileDao dao, ScmUrTerminalDao token, string name, string path, ScmFileKindEnum kind, long dirId)
+        {
+            LogUtils.Debug("更新文档记录" + path);
+
+            dao.name = name;
+            dao.path = path;
+            dao.kind = kind;
+            dao.dir_id = dirId;
+            dao.PrepareUpdate(token.user_id);
             _SqlClient.Updateable(dao).ExecuteCommand();
             return dao;
         }
@@ -1518,7 +1538,7 @@ namespace Com.Scm.Nas.Sync
                 }
                 else
                 {
-                    UpdateResFileDao(dao, arr, tmp, parentDao.id, token.user_id);
+                    UpdateResDirDao(dao, token, arr, tmp, parentDao.id);
                 }
 
                 if (dirList != null)
@@ -1665,6 +1685,8 @@ namespace Com.Scm.Nas.Sync
 
         private SyncResFileDao AddResFileByDto(ScmUrTerminalDao token, NasLogFileDto logDto, long dirId)
         {
+            LogUtils.Debug("添加文件记录" + logDto.path);
+
             var docDao = logDto.Adapt<Sync.SyncResFileDao>();
             docDao.user_id = token.user_id;
             docDao.dir_id = dirId;

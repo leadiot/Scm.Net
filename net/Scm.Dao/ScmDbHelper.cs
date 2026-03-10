@@ -15,11 +15,26 @@ namespace Com.Scm
 {
     public class ScmDbHelper : IModelHelper
     {
+        /// <summary>
+        /// 主版本
+        /// </summary>
         private const int MAJOR = 10;
-        private const int MINOR = 9;
-        private const int PATCH = 16;
-        private const string BUILD = "2026020601";
-        private const string RELEASE_DATE = "2026-02-06";
+        /// <summary>
+        /// 子版本
+        /// </summary>
+        private const int MINOR = 10;
+        /// <summary>
+        /// 修订版本
+        /// </summary>
+        private const int PATCH = 17;
+        /// <summary>
+        /// 构建版本
+        /// </summary>
+        private const string BUILD = "2026031201";
+        /// <summary>
+        /// 发行日期
+        /// </summary>
+        private const string RELEASE_DATE = "2026-03-12";
 
         protected ISqlSugarClient _SqlClient;
         protected string _BaseDir;
@@ -506,15 +521,15 @@ namespace Com.Scm
             roleAdminList.Add(new RoleAuthDao { role_id = roleAdminDao.id, auth_id = homeOAuthDao.id, types = ScmRoleAuthTypesEnum.RoleMenu });
             var homeOtpDao = CreateMenu(1000000000000001340, "profiles-otp", "凭证登录", homeProfilesDao.id, 3, 4, "/profiles/otp", "home/otp", "sc-bubble-chart-line");
             roleAdminList.Add(new RoleAuthDao { role_id = roleAdminDao.id, auth_id = homeOtpDao.id, types = ScmRoleAuthTypesEnum.RoleMenu });
-            // 我的反馈
-            var homeFeedbackDao = CreateMenu(1000000000000001400, "feedback", "我的反馈", homeDao.id, 2, 4, "/feedback", "scm/sys/feedback", "sc-chat-quote-line");
-            roleAdminList.Add(new RoleAuthDao { role_id = roleAdminDao.id, auth_id = homeFeedbackDao.id, types = ScmRoleAuthTypesEnum.RoleMenu });
             // 我的终端
-            var homeTerminalDao = CreateMenu(1000000000000001500, "terminal", "我的终端", homeDao.id, 2, 5, "/terminal", "scm/ur/terminal", "sc-device-line");
+            var homeTerminalDao = CreateMenu(1000000000000001400, "terminal", "我的终端", homeDao.id, 2, 4, "/terminal", "scm/ur/terminal", "sc-device-line");
             roleAdminList.Add(new RoleAuthDao { role_id = roleAdminDao.id, auth_id = homeTerminalDao.id, types = ScmRoleAuthTypesEnum.RoleMenu });
             // 下载中心
-            var homeDownloadDao = CreateMenu(1000000000000001600, "download", "下载中心", homeDao.id, 2, 6, "/download", "scm/down", "sc-device-line");
+            var homeDownloadDao = CreateMenu(1000000000000001500, "download", "下载中心", homeDao.id, 2, 5, "/download", "scm/down", "sc-device-line");
             roleAdminList.Add(new RoleAuthDao { role_id = roleAdminDao.id, auth_id = homeDownloadDao.id, types = ScmRoleAuthTypesEnum.RoleMenu });
+            // 我的反馈
+            var homeFeedbackDao = CreateMenu(1000000000000001600, "feedback", "我的反馈", homeDao.id, 2, 6, "/feedback", "scm/sys/feedback", "sc-chat-quote-line");
+            roleAdminList.Add(new RoleAuthDao { role_id = roleAdminDao.id, auth_id = homeFeedbackDao.id, types = ScmRoleAuthTypesEnum.RoleMenu });
 
             // 设置
             var admDao = CreateMenu(1000000000000003000, "setting", "设置", rootDao.id, 1, 3, "/setting", "", "sc-settings-line");

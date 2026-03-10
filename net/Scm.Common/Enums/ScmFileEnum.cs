@@ -61,12 +61,15 @@ namespace Com.Scm.Enums
         [Description("音频文件")]
         Audio = 42,
         [Description("视频文件")]
-        Vedio = 43,
+        Video = 43,
 
         [Description("办公文件")]
         Office = 50,
 
         [Description("归档文件")]
         Archive = 60,
+
+        [Description("未知文件")]
+        Unknown = 99
     }
 }

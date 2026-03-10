@@ -270,6 +270,7 @@ namespace Com.Scm.Nas.Sync
                     a.row_status == Enums.ScmRowStatusEnum.Enabled)
                 .WhereIF(byPath, a => a.path == request.path)
                 .WhereIF(!byPath, a => a.dir_id == request.dir_id)
+                .WhereIF(request.kind != ScmFileKindEnum.None, a => a.kind == request.kind)
                 .OrderBy(a => a.name, OrderByType.Asc)
                 .Select<NasResFileDto>()
                 .ToPageAsync(request.page, request.limit);
@@ -625,14 +626,8 @@ namespace Com.Scm.Nas.Sync
             var resDao = GetResFileDaoByPath(token.user_id, logDto.path, logDto.type);
             if (resDao == null)
             {
-                resDao = new Sync.SyncResFileDao();
+                resDao = logDto.Adapt<Sync.SyncResFileDao>();
                 resDao.user_id = token.user_id;
-                resDao.type = logDto.type;
-                resDao.name = logDto.name;
-                resDao.path = logDto.path;
-                resDao.hash = logDto.hash;
-                resDao.size = logDto.size;
-                resDao.modify_time = logDto.modify_time;
                 resDao.dir_id = dirId;
                 resDao.PrepareCreate(token.user_id);
 
@@ -1306,92 +1301,6 @@ namespace Com.Scm.Nas.Sync
                 .ToList();
         }
 
-        /// <summary>
-        /// 根据名称级联查找对象
-        /// </summary>
-        /// <param name="userId"></param>
-        /// <param name="path"></param>
-        /// <param name="type"></param>
-        /// <returns></returns>
-        private List<SyncResFileDao> GetResFileDaoByPath2(long userId, string path, ScmFileTypeEnum type)
-        {
-            var list = new List<SyncResFileDao>();
-            var array = path.Split(NasEnv.WebSeparator);
-            var dao = new SyncResFileDao { id = NasEnv.DEF_DIR_ID };
-            foreach (var arr in array)
-            {
-                dao = _SqlClient.Queryable<SyncResFileDao>()
-                    .Where(a => a.user_id == userId && a.dir_id == dao.id && a.name == arr)
-                    .First();
-                if (dao == null)
-                {
-                    return null;
-                }
-
-                list.Add(dao);
-            }
-
-            if (dao.type != type)
-            {
-                return null;
-            }
-
-            return list;
-        }
-
-        /// <summary>
-        /// 获取观察文件夹
-        /// </summary>
-        /// <param name="fileList"></param>
-        /// <param name="folderList"></param>
-        /// <returns></returns>
-        private List<SyncCfgFolderDao> GetObservableFolderList(List<SyncResFileDao> fileList, List<SyncCfgFolderDao> folderList)
-        {
-            var list = new List<SyncCfgFolderDao>();
-
-            foreach (var file in fileList)
-            {
-                foreach (var folder in folderList)
-                {
-                    if (folder.res_id == file.id)
-                    {
-                        list.Add(folder);
-                    }
-                }
-            }
-
-            return list;
-        }
-
-        private void AddObservaleLogDao(SyncLogFileDao logDao, List<SyncResFileDao> fileList, List<SyncCfgFolderDao> folderList)
-        {
-            var list = new List<SyncLogFolderDao>();
-
-            foreach (var file in fileList)
-            {
-                foreach (var folder in folderList)
-                {
-                    if (folder.res_id != file.id)
-                    {
-                        continue;
-                    }
-                    // 排除自身
-                    if (file.id == logDao.folder_id)
-                    {
-                        continue;
-                    }
-
-                    var dao = new SyncLogFolderDao();
-                    dao.user_id = logDao.user_id;
-                    dao.folder_id = logDao.folder_id;
-                    dao.log_id = logDao.id;
-                    list.Add(dao);
-                }
-            }
-
-            _SqlClient.Insertable(list).ExecuteCommand();
-        }
-
         private Sync.SyncResFileDao GetResFileDaoByName(long userId, long dirId, string name, ScmFileTypeEnum type)
         {
             return _SqlClient.Queryable<Sync.SyncResFileDao>()
@@ -1526,38 +1435,6 @@ namespace Com.Scm.Nas.Sync
             return _EnvConfig.GetDataPath($"/{NasEnv.DEF_NAS_DIR}/{userDao.codes}" + path);
         }
 
-        private string GetStoragePath(NasNodeEnums node, string path)
-        {
-            if (node == NasNodeEnums.Devices)
-            {
-                if (!path.StartsWith(NasEnv.PathDevices, StringComparison.OrdinalIgnoreCase))
-                {
-                    path = NasEnv.PathDevices + path;
-                }
-                return path;
-            }
-
-            if (node == NasNodeEnums.Public)
-            {
-                if (!path.StartsWith(NasEnv.PathPublic, StringComparison.OrdinalIgnoreCase))
-                {
-                    path = NasEnv.PathPublic + path;
-                }
-                return path;
-            }
-
-            if (node == NasNodeEnums.Secret)
-            {
-                if (!path.StartsWith(NasEnv.PathSecret, StringComparison.OrdinalIgnoreCase))
-                {
-                    path = NasEnv.PathSecret + path;
-                }
-                return path;
-            }
-
-            return path;
-        }
-
         private string GetClientPath(ScmUrTerminalDao token, string path)
         {
             if (string.IsNullOrEmpty(path))
@@ -1580,6 +1457,14 @@ namespace Com.Scm.Nas.Sync
             return path;
         }
 
+        /// <summary>
+        /// 创建特殊目录（如：回收站、收藏夹等）
+        /// </summary>
+        /// <param name="token"></param>
+        /// <param name="name"></param>
+        /// <param name="path"></param>
+        /// <param name="kind"></param>
+        /// <returns></returns>
         private SyncResFileDao CreateSpecialDirDao(ScmUrTerminalDao token, string name, string path, ScmFileKindEnum kind)
         {
             var dao = _SqlClient.Queryable<SyncResFileDao>()
@@ -1728,6 +1613,28 @@ namespace Com.Scm.Nas.Sync
         }
 
         /// <summary>
+        /// 获取文档分类
+        /// </summary>
+        /// <param name="file"></param>
+        /// <returns></returns>
+        private ScmFileKindEnum GetFileKind(string file)
+        {
+            if (string.IsNullOrWhiteSpace(file))
+            {
+                return ScmFileKindEnum.Unknown;
+            }
+
+            var ext = FileUtils.GetExtension(file);
+            if (string.IsNullOrEmpty(ext))
+            {
+                return ScmFileKindEnum.Unknown;
+            }
+            ext = ext.ToLower().TrimStart('.');
+
+            return NasHelper.getKind(ext);
+        }
+
+        /// <summary>
         /// 添加文档记录
         /// </summary>
         /// <param name="token"></param>
@@ -1739,10 +1646,12 @@ namespace Com.Scm.Nas.Sync
         /// <returns></returns>
         private Sync.SyncResFileDao AddResDocDao(ScmUrTerminalDao token, long dirId, string path, string name, string hash, long size, long time)
         {
+            var kind = GetFileKind(name);
             var dirDao = new Sync.SyncResFileDao
             {
                 user_id = token.user_id,
                 type = ScmFileTypeEnum.Doc,
+                kind = kind,
                 name = name,
                 path = path,
                 hash = hash,

@@ -39,6 +39,11 @@ namespace Com.Scm.Nas.Log
         public ScmFileTypeEnum type { get; set; }
 
         /// <summary>
+        /// 文档分类
+        /// </summary>
+        public ScmFileKindEnum kind { get; set; }
+
+        /// <summary>
         /// 文件名称
         /// </summary>
         public string name { get; set; }

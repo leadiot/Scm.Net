@@ -487,27 +487,31 @@ tool.fileSizeFormat = function (limit) {
 		return "";
 	}
 
-	var size = "";
-	if (limit < 0.1 * 1024) {
-		//小于0.1KB，则转化成B
-		size = limit.toFixed(2) + "B";
-	} else if (limit < 0.1 * 1024 * 1024) {
-		//小于0.1MB，则转化成KB
-		size = (limit / 1024).toFixed(2) + "KB";
-	} else if (limit < 0.1 * 1024 * 1024 * 1024) {
-		//小于0.1GB，则转化成MB
-		size = (limit / (1024 * 1024)).toFixed(2) + "MB";
-	} else {
-		//其他转化成GB
-		size = (limit / (1024 * 1024 * 1024)).toFixed(2) + "GB";
+	var num = Number(limit);
+	if (!isNaN(num)) {
+		return "";
 	}
 
-	var sizeStr = size + ""; //转成字符串
-	var index = sizeStr.indexOf("."); //获取小数点处的索引
-	var dou = sizeStr.substring(index + 1, index + 3); //获取小数点后两位的值
+	var size = "";
+	if (num < 0.1 * 1024) {
+		//小于0.1KB，则转化成B
+		size = num.toFixed(2) + "B";
+	} else if (num < 0.1 * 1024 * 1024) {
+		//小于0.1MB，则转化成KB
+		size = (num / 1024).toFixed(2) + "KB";
+	} else if (num < 0.1 * 1024 * 1024 * 1024) {
+		//小于0.1GB，则转化成MB
+		size = (num / (1024 * 1024)).toFixed(2) + "MB";
+	} else {
+		//其他转化成GB
+		size = (num / (1024 * 1024 * 1024)).toFixed(2) + "GB";
+	}
+
+	var index = size.indexOf("."); //获取小数点处的索引
+	var dou = size.substring(index + 1, index + 3); //获取小数点后两位的值
 	if (dou == "00") {
 		//判断后两位是否为00，如果是则删除00
-		return sizeStr.substring(0, index) + sizeStr.substring(index + 3, index + 5);
+		return size.substring(0, index) + size.substring(index + 3, index + 5);
 	}
 	return size;
 };

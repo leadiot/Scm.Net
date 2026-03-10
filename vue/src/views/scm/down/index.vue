@@ -20,7 +20,7 @@
                         <p class="platform-desc">{{ download.desc }}</p>
                         <div class="download-buttons">
                             <el-button type="primary" size="large" @click="handleDownload(download.client)"
-                                :loading="isPlatform(download.client)" :disabled="isPlatform(download.client)">
+                                :loading="isDownload(download.client)" :disabled="isDownload(download.client)">
                                 <sc-icon name="ms-download" />{{ download.name }}版本
                             </el-button>
                             <el-button type="default" @click="showVersionInfo(download.client)">
@@ -36,6 +36,15 @@
             </el-backtop>
         </el-card>
     </div>
+    <el-dialog title="二维码下载" v-model="qrcodeVisible" width="300px" :close-on-click-modal="false"
+        :close-on-press-escape="false" :show-close="false">
+        <p style="text-align: center;">
+            <sc-qrcode ref="qrcode" :text="downloadInfo.url" :size="200"></sc-qrcode>
+        </p>
+        <template #footer>
+            <el-button type="primary" @click="qrcodeVisible = false">关闭</el-button>
+        </template>
+    </el-dialog>
     <el-dialog title="版本说明" v-model="versionVisible" width="560px" :close-on-click-modal="false"
         :close-on-press-escape="false" :show-close="false">
         <el-descriptions :column="1" :label-width="100" border>
@@ -60,20 +69,20 @@
 <script>
 import { useRoute } from 'vue-router';
 
+import scQrcode from '@/components/scQrcode';
 export default {
+    components: {
+        scQrcode,
+    },
     name: 'scm_down',
     data() {
         return {
-            downloading: 0,
             versionVisible: false,
-            downloadInfo: {},
+            qrcodeVisible: false,
+            platformList: [],
             downloadList: [],
-            platformList: [
-                { id: 'desktop', name: '桌面端应用', visible: false },
-                { id: 'mobile', name: '移动端应用', visible: false },
-                { id: 'browser', name: '网页端应用', visible: false },
-                { id: 'quickapp', name: '小程序应用', visible: false }
-            ],
+            downloading: 0,
+            downloadInfo: {},
         }
     },
     mounted() {
@@ -100,34 +109,24 @@ export default {
         },
 
         defaultData() {
+            this.platformList = this.$CONFIG.PLATFORM_LIST || [];
+            this.platformList.forEach(item => {
+                item.downloadList = [];
+            });
+
             this.downloadList = this.$CONFIG.DOWNLOAD_LIST || [];
             this.downloadList.forEach(item => {
-                if (item.client == 20 || item.client == 30 || item.client == 40) {
-                    this.pushDownloadList('desktop', item);
-                    return;
-                }
-                if (item.client == 50 || item.client == 60 || item.client == 70) {
-                    this.pushDownloadList('mobile', item);
-                    return;
-                }
-                if (item.client == 11 || item.client == 12 || item.client == 13) {
-                    this.pushDownloadList('browser', item);
-                    return;
-                }
-                if (item.client == 81 || item.client == 82) {
-                    this.pushDownloadList('quickapp', item);
-                    return;
-                }
+                this.pushDownloadList(item);
             });
         },
 
-        pushDownloadList(platform, item) {
+        pushDownloadList(item) {
             if (!item.visible) {
                 return;
             }
 
             this.platformList.forEach(plat => {
-                if (plat.id == platform) {
+                if (plat.code == item.platform) {
                     if (!plat.downloadList) {
                         plat.downloadList = [];
                     }
@@ -137,7 +136,7 @@ export default {
             });
         },
 
-        getPlatformInfo(client) {
+        getDownloadInfo(client) {
             return this.downloadList.find(item => item.client === client);
         },
 
@@ -146,7 +145,7 @@ export default {
          * @param client 平台标识
          * @returns 是否正在下载
          */
-        isPlatform(client) {
+        isDownload(client) {
             return this.downloading == client;
         },
 
@@ -155,87 +154,91 @@ export default {
          * @param {string} client - 平台标识
          */
         handleDownload(client) {
-            var info = this.getPlatformInfo(client);
+            var info = this.getDownloadInfo(client);
             if (!info) {
                 this.$message.error(`当前版本不支持${this.getPlatformName(client)}下载。`);
                 return;
             }
 
+            if (info.method == 'file') {
+                this.downFile(info);
+                return;
+            }
+            if (info.method == 'appstore') {
+                this.openAppStore(info);
+                return;
+            }
+            if (info.method == 'qrcode') {
+                this.openQrcode(info);
+                return;
+            }
+        },
+
+        downFile(download) {
             // 设置下载状态
-            this.downloading = client;
+            this.downloading = download.client;
 
             // 显示下载提示
-            this.$message.success(`正在准备${this.getPlatformName(client)}版本下载...`);
+            this.$message.success(`正在准备${this.getPlatformName(download.client)}版本下载...`);
 
-            // 模拟下载延迟
-            setTimeout(() => {
-                try {
-                    // 创建下载链接
-                    const link = document.createElement('a');
-                    link.href = info.url;
-                    link.download = info.file || this.getFileName(info.url);
-                    document.body.appendChild(link);
+            try {
+                // 创建下载链接
+                const link = document.createElement('a');
+                link.href = download.url;
+                link.download = download.file || this.getFileName(download.url);
+                document.body.appendChild(link);
 
-                    // 使用 MouseEvent 增强可访问性
-                    const clickEvent = new MouseEvent('click', {
-                        view: window,
-                        bubbles: true,
-                        cancelable: true
-                    });
-                    link.dispatchEvent(clickEvent);
+                // 使用 MouseEvent 增强可访问性
+                const clickEvent = new MouseEvent('click', {
+                    view: window,
+                    bubbles: true,
+                    cancelable: true
+                });
+                link.dispatchEvent(clickEvent);
 
-                    // 延迟移除元素以确保下载开始
-                    setTimeout(() => {
-                        document.body.removeChild(link);
-                    }, 100);
+                // 延迟移除元素以确保下载开始
+                setTimeout(() => {
+                    document.body.removeChild(link);
+                }, 100);
 
-                    // 记录下载
-                    this.recordDownload(client);
+                // 记录下载
+                this.recordDownload(download);
 
-                    // 下载开始后显示成功消息
-                    this.$message.success(`${this.getPlatformName(client)}版本开始下载，请注意保存文件。`);
-                } catch (error) {
-                    console.error('下载失败:', error);
-                    this.$message.error(`下载失败，请稍后重试。`);
-                } finally {
-                    // 重置下载状态
-                    this.downloading = null;
-                }
-            }, 1200);
+                // 下载开始后显示成功消息
+                this.$message.success(`${this.getPlatformName(download.client)}版本开始下载，请注意保存文件。`);
+            } catch (error) {
+                console.error('下载失败:', error);
+                this.$message.error(`下载失败，请稍后重试。`);
+            } finally {
+                // 重置下载状态
+                this.downloading = null;
+            }
         },
 
         /**
          * 打开应用商店
          * @param {string} platform - 平台标识
          */
-        openAppStore(platform) {
-            var info = this.getPlatformInfo(platform);
-            if (!info) {
-                this.$message.error(`当前版本不支持${this.getPlatformName(platform)}下载。`);
-                return;
-            }
-
-            var url = info.url;
+        openAppStore(download) {
+            var url = download.url;
             try {
                 // 添加延迟和反馈，提升用户体验
-                const storeName = platform === 'android' ? 'Google Play' : '华为应用市场';
+                const storeName = download.client === 50 ? 'Google Play' : '华为应用市场';
                 this.$message.info(`正在打开${storeName}...`);
 
                 // 使用更安全的方式打开新窗口
-                setTimeout(() => {
-                    const newWindow = window.open('', '_blank');
-                    if (newWindow) {
-                        newWindow.opener = null; // 防止新窗口访问 opener 属性
-                        newWindow.location.href = url;
-                    } else {
-                        // 如果弹窗被阻止，提供替代方案
-                        this.$message.warning(`无法自动打开新窗口，请手动访问: ${url}`);
-                        // 复制URL到剪贴板作为备选
-                        navigator.clipboard.writeText(url).then(() => {
-                            this.$message.success('链接已复制到剪贴板');
-                        });
-                    }
-                }, 500);
+                const newWindow = window.open('', '_blank');
+                if (newWindow) {
+                    newWindow.opener = null; // 防止新窗口访问 opener 属性
+                    newWindow.location.href = url;
+                } else {
+                    // 如果弹窗被阻止，提供替代方案
+                    this.$message.warning(`无法自动打开新窗口，请手动访问: ${url}`);
+                    // 复制URL到剪贴板作为备选
+                    navigator.clipboard.writeText(url).then(() => {
+                        this.$message.success('链接已复制到剪贴板');
+                    });
+                }
             } catch (error) {
                 console.error('打开应用商店失败:', error);
                 this.$message.error('打开应用商店失败，请稍后重试。');
@@ -243,13 +246,22 @@ export default {
         },
 
         /**
-         * 显示版本信息
-         * @param {string} platform - 平台标识
+         * 打开二维码
+         * @param {string} client - 平台标识
          */
-        showVersionInfo(platform) {
-            var info = this.getPlatformInfo(platform);
+        openQrcode(download) {
+            this.qrcodeVisible = true;
+            this.downloadInfo = download;
+        },
+
+        /**
+         * 显示版本信息
+         * @param {string} client - 平台标识
+         */
+        showVersionInfo(client) {
+            var info = this.getDownloadInfo(client);
             if (!info) {
-                this.$message.error(`当前版本不支持${this.getPlatformName(platform)}下载。`);
+                this.$message.error(`当前版本不支持${this.getPlatformName(client)}下载。`);
                 return;
             }
 

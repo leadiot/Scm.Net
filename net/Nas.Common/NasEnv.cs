@@ -64,6 +64,17 @@
         public const string InitUrl = "/NasSync/Init";
 
         /// <summary>
+        /// 小文件下载
+        /// </summary>
+        public const string DsUrl = "/Ds/Init";
+        public const string DlUrl = "/Dl/Init";
+        /// <summary>
+        /// 小文件预览
+        /// </summary>
+        public const string VsUrl = "/Vs/Init";
+        public const string VlUrl = "/Vl/Init";
+
+        /// <summary>
         /// 获取目录路径
         /// </summary>
         public const string DirUrl = "/NasSync/Dir";

@@ -66,13 +66,35 @@
         /// <summary>
         /// 小文件下载
         /// </summary>
-        public const string DsUrl = "/Ds/Init";
-        public const string DlUrl = "/Dl/Init";
+        public const string DsUrl = "/Nas/Ds/";
+        public const string DlUrl = "/Nas/Dl/";
         /// <summary>
         /// 小文件预览
         /// </summary>
-        public const string VsUrl = "/Vs/Init";
-        public const string VlUrl = "/Vl/Init";
+        public const string VsUrl = "/Nas/Vs/";
+        public const string VlUrl = "/Nas/Vl/";
+
+        /// <summary>
+        /// 文件上传路径
+        /// </summary>
+        public const string FileUploadUrl = "/Upload/File";
+        /// <summary>
+        /// 分块上传路径
+        /// </summary>
+        public const string ChunkUploadUrl = "/Upload/Chunk";
+        /// <summary>
+        /// 分块上传检测
+        /// </summary>
+        public const string CheckUploadUrl = "/Upload/Check";
+        /// <summary>
+        /// 分块合并
+        /// </summary>
+        public const string MergeUploadUrl = "/Upload/Merge";
+
+        /// <summary>
+        /// 文件下载路径
+        /// </summary>
+        public const string FileDownloadUrl = "/Download/file";
 
         /// <summary>
         /// 获取目录路径
@@ -105,28 +127,6 @@
         /// 更新驱动路径
         /// </summary>
         public const string SaveFolderUrl = "/NasSync/Folder";
-
-        /// <summary>
-        /// 文件上传路径
-        /// </summary>
-        public const string FileUploadUrl = "/Upload/File";
-        /// <summary>
-        /// 分块上传路径
-        /// </summary>
-        public const string ChunkUploadUrl = "/Upload/Chunk";
-        /// <summary>
-        /// 分块上传检测
-        /// </summary>
-        public const string CheckUploadUrl = "/Upload/Check";
-        /// <summary>
-        /// 分块合并
-        /// </summary>
-        public const string MergeUploadUrl = "/Upload/Merge";
-
-        /// <summary>
-        /// 文件下载路径
-        /// </summary>
-        public const string FileDownloadUrl = "/Download/file";
         #endregion
 
         #region 系统专用目录

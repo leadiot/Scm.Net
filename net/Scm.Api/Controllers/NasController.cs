@@ -16,7 +16,7 @@ namespace Com.Scm.Api.Controllers
 {
     /// <summary>
     /// 文件下载服务
-    /// /Api/Nas/ds/i，小文件下载
+    /// /Api/Nas/ds/id，小文件下载
     /// /Api/Nas/dl/id，大文件下载
     /// /Api/Nas/vs/id，文件查看
     /// /Api/Nas/file，小文件上传

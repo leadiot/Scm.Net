@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using MimeKit;
 using SqlSugar;
+using System.Text;
 using System.Text.RegularExpressions;
 
 namespace Com.Scm.Api.Controllers
@@ -275,16 +276,19 @@ namespace Com.Scm.Api.Controllers
                 return Empty;
             }
 
-            // 3. 获取文件的MIME类型
-            var contentType = MimeTypes.GetMimeType(filePath);
-            if (string.IsNullOrWhiteSpace(contentType))
+            if (docDao.kind == Enums.ScmFileKindEnum.Text || docDao.kind == Enums.ScmFileKindEnum.Code)
             {
-                contentType = HttpContentType.APPLICATION_OCTET_STREAM;
+                // 3. 关键：设置响应头（编码+不下载+预览）
+                Response.Headers.Append("Content-Encoding", Encoding.UTF8.WebName);
+
+                return Content(FileUtils.ReadText(filePath));
             }
 
             Response.Headers.Append($"Content-Disposition", $"inline; filename=\"{FileUtils.GetFileName(filePath)}\"");
 
-            // 4. 返回文件流（第三个参数是下载时显示的文件名）
+            // 5. 获取文件的MIME类型
+            var contentType = MimeTypes.GetMimeType(filePath);
+
             return PhysicalFile(filePath, contentType);
         }
         #endregion

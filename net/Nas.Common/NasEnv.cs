@@ -67,34 +67,35 @@
         /// 小文件下载
         /// </summary>
         public const string DsUrl = "/Nas/Ds/";
+        /// <summary>
+        /// 大文件下载
+        /// </summary>
         public const string DlUrl = "/Nas/Dl/";
         /// <summary>
         /// 小文件预览
         /// </summary>
         public const string VsUrl = "/Nas/Vs/";
+        /// <summary>
+        /// 大文件预览
+        /// </summary>
         public const string VlUrl = "/Nas/Vl/";
 
         /// <summary>
         /// 文件上传路径
         /// </summary>
-        public const string FileUploadUrl = "/Upload/File";
+        public const string FileUploadUrl = "/Nas/File";
         /// <summary>
         /// 分块上传路径
         /// </summary>
-        public const string ChunkUploadUrl = "/Upload/Chunk";
+        public const string ChunkUploadUrl = "/Nas/Chunk";
         /// <summary>
         /// 分块上传检测
         /// </summary>
-        public const string CheckUploadUrl = "/Upload/Check";
+        public const string CheckUploadUrl = "/Nas/Check";
         /// <summary>
         /// 分块合并
         /// </summary>
-        public const string MergeUploadUrl = "/Upload/Merge";
-
-        /// <summary>
-        /// 文件下载路径
-        /// </summary>
-        public const string FileDownloadUrl = "/Download/file";
+        public const string MergeUploadUrl = "/Nas/Merge";
 
         /// <summary>
         /// 获取目录路径

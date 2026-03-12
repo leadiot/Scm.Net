@@ -39,6 +39,19 @@ namespace Com.Scm.Nas.Sync
             _ResHolder = resHolder;
         }
 
+        public SyncResult TestAsync()
+        {
+            var json = "{\"terminal_id\":0,\"folder_id\":2031909146500141056,\"res_id\":1773255166001,\"dir_id\":1773254941001,\"type\":10,\"kind\":0,\"name\":\"Devices\",\"path\":\"/Public/public/Devices\",\"hash\":\"\",\"size\":0,\"modify_time\":0,\"opt\":1,\"dir\":1,\"src\":null,\"row_status\":0,\"create_user\":0,\"create_names\":null,\"create_time\":1773284008749,\"update_user\":0,\"update_names\":null,\"update_time\":1773284008749,\"id\":0}";
+            var dto = json.AsJsonObject<NasLogFileDto>();
+            var terminalDao = _ResHolder.GetRes<ScmUrTerminalDao>(2031718705003630592);
+
+            var result = new SyncResult();
+
+            DealDeleteFile(terminalDao, dto, result);
+
+            return result;
+        }
+
         #region 对外接口
         /// <summary>
         /// 数据初始化
@@ -358,37 +371,37 @@ namespace Com.Scm.Nas.Sync
             var result = new SyncResult();
             if (dto.opt == NasOptEnums.Delete)
             {
-                DeleteFile(terminalDao, dto, result);
+                DealDeleteFile(terminalDao, dto, result);
                 return result;
             }
 
             if (dto.opt == NasOptEnums.Create)
             {
-                await CreateFile(terminalDao, dto, result);
+                await DealCreateFile(terminalDao, dto, result);
                 return result;
             }
 
             if (dto.opt == NasOptEnums.Rename)
             {
-                await RenameFile(terminalDao, dto, result);
+                await DealRenameFile(terminalDao, dto, result);
                 return result;
             }
 
             if (dto.opt == NasOptEnums.Move)
             {
-                await MoveFile(terminalDao, dto, result);
+                await DealMoveFile(terminalDao, dto, result);
                 return result;
             }
 
             if (dto.opt == NasOptEnums.Copy)
             {
-                await CopyFile(terminalDao, dto, result);
+                await DealCopyFile(terminalDao, dto, result);
                 return result;
             }
 
             if (dto.opt == NasOptEnums.Change)
             {
-                await ChangeFile(terminalDao, dto, result);
+                await DealChangeFile(terminalDao, dto, result);
                 return result;
             }
 
@@ -407,7 +420,7 @@ namespace Com.Scm.Nas.Sync
         /// <param name="dto"></param>
         /// <param name="result"></param>
         /// <returns></returns>
-        private bool DeleteFile(ScmUrTerminalDao token, NasLogFileDto dto, SyncResult result)
+        private bool DealDeleteFile(ScmUrTerminalDao token, NasLogFileDto dto, SyncResult result)
         {
             LogUtils.Info(TAG_DELETE_FILE, "删除文件", dto.path);
 
@@ -418,12 +431,12 @@ namespace Com.Scm.Nas.Sync
 
             if (dto.type == ScmFileTypeEnum.Dir)
             {
-                return DeleteDir(token, dto, result);
+                return DealDeleteDir(token, dto, result);
             }
 
             if (dto.type == ScmFileTypeEnum.Doc)
             {
-                return DeleteDoc(token, dto, result);
+                return DealDeleteDoc(token, dto, result);
             }
 
             LogUtils.Error(TAG_DELETE_FILE, "未知的文件类型：" + dto.type);
@@ -437,7 +450,7 @@ namespace Com.Scm.Nas.Sync
         /// <param name="dto"></param>
         /// <param name="result"></param>
         /// <returns></returns>
-        private bool DeleteDoc(ScmUrTerminalDao token, NasLogFileDto dto, SyncResult result)
+        private bool DealDeleteDoc(ScmUrTerminalDao token, NasLogFileDto dto, SyncResult result)
         {
             LogUtils.Info(TAG_DELETE_FILE, "删除文档", dto.path);
 
@@ -453,7 +466,7 @@ namespace Com.Scm.Nas.Sync
             var dirId = 0L;
             if (docDao != null)
             {
-                DeleteDocDao(docDao);
+                DealDeleteDocDao(docDao);
                 resId = docDao.id;
                 ver = docDao.ver;
                 dirId = docDao.dir_id;
@@ -466,7 +479,11 @@ namespace Com.Scm.Nas.Sync
             return true;
         }
 
-        private void DeleteDocDao(Sync.SyncResFileDao dao)
+        /// <summary>
+        /// 删除文档数据
+        /// </summary>
+        /// <param name="dao"></param>
+        private void DealDeleteDocDao(Sync.SyncResFileDao dao)
         {
             _SqlClient.Deleteable(dao).ExecuteCommand();
         }
@@ -477,7 +494,7 @@ namespace Com.Scm.Nas.Sync
         /// <param name="dto"></param>
         /// <param name="result"></param>
         /// <returns></returns>
-        private bool DeleteDir(ScmUrTerminalDao token, NasLogFileDto dto, SyncResult result)
+        private bool DealDeleteDir(ScmUrTerminalDao token, NasLogFileDto dto, SyncResult result)
         {
             LogUtils.Info(TAG_DELETE_FILE, "删除目录", dto.path);
 
@@ -485,20 +502,21 @@ namespace Com.Scm.Nas.Sync
             FileUtils.DeleteDir(dstFile);
 
             var parentList = new List<SyncResFileDao>();
-            var parentDao = GetDirDaoByPath(token, NasUtils.GetParentPath(dto.path), parentList);
-            var dirDao = GetDirDaoByPath(token.user_id, dto.path);
+            var dirDao = GetDirDaoByPath(token, dto.path, parentList);
+            //var dirDao = GetDirDaoByPath(token.user_id, dto.path);
 
             var resId = 0L;
-            var ver = 0L;
             var dirId = 0L;
+            var ver = 0L;
             if (dirDao != null)
             {
-                DeleteDirDao(dirDao);
+                DealDeleteDirDao(dirDao);
 
                 DeleteResFileDao(token, dirDao);
+
                 resId = dirDao.id;
-                ver = dirDao.ver;
                 dirId = dirDao.dir_id;
+                ver = dirDao.ver;
             }
 
             AddLogFileByDto(token, dto, resId, dirId, parentList);
@@ -508,14 +526,18 @@ namespace Com.Scm.Nas.Sync
             return true;
         }
 
-        private void DeleteDirDao(Sync.SyncResFileDao dao)
+        /// <summary>
+        /// 级联删除目录数据
+        /// </summary>
+        /// <param name="dao"></param>
+        private void DealDeleteDirDao(Sync.SyncResFileDao dao)
         {
             var dirList = _SqlClient.Queryable<Sync.SyncResFileDao>()
                 .Where(a => a.type == ScmFileTypeEnum.Dir && a.dir_id == dao.id)
                 .ToList();
             foreach (var dir in dirList)
             {
-                DeleteDirDao(dir);
+                DealDeleteDirDao(dir);
             }
 
             _SqlClient.Deleteable<Sync.SyncResFileDao>()
@@ -533,18 +555,18 @@ namespace Com.Scm.Nas.Sync
         /// <param name="dto"></param>
         /// <param name="result"></param>
         /// <returns></returns>
-        private async Task<bool> CreateFile(ScmUrTerminalDao token, NasLogFileDto dto, SyncResult result)
+        private async Task<bool> DealCreateFile(ScmUrTerminalDao token, NasLogFileDto dto, SyncResult result)
         {
             LogUtils.Info(TAG_CREATE_FILE, "文件路径", dto.path);
 
             if (dto.type == ScmFileTypeEnum.Dir)
             {
-                return await CreateDir(token, dto, result);
+                return await DealCreateDir(token, dto, result);
             }
 
             if (dto.type == ScmFileTypeEnum.Doc)
             {
-                return await CreateDoc(token, dto, result);
+                return await DealCreateDoc(token, dto, result);
             }
 
             LogUtils.Error(TAG_CREATE_FILE, "未知的文件类型：" + dto.type);
@@ -558,7 +580,7 @@ namespace Com.Scm.Nas.Sync
         /// <param name="dto"></param>
         /// <param name="result"></param>
         /// <returns></returns>
-        private async Task<bool> CreateDir(ScmUrTerminalDao token, NasLogFileDto dto, SyncResult result)
+        private async Task<bool> DealCreateDir(ScmUrTerminalDao token, NasLogFileDto dto, SyncResult result)
         {
             LogUtils.Info(TAG_CREATE_FILE, "创建目录", dto.path);
 
@@ -585,7 +607,7 @@ namespace Com.Scm.Nas.Sync
         /// <param name="dto"></param>
         /// <param name="result"></param>
         /// <returns></returns>
-        private async Task<bool> CreateDoc(ScmUrTerminalDao token, NasLogFileDto dto, SyncResult result)
+        private async Task<bool> DealCreateDoc(ScmUrTerminalDao token, NasLogFileDto dto, SyncResult result)
         {
             LogUtils.Info(TAG_CREATE_FILE, "创建文档", dto.path);
 
@@ -648,7 +670,7 @@ namespace Com.Scm.Nas.Sync
         /// <param name="dto"></param>
         /// <param name="result"></param>
         /// <returns></returns>
-        private async Task<bool> MoveFile(ScmUrTerminalDao token, NasLogFileDto dto, SyncResult result)
+        private async Task<bool> DealMoveFile(ScmUrTerminalDao token, NasLogFileDto dto, SyncResult result)
         {
             LogUtils.Info(TAG_MOVE_FILE, $"移动文件", $"{dto.src} -> {dto.path}");
 
@@ -659,12 +681,12 @@ namespace Com.Scm.Nas.Sync
 
             if (dto.type == ScmFileTypeEnum.Dir)
             {
-                return await MoveDir(token, dto, result);
+                return await DealMoveDir(token, dto, result);
             }
 
             if (dto.type == ScmFileTypeEnum.Doc)
             {
-                return await MoveDoc(token, dto, result);
+                return await DealMoveDoc(token, dto, result);
             }
 
             LogUtils.Error(TAG_MOVE_FILE, "未知的文件类型：" + dto.type);
@@ -678,7 +700,7 @@ namespace Com.Scm.Nas.Sync
         /// <param name="dto"></param>
         /// <param name="result"></param>
         /// <returns></returns>
-        private async Task<bool> MoveDir(ScmUrTerminalDao token, NasLogFileDto dto, SyncResult result)
+        private async Task<bool> DealMoveDir(ScmUrTerminalDao token, NasLogFileDto dto, SyncResult result)
         {
             LogUtils.Info(TAG_MOVE_FILE, "移动目录", dto.path);
 
@@ -709,7 +731,7 @@ namespace Com.Scm.Nas.Sync
             }
 
             var dstDir = GetNativePath(token, dto.path);
-            MoveDirCasced(token, srcDao, srcDir, dto.src, dstDir, dto.path);
+            DealMoveDirRecursive(token, srcDao, srcDir, dto.src, dstDir, dto.path);
 
             AddLogFileByDto(token, dto, srcDao.id, srcDao.dir_id, parentList);
 
@@ -728,7 +750,7 @@ namespace Com.Scm.Nas.Sync
         /// <param name="dstDir"></param>
         /// <param name="dstPath"></param>
         /// <returns></returns>
-        private bool MoveDirCasced(ScmUrTerminalDao token, SyncResFileDao parentDao, string srcDir, string srcPath, string dstDir, string dstPath)
+        private bool DealMoveDirRecursive(ScmUrTerminalDao token, SyncResFileDao parentDao, string srcDir, string srcPath, string dstDir, string dstPath)
         {
             if (!Directory.Exists(dstDir))
             {
@@ -765,7 +787,7 @@ namespace Com.Scm.Nas.Sync
                     Directory.CreateDirectory(dstFile);
                 }
 
-                MoveDirCasced(token, dirDao, dir, srcUri, dstFile, dstUri);
+                DealMoveDirRecursive(token, dirDao, dir, srcUri, dstFile, dstUri);
             }
 
             var docList = Directory.GetFiles(srcDir);
@@ -811,7 +833,7 @@ namespace Com.Scm.Nas.Sync
         /// <param name="dto"></param>
         /// <param name="result"></param>
         /// <returns></returns>
-        private async Task<bool> MoveDoc(ScmUrTerminalDao token, NasLogFileDto dto, SyncResult result)
+        private async Task<bool> DealMoveDoc(ScmUrTerminalDao token, NasLogFileDto dto, SyncResult result)
         {
             LogUtils.Info(TAG_MOVE_FILE, $"移动文档", $"{dto.src} -> {dto.path}");
 
@@ -863,7 +885,7 @@ namespace Com.Scm.Nas.Sync
         /// <param name="dto"></param>
         /// <param name="result"></param>
         /// <returns></returns>
-        private async Task<bool> CopyFile(ScmUrTerminalDao token, NasLogFileDto dto, SyncResult result)
+        private async Task<bool> DealCopyFile(ScmUrTerminalDao token, NasLogFileDto dto, SyncResult result)
         {
             LogUtils.Info(TAG_COPY_FILE, $"复制文件", $"{dto.src} -> {dto.path}");
 
@@ -874,12 +896,12 @@ namespace Com.Scm.Nas.Sync
 
             if (dto.type == ScmFileTypeEnum.Dir)
             {
-                return await CopyDir(token, dto, result);
+                return await DealCopyDir(token, dto, result);
             }
 
             if (dto.type == ScmFileTypeEnum.Doc)
             {
-                return await CopyDoc(token, dto, result);
+                return await DealCopyDoc(token, dto, result);
             }
 
             LogUtils.Error(TAG_COPY_FILE, "未知的文件类型：" + dto.type);
@@ -893,7 +915,7 @@ namespace Com.Scm.Nas.Sync
         /// <param name="dto"></param>
         /// <param name="result"></param>
         /// <returns></returns>
-        private async Task<bool> CopyDir(ScmUrTerminalDao token, NasLogFileDto dto, SyncResult result)
+        private async Task<bool> DealCopyDir(ScmUrTerminalDao token, NasLogFileDto dto, SyncResult result)
         {
             LogUtils.Info(TAG_COPY_FILE, $"复制目录", $"{dto.src} -> {dto.path}");
 
@@ -919,7 +941,7 @@ namespace Com.Scm.Nas.Sync
             }
 
             var dstDir = GetNativePath(token, dto.path);
-            CopyDirCasced(token, dstDao, srcPath, dto.src, dstDir, dto.path);
+            DealCopyDirRecursive(token, dstDao, srcPath, dto.src, dstDir, dto.path);
 
             AddLogFileByDto(token, dto, dstDao.id, dstDao.dir_id, parentList);
 
@@ -938,7 +960,7 @@ namespace Com.Scm.Nas.Sync
         /// <param name="dstDir"></param>
         /// <param name="dstPath"></param>
         /// <returns></returns>
-        private bool CopyDirCasced(ScmUrTerminalDao token, SyncResFileDao parentDao, string srcDir, string srcPath, string dstDir, string dstPath)
+        private bool DealCopyDirRecursive(ScmUrTerminalDao token, SyncResFileDao parentDao, string srcDir, string srcPath, string dstDir, string dstPath)
         {
             if (!Directory.Exists(dstDir))
             {
@@ -969,7 +991,7 @@ namespace Com.Scm.Nas.Sync
                 }
 
                 var srcUri = srcPath + NasEnv.WebSeparator + name;
-                CopyDirCasced(token, dstDao, dir, srcUri, dstFile, dstUri);
+                DealCopyDirRecursive(token, dstDao, dir, srcUri, dstFile, dstUri);
             }
 
             var docList = Directory.GetFiles(srcDir);
@@ -1005,7 +1027,7 @@ namespace Com.Scm.Nas.Sync
         /// <param name="dto"></param>
         /// <param name="result"></param>
         /// <returns></returns>
-        private async Task<bool> CopyDoc(ScmUrTerminalDao token, NasLogFileDto dto, SyncResult result)
+        private async Task<bool> DealCopyDoc(ScmUrTerminalDao token, NasLogFileDto dto, SyncResult result)
         {
             LogUtils.Info(TAG_COPY_FILE, "复制文档", $"{dto.src} -> {dto.path}");
 
@@ -1056,7 +1078,7 @@ namespace Com.Scm.Nas.Sync
         /// <param name="dto"></param>
         /// <param name="result"></param>
         /// <returns></returns>
-        private async Task<bool> RenameFile(ScmUrTerminalDao token, NasLogFileDto dto, SyncResult result)
+        private async Task<bool> DealRenameFile(ScmUrTerminalDao token, NasLogFileDto dto, SyncResult result)
         {
             LogUtils.Info(TAG_RENAME_FILE, "更名文件", $"{dto.src} -> {dto.path}");
 
@@ -1067,12 +1089,12 @@ namespace Com.Scm.Nas.Sync
 
             if (dto.type == ScmFileTypeEnum.Dir)
             {
-                return await RenameDir(token, dto, result);
+                return await DealRenameDir(token, dto, result);
             }
 
             if (dto.type == ScmFileTypeEnum.Doc)
             {
-                return await RenameDoc(token, dto, result);
+                return await DealRenameDoc(token, dto, result);
             }
 
             LogUtils.Error(TAG_RENAME_FILE, "未知的文件类型：" + dto.type);
@@ -1086,7 +1108,7 @@ namespace Com.Scm.Nas.Sync
         /// <param name="dto"></param>
         /// <param name="result"></param>
         /// <returns></returns>
-        private async Task<bool> RenameDir(ScmUrTerminalDao token, NasLogFileDto dto, SyncResult result)
+        private async Task<bool> DealRenameDir(ScmUrTerminalDao token, NasLogFileDto dto, SyncResult result)
         {
             LogUtils.Info(TAG_RENAME_FILE, "更名目录", $"{dto.src} -> {dto.path}");
 
@@ -1118,7 +1140,7 @@ namespace Com.Scm.Nas.Sync
             }
 
             var dstDir = GetNativePath(token, dto.path);
-            MoveDirCasced(token, srcDao, srcDir, dto.src, dstDir, dto.path);
+            DealMoveDirRecursive(token, srcDao, srcDir, dto.src, dstDir, dto.path);
 
             AddLogFileByDto(token, dto, srcDao.id, srcDao.dir_id, parentList);
 
@@ -1133,7 +1155,7 @@ namespace Com.Scm.Nas.Sync
         /// <param name="dto"></param>
         /// <param name="result"></param>
         /// <returns></returns>
-        private async Task<bool> RenameDoc(ScmUrTerminalDao token, NasLogFileDto dto, SyncResult result)
+        private async Task<bool> DealRenameDoc(ScmUrTerminalDao token, NasLogFileDto dto, SyncResult result)
         {
             LogUtils.Info(TAG_RENAME_FILE, "更名文档", $"{dto.src} -> {dto.path}");
 
@@ -1185,18 +1207,18 @@ namespace Com.Scm.Nas.Sync
         /// <param name="dto"></param>
         /// <param name="result"></param>
         /// <returns></returns>
-        private async Task<bool> ChangeFile(ScmUrTerminalDao token, NasLogFileDto dto, SyncResult result)
+        private async Task<bool> DealChangeFile(ScmUrTerminalDao token, NasLogFileDto dto, SyncResult result)
         {
             LogUtils.Info(TAG_CHANGE_FILE, "更新文件", dto.path);
 
             if (dto.type == ScmFileTypeEnum.Dir)
             {
-                return await ChangeDir(token, dto, result);
+                return await DealChangeDir(token, dto, result);
             }
 
             if (dto.type == ScmFileTypeEnum.Doc)
             {
-                return await ChangeDoc(token, dto, result);
+                return await DealChangeDoc(token, dto, result);
             }
 
             LogUtils.Error(TAG_CHANGE_FILE, "未知的文件类型：" + dto.type);
@@ -1210,7 +1232,7 @@ namespace Com.Scm.Nas.Sync
         /// <param name="dto"></param>
         /// <param name="result"></param>
         /// <returns></returns>
-        private async Task<bool> ChangeDoc(ScmUrTerminalDao token, NasLogFileDto dto, SyncResult result)
+        private async Task<bool> DealChangeDoc(ScmUrTerminalDao token, NasLogFileDto dto, SyncResult result)
         {
             LogUtils.Info(TAG_CHANGE_FILE, "更新文档", dto.path);
 
@@ -1271,7 +1293,7 @@ namespace Com.Scm.Nas.Sync
         /// <param name="dto"></param>
         /// <param name="result"></param>
         /// <returns></returns>
-        private async Task<bool> ChangeDir(ScmUrTerminalDao token, NasLogFileDto dto, SyncResult result)
+        private async Task<bool> DealChangeDir(ScmUrTerminalDao token, NasLogFileDto dto, SyncResult result)
         {
             LogUtils.Info(TAG_CHANGE_FILE, "更新目录", dto.path);
 
@@ -1715,6 +1737,7 @@ namespace Com.Scm.Nas.Sync
 
             if (parentList == null)
             {
+                LogUtils.Error("AddLogFileByDto", "父级列表为空，无法记录文件夹日志");
                 return;
             }
 

@@ -95,7 +95,7 @@ export default {
 				{ label: "id", prop: "id", hide: true },
 				{ prop: 'terminal_id', label: '终端', width: 100, formatter: this.getTerminalName },
 				{ prop: 'name', label: '名称', width: 140, align: 'left' },
-				{ prop: 'path', label: '路径', minWidth: 140, align: 'left' },
+				{ prop: 'path', label: '路径', minWidth: 200, align: 'left' },
 				{ prop: "row_status", label: "数据状态", width: 80, },
 				{ prop: "update_time", label: "更新时间", width: 160, formatter: this.$TOOL.dateTimeFormat },
 				{ prop: "create_time", label: "创建时间", width: 160, formatter: this.$TOOL.dateTimeFormat },

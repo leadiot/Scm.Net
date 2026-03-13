@@ -77,7 +77,7 @@ export default {
 				{ prop: 'type', label: '文件类型', width: 100, formatter: this.getTypeNames },
 				{ prop: 'opt', label: '操作类型', width: 100, formatter: this.getOptNames },
 				{ prop: 'dir', label: '同步方向', width: 100, formatter: this.getDirNames },
-				{ prop: 'name', label: '文件名称', minWidth: 140, align: 'left' },
+				{ prop: 'name', label: '文件名称', minWidth: 200, align: 'left' },
 				{ prop: "update_time", label: "更新时间", width: 160, formatter: this.$TOOL.dateTimeFormat },
 				{ prop: "create_time", label: "创建时间", width: 160, formatter: this.$TOOL.dateTimeFormat },
 			],

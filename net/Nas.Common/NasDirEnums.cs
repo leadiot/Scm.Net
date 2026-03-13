@@ -9,19 +9,14 @@ namespace Com.Scm.Nas
     {
         None,
         /// <summary>
-        /// 仅上传
+        /// 上传
         /// </summary>
-        [Description("仅上传")]
+        [Description("上传")]
         Upload,
         /// <summary>
-        /// 双向同步
+        /// 下载
         /// </summary>
-        [Description("双向同步")]
-        Sync,
-        /// <summary>
-        /// 仅下载
-        /// </summary>
-        [Description("仅下载")]
+        [Description("下载")]
         Download
     }
 }

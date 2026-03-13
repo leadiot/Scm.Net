@@ -18,6 +18,8 @@ namespace Com.Scm.Nas.Log
         /// </summary>
         public long terminal_id { get; set; }
 
+        public string terminal_name { get; set; }
+
         /// <summary>
         /// 驱动ID
         /// </summary>
@@ -28,15 +30,21 @@ namespace Com.Scm.Nas.Log
         /// </summary>
         public ScmFileTypeEnum type { get; set; }
 
+        public string type_name { get; set; }
+
         /// <summary>
         /// 操作类型
         /// </summary>
         public NasOptEnums opt { get; set; }
 
+        public string opt_name { get; set; }
+
         /// <summary>
         /// 同步方向
         /// </summary>
         public NasDirEnums dir { get; set; }
+
+        public string dir_name { get; set; }
 
         /// <summary>
         /// 文件名称

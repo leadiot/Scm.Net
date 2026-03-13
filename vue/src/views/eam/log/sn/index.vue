@@ -101,7 +101,7 @@ export default {
 				{ prop: 'dir', label: '行动方向', width: 100 },
 				{ prop: "row_status", label: "数据状态", width: 80, },
 				{ prop: "create_names", label: "创建人员", width: 100, },
-				{ prop: "create_time", label: "创建时间", width: 160, formatter: this.$TOOL.dateTimeFormat },
+				{ prop: "create_times", label: "创建时间", width: 160 },
 			],
 			row_status_list: [this.$SCM.OPTION_ALL_INT],
 			option_list: [this.$SCM.OPTION_ALL],

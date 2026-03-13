@@ -14,9 +14,19 @@ namespace Com.Scm.Nas.Res.Dvo
         public ScmFileTypeEnum type { get; set; }
 
         /// <summary>
+        /// 文档分类
+        /// </summary>
+        public ScmFileKindEnum kind { get; set; }
+
+        /// <summary>
         /// 目录ID
         /// </summary>
         public long dir_id { get; set; }
+
+        /// <summary>
+        /// 图标
+        /// </summary>
+        public string icon { get; set; }
 
         /// <summary>
         /// 名称
@@ -42,5 +52,15 @@ namespace Com.Scm.Nas.Res.Dvo
         /// 版本
         /// </summary>
         public long ver { get; set; }
+
+        public static string GetIcon(ScmFileTypeEnum type)
+        {
+            return type switch
+            {
+                ScmFileTypeEnum.Dir => "icon-folder",
+                ScmFileTypeEnum.Doc => "icon-file",
+                _ => "icon-file"
+            };
+        }
     }
 }

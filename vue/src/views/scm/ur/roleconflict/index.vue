@@ -77,9 +77,9 @@ export default {
 				{ prop: "remark", label: "互斥说明", minWidth: 200, align: "left" },
 				{ prop: "row_status", label: "数据状态", width: "80", },
 				{ prop: "update_names", label: "更新人员", width: "100", },
-				{ prop: "update_time", label: "更新时间", width: "160", formatter: this.$TOOL.dateTimeFormat },
+				{ prop: "update_times", label: "更新时间", width: "160" },
 				{ prop: "create_names", label: "创建人员", width: "100", },
-				{ prop: "create_time", label: "创建时间", width: "160", formatter: this.$TOOL.dateTimeFormat },
+				{ prop: "create_times", label: "创建时间", width: "160" },
 			],
 		};
 	},

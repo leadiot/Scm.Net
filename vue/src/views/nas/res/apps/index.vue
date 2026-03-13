@@ -64,7 +64,7 @@ export default {
 				{ label: "id", prop: "id", hide: true },
 				{ prop: 'name', label: '名称', minWidth: 100, align: 'left' },
 				{ prop: 'size', label: '大小', width: 120, align: 'right', formatter: this.$TOOL.fileSizeFormat },
-				{ prop: "update_time", label: "更新时间", width: 160, formatter: this.$TOOL.dateTimeFormat },
+				{ prop: "update_times", label: "更新时间", width: 160 },
 			],
 			root: { 'id': '0', type: 10, name: '设备' },
 			row_status_list: [this.$SCM.OPTION_ALL_INT],

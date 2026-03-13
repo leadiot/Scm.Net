@@ -104,7 +104,7 @@ export default {
 				{ prop: 'l', label: '数字位数', width: 80, align: 'right' },
 				{ prop: 'm', label: '前置掩码', width: 80, align: 'left' },
 				{ prop: 'p', label: '后置掩码', width: 80, align: 'left' },
-				{ prop: 't', label: '访问时间', width: 160, formatter: this.$TOOL.dateTimeFormat },
+				{ prop: 't', label: '访问时间', width: 160 },
 			],
 			row_status_list: [this.$SCM.OPTION_ALL_INT],
 			option_list: [],

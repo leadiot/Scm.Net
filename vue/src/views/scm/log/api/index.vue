@@ -117,7 +117,7 @@ export default {
 				{ label: "id", prop: "id", hide: true },
 				{ prop: "levelName", label: "级别", width: 60 },
 				{ prop: "ip", label: "IP", width: 120 },
-				{ prop: "operate_time", label: "操作时间", width: 160, align: 'left', formatter: this.$TOOL.dateTimeFormat },
+				{ prop: "operate_time", label: "操作时间", width: 160, align: 'left' },
 				{ prop: "operate_user", label: "操作用户", width: 120 },
 				{ prop: "url", label: "操作地址", minWidth: 200, align: 'left', showOverflowTooltip: true },
 				{ prop: "method", label: "提交类型", width: 80 },

@@ -13,6 +13,8 @@ namespace Com.Scm.Scm.Ur
         /// </summary>
         public ScmClientTypeEnum types { get; set; }
 
+        public string types_name { get; set; }
+
         /// <summary>
         /// 终端代码
         /// </summary>

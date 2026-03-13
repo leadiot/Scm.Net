@@ -1,6 +1,7 @@
 using Com.Scm.Dsa;
 using Com.Scm.Nas.Log.Dvo;
 using Com.Scm.Service;
+using Com.Scm.Ur;
 using Com.Scm.Utils;
 using Microsoft.AspNetCore.Mvc;
 
@@ -13,14 +14,15 @@ namespace Com.Scm.Nas.Log
     public class NasLogFileService : ApiService
     {
         private readonly SugarRepository<NasLogFileDao> _thisRepository;
-
+        private readonly IDicService _DicHolder;
         /// <summary>
         /// 
         /// </summary>
         /// <param name="thisRepository"></param>
-        public NasLogFileService(SugarRepository<NasLogFileDao> thisRepository, IResHolder resHolder)
+        public NasLogFileService(SugarRepository<NasLogFileDao> thisRepository, IDicService dicHolder, IResHolder resHolder)
         {
             _thisRepository = thisRepository;
+            _DicHolder = dicHolder;
             _ResHolder = resHolder;
         }
 
@@ -42,6 +44,20 @@ namespace Com.Scm.Nas.Log
 
             Prepare(result.Items);
             return result;
+        }
+
+        private void Prepare(List<NasLogFileDvo> items)
+        {
+            var dicType = _DicHolder.GetDic("nas_type");
+            var dicDir = _DicHolder.GetDic("nas_dir");
+            var dicOpt = _DicHolder.GetDic("nas_opt");
+            foreach (var item in items)
+            {
+                item.type_name = dicType.GetDetailNamec((int)item.type);
+                item.opt_name = dicDir.GetDetailNamec((int)item.opt);
+                item.dir_name = dicOpt.GetDetailNamec((int)item.dir);
+                item.terminal_name = _ResHolder.GetResNamec<ScmUrTerminalDao>(item.terminal_id);
+            }
         }
 
         /// <summary>

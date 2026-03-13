@@ -122,7 +122,7 @@ export default {
 				{ prop: "lng", label: "经度", },
 				{ prop: "lat", label: "维度" },
 				{ label: "状态", prop: "row_status", width: "80", },
-				{ label: "创建时间", prop: "create_time", width: "150", sortable: true, },
+				{ label: "创建时间", prop: "create_times", width: "150", sortable: true, },
 			],
 		};
 	},

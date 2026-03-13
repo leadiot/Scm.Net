@@ -9,6 +9,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Scm.Common\Scm.Common.csproj" />
+    <ProjectReference Include="..\Scm.Common.Time\Scm.Common.Time.csproj" />
   </ItemGroup>
 
 </Project>

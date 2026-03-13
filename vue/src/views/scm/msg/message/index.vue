@@ -147,7 +147,7 @@ export default {
 				{ prop: "remark", label: "消息内容", minWidth: 200, showOverflowTooltip: true },
 				{ prop: "isread", label: "是否已读", width: 100 },
 				{ prop: "create_names", label: "发送人员", width: 100 },
-				{ prop: "create_time", label: "发送时间", width: 180, formatter: this.$TOOL.dateTimeFormat }
+				{ prop: "create_times", label: "发送时间", width: 180 }
 			],
 			selectedItem: null,
 			viewVisible: false,

@@ -140,6 +140,22 @@ public class DicHeaderDao : ScmDataDao, ISystemDao, IDeleteDao, ISortableDao
         return null;
     }
 
+    public string GetDetailNamec(int value)
+    {
+        if (details != null)
+        {
+            foreach (var detail in details)
+            {
+                if (detail.value == value)
+                {
+                    return detail.namec;
+                }
+            }
+        }
+
+        return null;
+    }
+
     /// <summary>
     /// 
     /// </summary>

@@ -104,15 +104,15 @@ export default {
 			selection: [],
 			column: [
 				{ label: "id", prop: "id", hide: true },
-				{ prop: 'types', label: '终端类型', width: 130, align: 'left', formatter: this.getTypesNames },
+				{ prop: 'types_name', label: '终端类型', width: 130, align: 'left' },
 				{ prop: 'codes', label: '终端代码', width: 150 },
 				{ prop: 'names', label: '终端名称', minWidth: 140, align: 'left' },
 				{ prop: 'pass', label: '终端授权', width: 170, align: 'left' },
 				{ prop: "row_status", label: "数据状态", width: 80, },
 				{ prop: "update_names", label: "更新人员", width: 100, },
-				{ prop: "update_time", label: "更新时间", width: 160, formatter: this.$TOOL.dateTimeFormat },
+				{ prop: "update_times", label: "更新时间", width: 160 },
 				{ prop: "create_names", label: "创建人员", width: 100, },
-				{ prop: "create_time", label: "创建时间", width: 160, formatter: this.$TOOL.dateTimeFormat },
+				{ prop: "create_times", label: "创建时间", width: 160 },
 			],
 			row_status_list: [this.$SCM.OPTION_ALL_INT],
 			types_list: [this.$SCM.OPTION_ALL],
@@ -163,9 +163,6 @@ export default {
 				this.delete_item(obj.row);
 				return;
 			}
-		},
-		getTypesNames(id) {
-			return this.$SCM.get_dic_names(this.types_list, id, '-');
 		},
 		open(row) {
 			this.$refs.info.open(row);

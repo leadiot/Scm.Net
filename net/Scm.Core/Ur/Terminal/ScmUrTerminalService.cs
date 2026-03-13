@@ -16,16 +16,17 @@ namespace Com.Scm.Scm.Ur
     public class ScmUrTerminalService : ApiService
     {
         private readonly SugarRepository<ScmUrTerminalDao> _thisRepository;
+        private readonly IDicService _DicHolder;
         private readonly ITerminalHolder _terminalHolder;
 
         /// <summary>
         /// 
         /// </summary>
         /// <param name="thisRepository"></param>
-        public ScmUrTerminalService(SugarRepository<ScmUrTerminalDao> thisRepository, IResHolder userHolder, ITerminalHolder holder)
+        public ScmUrTerminalService(SugarRepository<ScmUrTerminalDao> thisRepository, IDicService dicHolder, ITerminalHolder holder)
         {
             _thisRepository = thisRepository;
-            _ResHolder = userHolder;
+            _DicHolder = dicHolder;
             _terminalHolder = holder;
         }
 
@@ -64,6 +65,16 @@ namespace Com.Scm.Scm.Ur
 
             Prepare(result);
             return result;
+        }
+
+        private void Prepare(List<ScmUrTerminalDvo> list)
+        {
+            var dicHeader = _DicHolder.GetDic("client_type");
+
+            foreach (var item in list)
+            {
+                item.types_name = dicHeader.GetDetailNamec((int)item.types);
+            }
         }
 
         /// <summary>

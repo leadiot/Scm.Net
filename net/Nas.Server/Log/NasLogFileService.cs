@@ -36,7 +36,7 @@ namespace Com.Scm.Nas.Log
                 .WhereIF(IsNormalId(request.drive_id), a => a.folder_id == request.drive_id)
                 .WhereIF(request.opt != NasOptEnums.None, a => a.opt == request.opt)
                 //.WhereIF(!string.IsNullOrEmpty(request.key), a => a.text.Contains(request.key))
-                .OrderBy(m => m.id)
+                .OrderBy(m => m.id, SqlSugar.OrderByType.Desc)
                 .Select<NasLogFileDvo>()
                 .ToPageAsync(request.page, request.limit);
 

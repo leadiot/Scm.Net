@@ -14,14 +14,14 @@ namespace Com.Scm.Nas
         [Description("仅上传")]
         Upload,
         /// <summary>
-        /// 双向同步
-        /// </summary>
-        [Description("双向同步")]
-        Sync,
-        /// <summary>
         /// 仅下载
         /// </summary>
         [Description("仅下载")]
-        Download
+        Download,
+        /// <summary>
+        /// 双向同步
+        /// </summary>
+        [Description("双向同步")]
+        Both
     }
 }

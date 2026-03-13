@@ -17,17 +17,16 @@ namespace Com.Scm.Scm.Ur
     {
         private readonly SugarRepository<ScmUrTerminalDao> _thisRepository;
         private readonly IDicService _DicHolder;
-        private readonly ITerminalHolder _terminalHolder;
 
         /// <summary>
         /// 
         /// </summary>
         /// <param name="thisRepository"></param>
-        public ScmUrTerminalService(SugarRepository<ScmUrTerminalDao> thisRepository, IDicService dicHolder, ITerminalHolder holder)
+        public ScmUrTerminalService(SugarRepository<ScmUrTerminalDao> thisRepository, IDicService dicHolder, IResHolder resHolder)
         {
             _thisRepository = thisRepository;
             _DicHolder = dicHolder;
-            _terminalHolder = holder;
+            _ResHolder = resHolder;
         }
 
         /// <summary>
@@ -179,10 +178,10 @@ namespace Com.Scm.Scm.Ur
                 throw new BusinessException("无效的终端！");
             }
 
-            _terminalHolder.Remote(dao.id);
-
             dao.names = model.namec;
             dao.namec = model.namec;
+
+            _ResHolder.Remove(dao.id);
 
             return await _thisRepository.UpdateAsync(dao);
         }
@@ -194,7 +193,7 @@ namespace Com.Scm.Scm.Ur
         /// <returns></returns>
         public async Task<int> StatusAsync(ScmChangeStatusRequest param)
         {
-            _terminalHolder.Clear();
+            _ResHolder.Clear();
 
             return await UpdateStatus(_thisRepository, param.ids, param.status);
         }
@@ -207,7 +206,7 @@ namespace Com.Scm.Scm.Ur
         [HttpDelete]
         public async Task<int> DeleteAsync(string ids)
         {
-            _terminalHolder.Clear();
+            _ResHolder.Clear();
 
             return await DeleteRecord(_thisRepository, ids.ToListLong());
         }
@@ -226,7 +225,7 @@ namespace Com.Scm.Scm.Ur
                 throw new BusinessException("无效的终端代码！");
             }
 
-            _terminalHolder.Remote(dao.id);
+            _ResHolder.Remove(dao.id);
 
             dao.binded = ScmBoolEnum.False;
             dao.pass = TextUtils.RandomString(16);

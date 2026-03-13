@@ -1,7 +1,7 @@
 <template>
     <el-container>
         <el-main class="nopadding">
-            <el-empty description="No Favorites!!!" image="/img/nofavorites.svg">
+            <el-empty description="No Favorites!!!">
                 <h4>您没有收藏的页面!</h4>
                 <p>请添加您常用的页面到收藏夹，方便您下次快速访问。</p>
             </el-empty>

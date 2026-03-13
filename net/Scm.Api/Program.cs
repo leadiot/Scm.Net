@@ -15,7 +15,6 @@ using Com.Scm.Quartz.Config;
 using Com.Scm.Samples;
 using Com.Scm.Server;
 using Com.Scm.Service;
-using Com.Scm.Terminal;
 using Com.Scm.Uid.Config;
 using Com.Scm.Utils;
 using Microsoft.Extensions.FileProviders;
@@ -113,7 +112,6 @@ namespace Com.Scm.Api
             }
 
             services.AddScoped<IResHolder, ScmResHolder>();
-            services.AddScoped<ITerminalHolder, ScmTerminalHolder>();
             services.AddScoped<ILogService, ScmLogService>();
             services.AddScoped<IDicService, ScmDicService>();
             services.AddScoped<ICfgService, ScmCfgService>();

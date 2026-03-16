@@ -9,16 +9,16 @@ namespace Com.Scm.Nas
     {
         None = 0,
 
+        [Description("跳过")]
+        Skip = 1,
+
         [Description("保留本地")]
-        KeepNative = 1,
+        KeepNative = 2,
 
         [Description("保留远端")]
-        KeepRemote = 2,
+        KeepRemote = 3,
 
         [Description("保留所有")]
-        KeepBoth = 3,
-
-        [Description("跳过")]
-        Skip = 4
+        KeepBoth = 4
     }
 }

@@ -49,9 +49,19 @@ namespace Com.Scm.Sys.Menu
         public string uri { get; set; }
 
         /// <summary>
-        /// Vue文件路径
+        /// 视图路径
         /// </summary>
         public string view { get; set; }
+
+        /// <summary>
+        /// 模块名称
+        /// </summary>
+        public string module { get; set; }
+
+        /// <summary>
+        /// 传递参数
+        /// </summary>
+        public string args { get; set; }
 
         /// <summary>
         /// 菜单图标

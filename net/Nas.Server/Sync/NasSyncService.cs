@@ -1252,10 +1252,7 @@ namespace Com.Scm.Nas.Sync
 
             var dstFile = GetNativePath(token, dto.path);
             var dstDir = FileUtils.GetDir(dstFile);
-            if (!Directory.Exists(dstDir))
-            {
-                Directory.CreateDirectory(dstDir);
-            }
+            FileUtils.CreateDir(dstDir);
 
             if (!FileUtils.MoveDoc(tmpFile, dstFile, true))
             {

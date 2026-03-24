@@ -5,7 +5,7 @@ namespace Com.Scm.Enums
     /// <summary>
     /// 周期处理
     /// </summary>
-    public enum ScmCronEnum
+    public enum ScmFeqEnum
     {
         None = 0,
         [Description("实时")]

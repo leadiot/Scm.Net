@@ -60,8 +60,28 @@ namespace Com.Scm.Api.Controllers
                 return response;
             }
 
+            var userDao = await _SqlClient.Queryable<UserDao>()
+                .Where(a => a.id == docDao.user_id)
+                .FirstAsync();
+            if (userDao == null)
+            {
+                response.SetFailure("文件不存在！");
+                return response;
+            }
+
+            // 1. 定义文件存储的根路径
+            var filePath = _EnvConfig.GetDataPath($"/Nas/{userDao.codes}" + docDao.path);
+
+            // 2. 校验文件是否存在
+            var fileInfo = new FileInfo(filePath);
+            if (!fileInfo.Exists)
+            {
+                response.SetFailure("文件不存在！");
+                return response;
+            }
+
             response.name = docDao.name;
-            response.size = docDao.size;
+            response.size = fileInfo.Length;
             response.hash = docDao.hash;
 
             response.SetSuccess();
@@ -367,13 +387,12 @@ namespace Com.Scm.Api.Controllers
         /// </summary>
         /// <param name="request"></param>
         /// <returns></returns>
-        [HttpPost("check")]
-        public async Task<ScmUploadResponse> UploadCheckAsync(ScmUploadRequest request)
+        [HttpGet("check/{hash}")]
+        public async Task<ScmUploadResponse> UploadCheckAsync(string hash)
         {
             var response = new ScmUploadResponse();
 
-            var hash = request.hash;
-            if (!Regex.IsMatch(hash, @"^\w{64}$"))
+            if (hash == null || !Regex.IsMatch(hash, @"^\w{64}$"))
             {
                 LogUtils.Debug("无效的文件摘要！");
                 response.SetFailure("无效的文件摘要！");
@@ -406,13 +425,12 @@ namespace Com.Scm.Api.Controllers
         /// </summary>
         /// <param name="request"></param>
         /// <returns></returns>
-        [HttpPost("merge")]
-        public async Task<ScmUploadResponse> UploadMergeAsync(ScmUploadRequest request)
+        [HttpPost("merge/{hash}")]
+        public async Task<ScmUploadResponse> UploadMergeAsync(string hash)
         {
             var response = new ScmUploadResponse();
 
-            var hash = request.hash ?? "";
-            if (!Regex.IsMatch(hash, @"^\w{64}$"))
+            if (hash == null || !Regex.IsMatch(hash, @"^\w{64}$"))
             {
                 LogUtils.Debug("无效的文件摘要！");
                 response.SetFailure("无效的文件摘要！");
@@ -441,6 +459,9 @@ namespace Com.Scm.Api.Controllers
                     }
                 }
             }
+
+            // 删除分块文件
+            FileUtils.DeleteDir(dstPath, true);
 
             LogUtils.Debug("文件合并完成：" + name);
             response.SetSuccess($"文件合并完成！");

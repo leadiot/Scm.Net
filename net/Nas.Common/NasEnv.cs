@@ -81,6 +81,10 @@
         public const string VlUrl = "/Nas/Vl/";
 
         /// <summary>
+        /// 文件信息
+        /// </summary>
+        public const string FileInfoUrl = "/Nas/Info/";
+        /// <summary>
         /// 文件上传路径
         /// </summary>
         public const string FileUploadUrl = "/Nas/File";
@@ -91,11 +95,11 @@
         /// <summary>
         /// 分块上传检测
         /// </summary>
-        public const string CheckUploadUrl = "/Nas/Check";
+        public const string CheckUploadUrl = "/Nas/Check/";
         /// <summary>
         /// 分块合并
         /// </summary>
-        public const string MergeUploadUrl = "/Nas/Merge";
+        public const string MergeUploadUrl = "/Nas/Merge/";
 
         /// <summary>
         /// 获取目录路径

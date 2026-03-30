@@ -19,7 +19,7 @@ namespace Com.Scm
 
     public class ScmUploadResult
     {
-        public string file { get; set; }
+        public string name { get; set; }
         public string path { get; set; }
         public string size { get; set; }
         public bool success { get; set; }

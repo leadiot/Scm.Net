@@ -183,7 +183,7 @@ namespace Com.Scm.Samples.Demo
                 await request.file.CopyToAsync(stream);
             }
 
-            response.AddResult(new ScmUploadResult { file = fileName });
+            response.AddResult(new ScmUploadResult { name = fileName });
             #endregion
 
             response.SetSuccess("文件上传成功！");

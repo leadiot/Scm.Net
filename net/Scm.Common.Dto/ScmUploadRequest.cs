@@ -6,14 +6,29 @@ namespace Com.Scm
     public class ScmUploadRequest : ScmRequest
     {
         /// <summary>
-        /// 上传目录
-        /// </summary>
-        public string path { get; set; }
-        /// <summary>
-        /// 
+        /// 上传方式
+        /// 必选
         /// </summary>
         public UploadTypeEnum type { get; set; }
 
+        /// <summary>
+        /// 上传文件
+        /// 必选
+        /// </summary>
+        public IFormFile file { get; set; }
+
+        /// <summary>
+        /// 上传路径，适用于上传到指定路径的场景
+        /// 可选，默认为根路径
+        /// </summary>
+        public string path { get; set; }
+
+        /// <summary>
+        /// 版本摘要，适用于摘要上传的场景
+        /// </summary>
+        public string hash { get; set; }
+
+        #region 其它参数
         /// <summary>
         /// 文件名称
         /// </summary>
@@ -39,13 +54,7 @@ namespace Com.Scm
         /// 自然索引
         /// </summary>
         public int index { get; set; }
-
-        /// <summary>
-        /// 版本摘要
-        /// </summary>
-        public string hash { get; set; }
-
-        public IFormFile file { get; set; }
+        #endregion
     }
 
     /// <summary>

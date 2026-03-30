@@ -114,7 +114,7 @@ public class ScmSysFileService : IApiService
         var exts = Path.GetExtension(file.FileName).ToLower();
         if (!IsAcceptExts(exts))
         {
-            result.file = name;
+            result.name = name;
             result.message = "不支持的文件扩展名：" + exts;
             return result;
         }
@@ -124,7 +124,7 @@ public class ScmSysFileService : IApiService
         {
             await file.CopyToAsync(stream);
         }
-        result.file = name;
+        result.name = name;
         result.path = _envConfig.ToUri(dstFile);
         result.success = true;
 
@@ -158,7 +158,7 @@ public class ScmSysFileService : IApiService
             var exts = Path.GetExtension(file.FileName).ToLower();
             if (!IsAcceptExts(exts))
             {
-                response.AddResult(new ScmUploadResult { file = name, message = "不支持的文件扩展名：" + exts });
+                response.AddResult(new ScmUploadResult { name = name, message = "不支持的文件扩展名：" + exts });
                 continue;
             }
 
@@ -167,7 +167,7 @@ public class ScmSysFileService : IApiService
             {
                 await file.CopyToAsync(stream);
             }
-            response.AddResult(new ScmUploadResult { file = name, path = _envConfig.ToUri(dstFile), success = true });
+            response.AddResult(new ScmUploadResult { name = name, path = _envConfig.ToUri(dstFile), success = true });
 
             qty += 1;
         }

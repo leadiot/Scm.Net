@@ -20,6 +20,7 @@ namespace Com.Scm.Api.Controllers
     /// /Api/Nas/ds/id，小文件下载
     /// /Api/Nas/dl/id，大文件下载
     /// /Api/Nas/vs/id，文件查看
+    /// /Api/Nas/info，获取文件信息
     /// /Api/Nas/file，小文件上传
     /// /Api/Nas/chunk，分块上传
     /// /Api/Nas/check，上传校验
@@ -36,6 +37,35 @@ namespace Com.Scm.Api.Controllers
         {
             _EnvConfig = envConfig;
             _SqlClient = sqlClient;
+        }
+
+        /// <summary>
+        /// 获取文件信息
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        [HttpGet("info/{id}")]
+        public async Task<ScmDownloadResponse> FileInfo(long id)
+        {
+            var response = new ScmDownloadResponse();
+
+            LogUtils.Debug("获取文件信息：" + id);
+
+            var docDao = await _SqlClient.Queryable<SyncResFileDao>()
+                .Where(a => a.id == id)
+                .FirstAsync();
+            if (docDao == null)
+            {
+                response.SetFailure("文件不存在！");
+                return response;
+            }
+
+            response.name = docDao.name;
+            response.size = docDao.size;
+            response.hash = docDao.hash;
+
+            response.SetSuccess();
+            return response;
         }
 
         #region 文件查看
@@ -199,8 +229,12 @@ namespace Com.Scm.Api.Controllers
             {
                 var range = rangeHeader.Replace("bytes=", "").Split('-');
                 var start = long.Parse(range[0]);
-                var end = string.IsNullOrEmpty(range[1]) ? fileLength - 1 : long.Parse(range[1]);
-                var length = end - start + 1;
+                var end = string.IsNullOrEmpty(range[1]) ? fileLength : long.Parse(range[1]);
+                if (end > fileLength)
+                {
+                    end = fileLength;
+                }
+                var length = end - start;
 
                 Response.StatusCode = StatusCodes.Status206PartialContent;
                 Response.Headers.Append("Content-Length", length.ToString());
@@ -299,7 +333,7 @@ namespace Com.Scm.Api.Controllers
                 return response;
             }
 
-            var hash = request.hash;
+            var hash = request.hash ?? "";
             if (!Regex.IsMatch(hash, @"^\w{64}$"))
             {
                 LogUtils.Debug("无效的文件摘要！");
@@ -308,7 +342,7 @@ namespace Com.Scm.Api.Controllers
             }
 
             var name = (request.file_name ?? file.FileName).ToLower();
-            if (!Regex.IsMatch(hash, @"^\d+[.]chunk$"))
+            if (!Regex.IsMatch(name, @"^\d+[.]chunk$"))
             {
                 LogUtils.Debug("无效的文件名称！");
                 response.SetFailure("无效的文件名称！");
@@ -377,19 +411,11 @@ namespace Com.Scm.Api.Controllers
         {
             var response = new ScmUploadResponse();
 
-            var hash = request.hash;
+            var hash = request.hash ?? "";
             if (!Regex.IsMatch(hash, @"^\w{64}$"))
             {
                 LogUtils.Debug("无效的文件摘要！");
                 response.SetFailure("无效的文件摘要！");
-                return response;
-            }
-
-            var name = request.file_name.ToLower();
-            if (!Regex.IsMatch(name, @"^\w{64}[.]nas$"))
-            {
-                LogUtils.Debug("无效的文件名称！");
-                response.SetFailure("无效的文件名称！");
                 return response;
             }
 
@@ -400,6 +426,8 @@ namespace Com.Scm.Api.Controllers
                 response.SetSuccess($"分块目录不存在！");
                 return response;
             }
+
+            var name = hash + ".nas";
 
             var files = Directory.GetFiles(dstPath, "*.chunk").OrderBy(a => a).ToList();
             var dstFile = _EnvConfig.GetTempPath(name);

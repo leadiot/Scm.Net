@@ -8,6 +8,7 @@ using Com.Scm.Ur;
 using Com.Scm.Utils;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Net.Http.Headers;
 using MimeKit;
 using SqlSugar;
 using System.Text;
@@ -96,7 +97,7 @@ namespace Com.Scm.Api.Controllers
         /// <returns></returns>
         [NoJsonResult]
         [HttpGet("vs/{id}")]
-        public async Task<IActionResult> ViewFile(long id)
+        public async Task<IActionResult> ViewSmallFile(long id)
         {
             LogUtils.Debug("文件查看：" + id);
 
@@ -139,7 +140,12 @@ namespace Com.Scm.Api.Controllers
                 return Content(FileUtils.ReadText(filePath));
             }
 
-            Response.Headers.Append($"Content-Disposition", $"inline; filename=\"{docDao.name}\"");
+            var contentDisposition = new ContentDispositionHeaderValue("inline")
+            {
+                FileName = docDao.name,
+                FileNameStar = docDao.name
+            };
+            Response.Headers[HeaderNames.ContentDisposition] = contentDisposition.ToString();
 
             // 5. 获取文件的MIME类型
             var contentType = MimeTypes.GetMimeType(filePath);
@@ -193,8 +199,12 @@ namespace Com.Scm.Api.Controllers
             // 3. 获取文件的MIME类型
             var contentType = HttpContentType.APPLICATION_OCTET_STREAM;
 
-            // 正常下载
-            Response.Headers.Append($"Content-Disposition", $"attachment; filename=\"{docDao.name}\"");
+            var contentDisposition = new ContentDispositionHeaderValue("attachment")
+            {
+                FileName = docDao.name,
+                FileNameStar = docDao.name
+            };
+            Response.Headers[HeaderNames.ContentDisposition] = contentDisposition.ToString();
 
             // Response.Headers.Append("Content-Length", fileLength.ToString());
             return PhysicalFile(filePath, contentType, docDao.name);
@@ -259,7 +269,13 @@ namespace Com.Scm.Api.Controllers
                 Response.StatusCode = StatusCodes.Status206PartialContent;
                 Response.Headers.Append("Content-Length", length.ToString());
                 Response.Headers.Append("Content-Range", $"bytes {start}-{end}/{fileLength}");
-                Response.Headers.Append("Content-Disposition", $"attachment; filename={docDao.name}");
+                var contentDisposition = new ContentDispositionHeaderValue("attachment")
+                {
+                    FileName = docDao.name,
+                    FileNameStar = docDao.name
+                };
+                Response.Headers[HeaderNames.ContentDisposition] = contentDisposition.ToString();
+                //Response.Headers.Append("Content-Disposition", $"attachment; filename={docDao.name}");
                 Response.Headers.Append("Accept-Ranges", "bytes");
 
                 using (var stream = new FileStream(filePath, FileMode.Open, FileAccess.Read, FileShare.Read))

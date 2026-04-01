@@ -1,11 +1,12 @@
-﻿using Com.Scm.Api;
-using Com.Scm.Config;
+﻿using Com.Scm.Config;
+using Com.Scm.Dto;
 using Com.Scm.Enums;
 using Com.Scm.Filters;
 using Com.Scm.Nas.Cfg;
 using Com.Scm.Nas.Log;
 using Com.Scm.Nas.Res;
 using Com.Scm.Nas.Sync.Dvo;
+using Com.Scm.Response;
 using Com.Scm.Service;
 using Com.Scm.Token;
 using Com.Scm.Ur;
@@ -184,7 +185,7 @@ namespace Com.Scm.Nas.Sync
         /// </summary>
         /// <param name="request"></param>
         /// <returns></returns>
-        public async Task<ScmSearchPageResponse<NasLogFileDto>> GetLogAsync(GetLogRequest request, [FromHeader] string appToken)
+        public async Task<ScmPageResultDto<NasLogFileDto>> GetLogAsync(GetLogRequest request, [FromHeader] string appToken)
         {
             var token = ScmToken.FromAppToken(appToken);
             var terminalDao = _ResHolder.GetRes<ScmUrTerminalDao>(token.terminal_id);
@@ -218,7 +219,7 @@ namespace Com.Scm.Nas.Sync
                     dir = b.dir,
                     src = b.src
                 })
-                .ToPageAsync(request.page, request.limit);
+                .ToPageAsyncV2(request.page, request.limit);
 
             foreach (var item in response.Items)
             {
@@ -233,7 +234,7 @@ namespace Com.Scm.Nas.Sync
         /// </summary>
         /// <param name="request"></param>
         /// <returns></returns>
-        public async Task<ScmSearchPageResponse<NasResFileDto>> GetDirAsync(GetDirRequest request, [FromHeader] string appToken)
+        public async Task<ScmPageResultDto<NasResFileDto>> GetDirAsync(GetDirRequest request, [FromHeader] string appToken)
         {
             var token = ScmToken.FromAppToken(appToken);
             var terminalDao = _ResHolder.GetRes<ScmUrTerminalDao>(token.terminal_id);
@@ -252,7 +253,7 @@ namespace Com.Scm.Nas.Sync
                 .WhereIF(!byPath, a => a.dir_id == request.dir_id)
                 .OrderBy(a => a.name, OrderByType.Asc)
                 .Select<NasResFileDto>()
-                .ToPageAsync(request.page, request.limit);
+                .ToPageAsyncV2(request.page, request.limit);
 
             foreach (var item in response.Items)
             {
@@ -266,7 +267,7 @@ namespace Com.Scm.Nas.Sync
         /// </summary>
         /// <param name="request"></param>
         /// <returns></returns>
-        public async Task<ScmSearchPageResponse<NasResFileDto>> GetDocAsync(GetDocRequest request, [FromHeader] string appToken)
+        public async Task<ScmPageResultDto<NasResFileDto>> GetDocAsync(GetDocRequest request, [FromHeader] string appToken)
         {
             var token = ScmToken.FromAppToken(appToken);
             var terminalDao = _ResHolder.GetRes<ScmUrTerminalDao>(token.terminal_id);
@@ -286,7 +287,7 @@ namespace Com.Scm.Nas.Sync
                 .WhereIF(request.kind != ScmFileKindEnum.None, a => a.kind == request.kind)
                 .OrderBy(a => a.name, OrderByType.Asc)
                 .Select<NasResFileDto>()
-                .ToPageAsync(request.page, request.limit);
+                .ToPageAsyncV2(request.page, request.limit);
 
             foreach (var item in response.Items)
             {
@@ -300,7 +301,7 @@ namespace Com.Scm.Nas.Sync
         /// </summary>
         /// <param name="request"></param>
         /// <returns></returns>
-        public async Task<ScmSearchPageResponse<NasResFileDto>> GetFileAsync(GetDocRequest request, [FromHeader] string appToken)
+        public async Task<ScmPageResultDto<NasResFileDto>> GetFileAsync(GetDocRequest request, [FromHeader] string appToken)
         {
             var token = ScmToken.FromAppToken(appToken);
             var terminalDao = _ResHolder.GetRes<ScmUrTerminalDao>(token.terminal_id);
@@ -319,7 +320,7 @@ namespace Com.Scm.Nas.Sync
                 .OrderBy(a => a.type, OrderByType.Asc)
                 .OrderBy(a => a.name, OrderByType.Asc)
                 .Select<NasResFileDto>()
-                .ToPageAsync(request.page, request.limit);
+                .ToPageAsyncV2(request.page, request.limit);
 
             foreach (var item in response.Items)
             {

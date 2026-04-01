@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Com.Scm.Request;
+using Microsoft.AspNetCore.Http;
 
 namespace Com.Scm.Samples.Book.Rnr
 {

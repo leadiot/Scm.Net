@@ -1,4 +1,5 @@
 ﻿using Com.Scm.Enums;
+using Com.Scm.Request;
 
 namespace Com.Scm.Sys.Config.Dvo
 {

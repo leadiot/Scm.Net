@@ -1,5 +1,7 @@
 ﻿using Com.Scm.Config;
 using Com.Scm.Controllers;
+using Com.Scm.Dto;
+using Com.Scm.Exceptions;
 using Com.Scm.Filters;
 using Com.Scm.Http;
 using Com.Scm.Nas;
@@ -46,10 +48,8 @@ namespace Com.Scm.Api.Controllers
         /// <param name="id"></param>
         /// <returns></returns>
         [HttpGet("info/{id}")]
-        public async Task<ScmDownloadResponse> FileInfo(long id)
+        public async Task<ScmFileDto> FileInfo(long id)
         {
-            var response = new ScmDownloadResponse();
-
             LogUtils.Debug("获取文件信息：" + id);
 
             var docDao = await _SqlClient.Queryable<SyncResFileDao>()
@@ -57,8 +57,7 @@ namespace Com.Scm.Api.Controllers
                 .FirstAsync();
             if (docDao == null)
             {
-                response.SetFailure("文件不存在！");
-                return response;
+                throw new BusinessException("文件不存在！");
             }
 
             var userDao = await _SqlClient.Queryable<UserDao>()
@@ -66,8 +65,7 @@ namespace Com.Scm.Api.Controllers
                 .FirstAsync();
             if (userDao == null)
             {
-                response.SetFailure("文件不存在！");
-                return response;
+                throw new BusinessException("文件不存在！");
             }
 
             // 1. 定义文件存储的根路径
@@ -77,16 +75,18 @@ namespace Com.Scm.Api.Controllers
             var fileInfo = new FileInfo(filePath);
             if (!fileInfo.Exists)
             {
-                response.SetFailure("文件不存在！");
-                return response;
+                throw new BusinessException("文件不存在！");
             }
 
-            response.name = docDao.name;
-            response.size = fileInfo.Length;
-            response.hash = docDao.hash;
+            var dto = new ScmFileDto
+            {
+                name = docDao.name,
+                path = docDao.path,
+                size = fileInfo.Length,
+                hash = docDao.hash
+            };
 
-            response.SetSuccess();
-            return response;
+            return dto;
         }
 
         #region 文件查看
@@ -280,10 +280,13 @@ namespace Com.Scm.Api.Controllers
 
                 using (var stream = new FileStream(filePath, FileMode.Open, FileAccess.Read, FileShare.Read))
                 {
-                    stream.Seek(start, SeekOrigin.Begin);
-                    var buffer = new byte[length];
-                    await stream.ReadExactlyAsync(buffer, 0, (int)length);
-                    return File(buffer, contentType, docDao.name);
+                    using (var buffer = new BufferedStream(stream))
+                    {
+                        buffer.Seek(start, SeekOrigin.Begin);
+                        var bytes = new byte[length];
+                        await stream.ReadExactlyAsync(bytes, 0, (int)length);
+                        return File(bytes, contentType, docDao.name);
+                    }
                 }
             }
 
@@ -296,31 +299,26 @@ namespace Com.Scm.Api.Controllers
         #region 文件上传
         #region 小文件上传
         [HttpPost("file")]
-        public async Task<ScmUploadResponse> UploadFileAsync(ScmUploadRequest request)
+        public async Task<bool> UploadSmallAsync(ScmUploadRequest request)
         {
-            var response = new ScmUploadResponse();
-
             var file = request.file;
             if (file == null)
             {
                 LogUtils.Debug("上传文件为空！");
-                response.SetFailure("上传文件为空！");
-                return response;
+                throw new BusinessException("上传文件为空！");
             }
 
             if (file.Length > NasEnv.MAX_CHUNK_SIZE)
             {
                 LogUtils.Debug("文件的内容过大！");
-                response.SetFailure("文件的内容过大！");
-                return response;
+                throw new BusinessException("文件的内容过大！");
             }
 
             var name = (request.file_name ?? file.FileName).ToLower();
             if (!Regex.IsMatch(name, @"^\w{64}[.]nas$"))
             {
                 LogUtils.Debug("无效的文件名称！");
-                response.SetFailure("无效的文件名称！");
-                return response;
+                throw new BusinessException("无效的文件名称！");
             }
 
             //var exts = Path.GetExtension(file.FileName).ToLower();
@@ -337,8 +335,7 @@ namespace Com.Scm.Api.Controllers
             }
 
             LogUtils.Debug("文件上传成功：" + name);
-            response.SetSuccess($"文件上传成功！");
-            return response;
+            return true;
         }
         #endregion
 
@@ -350,39 +347,33 @@ namespace Com.Scm.Api.Controllers
         /// <param name="request"></param>
         /// <returns></returns>
         [HttpPost("chunk")]
-        public async Task<ScmUploadResponse> UploadChunkAsync(ScmUploadRequest request)
+        public async Task<bool> UploadChunkAsync(ScmUploadRequest request)
         {
-            var response = new ScmUploadResponse();
-
             var file = request.file;
             if (file == null)
             {
                 LogUtils.Debug("上传文件为空！");
-                response.SetFailure("上传文件为空！");
-                return response;
+                throw new BusinessException("上传文件为空！");
             }
 
             if (file.Length > NasEnv.MAX_CHUNK_SIZE)
             {
                 LogUtils.Debug("文件的内容过大！");
-                response.SetFailure("文件的内容过大！");
-                return response;
+                throw new BusinessException("文件的内容过大！");
             }
 
             var hash = request.hash ?? "";
             if (!Regex.IsMatch(hash, @"^\w{64}$"))
             {
                 LogUtils.Debug("无效的文件摘要！");
-                response.SetFailure("无效的文件摘要！");
-                return response;
+                throw new BusinessException("无效的文件摘要！");
             }
 
             var name = (request.file_name ?? file.FileName).ToLower();
             if (!Regex.IsMatch(name, @"^\d+[.]chunk$"))
             {
                 LogUtils.Debug("无效的文件名称！");
-                response.SetFailure("无效的文件名称！");
-                return response;
+                throw new BusinessException("无效的文件名称！");
             }
 
             var dstPath = _EnvConfig.GetTempPath(hash);
@@ -394,8 +385,7 @@ namespace Com.Scm.Api.Controllers
             }
 
             LogUtils.Debug("文件上传成功：" + name);
-            response.SetSuccess($"文件上传成功！");
-            return response;
+            return true;
         }
 
         /// <summary>
@@ -404,18 +394,15 @@ namespace Com.Scm.Api.Controllers
         /// <param name="request"></param>
         /// <returns></returns>
         [HttpGet("check/{hash}")]
-        public async Task<ScmUploadResponse> UploadCheckAsync(string hash)
+        public async Task<List<ScmFileDto>> UploadCheckAsync(string hash)
         {
-            var response = new ScmUploadResponse();
-
             if (hash == null || !Regex.IsMatch(hash, @"^\w{64}$"))
             {
                 LogUtils.Debug("无效的文件摘要！");
-                response.SetFailure("无效的文件摘要！");
-                return response;
+                throw new BusinessException("无效的文件摘要！");
             }
 
-            var list = new List<ScmUploadResult>();
+            var list = new List<ScmFileDto>();
 
             var dstPath = _EnvConfig.GetTempPath(hash);
             if (FileUtils.ExistsDir(dstPath))
@@ -423,17 +410,14 @@ namespace Com.Scm.Api.Controllers
                 var files = Directory.GetFiles(dstPath, "*.chunk").OrderBy(a => a).ToList();
                 foreach (var file in files)
                 {
-                    list.Add(new ScmUploadResult
+                    list.Add(new ScmFileDto
                     {
                         name = FileUtils.GetFileName(file)
                     });
                 }
             }
 
-            response.results = list;
-            response.SetSuccess();
-
-            return response;
+            return list;
         }
 
         /// <summary>
@@ -442,23 +426,19 @@ namespace Com.Scm.Api.Controllers
         /// <param name="request"></param>
         /// <returns></returns>
         [HttpPost("merge/{hash}")]
-        public async Task<ScmUploadResponse> UploadMergeAsync(string hash)
+        public async Task<bool> UploadMergeAsync(string hash)
         {
-            var response = new ScmUploadResponse();
-
             if (hash == null || !Regex.IsMatch(hash, @"^\w{64}$"))
             {
                 LogUtils.Debug("无效的文件摘要！");
-                response.SetFailure("无效的文件摘要！");
-                return response;
+                throw new BusinessException("无效的文件摘要！");
             }
 
             var dstPath = _EnvConfig.GetTempPath(hash);
             if (!FileUtils.ExistsDir(dstPath))
             {
                 LogUtils.Debug("分块目录不存在：" + hash);
-                response.SetSuccess($"分块目录不存在！");
-                return response;
+                throw new BusinessException($"分块目录不存在！");
             }
 
             var name = hash + ".nas";
@@ -480,8 +460,7 @@ namespace Com.Scm.Api.Controllers
             FileUtils.DeleteDir(dstPath, true);
 
             LogUtils.Debug("文件合并完成：" + name);
-            response.SetSuccess($"文件合并完成！");
-            return response;
+            return true;
         }
         #endregion
         #endregion

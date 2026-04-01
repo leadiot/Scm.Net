@@ -1,4 +1,6 @@
-﻿namespace Com.Scm.Sys.Pv.Dvo
+﻿using Com.Scm.Request;
+
+namespace Com.Scm.Sys.Pv.Dvo
 {
     /// <summary>
     /// 

@@ -1,4 +1,6 @@
-﻿namespace Com.Scm.Operator.Dvo
+﻿using Com.Scm.Request;
+
+namespace Com.Scm.Operator.Dvo
 {
     /// <summary>
     /// 

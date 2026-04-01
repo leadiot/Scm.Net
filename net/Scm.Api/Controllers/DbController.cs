@@ -2,6 +2,7 @@
 using Com.Scm.Controllers;
 using Com.Scm.Filters;
 using Com.Scm.Nas;
+using Com.Scm.Response;
 using Com.Scm.Samples;
 using Com.Scm.Utils;
 using Microsoft.AspNetCore.Authorization;

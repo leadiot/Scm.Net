@@ -1,5 +1,5 @@
-﻿using Com.Scm.Api;
-using Com.Scm.Dvo;
+﻿using Com.Scm.Dvo;
+using Com.Scm.Response;
 using SqlSugar;
 
 namespace Com.Scm.Dev.Sql.Dvo

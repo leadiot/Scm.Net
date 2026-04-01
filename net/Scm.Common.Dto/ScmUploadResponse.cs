@@ -1,4 +1,4 @@
-﻿using Com.Scm.Api;
+﻿using Com.Scm.Response;
 using System.Collections.Generic;
 
 namespace Com.Scm

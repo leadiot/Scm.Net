@@ -1,5 +1,6 @@
 ﻿using Com.Scm.Enums;
 using Com.Scm.Exceptions;
+using Com.Scm.Response;
 using Com.Scm.Token;
 using Com.Scm.Utils;
 using Microsoft.AspNetCore.Hosting;

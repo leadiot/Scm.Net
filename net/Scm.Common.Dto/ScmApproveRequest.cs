@@ -1,4 +1,6 @@
-﻿namespace Com.Scm
+﻿using Com.Scm.Request;
+
+namespace Com.Scm
 {
     public class ScmApproveRequest : ScmRequest
     {

@@ -1,11 +1,8 @@
-﻿using Com.Scm.Response;
-using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
-namespace Com.Scm
+namespace Com.Scm.Dto
 {
-    [Obsolete("该类已废弃，请使用ScmPageResultDto替代")]
-    public class ScmSearchPageResponse<T> : ScmApiResponse
+    public class ScmPageResultDto<T> : ScmDto
     {
         /// <summary>
         /// 总页数

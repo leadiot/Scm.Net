@@ -1,4 +1,5 @@
 using Com.Scm.Dsa;
+using Com.Scm.Dto;
 using Com.Scm.Dvo;
 using Com.Scm.Enums;
 using Com.Scm.Exceptions;
@@ -37,7 +38,7 @@ namespace Com.Scm.Nas.Res
         /// </summary>
         /// <param name="request"></param>
         /// <returns></returns>
-        public async Task<ScmSearchPageResponse<NasResFileDvo>> GetPagesAsync(SearchRequest request)
+        public async Task<ScmPageResultDto<NasResFileDvo>> GetPagesAsync(SearchRequest request)
         {
             if (!IsNormalId(request.dir_id))
             {
@@ -52,7 +53,7 @@ namespace Com.Scm.Nas.Res
                 .OrderBy(a => a.type)
                 .OrderBy(m => m.id)
                 .Select<NasResFileDvo>()
-                .ToPageAsync(request.page, request.limit);
+                .ToPageAsyncV2(request.page, request.limit);
 
             Prepare(result.Items);
             return result;

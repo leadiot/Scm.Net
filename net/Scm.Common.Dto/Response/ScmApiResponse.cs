@@ -1,4 +1,4 @@
-﻿namespace Com.Scm.Api
+﻿namespace Com.Scm.Response
 {
     public class ScmApiResponse : ScmResponse
     {

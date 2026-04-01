@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace Com.Scm.Api
+namespace Com.Scm.Response
 {
     public class ScmApiListResponse<T> : ScmApiResponse
     {

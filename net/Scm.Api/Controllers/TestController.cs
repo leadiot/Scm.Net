@@ -1,4 +1,6 @@
 ﻿using Com.Scm.Controllers;
+using Com.Scm.Request;
+using Com.Scm.Response;
 using Com.Scm.Token;
 using Microsoft.AspNetCore.Mvc;
 

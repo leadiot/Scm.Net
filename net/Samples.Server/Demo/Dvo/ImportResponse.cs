@@ -1,4 +1,5 @@
 ﻿using Com.Scm.Dvo;
+using Com.Scm.Response;
 
 namespace Com.Scm.Samples.Demo.Dvo
 {

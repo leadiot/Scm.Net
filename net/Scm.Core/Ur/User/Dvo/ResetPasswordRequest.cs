@@ -1,3 +1,5 @@
+using Com.Scm.Request;
+
 namespace Com.Scm.Ur.User.Dvo;
 
 /// <summary>

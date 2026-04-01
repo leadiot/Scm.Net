@@ -1,4 +1,5 @@
 ﻿using Com.Scm.Image.Barcode;
+using Com.Scm.Request;
 
 namespace Com.Scm.Tools.Barcode.Dvo
 {

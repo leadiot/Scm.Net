@@ -1,4 +1,6 @@
-﻿namespace Com.Scm.Ur.UserOtp.Dvo
+﻿using Com.Scm.Request;
+
+namespace Com.Scm.Ur.UserOtp.Dvo
 {
     public class VerifyRequest : ScmRequest
     {

@@ -1,4 +1,5 @@
-﻿using SqlSugar;
+﻿using Com.Scm.Dto;
+using SqlSugar;
 using System.Linq.Expressions;
 
 namespace Com.Scm.Utils
@@ -16,6 +17,19 @@ namespace Com.Scm.Utils
                 TotalItems = totalItems,
                 TotalPages = totalPages,
                 Success = true
+            };
+        }
+
+        public static async Task<ScmPageResultDto<T>> ToPageAsyncV2<T>(this ISugarQueryable<T> query, int pageIndex, int pageSize, bool isMapper = false)
+        {
+            RefAsync<int> totalItems = 0;
+            var items = await query.ToPageListAsync(pageIndex, pageSize, totalItems);
+            var totalPages = (int)Math.Ceiling(totalItems / (double)pageSize);
+            return new ScmPageResultDto<T>()
+            {
+                Items = isMapper ? items.Adapt<List<T>>() : items,
+                TotalItems = totalItems,
+                TotalPages = totalPages
             };
         }
 

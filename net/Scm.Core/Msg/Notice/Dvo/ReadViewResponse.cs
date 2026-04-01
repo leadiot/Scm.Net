@@ -1,4 +1,4 @@
-﻿using Com.Scm.Api;
+﻿using Com.Scm.Response;
 using Com.Scm.Ur.User.Dvo;
 
 namespace Com.Scm.Msg.Notice.Dvo

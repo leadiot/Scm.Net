@@ -1,4 +1,6 @@
-﻿namespace Com.Scm.Terminal.Dvo
+﻿using Com.Scm.Request;
+
+namespace Com.Scm.Terminal.Dvo
 {
     public class BindRequest : ScmRequest
     {

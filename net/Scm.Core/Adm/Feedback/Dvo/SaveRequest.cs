@@ -1,4 +1,6 @@
-﻿namespace Com.Scm.Adm.Feedback.Dvo
+﻿using Com.Scm.Request;
+
+namespace Com.Scm.Adm.Feedback.Dvo
 {
     /// <summary>
     /// 

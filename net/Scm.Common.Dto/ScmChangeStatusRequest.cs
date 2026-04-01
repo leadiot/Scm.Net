@@ -1,4 +1,5 @@
 ﻿using Com.Scm.Enums;
+using Com.Scm.Request;
 using System.Collections.Generic;
 
 namespace Com.Scm

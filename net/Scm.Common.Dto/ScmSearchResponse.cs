@@ -1,8 +1,10 @@
-﻿using Com.Scm.Api;
+﻿using Com.Scm.Response;
+using System;
 using System.Collections.Generic;
 
 namespace Com.Scm
 {
+    [Obsolete]
     public class ScmSearchResponse<T> : ScmApiResponse
     {
         /// <summary>

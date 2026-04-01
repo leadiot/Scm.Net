@@ -1,4 +1,6 @@
-﻿namespace Com.Scm.Msg.Aiml.Dvo
+﻿using Com.Scm.Request;
+
+namespace Com.Scm.Msg.Aiml.Dvo
 {
     /// <summary>
     /// 

@@ -1,4 +1,6 @@
-﻿namespace Com.Scm.Sys.Table.Dvo
+﻿using Com.Scm.Request;
+
+namespace Com.Scm.Sys.Table.Dvo
 {
     /// <summary>
     /// 

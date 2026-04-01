@@ -1,4 +1,4 @@
-﻿namespace Com.Scm
+﻿namespace Com.Scm.Response
 {
     public class ScmResponse
     {

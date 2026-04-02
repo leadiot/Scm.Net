@@ -1,6 +1,23 @@
 <template>
+
+	<!-- 桌面布局 -->
+	<template v-if="layout == 'none'">
+		<section class="scmui-wrapper">
+			<div class="scmui-body el-container">
+				<div class="scmui-main" id="scmui-main">
+					<router-view v-slot="{ Component }">
+						<keep-alive :include="this.$store.state.keepAlive.keepLiveRoute">
+							<component :is="Component" :key="$route.fullPath" v-if="$store.state.keepAlive.routeShow" />
+						</keep-alive>
+					</router-view>
+					<iframe-view></iframe-view>
+				</div>
+			</div>
+		</section>
+	</template>
+
 	<!-- 通栏布局 -->
-	<template v-if="layout == 'header'">
+	<template v-else-if="layout == 'header'">
 		<header class="scmui-header">
 			<div class="scmui-header-left">
 				<div class="logo-bar">

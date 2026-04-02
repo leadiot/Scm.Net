@@ -46,6 +46,12 @@ const routes = [
 		component: () => import(/* webpackChunkName: "userRegister" */ "@/views/scm/sys/flowinfo/design"),
 		meta: { title: "流程设计" },
 	},
+	{
+		id: '1007',
+		path: "/desktop",
+		component: () => import(/* webpackChunkName: "desktop" */ "@/views/home/desktop"),
+		meta: { title: "桌面" },
+	},
 ];
 
 export default routes;

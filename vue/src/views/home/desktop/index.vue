@@ -3,7 +3,8 @@
 		<!-- 桌面图标区域 -->
 		<div class="desktop-icons">
 			<div v-for="app in desktopApps" :key="app.id" class="desktop-icon"
-				:class="{ selected: selectedApp === app.id }" @click="selectApp(app.id)" @dblclick.stop="openApp(app)">
+				:class="{ selected: selectedApp === app.id }" @click.stop="selectApp(app.id)"
+				@dblclick.stop="openApp(app)">
 				<div class="icon-image">
 					<sc-icon name="sc-heart-3-line" :size="48" />
 				</div>
@@ -358,6 +359,7 @@ export default {
 	background-color: #000;
 	overflow: hidden;
 	user-select: none;
+	height: 100%;
 }
 
 .desktop-icons {

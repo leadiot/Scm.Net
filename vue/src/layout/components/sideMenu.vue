@@ -7,7 +7,7 @@
 		destroy-on-close>
 		<el-container class="mobile-nav">
 			<el-header>
-				<div class="logo-bar"><img class="logo" src="img/logo.png"><span>{{ $CONFIG.APP_NAME }}</span></div>
+				<div class="logo-bar"><img class="logo" src="/img/logo.png"><span>{{ $CONFIG.APP_NAME }}</span></div>
 			</el-header>
 			<el-main>
 				<el-scrollbar>

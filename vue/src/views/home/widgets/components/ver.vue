@@ -1,7 +1,7 @@
 <template>
 	<el-card shadow="hover" header="版本信息">
 		<div class="main-version" style="text-align: center">
-			<img src="img/ver.svg" style="height: 100px" />
+			<img src="/img/ver.svg" style="height: 100px" />
 			<h2 style="margin-top: 15px">C-SCM {{ $CONFIG.CORE_VER }}</h2>
 			<p>{{ remark }}</p>
 			<p v-html="details"></p>

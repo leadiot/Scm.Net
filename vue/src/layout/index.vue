@@ -21,7 +21,7 @@
 		<header class="scmui-header">
 			<div class="scmui-header-left">
 				<div class="logo-bar">
-					<img class="logo" src="img/logo.png">
+					<img class="logo" src="/img/logo.png">
 					<span>{{ $CONFIG.APP_NAME }}</span>
 				</div>
 				<ul v-if="!ismobile" class="nav">
@@ -75,7 +75,7 @@
 		<header class="scmui-header">
 			<div class="scmui-header-left">
 				<div class="logo-bar">
-					<img class="logo" src="img/logo.png">
+					<img class="logo" src="/img/logo.png">
 					<span>{{ $CONFIG.APP_NAME }}</span>
 				</div>
 			</div>
@@ -118,7 +118,7 @@
 		<header class="scmui-header">
 			<div class="scmui-header-left">
 				<div class="logo-bar">
-					<img class="logo" src="img/logo.png">
+					<img class="logo" src="/img/logo.png">
 					<span>{{ $CONFIG.APP_NAME }}</span>
 				</div>
 			</div>
@@ -154,7 +154,7 @@
 			<div v-if="!ismobile" class="scmui-side-split">
 				<div class="scmui-side-split-top">
 					<router-link :to="$CONFIG.DASHBOARD_URL">
-						<img class="logo" :title="$CONFIG.APP_NAME" src="img/logo-r.png">
+						<img class="logo" :title="$CONFIG.APP_NAME" src="/img/logo-r.png">
 					</router-link>
 				</div>
 				<div class="scmui-side-split-scroll">
@@ -259,7 +259,7 @@ export default {
 		window.addEventListener('resize', this.onLayoutResize);
 		var menu = this.$router.sc_getMenu();
 		this.menu = this.filterUrl(menu);
-		this.showThis()
+		this.showThis();
 	},
 	watch: {
 		$route() {

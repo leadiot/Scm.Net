@@ -298,12 +298,12 @@ tool.dateTimeFormat = function (time) {
 	if (!time) {
 		return "";
 	}
-	time = eval(time);
+	time = Number(time);
 	if (time < 1) {
 		return "";
 	}
 
-	var date = new Date(eval(time));
+	var date = new Date(time);
 	var year = date.getFullYear();
 	var month = date.getMonth() + 1;
 	var day = date.getDate();

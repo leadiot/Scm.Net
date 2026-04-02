@@ -1,6 +1,6 @@
 import config from "@/config";
 import tool from "@/utils/tool";
-const signalR = require("@microsoft/signalr");
+import * as signalR from "@microsoft/signalr";
 
 const socket = {};
 

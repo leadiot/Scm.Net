@@ -5,7 +5,7 @@
 </template>
 
 <script>
-	import pinyin from './pinyin'
+	import { match } from 'pinyin-pro'
 
 	export default {
 		props: {
@@ -24,10 +24,9 @@
 		methods: {
 			filterMethod(keyword){
 				if(keyword){
-					this.optionsList = this.optionsList_
-					this.optionsList = this.optionsList.filter((item) =>
-						pinyin.match(item.label, keyword)
-					);
+					this.optionsList = this.optionsList_.filter((item) => 
+						match(item.label, keyword) !== false
+					)
 				}else{
 					this.optionsList = this.optionsList_
 				}

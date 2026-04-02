@@ -181,8 +181,8 @@ export default {
 			}
 
 			res.data.forEach((m) => {
-				m.beginTime = m.start_time != '0' ? this.$TOOL.dateFormat(eval(m.start_time), "yyyy-MM-dd") : '';
-				m.endTime = m.end_time != '0' ? this.$TOOL.dateFormat(eval(m.end_time), "yyyy-MM-dd") : '';
+				m.beginTime = m.start_time != '0' ? this.$TOOL.dateFormat(Number(m.start_time), "yyyy-MM-dd") : '';
+				m.endTime = m.end_time != '0' ? this.$TOOL.dateFormat(Number(m.end_time), "yyyy-MM-dd") : '';
 			});
 			this.data = this.getGroup(res.data, "beginTime");
 		},

@@ -1,8 +1,8 @@
 import { createRouter, createWebHashHistory } from "vue-router";
 import { ElNotification } from "element-plus";
 import config from "@/config";
-import NProgress from "nprogress";
-import "nprogress/nprogress.css";
+import NProgress from "nprogress-esm";
+import "nprogress-esm/dist/style.css";
 import tool from "@/utils/tool";
 import systemRouter from "./systemRouter";
 import userRoutes from "@/config/route";
@@ -17,7 +17,7 @@ const routes_404 = {
 	id: '404',
 	path: "/:pathMatch(.*)*",
 	hidden: true,
-	component: () => import(/* webpackChunkName: "404" */ "@/layout/other/404"),
+	component: () => import("@/layout/other/404"),
 };
 let routes_404_r = () => { };
 
@@ -159,13 +159,22 @@ function filterAsyncRouter(routerMap) {
 	});
 	return accessedRouters;
 }
+
 function loadComponent(component) {
 	if (component) {
-		return () =>
-			import(/* webpackChunkName: "[request]" */ `@/views/${component}`);
-	} else {
-		return () => import(`@/layout/other/empty`);
+		const modules = import.meta.glob('@/views/**/*.vue');
+		const paths = [
+			`/src/views/${component}.vue`,
+			`/src/views/${component}/index.vue`
+		];
+		for (const path of paths) {
+			if (modules[path]) {
+				return modules[path];
+			}
+		}
 	}
+
+	return () => import("@/layout/other/empty");
 }
 
 //路由扁平化

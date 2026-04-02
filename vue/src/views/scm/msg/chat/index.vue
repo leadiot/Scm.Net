@@ -132,7 +132,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import '@/assets/sass/_variable.scss';
+@use '@/assets/sass/_variable.scss';
 $height: 70px;
 
 .chat {

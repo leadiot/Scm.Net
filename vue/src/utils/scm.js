@@ -558,31 +558,6 @@ scm.recursive_menu = function (menuList, pid) {
 	return scm.recursive_menu2(menuList, pid);
 };
 
-scm.get_sub_menu = function (menuList, pid) {
-	var list = [];
-
-	for (var i = 0; i < menuList.length; i += 1) {
-		var menu = menuList[i];
-		if (menu.pid != pid) {
-			continue;
-		}
-
-		var idx = -1;
-		for (var j = 0; j < list.length; j += 1) {
-			if (list[j].od > menu.od) {
-				idx = j;
-				break;
-			}
-		}
-		if (idx > -1) {
-			list.splice(idx, 0, menu);
-		} else {
-			list.push(menu);
-		}
-	}
-	return list;
-};
-
 scm.recursive_menu2 = function (menuList, pid) {
 	if (!pid) {
 		return null;
@@ -620,6 +595,31 @@ scm.recursive_menu2 = function (menuList, pid) {
 		list.push(item);
 	}
 
+	return list;
+};
+
+scm.get_sub_menu = function (menuList, pid) {
+	var list = [];
+
+	for (var i = 0; i < menuList.length; i += 1) {
+		var menu = menuList[i];
+		if (menu.pid != pid) {
+			continue;
+		}
+
+		var idx = -1;
+		for (var j = 0; j < list.length; j += 1) {
+			if (list[j].od > menu.od) {
+				idx = j;
+				break;
+			}
+		}
+		if (idx > -1) {
+			list.splice(idx, 0, menu);
+		} else {
+			list.push(menu);
+		}
+	}
 	return list;
 };
 

@@ -240,17 +240,19 @@ export default {
 		//处理动态隐藏
 		hideHandle(item) {
 			if (item.hideHandle) {
-				const exp = eval(item.hideHandle.replace(/\$/g, "this.form"))
-				return exp
+				const exp = item.hideHandle.replace(/\$/g, "this.form")
+				const fn = new Function('return ' + exp)
+				return fn.call(this)
 			}
 			return false
 		},
 		//处理动态必填
 		rulesHandle(item) {
 			if (item.requiredHandle) {
-				const exp = eval(item.requiredHandle.replace(/\$/g, "this.form"))
+				const exp = item.requiredHandle.replace(/\$/g, "this.form")
+				const fn = new Function('return ' + exp)
 				var requiredRule = item.rules.find(t => 'required' in t)
-				requiredRule.required = exp
+				requiredRule.required = fn.call(this)
 			}
 			return item.rules
 		},

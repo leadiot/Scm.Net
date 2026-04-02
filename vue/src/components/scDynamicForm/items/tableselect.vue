@@ -27,7 +27,13 @@
 		},
 		methods: {
 			getApiObj(){
-				return eval(`this.`+this.item.options.apiObj)
+				// return eval(`this.`+this.item.options.apiObj)
+				const props = this.item.options.apiObj.split('.')
+				let obj = this
+				for (const prop of props) {
+					obj = obj[prop]
+				}
+				return obj
 			}
 		}
 	}

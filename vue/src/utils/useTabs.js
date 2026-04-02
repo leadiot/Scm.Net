@@ -1,6 +1,6 @@
 import { nextTick } from 'vue'
-import NProgress from 'nprogress'
-import 'nprogress/nprogress.css'
+import NProgress from 'nprogress-esm'
+import 'nprogress-esm/dist/style.css'
 import router from '@/router'
 import store from '@/store'
 

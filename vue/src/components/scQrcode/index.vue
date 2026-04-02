@@ -3,7 +3,7 @@
 </template>
 
 <script>
-import QRcode from "qrcodejs2"
+import QRCode from "qrcode"
 
 export default {
 	props: {
@@ -14,7 +14,7 @@ export default {
 		logoPadding: { type: Number, default: 5 },
 		colorDark: { type: String, default: "#000000" },
 		colorLight: { type: String, default: "#ffffff" },
-		correctLevel: { type: Number, default: 2 },
+		correctionLevel: { type: String, default: "M" },
 	},
 	data() {
 		return {
@@ -30,36 +30,37 @@ export default {
 		this.draw()
 	},
 	methods: {
-		//创建原始二维码DOM
 		async create() {
-			return new Promise((resolve) => {
-				var element = document.createElement("div");
-				new QRcode(element, {
-					text: this.text,
-					width: this.size,
-					height: this.size,
-					colorDark: this.colorDark,
-					colorLight: this.colorLight,
-					correctLevel: this.correctLevel
-				})
-				if (element.getElementsByTagName("canvas")[0]) {
-					this.qrcode = element
-					resolve()
-				}
+			const canvas = document.createElement("canvas")
+			await QRCode.toCanvas(canvas, this.text, {
+				width: this.size,
+				margin: 0,
+				color: {
+					dark: this.colorDark,
+					light: this.colorLight
+				},
+				errorCorrectionLevel: this.correctionLevel.toUpperCase()
 			})
+			this.qrcode = canvas
 		},
-		//绘制LOGO
 		async drawLogo() {
 			return new Promise((resolve) => {
-				var logo = new Image()
+				const logo = new Image()
+				logo.crossOrigin = "anonymous"
 				logo.src = this.logo
 				const logoPos = (this.size - this.logoSize) / 2
 				const rectSize = this.logoSize + this.logoPadding
 				const rectPos = (this.size - rectSize) / 2
-				var ctx = this.qrcode.getElementsByTagName("canvas")[0].getContext("2d")
+				const ctx = this.qrcode.getContext("2d")
+				
 				logo.onload = () => {
+					ctx.fillStyle = this.colorLight
 					ctx.fillRect(rectPos, rectPos, rectSize, rectSize)
 					ctx.drawImage(logo, logoPos, logoPos, this.logoSize, this.logoSize)
+					resolve()
+				}
+				logo.onerror = () => {
+					console.warn("Failed to load logo image")
 					resolve()
 				}
 			})
@@ -69,7 +70,7 @@ export default {
 			if (this.logo) {
 				await this.drawLogo()
 			}
-			this.$refs.img.src = this.qrcode.getElementsByTagName("canvas")[0].toDataURL("image/png")
+			this.$refs.img.src = this.qrcode.toDataURL("image/png")
 		},
 	}
 }

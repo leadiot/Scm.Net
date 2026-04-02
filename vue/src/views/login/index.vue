@@ -5,7 +5,7 @@
 			<el-header>
 				<div class="common-header-left">
 					<div class="common-header-logo">
-						<img :alt="$CONFIG.APP_NAME" src="img/logo.png">
+						<img :alt="$CONFIG.APP_NAME" src="/img/logo.png">
 						<label>{{ $CONFIG.APP_NAME }}</label>
 					</div>
 					<div class="common-header-title">{{ $t('login.signInTitle') }}</div>

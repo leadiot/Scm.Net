@@ -47,26 +47,26 @@ import {
 	FullScreen,
 	CopyDocument,
 	Folder,
-	Browser,
-	Calculator,
-	Calendar,
-	Message,
-	VideoCamera,
-	Music,
-	Terminal,
-	Pictures,
-	Download,
+	// Browser,
+	// Calculator,
+	// Calendar,
+	// Message,
+	// VideoCamera,
+	// Music,
+	// Terminal,
+	// Pictures,
+	// Download,
 } from '@element-plus/icons-vue';
 import Documents from './apps/Documents.vue';
-import BrowserApp from './apps/Browser.vue';
-import CalculatorApp from './apps/Calculator.vue';
-import CalendarApp from './apps/Calendar.vue';
-import MessageApp from './apps/Message.vue';
-import VideoApp from './apps/Video.vue';
-import MusicApp from './apps/Music.vue';
-import TerminalApp from './apps/Terminal.vue';
-import PictureApp from './apps/Picture.vue';
-import DownloadApp from './apps/Download.vue';
+// import BrowserApp from './apps/Browser.vue';
+// import CalculatorApp from './apps/Calculator.vue';
+// import CalendarApp from './apps/Calendar.vue';
+// import MessageApp from './apps/Message.vue';
+// import VideoApp from './apps/Video.vue';
+// import MusicApp from './apps/Music.vue';
+// import TerminalApp from './apps/Terminal.vue';
+// import PictureApp from './apps/Picture.vue';
+// import DownloadApp from './apps/Download.vue';
 
 export default {
 	name: 'Window',
@@ -76,15 +76,15 @@ export default {
 		FullScreen,
 		CopyDocument,
 		Folder,
-		Browser,
-		Calculator,
-		Calendar,
-		Message,
-		VideoCamera,
-		Music,
-		Terminal,
-		Pictures,
-		Download,
+		// Browser,
+		// Calculator,
+		// Calendar,
+		// Message,
+		// VideoCamera,
+		// Music,
+		// Terminal,
+		// Pictures,
+		// Download,
 	},
 	props: {
 		window: {
@@ -123,15 +123,15 @@ export default {
 		const getComponent = (componentName) => {
 			const components = {
 				Documents,
-				Browser: BrowserApp,
-				Calculator: CalculatorApp,
-				Calendar: CalendarApp,
-				Message: MessageApp,
-				Video: VideoApp,
-				Music: MusicApp,
-				Terminal: TerminalApp,
-				Pictures: PictureApp,
-				Download: DownloadApp,
+				// Browser: BrowserApp,
+				// Calculator: CalculatorApp,
+				// Calendar: CalendarApp,
+				// Message: MessageApp,
+				// Video: VideoApp,
+				// Music: MusicApp,
+				// Terminal: TerminalApp,
+				// Pictures: PictureApp,
+				// Download: DownloadApp,
 			};
 			return components[componentName] || Documents;
 		};

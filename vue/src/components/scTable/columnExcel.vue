@@ -75,7 +75,7 @@ export default {
 			let fields = {}
 			this.excelcolumn.forEach(item => {
 				if (!item.hide) {
-					eval("fields." + item.prop + "='" + item.label + "';");
+					fields[item.prop] = item.label;
 				}
 			});
 			Export(JSON.parse(JSON.stringify(this.data || [])), fields, "文档-" + new Date().getTime());

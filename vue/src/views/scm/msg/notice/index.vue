@@ -264,7 +264,7 @@ export default {
 			return img;
 		},
 		resTime(t) {
-			const date = new Date(eval(t));
+			const date = new Date(Number(t));
 			const month = date.getMonth() + 1;
 			const strDate = date.getDate();
 			return month + "月" + strDate + "日";

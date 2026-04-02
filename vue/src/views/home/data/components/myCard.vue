@@ -65,7 +65,7 @@ export default {
 </script>
 
 <style>
-:global(h2#card-usage ~ .example .example-showcase) {
+h2#card-usage ~ .example .example-showcase {
     background-color: var(--el-fill-color) !important;
 }
 

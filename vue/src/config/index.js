@@ -1,21 +1,21 @@
 const DEFAULT_CONFIG = {
 	// 应用代码
-	APP_CODE: process.env.VUE_APP_CODE,
+	APP_CODE: import.meta.env.VITE_APP_CODE,
 
 	// 应用名称
-	APP_NAME: process.env.VUE_APP_NAME,
+	APP_NAME: import.meta.env.VITE_APP_NAME,
 
 	// 简介（支持HTML）
-	APP_DESC: process.env.VUE_APP_DESC,
+	APP_DESC: import.meta.env.VITE_APP_DESC,
 
 	// 版本号
-	APP_VER: process.env.VUE_APP_VER,
+	APP_VER: import.meta.env.VITE_APP_VER,
 
 	// 内核版本号
-	CORE_VER: process.env.VUE_APP_VER,
+	CORE_VER: import.meta.env.VITE_APP_VER,
 
 	// 构建日期
-	APP_BUILD: process.env.VUE_APP_BUILD,
+	APP_BUILD: import.meta.env.VITE_APP_BUILD,
 
 	// 应用Key
 	APP_KEY: "870cb6cfa286ac4cac462bc8e33b1bb5",
@@ -27,13 +27,13 @@ const DEFAULT_CONFIG = {
 	DASHBOARD_URL: "/dashboard",
 
 	// 服务器地址
-	SERVER_URL: process.env.VUE_APP_API_BASE,
+	SERVER_URL: import.meta.env.VITE_API_BASE,
 
 	// 接口地址
-	API_URL: process.env.VUE_APP_API_BASE + "/api",
+	API_URL: import.meta.env.VITE_API_BASE + "/api",
 
 	// SignalR地址
-	SignalR_URL: process.env.VUE_APP_API_BASE + "/scmhub",
+	SignalR_URL: import.meta.env.VITE_API_BASE + "/scmhub",
 
 	// 请求超时
 	TIMEOUT: 10000,
@@ -92,19 +92,19 @@ const DEFAULT_CONFIG = {
 	DEF_LOGIN_PASS: "",
 
 	// OIDC KEY，可以修改为您的应用KEY
-	OIDC_KEY: process.env.VUE_APP_OIDC_KEY,
+	OIDC_KEY: import.meta.env.VITE_APP_OIDC_KEY,
 	// OIDC 服务列表，不能修改，否则三方登录可能无法使用
-	OIDC_OSP: process.env.VUE_APP_OIDC_OSP,
+	OIDC_OSP: import.meta.env.VITE_APP_OIDC_OSP,
 	// OIDC 应用图标，不能修改，否则服务图标显示异常
-	OIDC_LOGO: process.env.VUE_APP_OIDC_LOGO,
+	OIDC_LOGO: import.meta.env.VITE_APP_OIDC_LOGO,
 	// OIDC 授权路径，不能修改，否则外部授权页面无法打开
-	OIDC_AUTH: process.env.VUE_APP_OIDC_AUTH,
+	OIDC_AUTH: import.meta.env.VITE_APP_OIDC_AUTH,
 	// OIDC 绑定路径，不能修改，否则外部授权页面无法打开
-	OIDC_BIND: process.env.VUE_APP_OIDC_BIND,
+	OIDC_BIND: import.meta.env.VITE_APP_OIDC_BIND,
 	// OIDC 登录路径，不能修改，否则外部登录页面无法打开
-	OIDC_LOGIN: process.env.VUE_APP_OIDC_LOGIN,
+	OIDC_LOGIN: import.meta.env.VITE_APP_OIDC_LOGIN,
 	// OIDC 重定向URI，不能修改，否则授权回调页面无法打开
-	OIDC_REDIRECT_URI: process.env.VUE_APP_OIDC_REDIRECT_URI,
+	OIDC_REDIRECT_URI: import.meta.env.VITE_APP_OIDC_REDIRECT_URI,
 
 	// 是否开启用户注册
 	USER_REGISTER_ENABLED: false,
@@ -139,6 +139,6 @@ const DEFAULT_CONFIG = {
 	BEIAN_MPS: "",
 };
 
-Object.assign(DEFAULT_CONFIG, APP_CONFIG);
+Object.assign(DEFAULT_CONFIG, APP_CONFIG || {});
 
 export default DEFAULT_CONFIG;

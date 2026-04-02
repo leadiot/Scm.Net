@@ -85,7 +85,8 @@ export default {
 		const calculate = () => {
 			try {
 				if (expression.value) {
-					const evalResult = eval(expression.value);
+					const calculateExpr = new Function('return ' + expression.value);
+					const evalResult = calculateExpr();
 					result.value = Number.isInteger(evalResult)
 						? evalResult.toString()
 						: evalResult.toFixed(8).replace(/\.?0+$/, '');

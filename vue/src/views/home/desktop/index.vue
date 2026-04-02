@@ -3,8 +3,7 @@
 		<!-- 桌面图标区域 -->
 		<div class="desktop-icons">
 			<div v-for="app in desktopApps" :key="app.id" class="desktop-icon"
-				:class="{ selected: selectedApp === app.id }" @click="selectApp(app.id)"
-				@dblclick.stop="openApp(app)">
+				:class="{ selected: selectedApp === app.id }" @click="selectApp(app.id)" @dblclick.stop="openApp(app)">
 				<div class="icon-image">
 					<sc-icon name="sc-heart-3-line" :size="48" />
 				</div>
@@ -45,9 +44,16 @@
 				<span>用户名</span>
 			</div>
 			<div class="start-menu-apps">
-				<div v-for="app in allApps" :key="app.id" class="start-menu-app" @click="openApp(app)">
-					<sc-icon name="sc-heart-3-line" />
-					<span>{{ app.name }}</span>
+				<div v-for="app in allApps" :key="app.id" class="start-menu-item"
+					:class="{ 'has-children': app.children }"
+					@mouseenter="app.children ? showSubmenu($event, app.id) : null" @mouseleave="hideSubmenu">
+					<div class="start-menu-app" @click="app.children ? null : openApp(app)">
+						<sc-icon name="sc-heart-3-line" />
+						<span>{{ app.name }}</span>
+						<el-icon v-if="app.children" class="arrow">
+							<ArrowRight />
+						</el-icon>
+					</div>
 				</div>
 			</div>
 			<div class="start-menu-footer">
@@ -59,6 +65,15 @@
 					<sc-icon name="sc-heart-3-line" />
 					<span>关机</span>
 				</div>
+			</div>
+		</div>
+
+		<!-- 子菜单 -->
+		<div v-if="activeSubmenu" class="submenu" :style="submenuStyle" @mouseenter="keepSubmenu"
+			@mouseleave="hideSubmenu">
+			<div v-for="child in activeSubmenuChildren" :key="child.id" class="submenu-item" @click="openApp(child)">
+				<sc-icon name="sc-heart-3-line" />
+				<span>{{ child.name }}</span>
 			</div>
 		</div>
 
@@ -110,109 +125,125 @@
 </template>
 
 <script>
-import { ref, computed, onMounted, onUnmounted } from 'vue';
+import { ArrowRight } from '@element-plus/icons-vue';
 import Window from './components/Window.vue';
 
 export default {
 	name: 'Desktop',
 	components: {
 		Window,
+		ArrowRight,
 	},
-	setup() {
-		const selectedApp = ref(null);
-		const showStartMenu = ref(false);
-		const showSettings = ref(false);
-		const currentTime = ref('');
-		const windows = ref([]);
-		const windowIdCounter = ref(0);
-		const clickTimer = ref(null);
-
-		const backgroundType = ref('gradient');
-		const backgroundColor = ref('#FFFFFF');
-		const backgroundImage = ref('');
-		const gradientColor1 = ref('#667eea');
-		const gradientColor2 = ref('#764ba2');
-		const gradientDirection = ref('to bottom right');
-
-		const presetImages = ref([
-			'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1920',
-			'https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=1920',
-			'https://images.unsplash.com/photo-1507400492013-162706c8c05e?w=1920',
-			'https://images.unsplash.com/photo-1542224566-6e85f2e6772f?w=1920',
-		]);
-
-		const desktopApps = ref([
-			{ id: 1, name: '我的文档', icon: 'Folder', component: 'Documents' },
-			{ id: 2, name: '浏览器', icon: 'Browser', component: 'Browser' },
-			{ id: 3, name: '计算器', icon: 'Calculator', component: 'Calculator' },
-			{ id: 4, name: '日历', icon: 'Calendar', component: 'Calendar' },
-			{ id: 5, name: '音乐', icon: 'Music', component: 'Music' },
-			{ id: 6, name: '视频', icon: 'VideoCamera', component: 'Video' },
-			{ id: 7, name: '消息', icon: 'Message', component: 'Message' },
-			{ id: 8, name: '终端', icon: 'Terminal', component: 'Terminal' },
-		]);
-
-		const allApps = ref([
-			{ id: 1, name: '我的文档', icon: 'Folder', component: 'Documents' },
-			{ id: 2, name: '浏览器', icon: 'Browser', component: 'Browser' },
-			{ id: 3, name: '计算器', icon: 'Calculator', component: 'Calculator' },
-			{ id: 4, name: '日历', icon: 'Calendar', component: 'Calendar' },
-			{ id: 5, name: '音乐', icon: 'Music', component: 'Music' },
-			{ id: 6, name: '视频', icon: 'VideoCamera', component: 'Video' },
-			{ id: 7, name: '消息', icon: 'Message', component: 'Message' },
-			{ id: 8, name: '终端', icon: 'Terminal', component: 'Terminal' },
-			{ id: 9, name: '图片', icon: 'Picture', component: 'Pictures' },
-			{ id: 10, name: '下载', icon: 'Download', component: 'Download' },
-		]);
-
-		const desktopStyle = computed(() => {
-			if (backgroundType.value === 'color') {
-				return { backgroundColor: backgroundColor.value };
-			} else if (backgroundType.value === 'image') {
+	data() {
+		return {
+			selectedApp: null,
+			showStartMenu: false,
+			showSettings: false,
+			currentTime: '',
+			windows: [],
+			windowIdCounter: 0,
+			activeSubmenu: null,
+			submenuStyle: {},
+			submenuTimeout: null,
+			backgroundType: 'gradient',
+			backgroundColor: '#FFFFFF',
+			backgroundImage: '',
+			gradientColor1: '#667eea',
+			gradientColor2: '#764ba2',
+			gradientDirection: 'to bottom right',
+			presetImages: [
+				'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1920',
+				'https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=1920',
+				'https://images.unsplash.com/photo-1507400492013-162706c8c05e?w=1920',
+				'https://images.unsplash.com/photo-1542224566-6e85f2e6772f?w=1920',
+			],
+			desktopApps: [
+				{ id: 1, name: '我的文档', icon: 'Folder', component: 'Documents' },
+				{ id: 2, name: '浏览器', icon: 'Browser', component: 'Browser' },
+				{ id: 3, name: '计算器', icon: 'Calculator', component: 'Calculator' },
+				{ id: 4, name: '日历', icon: 'Calendar', component: 'Calendar' },
+				{ id: 5, name: '音乐', icon: 'Music', component: 'Music' },
+				{ id: 6, name: '视频', icon: 'VideoCamera', component: 'Video' },
+				{ id: 7, name: '消息', icon: 'Message', component: 'Message' },
+				{ id: 8, name: '终端', icon: 'Terminal', component: 'Terminal' },
+			],
+			allApps: [
+				{
+					id: 1,
+					name: '常用应用',
+					icon: 'Folder',
+					children: [
+						{ id: 11, name: '我的文档', icon: 'Folder', component: 'Documents' },
+						{ id: 12, name: '浏览器', icon: 'Browser', component: 'Browser' },
+						{ id: 13, name: '计算器', icon: 'Calculator', component: 'Calculator' },
+						{ id: 14, name: '日历', icon: 'Calendar', component: 'Calendar' },
+					]
+				},
+				{
+					id: 2,
+					name: '多媒体',
+					icon: 'VideoCamera',
+					children: [
+						{ id: 21, name: '音乐', icon: 'Music', component: 'Music' },
+						{ id: 22, name: '视频', icon: 'VideoCamera', component: 'Video' },
+						{ id: 23, name: '图片', icon: 'Picture', component: 'Pictures' },
+					]
+				},
+				{
+					id: 3,
+					name: '系统工具',
+					icon: 'Setting',
+					children: [
+						{ id: 31, name: '终端', icon: 'Terminal', component: 'Terminal' },
+						{ id: 32, name: '下载', icon: 'Download', component: 'Download' },
+						{ id: 33, name: '消息', icon: 'Message', component: 'Message' },
+					]
+				},
+			],
+			updateTimeInterval: null,
+			documentClickHandler: null,
+		};
+	},
+	computed: {
+		desktopStyle() {
+			if (this.backgroundType === 'color') {
+				return { backgroundColor: this.backgroundColor };
+			} else if (this.backgroundType === 'image') {
 				return {
-					backgroundImage: `url(${backgroundImage.value})`,
+					backgroundImage: `url(${this.backgroundImage})`,
 					backgroundSize: 'cover',
 					backgroundPosition: 'center',
 				};
 			} else {
 				return {
-					background: `linear-gradient(${gradientDirection.value}, ${gradientColor1.value}, ${gradientColor2.value})`,
+					background: `linear-gradient(${this.gradientDirection}, ${this.gradientColor1}, ${this.gradientColor2})`,
 				};
 			}
-		});
-
-		const updateTime = () => {
+		},
+		activeSubmenuChildren() {
+			if (!this.activeSubmenu) return [];
+			const app = this.allApps.find(a => a.id === this.activeSubmenu);
+			return app ? app.children : [];
+		},
+	},
+	methods: {
+		updateTime() {
 			const now = new Date();
-			currentTime.value = now.toLocaleTimeString('zh-CN', {
+			this.currentTime = now.toLocaleTimeString('zh-CN', {
 				hour: '2-digit',
 				minute: '2-digit',
 			});
-		};
-
-		const selectApp = (appId) => {
-			console.log(appId);
-			if (clickTimer.value) {
-				clearTimeout(clickTimer.value);
-				clickTimer.value = null;
-			}
-			clickTimer.value = setTimeout(() => {
-				selectedApp.value = appId;
-				clickTimer.value = null;
-			}, 200);
-		};
-
-		const clearSelection = () => {
-			selectedApp.value = null;
-		};
-
-		const openApp = (app) => {
-			if (clickTimer.value) {
-				clearTimeout(clickTimer.value);
-				clickTimer.value = null;
-			}
-			showStartMenu.value = false;
-			const windowId = ++windowIdCounter.value;
-			windows.value.push({
+		},
+		selectApp(appId) {
+			this.selectedApp = appId;
+		},
+		clearSelection() {
+			this.selectedApp = null;
+		},
+		openApp(app) {
+			this.showStartMenu = false;
+			const windowId = ++this.windowIdCounter;
+			this.windows.push({
 				id: windowId,
 				title: app.name,
 				icon: app.icon,
@@ -225,124 +256,111 @@ export default {
 				width: 800,
 				height: 600,
 			});
-			focusWindow(windowId);
-		};
+			this.focusWindow(windowId);
+		},
+		showSubmenu(event, appId) {
+			const app = this.allApps.find(a => a.id === appId);
+			if (!app || !app.children) return;
 
-		const closeWindow = (windowId) => {
-			windows.value = windows.value.filter((w) => w.id !== windowId);
-		};
-
-		const minimizeWindow = (windowId) => {
-			const window = windows.value.find((w) => w.id === windowId);
+			const rect = event.target.getBoundingClientRect();
+			this.activeSubmenu = appId;
+			this.submenuStyle = {
+				left: `${rect.right}px`,
+				top: `${rect.top}px`,
+			};
+		},
+		hideSubmenu() {
+			this.submenuTimeout = setTimeout(() => {
+				this.activeSubmenu = null;
+			}, 100);
+		},
+		keepSubmenu() {
+			if (this.submenuTimeout) {
+				clearTimeout(this.submenuTimeout);
+			}
+		},
+		closeWindow(windowId) {
+			this.windows = this.windows.filter((w) => w.id !== windowId);
+		},
+		minimizeWindow(windowId) {
+			const window = this.windows.find((w) => w.id === windowId);
 			if (window) {
 				window.minimized = true;
 				window.focused = false;
 			}
-		};
-
-		const maximizeWindow = (windowId) => {
-			const window = windows.value.find((w) => w.id === windowId);
+		},
+		maximizeWindow(windowId) {
+			const window = this.windows.find((w) => w.id === windowId);
 			if (window) {
 				window.maximized = !window.maximized;
 			}
-		};
-
-		const focusWindow = (windowId) => {
-			windows.value.forEach((w) => {
+		},
+		focusWindow(windowId) {
+			this.windows.forEach((w) => {
 				w.focused = w.id === windowId;
 				if (w.id === windowId) {
 					w.minimized = false;
 				}
 			});
-		};
-
-		const toggleWindow = (windowId) => {
-			const window = windows.value.find((w) => w.id === windowId);
+		},
+		toggleWindow(windowId) {
+			const window = this.windows.find((w) => w.id === windowId);
 			if (window) {
 				if (window.focused && !window.minimized) {
-					minimizeWindow(windowId);
+					this.minimizeWindow(windowId);
 				} else {
-					focusWindow(windowId);
+					this.focusWindow(windowId);
 				}
 			}
-		};
-
-		const toggleStartMenu = () => {
-			showStartMenu.value = !showStartMenu.value;
-		};
-
-		const openSettings = () => {
-			showStartMenu.value = false;
-			showSettings.value = true;
-		};
-
-		const applySettings = () => {
-			showSettings.value = false;
-		};
-
-		onMounted(() => {
-			updateTime();
-			setInterval(updateTime, 1000);
-
-			document.addEventListener('click', (e) => {
-				if (!e.target.closest('.start-menu') && !e.target.closest('.taskbar-start')) {
-					showStartMenu.value = false;
-				}
-			});
-		});
-
-		onUnmounted(() => {
-			clearInterval(updateTime);
-			if (clickTimer.value) {
-				clearTimeout(clickTimer.value);
+		},
+		toggleStartMenu() {
+			this.showStartMenu = !this.showStartMenu;
+			if (!this.showStartMenu) {
+				this.activeSubmenu = null;
 			}
-		});
+		},
+		openSettings() {
+			this.showStartMenu = false;
+			this.showSettings = true;
+		},
+		applySettings() {
+			this.showSettings = false;
+		},
+	},
+	mounted() {
+		this.updateTime();
+		this.updateTimeInterval = setInterval(this.updateTime, 1000);
 
-		return {
-			selectedApp,
-			showStartMenu,
-			showSettings,
-			currentTime,
-			windows,
-			desktopApps,
-			allApps,
-			backgroundType,
-			backgroundColor,
-			backgroundImage,
-			gradientColor1,
-			gradientColor2,
-			gradientDirection,
-			presetImages,
-			desktopStyle,
-			selectApp,
-			clearSelection,
-			openApp,
-			closeWindow,
-			minimizeWindow,
-			maximizeWindow,
-			focusWindow,
-			toggleWindow,
-			toggleStartMenu,
-			openSettings,
-			applySettings,
+		this.documentClickHandler = (e) => {
+			console.log(e.target);
+			if (!e.target.closest('.start-menu') && !e.target.closest('.taskbar-start')) {
+				this.showStartMenu = false;
+			}
 		};
+		document.addEventListener('click', this.documentClickHandler);
+	},
+	unmounted() {
+		if (this.updateTimeInterval) {
+			clearInterval(this.updateTimeInterval);
+		}
+		if (this.submenuTimeout) {
+			clearTimeout(this.submenuTimeout);
+		}
+		if (this.documentClickHandler) {
+			document.removeEventListener('click', this.documentClickHandler);
+		}
 	},
 };
 </script>
 
 <style scoped>
 .desktop {
-	position: fixed;
-	top: 0;
-	left: 0;
-	right: 0;
-	bottom: 0;
+	background-color: #000;
 	overflow: hidden;
 	user-select: none;
 }
 
 .desktop-icons {
-	position: absolute;
 	top: 20px;
 	left: 20px;
 	display: grid;
@@ -397,6 +415,11 @@ export default {
 	left: 0;
 	right: 0;
 	bottom: 48px;
+	pointer-events: none;
+}
+
+.windows-container .window {
+	pointer-events: auto;
 }
 
 .taskbar {
@@ -498,8 +521,12 @@ export default {
 
 .start-menu-apps {
 	max-height: 400px;
-	overflow-y: auto;
+	overflow: visible;
 	padding: 10px;
+}
+
+.start-menu-item {
+	position: relative;
 }
 
 .start-menu-app {
@@ -514,6 +541,36 @@ export default {
 }
 
 .start-menu-app:hover {
+	background-color: rgba(255, 255, 255, 0.1);
+}
+
+.start-menu-app .arrow {
+	margin-left: auto;
+	font-size: 12px;
+}
+
+.submenu {
+	position: fixed;
+	min-width: 180px;
+	background-color: rgba(0, 0, 0, 0.95);
+	backdrop-filter: blur(20px);
+	border-radius: 8px;
+	box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+	padding: 8px 0;
+	z-index: 1002;
+}
+
+.submenu-item {
+	display: flex;
+	align-items: center;
+	gap: 12px;
+	padding: 12px 16px;
+	color: white;
+	cursor: pointer;
+	transition: background-color 0.3s;
+}
+
+.submenu-item:hover {
 	background-color: rgba(255, 255, 255, 0.1);
 }
 

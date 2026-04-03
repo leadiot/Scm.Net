@@ -32,7 +32,7 @@
 					<sc-list :data="editableTabs" :show-opt="true" :show-drop="true" @change="changeTab"></sc-list>
 				</el-aside>
 				<el-main class="nopadding">
-					<scTable ref="table" :table-name="tableName" :data="list" :column="column" row-key="id"
+					<sc-table ref="table" :table-name="tableName" :data="list" :column="column" row-key="id"
 						hide-pagination @menu-handle="menuHandle" @selection-change="selectionChange">
 						<!-- 固定列-选择列 -->
 						<el-table-column align="center" fixed type="selection" width="60" />
@@ -72,7 +72,7 @@
 								</el-switch>
 							</el-tooltip>
 						</template>
-					</scTable>
+					</sc-table>
 				</el-main>
 			</el-container>
 		</el-main>

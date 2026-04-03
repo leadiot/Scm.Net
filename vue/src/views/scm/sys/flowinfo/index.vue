@@ -18,7 +18,7 @@
 			</div>
 		</el-header>
 		<el-main class="nopadding">
-			<scTable ref="table" :table-name="tableName" :api-obj="apiObj" :column="column" row-key="id"
+			<sc-table ref="table" :table-name="tableName" :api-obj="apiObj" :column="column" row-key="id"
 				@menu-handle="menuHandle" @selection-change="selectionChange">
 				<!-- 固定列-选择列 -->
 				<el-table-column fixed type="selection" width="60" />
@@ -52,7 +52,7 @@
 				<template #refused="{ data }">
 					{{ data.refused == 1 ? "返回审批流初始层级" : "返回到上一级" }}
 				</template>
-			</scTable>
+			</sc-table>
 		</el-main>
 	</el-container>
 	<edit ref="edit" @complete="complete" />

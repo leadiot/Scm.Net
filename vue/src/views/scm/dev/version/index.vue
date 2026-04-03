@@ -54,7 +54,7 @@
 			</div>
 		</el-header>
 		<el-main class="nopadding">
-			<scTable ref="table" :table-name="tableName" :api-obj="apiObj" :column="column" row-key="id"
+			<sc-table ref="table" :table-name="tableName" :api-obj="apiObj" :column="column" row-key="id"
 				@menu-handle="menuHandle" @selection-change="selectionChange">
 				<el-table-column align="center" fixed type="selection" width="60" />
 				<el-table-column label="#" type="index" width="50"></el-table-column>
@@ -83,7 +83,7 @@
 						{{ data.current ? "是" : "否" }}
 					</el-tag>
 				</template>
-			</scTable>
+			</sc-table>
 		</el-main>
 		<edit ref="edit" @complete="complete" />
 	</el-container>

@@ -49,7 +49,7 @@
 			</div>
 		</el-header>
 		<el-main class="nopadding">
-			<scTable ref="table" :table-name="tableName" :api-obj="apiObj" :column="column" row-key="id"
+			<sc-table ref="table" :table-name="tableName" :api-obj="apiObj" :column="column" row-key="id"
 				@menu-handle="menuHandle" @selection-change="selectionChange">
 				<!-- 固定列-选择列 -->
 				<el-table-column fixed type="selection" width="60" />
@@ -83,7 +83,7 @@
 						{{ data.maxLength == 0 ? "不限制" : data.maxLength }}
 					</el-tag>
 				</template>
-			</scTable>
+			</sc-table>
 		</el-main>
 		<edit ref="edit" @complete="complete" />
 		<logs ref="logs"></logs>

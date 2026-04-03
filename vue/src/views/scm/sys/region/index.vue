@@ -35,7 +35,7 @@
 			</div>
 		</el-header>
 		<el-main class="nopadding">
-			<scTable ref="table" :data="list" :column="column" row-key="id" hide-pagination @menu-handle="menuHandle"
+			<sc-table ref="table" :data="list" :column="column" row-key="id" hide-pagination @menu-handle="menuHandle"
 				@selection-change="selectionChange">
 				<!-- 固定列-选择列 -->
 				<el-table-column align="center" fixed type="selection" width="60" />
@@ -75,7 +75,7 @@
 						</el-switch>
 					</el-tooltip>
 				</template>
-			</scTable>
+			</sc-table>
 		</el-main>
 		<edit ref="edit" @complete="complete" />
 	</el-container>

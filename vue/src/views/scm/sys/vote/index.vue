@@ -18,7 +18,7 @@
 			</div>
 		</el-header>
 		<el-main class="nopadding">
-			<scTable ref="table" :table-name="tableName" :api-obj="apiObj" :column="column" :menu-column="menuColumn" row-key="id"
+			<sc-table ref="table" :table-name="tableName" :api-obj="apiObj" :column="column" :menu-column="menuColumn" row-key="id"
 				@selection-change="selectionChange" @menu-handle="menuHandle">
 				<!-- 固定列-选择列 -->
 				<el-table-column fixed type="selection" width="60" />
@@ -50,7 +50,7 @@
 				<template #type="{ data }">
 					{{ data.type ? "单选" : "多选" }}
 				</template>
-			</scTable>
+			</sc-table>
 		</el-main>
 		<voteHeader ref="voteHeader" @complete="complete" />
 		<voteDetail ref="voteDetail" />

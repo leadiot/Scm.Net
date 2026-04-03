@@ -13,7 +13,7 @@
 			</div>
 		</el-header>
 		<el-main class="nopadding">
-			<scTable ref="table" :table-name="tableName" :api-obj="apiObj" :column="column" row-key="id"
+			<sc-table ref="table" :table-name="tableName" :api-obj="apiObj" :column="column" row-key="id"
 				:hidePagination="true" :hideDo="true" :hide-context-menu="false" @selection-change="selectionChange">
 				<!-- 固定列-选择列 -->
 				<el-table-column fixed type="selection" width="60" align="center" />
@@ -33,7 +33,7 @@
 						{{ data.status ? "正常" : "停用" }}
 					</el-tag>
 				</template>
-			</scTable>
+			</sc-table>
 		</el-main>
 	</el-container>
 	<column ref="column" />

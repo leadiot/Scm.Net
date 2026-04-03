@@ -1,7 +1,7 @@
 <template>
 	<el-container>
 		<el-main class="nopadding">
-			<scTable ref="table" :table-name="tableName" :api-obj="apiObj" :column="column" :hidePagination="true"
+			<sc-table ref="table" :table-name="tableName" :api-obj="apiObj" :column="column" :hidePagination="true"
 				:hide-context-menu="false" row-key="id">
 				<!-- 固定列-选择列 -->
 				<el-table-column fixed type="selection" width="60" />
@@ -15,7 +15,7 @@
 						</el-popconfirm>
 					</template>
 				</el-table-column>
-			</scTable>
+			</sc-table>
 		</el-main>
 	</el-container>
 </template>

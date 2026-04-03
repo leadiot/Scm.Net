@@ -53,7 +53,7 @@
 				</div>
 			</el-header>
 			<el-main class="nopadding">
-				<scTable ref="table" :table-name="tableName" :api-obj="apiObj" :column="column" :params="defaultParam"
+				<sc-table ref="table" :table-name="tableName" :api-obj="apiObj" :column="column" :params="defaultParam"
 					row-key="id" @menu-handle="menuHandle" @selection-change="selectionChange">
 					<!-- 固定列-选择列 -->
 					<el-table-column fixed type="selection" width="60" align="center" />
@@ -80,7 +80,7 @@
 							</el-switch>
 						</el-tooltip>
 					</template>
-				</scTable>
+				</sc-table>
 			</el-main>
 			<dicHeader ref="dicHeader" @complete="headerComplete" />
 			<dicDetail ref="dicDetail" @complete="detailComplete" />

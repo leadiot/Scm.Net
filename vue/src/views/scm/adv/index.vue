@@ -40,7 +40,7 @@
 				</div>
 			</el-header>
 			<el-main class="nopadding">
-				<scTable ref="table" :api-obj="apiObj" :column="column" row-key="id" @menu-handle="menuHandle"
+				<sc-table ref="table" :api-obj="apiObj" :column="column" row-key="id" @menu-handle="menuHandle"
 					@selection-change="selectionChange">
 					<!-- 固定列-选择列 -->
 					<el-table-column fixed type="selection" width="60" align="center" />
@@ -70,7 +70,7 @@
 						<el-image v-if="data.imgUrl" style="width: 180px; height: 80px"
 							:src="$CONFIG.SERVER_URL + data.imgUrl" fit="contain" />
 					</template>
-				</scTable>
+				</sc-table>
 			</el-main>
 			<modify ref="modify" @complete="complete" />
 			<column ref="column" @complete="columnComplete" />

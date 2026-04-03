@@ -31,7 +31,7 @@
 			</div>
 		</el-header>
 		<el-main class="nopadding">
-			<scTable ref="table" :table-name="tableName" :api-obj="apiObj" :column="column" hide-pagination is-tree
+			<sc-table ref="table" :table-name="tableName" :api-obj="apiObj" :column="column" hide-pagination is-tree
 				row-key="id" @menu-handle="menuHandle" @selection-change="selectionChange">
 				<el-table-column fixed type="selection" width="60" />
 				<el-table-column align="center" fixed="right" label="操作" width="140">
@@ -62,7 +62,7 @@
 						{{ data.isSystem ? "是" : "否" }}
 					</el-tag>
 				</template>
-			</scTable>
+			</sc-table>
 		</el-main>
 		<edit ref="edit" @complete="complete" />
 	</el-container>

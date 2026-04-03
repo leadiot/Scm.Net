@@ -1,13 +1,13 @@
 <template>
 	<el-card shadow="never" header="近7天操作记录">
-		<scTable ref="table" :table-name="tableName" :api-obj="apiObj" :column="column" height="auto"
+		<sc-table ref="table" :table-name="tableName" :api-obj="apiObj" :column="column" height="auto"
 			paginationLayout="total, prev, pager, next">
 			<el-table-column label="#" type="index" width="50"></el-table-column>
 			<template #result="scope">
 				<el-tag type="success" v-if="scope.row.result">成功</el-tag>
 				<el-tag type="danger" v-else>失败</el-tag>
 			</template>
-		</scTable>
+		</sc-table>
 	</el-card>
 </template>
 

@@ -13,9 +13,9 @@
                     </el-row>
                 </el-header>
                 <el-main class="nopadding">
-                    <scTable ref="table" :table-name="tableName" :api-obj="apiObj" :column="column" row-key="id">
+                    <sc-table ref="table" :table-name="tableName" :api-obj="apiObj" :column="column" row-key="id">
                         <el-table-column label="#" type="index" width="50"></el-table-column>
-                    </scTable>
+                    </sc-table>
                 </el-main>
             </el-container>
         </el-main>

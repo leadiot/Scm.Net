@@ -6,8 +6,8 @@
 			<div class="scmui-body el-container">
 				<div class="scmui-main" id="scmui-main">
 					<router-view v-slot="{ Component }">
-						<keep-alive :include="this.$store.state.keepAlive.keepLiveRoute">
-							<component :is="Component" :key="$route.fullPath" v-if="$store.state.keepAlive.routeShow" />
+						<keep-alive :include="keepLiveRoute">
+							<component :is="Component" :key="$route.fullPath" v-if="routeShow" />
 						</keep-alive>
 					</router-view>
 					<iframe-view></iframe-view>
@@ -50,7 +50,7 @@
 						</el-menu>
 					</el-scrollbar>
 				</div>
-				<div class="scmui-side-bottom" @click="$store.commit('TOGGLE_menuIsCollapse')">
+				<div class="scmui-side-bottom" @click="globalStore.TOGGLE_menuIsCollapse()">
 					<sc-icon :name="menuIsCollapse ? 'sc-menu-show' : 'sc-menu-hide'"></sc-icon>
 				</div>
 			</div>
@@ -60,8 +60,8 @@
 				<Tags v-if="!ismobile && layoutTags"></Tags>
 				<div class="scmui-main" id="scmui-main">
 					<router-view v-slot="{ Component }">
-						<keep-alive :include="this.$store.state.keepAlive.keepLiveRoute">
-							<component :is="Component" :key="$route.fullPath" v-if="$store.state.keepAlive.routeShow" />
+						<keep-alive :include="keepLiveRoute">
+							<component :is="Component" :key="$route.fullPath" v-if="routeShow" />
 						</keep-alive>
 					</router-view>
 					<iframe-view></iframe-view>
@@ -93,7 +93,7 @@
 						</el-menu>
 					</el-scrollbar>
 				</div>
-				<div class="scmui-side-bottom" @click="$store.commit('TOGGLE_menuIsCollapse')">
+				<div class="scmui-side-bottom" @click="globalStore.TOGGLE_menuIsCollapse()">
 					<sc-icon :name="menuIsCollapse ? 'sc-menu-show' : 'sc-menu-hide'"></sc-icon>
 				</div>
 			</div>
@@ -103,8 +103,8 @@
 				<Tags v-if="!ismobile && layoutTags"></Tags>
 				<div class="scmui-main" id="scmui-main">
 					<router-view v-slot="{ Component }">
-						<keep-alive :include="this.$store.state.keepAlive.keepLiveRoute">
-							<component :is="Component" :key="$route.fullPath" v-if="$store.state.keepAlive.routeShow" />
+						<keep-alive :include="keepLiveRoute">
+							<component :is="Component" :key="$route.fullPath" v-if="routeShow" />
 						</keep-alive>
 					</router-view>
 					<iframe-view></iframe-view>
@@ -138,8 +138,8 @@
 				<Tags v-if="!ismobile && layoutTags"></Tags>
 				<div class="scmui-main" id="scmui-main">
 					<router-view v-slot="{ Component }">
-						<keep-alive :include="this.$store.state.keepAlive.keepLiveRoute">
-							<component :is="Component" :key="$route.fullPath" v-if="$store.state.keepAlive.routeShow" />
+						<keep-alive :include="keepLiveRoute">
+							<component :is="Component" :key="$route.fullPath" v-if="routeShow" />
 						</keep-alive>
 					</router-view>
 					<iframe-view></iframe-view>
@@ -182,7 +182,7 @@
 						</el-menu>
 					</el-scrollbar>
 				</div>
-				<div class="scmui-side-bottom" @click="$store.commit('TOGGLE_menuIsCollapse')">
+				<div class="scmui-side-bottom" @click="globalStore.TOGGLE_menuIsCollapse()">
 					<sc-icon :name="menuIsCollapse ? 'sc-menu-show' : 'sc-menu-hide'"></sc-icon>
 				</div>
 			</div>
@@ -194,8 +194,8 @@
 				<Tags v-if="!ismobile && layoutTags"></Tags>
 				<div class="scmui-main" id="scmui-main">
 					<router-view v-slot="{ Component }">
-						<keep-alive :include="this.$store.state.keepAlive.keepLiveRoute">
-							<component :is="Component" :key="$route.fullPath" v-if="$store.state.keepAlive.routeShow" />
+						<keep-alive :include="keepLiveRoute">
+							<component :is="Component" :key="$route.fullPath" v-if="routeShow" />
 						</keep-alive>
 					</router-view>
 					<iframe-view></iframe-view>
@@ -219,6 +219,8 @@ import userbar from './components/userbar.vue';
 import setting from './components/setting.vue';
 import feedback from './components/feedback.vue';
 import iframeView from './components/iframeView.vue';
+import { useGlobalStore } from "@/stores/global";
+import { useKeepAliveStore } from "@/stores/keepAlive";
 
 export default {
 	name: 'index',
@@ -232,6 +234,11 @@ export default {
 		feedback,
 		iframeView
 	},
+	setup() {
+		const globalStore = useGlobalStore()
+		const keepAliveStore = useKeepAliveStore()
+		return { globalStore, keepAliveStore }
+	},
 	data() {
 		return {
 			menu: [],
@@ -242,16 +249,22 @@ export default {
 	},
 	computed: {
 		ismobile() {
-			return this.$store.state.global.ismobile
+			return this.globalStore.ismobile
 		},
 		layout() {
-			return this.$store.state.global.layout
+			return this.globalStore.layout
 		},
 		layoutTags() {
-			return this.$store.state.global.layoutTags
+			return this.globalStore.layoutTags
 		},
 		menuIsCollapse() {
-			return this.$store.state.global.menuIsCollapse
+			return this.globalStore.menuIsCollapse
+		},
+		keepLiveRoute() {
+			return this.keepAliveStore.keepLiveRoute
+		},
+		routeShow() {
+			return this.keepAliveStore.routeShow
 		}
 	},
 	created() {
@@ -277,7 +290,7 @@ export default {
 			this.$refs.feedback.open();
 		},
 		onLayoutResize() {
-			this.$store.commit("SET_ismobile", document.body.clientWidth < 992)
+			this.globalStore.SET_ismobile(document.body.clientWidth < 992)
 		},
 		//路由监听高亮
 		showThis() {

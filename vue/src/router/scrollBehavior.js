@@ -1,4 +1,4 @@
-import store from "@/store";
+import { useViewTagsStore } from "@/stores/viewTags";
 import { nextTick } from "vue";
 
 export function beforeEach(to, from) {
@@ -6,7 +6,8 @@ export function beforeEach(to, from) {
 	if (!adminMain) {
 		return false;
 	}
-	store.commit("updateViewTags", {
+	const viewTagsStore = useViewTagsStore()
+	viewTagsStore.updateViewTags({
 		fullPath: from.fullPath,
 		scrollTop: adminMain.scrollTop,
 	});
@@ -18,7 +19,8 @@ export function afterEach(to) {
 		return false;
 	}
 	nextTick(() => {
-		var beforeRoute = store.state.viewTags.viewTags.filter(
+		const viewTagsStore = useViewTagsStore()
+		var beforeRoute = viewTagsStore.viewTags.filter(
 			(v) => v.fullPath == to.fullPath
 		)[0];
 		if (beforeRoute) {

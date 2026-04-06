@@ -13,12 +13,10 @@ export default {
 	//BASE64加解密
 	BASE64: {
 		encrypt(data) {
-			return CryptoJS.enc.Base64.stringify(CryptoJS.enc.Utf8.parse(data));
+			return btoa(unescape(encodeURIComponent(data)));
 		},
 		decrypt(cipher) {
-			return CryptoJS.enc.Base64.parse(cipher).toString(
-				CryptoJS.enc.Utf8
-			);
+			return decodeURIComponent(escape(atob(cipher)));
 		},
 	},
 	AES_SECRETKEY: "dd0308a654ea42eab695bf060241b5aa",

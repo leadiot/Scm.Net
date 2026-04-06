@@ -15,7 +15,7 @@
 					</div>
 					<el-row :gutter="15">
 						<el-col v-for="(item, index) in grid.layout" v-bind:key="index" :md="item" :xs="24">
-							<draggable v-model="grid.copmsList[index]" animation="200" handle=".customize-overlay"
+							<VueDraggable v-model="grid.copmsList[index]" animation="200" handle=".customize-overlay"
 								group="people" item-key="com" dragClass="aaaaa" force-fallback fallbackOnBody
 								class="draggable-box">
 								<template #item="{ element }">
@@ -32,7 +32,7 @@
 										</div>
 									</div>
 								</template>
-							</draggable>
+							</VueDraggable>
 						</el-col>
 					</el-row>
 				</div>
@@ -106,13 +106,13 @@
 </template>
 
 <script>
-import draggable from "vuedraggable";
+import { VueDraggable } from "vue-draggable-plus";
 import allComps from "./components";
 
 export default {
 	name: "home_widgets",
 	components: {
-		draggable,
+		VueDraggable,
 	},
 	data() {
 		return {

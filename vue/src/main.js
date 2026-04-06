@@ -4,18 +4,14 @@ import "element-plus/theme-chalk/display.css";
 import scui from "./scui";
 import i18n from "./locales";
 import router from "./router";
-import store from "./store";
+import pinia from "./stores";
 import { createApp } from "vue";
 import App from "./App.vue";
-
-import vue3TreeOrg from "vue3-tree-org";
-import "vue3-tree-org/lib/vue3-tree-org.css";
 
 if (document.getElementById("versionCheck").style.display != "block") {
     const app = createApp(App);
     
-    app.use(vue3TreeOrg);
-    app.use(store);
+    app.use(pinia);
     app.use(router);
     app.use(ElementPlus, { size: "default" });
     app.use(i18n);

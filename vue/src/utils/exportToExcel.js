@@ -1,5 +1,17 @@
-import fs from 'file-saver'
 import * as XLSX from 'xlsx'
+
+const saveAs = (blob, filename) => {
+    const url = URL.createObjectURL(blob)
+    const a = document.createElement('a')
+    a.href = url
+    a.download = filename
+    a.style.display = 'none'
+    document.body.appendChild(a)
+    a.click()
+    document.body.removeChild(a)
+    URL.revokeObjectURL(url)
+}
+
 export default (json, fields, filename = 'file.xlsx') => {
     json.forEach(item => {
         for (let i in item) {
@@ -20,7 +32,7 @@ export default (json, fields, filename = 'file.xlsx') => {
     let wopts = { bookType: 'xlsx', bookSST: false, type: 'binary', cellStyles: true, defaultCellStyle: defaultCellStyle, showGridLines: false }  //写入的样式
     let wbout = XLSX.write(wb, wopts)
     let blob = new Blob([s2ab(wbout)], { type: 'application/octet-stream' })
-    fs.saveAs(blob, filename + '.xlsx')
+    saveAs(blob, filename + '.xlsx')
 }
 const s2ab = s => {
     if (typeof ArrayBuffer !== 'undefined') {

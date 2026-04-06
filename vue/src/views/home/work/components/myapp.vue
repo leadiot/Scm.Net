@@ -25,7 +25,7 @@
 		<el-drawer title="添加应用" v-model="modsDrawer" :size="570" destroy-on-close>
 			<div class="setMods">
 				<h4>我的常用 ( {{ myMods.length }} )</h4>
-				<draggable tag="ul" v-model="myMods" animation="200" item-key="path" group="people">
+				<VueDraggable tag="ul" v-model="myMods" animation="200" item-key="path" group="people">
 					<template #item="{ element }">
 						<li :style="{ background: element.meta.color || '#909399' }">
 							<el-icon>
@@ -34,11 +34,11 @@
 							<p>{{ element.meta.title }}</p>
 						</li>
 					</template>
-				</draggable>
+				</VueDraggable>
 			</div>
 			<div class="setMods">
 				<h4>全部应用 ( {{ filterMods.length }} )</h4>
-				<draggable tag="ul" v-model="filterMods" animation="200" item-key="path" :sort="false" group="people">
+				<VueDraggable tag="ul" v-model="filterMods" animation="200" item-key="path" :sort="false" group="people">
 					<template #item="{ element }">
 						<li :style="{ background: element.meta.color || '#909399' }">
 							<el-icon>
@@ -47,7 +47,7 @@
 							<p>{{ element.meta.title }}</p>
 						</li>
 					</template>
-				</draggable>
+				</VueDraggable>
 			</div>
 			<template #footer>
 				<el-button @click="modsDrawer = false">取消</el-button>
@@ -58,11 +58,11 @@
 </template>
 
 <script>
-import draggable from 'vuedraggable'
+import { VueDraggable } from 'vue-draggable-plus'
 
 export default {
 	components: {
-		draggable
+		VueDraggable
 	},
 	data() {
 		return {

@@ -43,18 +43,31 @@
 
 <script>
 import Sortable from "sortablejs";
+import { useViewTagsStore } from "@/stores/viewTags";
+import { useKeepAliveStore } from "@/stores/keepAlive";
+import { useIframeStore } from "@/stores/iframe";
 
 export default {
 	name: "tags",
+	setup() {
+		const viewTagsStore = useViewTagsStore()
+		const keepAliveStore = useKeepAliveStore()
+		const iframeStore = useIframeStore()
+		return { viewTagsStore, keepAliveStore, iframeStore }
+	},
 	data() {
 		return {
 			contextMenuVisible: false,
 			contextMenuItem: null,
 			left: 0,
 			top: 0,
-			tagList: this.$store.state.viewTags.viewTags,
 			tipDisplayed: false,
 		};
+	},
+	computed: {
+		tagList() {
+			return this.viewTagsStore.viewTags
+		}
 	},
 	props: {},
 	watch: {
@@ -134,11 +147,9 @@ export default {
 		},
 		//增加tag
 		addViewTags(route) {
-			// TODO，是否需要缓存
-			// if (route.name && !route.meta.fullpage) {
 			if (route.name && route.meta.keepAlive && !route.meta.fullpage) {
-				this.$store.commit("pushViewTags", route);
-				this.$store.commit("pushKeepLive", route.name);
+				this.viewTagsStore.pushViewTags(route);
+				this.keepAliveStore.pushKeepLive(route.name);
 			}
 		},
 		async addFav() {
@@ -174,9 +185,9 @@ export default {
 			const nowTagIndex = this.tagList.findIndex(
 				(item) => item.fullPath == tag.fullPath
 			);
-			this.$store.commit("removeViewTags", tag);
-			this.$store.commit("removeIframeList", tag);
-			this.$store.commit("removeKeepLive", tag.name);
+			this.viewTagsStore.removeViewTags(tag);
+			this.iframeStore.removeIframeList(tag);
+			this.keepAliveStore.removeKeepLive(tag.name);
 			if (autoPushLatestView && this.isActive(tag)) {
 				const leftView = this.tagList[nowTagIndex - 1];
 				if (leftView) {
@@ -211,21 +222,20 @@ export default {
 		refreshTab() {
 			var nowTag = this.contextMenuItem;
 			this.contextMenuVisible = false;
-			//判断是否当前路由，否的话跳转
 			if (this.$route.fullPath != nowTag.fullPath) {
 				this.$router.push({
 					path: nowTag.fullPath,
 					query: nowTag.query,
 				});
 			}
-			this.$store.commit("refreshIframe", nowTag);
+			this.iframeStore.refreshIframe(nowTag);
 			var _this = this;
 			setTimeout(function () {
-				_this.$store.commit("removeKeepLive", nowTag.name);
-				_this.$store.commit("setRouteShow", false);
+				_this.keepAliveStore.removeKeepLive(nowTag.name);
+				_this.keepAliveStore.setRouteShow(false);
 				_this.$nextTick(() => {
-					_this.$store.commit("pushKeepLive", nowTag.name);
-					_this.$store.commit("setRouteShow", true);
+					_this.keepAliveStore.pushKeepLive(nowTag.name);
+					_this.keepAliveStore.setRouteShow(true);
 				});
 			}, 0);
 		},

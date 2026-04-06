@@ -46,13 +46,18 @@
 
 <script>
 import colorTool from '@/utils/color'
+import { useGlobalStore } from "@/stores/global";
 
 export default {
+	setup() {
+		const globalStore = useGlobalStore()
+		return { globalStore }
+	},
 	data() {
 		return {
-			layout: this.$store.state.global.layout,
-			menuIsCollapse: this.$store.state.global.menuIsCollapse,
-			layoutTags: this.$store.state.global.layoutTags,
+			layout: this.globalStore.layout,
+			menuIsCollapse: this.globalStore.menuIsCollapse,
+			layoutTags: this.globalStore.layoutTags,
 			lang: this.$TOOL.data.get('APP_LANG') || this.$CONFIG.LANG,
 			home: this.$TOOL.data.get('APP_HOME') || this.$CONFIG.HOME,
 			dark: this.$TOOL.data.get('APP_THEME') == 'dark',
@@ -62,13 +67,13 @@ export default {
 	},
 	watch: {
 		layout(val) {
-			this.$store.commit("SET_layout", val)
+			this.globalStore.SET_layout(val)
 		},
 		menuIsCollapse() {
-			this.$store.commit("TOGGLE_menuIsCollapse")
+			this.globalStore.TOGGLE_menuIsCollapse()
 		},
 		layoutTags() {
-			this.$store.commit("TOGGLE_layoutTags")
+			this.globalStore.TOGGLE_layoutTags()
 		},
 		dark(val) {
 			if (val) {
@@ -98,7 +103,6 @@ export default {
 		}
 	},
 	mounted() {
-		//this.init();
 	},
 	methods: {
 		async init() {

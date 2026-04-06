@@ -11,7 +11,7 @@ namespace Com.Scm.Res.Icon
     public class ScmResIconDao : ScmDataDao
     {
         /// <summary>
-        /// 图标集合，vue,sc,ms
+        /// 图标集合，vs,sc,ms
         /// </summary>
         public long set_id { get; set; }
 
@@ -26,7 +26,7 @@ namespace Com.Scm.Res.Icon
         public int od { get; set; }
 
         /// <summary>
-        /// 键
+        /// 键（由分类代码和图标代码组成，格式：分类代码-图标代码）
         /// </summary>
         [Required]
         [StringLength(32)]
@@ -34,14 +34,14 @@ namespace Com.Scm.Res.Icon
         public string key { get; set; }
 
         /// <summary>
-        /// 
+        /// 代码（原图标代码）
         /// </summary>
         [StringLength(32)]
         [SugarColumn(Length = 32, IsNullable = true)]
         public string code { get; set; }
 
         /// <summary>
-        /// 名
+        /// 名称（原图标名称）
         /// </summary>
         [Required]
         [StringLength(64)]
@@ -49,7 +49,7 @@ namespace Com.Scm.Res.Icon
         public string name { get; set; }
 
         /// <summary>
-        /// 说明
+        /// 说明（图标说明）
         /// </summary>
         [StringLength(256)]
         [SugarColumn(Length = 256, IsNullable = true)]

@@ -94,6 +94,9 @@ import otpForm from "./components/otpForm";
 import phoneForm from "./components/phoneForm";
 import emailForm from "./components/emailForm";
 import oidcForm from "./components/oidcForm";
+import { useViewTagsStore } from "@/stores/viewTags";
+import { useKeepAliveStore } from "@/stores/keepAlive";
+import { useIframeStore } from "@/stores/iframe";
 
 export default {
 	name: 'login',
@@ -103,6 +106,12 @@ export default {
 		phoneForm,
 		emailForm,
 		oidcForm,
+	},
+	setup() {
+		const viewTagsStore = useViewTagsStore()
+		const keepAliveStore = useKeepAliveStore()
+		const iframeStore = useIframeStore()
+		return { viewTagsStore, keepAliveStore, iframeStore }
 	},
 	data() {
 		var lang = this.$TOOL.getCache("APP_LANG") || this.$CONFIG.LANG;
@@ -161,9 +170,9 @@ export default {
 		this.$TOOL.data.remove("PERMISSIONS");
 		this.$TOOL.data.remove("grid");
 		this.$TOOL.data.remove("ISLONINEND");
-		this.$store.commit("clearViewTags");
-		this.$store.commit("clearKeepLive");
-		this.$store.commit("clearIframeList");
+		this.viewTagsStore.clearViewTags();
+		this.keepAliveStore.clearKeepLive();
+		this.iframeStore.clearIframeList();
 	},
 	mounted() {
 		this.mode = this.$CONFIG.DEF_LOGIN_MODE;

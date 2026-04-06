@@ -4,8 +4,8 @@
     <TargetFramework>net10.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>disable</Nullable>
-    <RootNamespace>Com.Scm.Api</RootNamespace>
-    <StartupObject>Com.Scm.Api.Program</StartupObject>
+    <RootNamespace>Com.Scm</RootNamespace>
+    <StartupObject>Com.Scm.Program</StartupObject>
     <ApplicationIcon>Resources\logo.ico</ApplicationIcon>
   </PropertyGroup>
 

@@ -16,7 +16,7 @@ using SqlSugar;
 using System.Text;
 using System.Text.RegularExpressions;
 
-namespace Com.Scm.Api.Controllers
+namespace Com.Scm.Controllers
 {
     /// <summary>
     /// 文件下载服务

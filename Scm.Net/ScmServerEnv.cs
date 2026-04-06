@@ -1,4 +1,4 @@
-﻿namespace Com.Scm.Api
+﻿namespace Com.Scm
 {
     public class ScmServerEnv
     {

@@ -4,7 +4,7 @@ using Com.Scm.Response;
 using Com.Scm.Token;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Com.Scm.Api.Controllers
+namespace Com.Scm.Controllers
 {
     [ApiExplorerSettings(GroupName = "Scm")]
     public class TestController : ApiController

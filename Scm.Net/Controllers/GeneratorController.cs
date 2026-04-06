@@ -6,7 +6,7 @@ using Com.Scm.Generator.Dvo;
 using Microsoft.AspNetCore.Mvc;
 using SqlSugar;
 
-namespace Com.Scm.Api.Controllers
+namespace Com.Scm.Controllers
 {
     /// <summary>
     /// 代码生成

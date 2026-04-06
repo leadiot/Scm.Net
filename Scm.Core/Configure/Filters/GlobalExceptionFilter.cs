@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.Mvc.Controllers;
 using Microsoft.AspNetCore.Mvc.Filters;
 using System.Net;
 
-namespace Com.Scm.Api.Configure.Filters
+namespace Com.Scm.Configure.Filters
 {
     /// <summary>
     /// 全局异常处理

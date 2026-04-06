@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Text.RegularExpressions;
 
-namespace Com.Scm.Api.Controllers
+namespace Com.Scm.Controllers
 {
     /// <summary>
     /// 文件上传服务

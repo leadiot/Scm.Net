@@ -6,7 +6,7 @@ using Com.Scm.Utils;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Com.Scm.Api.Controllers
+namespace Com.Scm.Controllers
 {
     /// <summary>
     /// Captcha

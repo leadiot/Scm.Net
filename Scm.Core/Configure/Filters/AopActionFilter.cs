@@ -12,7 +12,7 @@ using System.Net.NetworkInformation;
 using System.Net.Sockets;
 using System.Text;
 
-namespace Com.Scm.Api.Configure.Filters
+namespace Com.Scm.Configure.Filters
 {
     /// <summary>
     /// 方法过滤器

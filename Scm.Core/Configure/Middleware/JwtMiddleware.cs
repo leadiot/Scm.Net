@@ -3,7 +3,7 @@ using Com.Scm.Utils;
 using Microsoft.AspNetCore.Http;
 using System.Text;
 
-namespace Com.Scm.Api.Configure.Middleware
+namespace Com.Scm.Configure.Middleware
 {
     public class JwtMiddleware
     {

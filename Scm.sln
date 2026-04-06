@@ -5,7 +5,7 @@ VisualStudioVersion = 18.0.11205.157
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Scm.App", "Scm.App", "{7D630968-6C94-4B15-9D0E-4D71ED6D01E0}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Scm.Api", "Scm.Api\Scm.Api.csproj", "{481F8261-1404-4AA3-9A9B-3D63C468D5A2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Scm.Net", "Scm.Net\Scm.Net.csproj", "{481F8261-1404-4AA3-9A9B-3D63C468D5A2}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Scm.Dsa.Dba.Sugar", "Scm.Dsa.Dba.Sugar\Scm.Dsa.Dba.Sugar.csproj", "{93D2D5CF-8EEC-40CA-B398-0F0F984235F1}"
 EndProject

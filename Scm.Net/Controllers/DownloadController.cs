@@ -8,7 +8,7 @@ using Com.Scm.Utils;
 using Microsoft.AspNetCore.Mvc;
 using SqlSugar;
 
-namespace Com.Scm.Api.Controllers
+namespace Com.Scm.Controllers
 {
     public class DownloadController : ApiController
     {

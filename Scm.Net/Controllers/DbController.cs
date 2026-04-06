@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SqlSugar;
 
-namespace Com.Scm.Api.Controllers
+namespace Com.Scm.Controllers
 {
     /// <summary>
     /// 数据库服务

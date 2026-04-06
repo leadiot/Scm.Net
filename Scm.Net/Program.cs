@@ -1,5 +1,5 @@
-using Com.Scm.Api.Configure.Filters;
-using Com.Scm.Api.Configure.Middleware;
+using Com.Scm.Configure.Filters;
+using Com.Scm.Configure.Middleware;
 using Com.Scm.Config;
 using Com.Scm.Dsa.Dba.Sugar.UnitOfWork.Filters;
 using Com.Scm.Email.Config;
@@ -20,7 +20,7 @@ using Com.Scm.Utils;
 using Microsoft.Extensions.FileProviders;
 using Serilog;
 
-namespace Com.Scm.Api
+namespace Com.Scm
 {
     internal class Program
     {

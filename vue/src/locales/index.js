@@ -19,9 +19,10 @@ const messages = {
 };
 
 const i18n = createI18n({
+	legacy: false,
+	globalInjection: true,
 	locale: tool.data.get("APP_LANG") || sysConfig.LANG,
 	fallbackLocale: "zh-cn",
-	globalInjection: true,
 	messages,
 });
 

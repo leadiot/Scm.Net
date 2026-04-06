@@ -10,7 +10,7 @@
 				<el-input v-model="form.code" prefix-icon="el-icon-unlock" clearable
 					:placeholder="$t('login.msgPlaceholder')"></el-input>
 				<el-button @click="getYzm" :disabled="disabled">
-					{{ this.$t('login.msgGet') }}<span v-if="disabled">({{ time }})</span>
+					{{ $t('login.msgGet') }}<span v-if="disabled">({{ time }})</span>
 				</el-button>
 			</div>
 		</el-form-item>
@@ -26,6 +26,8 @@
 </template>
 
 <script>
+import i18n from "@/locales";
+
 export default {
 	data() {
 		return {
@@ -39,8 +41,8 @@ export default {
 				auto: true
 			},
 			rules: {
-				email: [{ required: true, message: this.$t('login.emailError') }],
-				code: [{ required: true, message: this.$t('login.msgError') }]
+				email: [{ required: true, message: i18n.global.t('login.emailError') }],
+				code: [{ required: true, message: i18n.global.t('login.msgError') }]
 			},
 			disabled: false,
 			time: 0,
@@ -65,7 +67,7 @@ export default {
 			var validate = await this.$refs.loginForm.validateField("email").catch(() => { })
 			if (!validate) { return false }
 
-			this.$message.success(this.$t('login.msgSent'))
+			this.$message.success(i18n.global.t('login.msgSent'))
 			this.disabled = true
 			this.time = 60
 			var t = setInterval(() => {

@@ -32,7 +32,7 @@ document.title = config.APP_NAME;
 //判断是否已加载过动态/静态路由
 var isGetRouter = false;
 
-router.beforeEach(async (to, from, next) => {
+router.beforeEach(async (to, from) => {
 	NProgress.start();
 	//动态标题
 	document.title = to.meta.title
@@ -45,21 +45,16 @@ router.beforeEach(async (to, from, next) => {
 		//删除路由(404)
 		routes_404_r();
 		isGetRouter = false;
-		next();
-		return false;
+		return;
 	}
 
 	if (routes.findIndex((r) => r.path === to.path) >= 0) {
-		next();
-		return false;
+		return;
 	}
 
 	let token = tool.data.get("TOKEN");
 	if (!token) {
-		next({
-			path: "/login",
-		});
-		return false;
+		return { path: "/login" };
 	}
 
 	//整页路由处理
@@ -90,7 +85,6 @@ router.beforeEach(async (to, from, next) => {
 		isGetRouter = true;
 	}
 	beforeEach(to, from);
-	next();
 });
 
 router.afterEach((to, from) => {

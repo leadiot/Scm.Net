@@ -14,7 +14,7 @@
                 <el-input v-model="form.code" prefix-icon="el-icon-unlock" clearable
                     :placeholder="$t('login.smsPlaceholder')"></el-input>
                 <el-button @click="getSms" :disabled="disabled">
-                    {{ this.$t('login.smsGet') }}<span v-if="disabled">({{ time }})</span>
+                    {{ $t('login.smsGet') }}<span v-if="disabled">({{ time }})</span>
                 </el-button>
             </div>
         </el-form-item>
@@ -28,7 +28,7 @@
                 <el-input v-model="form.code" prefix-icon="el-icon-unlock" clearable
                     :placeholder="$t('login.msgPlaceholder')"></el-input>
                 <el-button @click="getMsg" :disabled="disabled">
-                    {{ this.$t('login.msgGet') }}<span v-if="disabled">({{ time }})</span>
+                    {{ $t('login.msgGet') }}<span v-if="disabled">({{ time }})</span>
                 </el-button>
             </div>
         </el-form-item>
@@ -53,6 +53,8 @@
 </template>
 
 <script>
+import i18n from "@/locales";
+
 export default {
     data() {
         return {
@@ -73,9 +75,9 @@ export default {
                 { label: "随机口令", value: 23, },
             ],
             rules: {
-                phone: [{ required: true, message: this.$t('login.phoneError') }],
-                email: [{ required: true, message: this.$t('login.emailError') }],
-                code: [{ required: true, message: this.$t('login.msgError') }]
+                phone: [{ required: true, message: i18n.global.t('login.phoneError') }],
+                email: [{ required: true, message: i18n.global.t('login.emailError') }],
+                code: [{ required: true, message: i18n.global.t('login.msgError') }]
             },
             disabled: false,
             time: 0,
@@ -100,7 +102,7 @@ export default {
             var validate = await this.$refs.loginForm.validateField("phone").catch(() => { })
             if (!validate) { return false }
 
-            this.$message.success(this.$t('login.smsSent'))
+            this.$message.success(i18n.global.t('login.smsSent'))
             this.disabled = true
             this.time = 60
             var t = setInterval(() => {
@@ -137,7 +139,7 @@ export default {
             var validate = await this.$refs.loginForm.validateField("email").catch(() => { })
             if (!validate) { return false }
 
-            this.$message.success(this.$t('login.msgSent'))
+            this.$message.success(i18n.global.t('login.msgSent'))
             this.disabled = true
             this.time = 60
             var t = setInterval(() => {

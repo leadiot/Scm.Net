@@ -30,7 +30,7 @@
 					</template>
 				</el-table-column>
 				<template #name="scope">
-					<el-button type="text" link @click="open(scope.row)">
+					<el-button link @click="open(scope.row)">
 						{{ scope.row.name }}
 					</el-button>
 				</template>

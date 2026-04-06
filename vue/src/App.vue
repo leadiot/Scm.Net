@@ -6,9 +6,16 @@
 
 <script>
 import colorTool from "@/utils/color";
+import { useI18n } from "vue-i18n";
+import { computed } from "vue";
 
 export default {
 	name: "App",
+	setup() {
+		const { locale, messages } = useI18n()
+		const elLocale = computed(() => messages.value[locale.value].el)
+		return { elLocale }
+	},
 	data() {
 		return {
 			config: {
@@ -22,7 +29,7 @@ export default {
 	},
 	computed: {
 		locale() {
-			return this.$i18n.messages[this.$i18n.locale].el;
+			return this.elLocale;
 		},
 	},
 	created() {

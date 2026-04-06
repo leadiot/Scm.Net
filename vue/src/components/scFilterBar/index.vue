@@ -130,7 +130,7 @@
 											</td>
 										</tr>
 									</table>
-									<el-button type="text" icon="el-icon-plus" @click="addFilter">增加过滤项</el-button>
+									<el-button text icon="el-icon-plus" @click="addFilter">增加过滤项</el-button>
 								</div>
 							</el-scrollbar>
 						</el-tab-pane>

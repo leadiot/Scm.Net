@@ -31,7 +31,7 @@
 				</el-table-column>
 				<template #name="scope">
 					<sc-icon :name="scope.row.icon" />
-					<el-button type="text" link @click="open(scope.row)">
+					<el-button link @click="open(scope.row)">
 						{{ scope.row.name }}
 					</el-button>
 				</template>

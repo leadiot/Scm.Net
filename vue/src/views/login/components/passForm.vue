@@ -36,6 +36,8 @@
 </template>
 
 <script>
+import i18n from "@/locales";
+
 export default {
 	data() {
 		return {
@@ -51,8 +53,8 @@ export default {
 				autologin: false,
 			},
 			rules: {
-				user: [{ required: true, trigger: "blur", message: this.$t("login.userError") }],
-				pass: [{ required: true, trigger: "blur", message: this.$t("login.pwError") }],
+				user: [{ required: true, trigger: "blur", message: i18n.global.t("login.userError") }],
+				pass: [{ required: true, trigger: "blur", message: i18n.global.t("login.pwError") }],
 				code: [{ required: true, trigger: "blur", message: "验证码不能空" }],
 			},
 			islogin: false,

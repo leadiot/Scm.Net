@@ -20,12 +20,12 @@
         /// <summary>
         /// 构建号
         /// </summary>
-        public const string BUILD = "2026040201";
+        public const string BUILD = "2026040601";
 
         /// <summary>
         /// 发行日期
         /// </summary>
-        public const string RELEASE_DATE = "2026-04-02";
+        public const string RELEASE_DATE = "2026-04-06";
 
         public static readonly string VERSION = $"{MAJOR}.{MINOR}.{PATCH}";
     }

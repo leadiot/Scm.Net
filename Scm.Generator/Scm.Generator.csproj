@@ -21,10 +21,10 @@
 
   <ItemGroup>
     <Reference Include="Scm.Common.File">
-      <HintPath>..\Libs\netstandard2.0\Scm.Common.File.dll</HintPath>
+      <HintPath>..\..\Libs\netstandard2.0\Scm.Common.File.dll</HintPath>
     </Reference>
     <Reference Include="Scm.Common.Text">
-      <HintPath>..\Libs\netstandard2.0\Scm.Common.Text.dll</HintPath>
+      <HintPath>..\..\Libs\netstandard2.0\Scm.Common.Text.dll</HintPath>
     </Reference>
   </ItemGroup>
 

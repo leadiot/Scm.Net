@@ -1,4 +1,5 @@
-﻿using Com.Scm.Service;
+﻿using Com.Scm.Enums;
+using Com.Scm.Service;
 using Com.Scm.Sys.FlowData.Dvo;
 using Com.Scm.Sys.FlowData.Rnr;
 using Com.Scm.Token;
@@ -57,7 +58,7 @@ namespace Com.Scm.Sys.FlowData
         public async Task<List<ScmFlowDataDvo>> GetListAsync(ScmSearchRequest request)
         {
             var result = await _SqlClient.Queryable<ScmFlowDataHeaderDao>()
-                .Where(a => a.row_status == Enums.ScmRowStatusEnum.Enabled)
+                .Where(a => a.row_status == ScmRowStatusEnum.Enabled)
                 .WhereIF(!string.IsNullOrEmpty(request.key), a => a.order_codes.Contains(request.key))
                 .OrderBy(m => m.id)
                 .Select<ScmFlowDataDvo>()
@@ -76,7 +77,7 @@ namespace Com.Scm.Sys.FlowData
         public async Task<List<ScmFlowDataResultDvo>> GetResultAsync(long id)
         {
             var result = await _SqlClient.Queryable<ScmFlowDataResultDao>()
-                .Where(a => a.data_id == id && a.row_status == Enums.ScmRowStatusEnum.Enabled)
+                .Where(a => a.data_id == id && a.row_status == ScmRowStatusEnum.Enabled)
                 .OrderBy(m => m.id)
                 .Select<ScmFlowDataResultDvo>()
                 .ToListAsync();

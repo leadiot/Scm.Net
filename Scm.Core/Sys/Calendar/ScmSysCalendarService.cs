@@ -1,4 +1,5 @@
 using Com.Scm.Dsa;
+using Com.Scm.Enums;
 using Com.Scm.Sys.Calendar.Dvo;
 using Com.Scm.Token;
 using Com.Scm.Ur;
@@ -54,7 +55,7 @@ public class ScmSysCalendarService : IApiService
             timet = TimeUtils.GetUnixTime(date.AddDays(1));
         }
         var query = await _thisRepository.AsQueryable()
-            .Where(a => SqlFunc.Subqueryable<CalendarUserDao>().Where(b => a.id == b.calendar_id && b.user_id == userId && b.row_status == Enums.ScmRowStatusEnum.Enabled).Any())
+            .Where(a => SqlFunc.Subqueryable<CalendarUserDao>().Where(b => a.id == b.calendar_id && b.user_id == userId && b.row_status == ScmRowStatusEnum.Enabled).Any())
             .WhereIF(request.types != 0, a => a.types == request.types)
             .WhereIF(request.level != 0, a => a.level == request.level)
             .WhereIF(request.date != null, a => a.start_time >= timef && a.start_time < timet)

@@ -65,7 +65,7 @@ namespace Com.Scm.Sys.Notes
                 .Where(a => a.row_status == ScmRowStatusEnum.Enabled)
                 .WhereIF(IsValidId(request.cat_id), a => a.cat_id == request.cat_id)
                 .WhereIF(!string.IsNullOrEmpty(request.key), a => a.title.Contains(request.key))
-                .WhereIF(request.types != Enums.NoteTypesEnum.None, a => a.types == request.types)
+                .WhereIF(request.types != NoteTypesEnum.None, a => a.types == request.types)
                 .OrderBy(m => m.id, SqlSugar.OrderByType.Desc)
                 .Select<NoteBasicDvo>()
                 .ToListAsync();

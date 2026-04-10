@@ -1,4 +1,5 @@
 ﻿using Com.Scm.Dsa;
+using Com.Scm.Enums;
 using Com.Scm.Service;
 using Com.Scm.Sys.FlowNode.Dvo;
 using Com.Scm.Sys.Workflow;
@@ -43,7 +44,7 @@ namespace Com.Scm.Sys.FlowNode
         public async Task<List<SysFlowNodeDto>> GetListAsync(SearchRequest param)
         {
             var query = await _thisRepository.AsQueryable()
-                .Where(a => a.flow_id == param.id && a.row_status == Enums.ScmRowStatusEnum.Enabled)
+                .Where(a => a.flow_id == param.id && a.row_status == ScmRowStatusEnum.Enabled)
                 .OrderBy(a => a.od)
                 .Select<SysFlowNodeDto>()
                 .ToListAsync();

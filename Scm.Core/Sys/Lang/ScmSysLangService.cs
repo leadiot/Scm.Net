@@ -1,5 +1,6 @@
 ﻿using Com.Scm.Dsa;
 using Com.Scm.Dvo;
+using Com.Scm.Enums;
 using Com.Scm.Service;
 using Microsoft.AspNetCore.Mvc;
 
@@ -28,7 +29,7 @@ namespace Com.Scm.Sys.Lang
         public async Task<List<TextOptionDvo>> GetOptionAsync()
         {
             return await _thisRepository.AsQueryable()
-                .Where(a => a.row_status == Enums.ScmRowStatusEnum.Enabled)
+                .Where(a => a.row_status == ScmRowStatusEnum.Enabled)
                 .Select(a => new TextOptionDvo { id = a.id, label = a.text, value = a.code })
                 .ToListAsync();
         }

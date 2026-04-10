@@ -1,5 +1,6 @@
 using Com.Scm.Dsa;
 using Com.Scm.Dvo;
+using Com.Scm.Enums;
 using Com.Scm.Exceptions;
 using Com.Scm.Service;
 using Com.Scm.Sys.Uom.Dto;
@@ -36,9 +37,9 @@ namespace Com.Scm.Sys
         {
             var result = await _thisRepository.AsQueryable()
                 .WhereIF(!request.IsAllStatus(), a => a.row_status == request.row_status)
-                .WhereIF(request.types != Enums.ScmUomTypesEnum.None, a => a.types == request.types)
-                .WhereIF(request.modes != Enums.ScmUomModesEnum.None, a => a.modes == request.modes)
-                .WhereIF(request.kinds != Enums.ScmUomKindsEnum.None, a => a.kinds == request.kinds)
+                .WhereIF(request.types != ScmUomTypesEnum.None, a => a.types == request.types)
+                .WhereIF(request.modes != ScmUomModesEnum.None, a => a.modes == request.modes)
+                .WhereIF(request.kinds != ScmUomKindsEnum.None, a => a.kinds == request.kinds)
                 .WhereIF(!string.IsNullOrEmpty(request.key), a => a.namec.Contains(request.key))
                 .OrderBy(m => m.id)
                 .Select<ScmSysUomDvo>()
@@ -56,10 +57,10 @@ namespace Com.Scm.Sys
         public async Task<List<ScmSysUomDvo>> GetListAsync(SearchRequest request)
         {
             var result = await _thisRepository.AsQueryable()
-                .Where(a => a.row_status == Com.Scm.Enums.ScmRowStatusEnum.Enabled)
-                .WhereIF(request.types != Enums.ScmUomTypesEnum.None, a => a.types == request.types)
-                .WhereIF(request.modes != Enums.ScmUomModesEnum.None, a => a.modes == request.modes)
-                .WhereIF(request.kinds != Enums.ScmUomKindsEnum.None, a => a.kinds == request.kinds)
+                .Where(a => a.row_status == ScmRowStatusEnum.Enabled)
+                .WhereIF(request.types != ScmUomTypesEnum.None, a => a.types == request.types)
+                .WhereIF(request.modes != ScmUomModesEnum.None, a => a.modes == request.modes)
+                .WhereIF(request.kinds != ScmUomKindsEnum.None, a => a.kinds == request.kinds)
                 .WhereIF(!string.IsNullOrEmpty(request.key), a => a.namec.Contains(request.key))
                 .OrderBy(m => m.id)
                 .Select<ScmSysUomDvo>()
@@ -89,10 +90,10 @@ namespace Com.Scm.Sys
         public async Task<List<ResOptionDvo>> GetOptionAsync(OptionRequest request)
         {
             var result = await _thisRepository.AsQueryable()
-                .Where(a => a.row_status == Enums.ScmRowStatusEnum.Enabled && a.lang == request.lang)
-                .WhereIF(request.types != Enums.ScmUomTypesEnum.None, a => a.types == request.types)
-                .WhereIF(request.modes != Enums.ScmUomModesEnum.None, a => a.modes == request.modes)
-                .WhereIF(request.kinds != Enums.ScmUomKindsEnum.None, a => a.kinds == request.kinds)
+                .Where(a => a.row_status == ScmRowStatusEnum.Enabled && a.lang == request.lang)
+                .WhereIF(request.types != ScmUomTypesEnum.None, a => a.types == request.types)
+                .WhereIF(request.modes != ScmUomModesEnum.None, a => a.modes == request.modes)
+                .WhereIF(request.kinds != ScmUomKindsEnum.None, a => a.kinds == request.kinds)
                 .OrderBy(a => a.od)
                 .Select(a => new ResOptionDvo { id = a.id, label = a.names, value = a.id })
                 .ToListAsync();
@@ -201,7 +202,7 @@ namespace Com.Scm.Sys
         /// <exception cref="BusinessException"></exception>
         public async Task<bool> ChangeReferAsync(ChangeReferRequest request)
         {
-            var referDao = await _thisRepository.GetFirstAsync(a => a.id == request.refer_id && a.row_status == Enums.ScmRowStatusEnum.Enabled);
+            var referDao = await _thisRepository.GetFirstAsync(a => a.id == request.refer_id && a.row_status == ScmRowStatusEnum.Enabled);
             if (referDao == null)
             {
                 throw new BusinessException("无效的参照单位！");

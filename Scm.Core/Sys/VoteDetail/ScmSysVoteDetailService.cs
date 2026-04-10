@@ -1,4 +1,5 @@
 using Com.Scm.Dsa;
+using Com.Scm.Enums;
 using Com.Scm.Service;
 using Com.Scm.Sys.Vote;
 using Com.Scm.Sys.VoteDetail.Dvo;
@@ -42,7 +43,7 @@ public class ScmSysVoteDetailService : ApiService
     {
         var query = await _thisRepository
             .AsQueryable()
-            .Where(a => a.header_id == param.id && a.row_status == Enums.ScmRowStatusEnum.Enabled)
+            .Where(a => a.header_id == param.id && a.row_status == ScmRowStatusEnum.Enabled)
             .Select<SysVoteDetailDvo>()
             .ToListAsync();
         return query;
@@ -87,7 +88,7 @@ public class ScmSysVoteDetailService : ApiService
     public async Task<bool> UpdateBatchAsync(BatchRequest request)
     {
         await _thisRepository.AsUpdateable()
-            .SetColumns(a => a.row_status == Enums.ScmRowStatusEnum.Disabled)
+            .SetColumns(a => a.row_status == ScmRowStatusEnum.Disabled)
             .Where(a => a.header_id == request.id)
             .ExecuteCommandAsync();
 
@@ -103,7 +104,7 @@ public class ScmSysVoteDetailService : ApiService
             if (detailDao != null)
             {
                 detailDao = detail.Adapt(detailDao);
-                detailDao.row_status = Enums.ScmRowStatusEnum.Enabled;
+                detailDao.row_status = ScmRowStatusEnum.Enabled;
                 await _thisRepository.UpdateAsync(detailDao);
                 continue;
             }

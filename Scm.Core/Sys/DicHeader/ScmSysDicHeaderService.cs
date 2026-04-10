@@ -1,4 +1,5 @@
 using Com.Scm.Dsa;
+using Com.Scm.Enums;
 using Com.Scm.Exceptions;
 using Com.Scm.Service;
 using Com.Scm.Sys.Dic;
@@ -48,7 +49,7 @@ public class ScmSysDicHeaderService : ApiService
     public async Task<List<DicHeaderDto>> GetListAsync(SearchReuqest request)
     {
         var list = await _thisRepository.AsQueryable()
-            .Where(a => a.row_status == Enums.ScmRowStatusEnum.Enabled)
+            .Where(a => a.row_status == ScmRowStatusEnum.Enabled)
             .WhereIF(request.type != 0, m => m.types == request.type)
             .OrderBy(m => m.id, OrderByType.Desc)
             .Select<DicHeaderDto>()

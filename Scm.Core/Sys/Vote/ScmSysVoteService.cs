@@ -1,3 +1,4 @@
+using Com.Scm.Enums;
 using Com.Scm.Service;
 using Com.Scm.Sys.VoteHeader.Dvo;
 using Com.Scm.Token;
@@ -56,7 +57,7 @@ public class ScmSysVoteService : ApiService
         if (headerDto != null)
         {
             headerDto.details = await _SqlClient.Queryable<VoteDetailDao>()
-                .Where(a => a.header_id == id && a.row_status == Enums.ScmRowStatusEnum.Enabled)
+                .Where(a => a.header_id == id && a.row_status == ScmRowStatusEnum.Enabled)
                 .Select<VoteDetailDto>()
                 .ToListAsync();
         }
@@ -108,7 +109,7 @@ public class ScmSysVoteService : ApiService
         await _SqlClient.UpdateAsync(headerDao);
 
         await _SqlClient.Updateable<VoteDetailDao>()
-            .SetColumns(a => a.row_status == Enums.ScmRowStatusEnum.Disabled)
+            .SetColumns(a => a.row_status == ScmRowStatusEnum.Disabled)
             .Where(a => a.header_id == headerDao.id)
             .ExecuteCommandAsync();
 

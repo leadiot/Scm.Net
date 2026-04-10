@@ -1,4 +1,5 @@
 ﻿using Com.Scm.Dsa;
+using Com.Scm.Enums;
 using Com.Scm.Service;
 using Com.Scm.Sys.Table.Dvo;
 using Com.Scm.Token;
@@ -50,7 +51,7 @@ namespace Com.Scm.Sys.Table
             if (dto != null)
             {
                 dto.details = await _detailRepository.AsQueryable()
-                    .Where(a => a.header_id == dto.id && a.row_status == Enums.ScmRowStatusEnum.Enabled)
+                    .Where(a => a.header_id == dto.id && a.row_status == ScmRowStatusEnum.Enabled)
                     .OrderBy(a => a.od, SqlSugar.OrderByType.Asc)
                     .Select<SysTableDetailDto>()
                     .ToListAsync();

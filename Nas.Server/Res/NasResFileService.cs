@@ -78,8 +78,8 @@ namespace Com.Scm.Nas.Res
 
             var result = await _thisRepository.AsQueryable()
                 .Where(a => a.row_status == ScmRowStatusEnum.Enabled)
-                .WhereIF(request.opt == 0, a => a.dir_id == request.dir_id)
-                .WhereIF(request.opt == 1, a => a.kind == request.kind)
+                .WhereIF(request.opt == Dvo.SearchOption.ByDir, a => a.dir_id == request.dir_id)
+                .WhereIF(request.opt == Dvo.SearchOption.ByKind, a => a.kind == request.kind)
                 //.WhereIF(IsNormalId(request.folder_id), a => a.folder_id == request.folder_id)
                 .WhereIF(!string.IsNullOrEmpty(request.key), a => a.name.Contains(request.key))
                 .OrderBy(m => m.id)

@@ -18,7 +18,7 @@ namespace Com.Scm.Sys.Notes
     public class ScmSysNoteService : ApiService
     {
         private readonly SugarRepository<NoteDao> _thisRepository;
-        
+
         /// <summary>
         /// 
         /// </summary>
@@ -204,6 +204,8 @@ namespace Com.Scm.Sys.Notes
             SaveFile(dao, model);
 
             model.ver = dao.ver;
+            model.update_time = dao.update_time;
+            model.create_time = dao.create_time;
             return model;
         }
 

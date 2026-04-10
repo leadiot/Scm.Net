@@ -56,6 +56,11 @@ namespace Com.Scm.Ur
         public string pass { get; set; }
 
         /// <summary>
+        /// 终端图标
+        /// </summary>
+        public string icon { get; set; }
+
+        /// <summary>
         /// 绑定状态
         /// </summary>
         public ScmBoolEnum binded { get; set; }
@@ -106,6 +111,18 @@ namespace Com.Scm.Ur
         [StringLength(128)]
         [SugarColumn(Length = 128, IsNullable = true)]
         public string dm { get; set; }
+
+        /// <summary>
+        /// 在线状态
+        /// </summary>
+        public ScmBoolEnum online { get; set; }
+
+        /// <summary>
+        /// 备注
+        /// </summary>
+        [StringLength(256)]
+        [SugarColumn(Length = 256, IsNullable = true)]
+        public string remark { get; set; }
 
         public override void PrepareCreate(long userId)
         {

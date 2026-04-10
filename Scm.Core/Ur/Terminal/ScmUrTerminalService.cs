@@ -150,6 +150,8 @@ namespace Com.Scm.Scm.Ur
                 throw new BusinessException("已存在相同名称的终端！");
             }
 
+            model.GenIcon();
+
             dao = model.Adapt<ScmUrTerminalDao>();
             dao.codec = "";
             dao.pass = TextUtils.RandomString(16);
@@ -180,6 +182,7 @@ namespace Com.Scm.Scm.Ur
 
             dao.names = model.namec;
             dao.namec = model.namec;
+            dao.remark = model.remark;
 
             _ResHolder.Remove(dao.id);
 

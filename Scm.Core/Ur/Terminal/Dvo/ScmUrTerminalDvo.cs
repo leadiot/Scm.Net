@@ -26,9 +26,19 @@ namespace Com.Scm.Scm.Ur
         public string names { get; set; }
 
         /// <summary>
+        /// 终端名称
+        /// </summary>
+        public string namec { get; set; }
+
+        /// <summary>
         /// 终端授权
         /// </summary>
         public string pass { get; set; }
+
+        /// <summary>
+        /// 终端图标
+        /// </summary>
+        public string icon { get; set; }
 
         /// <summary>
         /// 绑定状态
@@ -44,5 +54,12 @@ namespace Com.Scm.Scm.Ur
         /// 系统名称
         /// </summary>
         public string os { get; set; }
+
+        /// <summary>
+        /// 在线状态
+        /// </summary>
+        public ScmBoolEnum online { get; set; }
+
+        public string remark { get; set; }
     }
 }

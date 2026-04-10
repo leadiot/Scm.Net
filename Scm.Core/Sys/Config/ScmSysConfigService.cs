@@ -73,7 +73,7 @@ namespace Com.Scm.Sys.Config
         /// <param name="key"></param>
         /// <returns></returns>
         [HttpGet("{key}")]
-        public async Task<ConfigDto> GetConfigAsync(string key)
+        public async Task<ConfigDto> GetKeyAsync(string key)
         {
             var token = _jwtHolder.GetToken();
             var userId = token.user_id;
@@ -87,7 +87,7 @@ namespace Com.Scm.Sys.Config
         }
 
         /// <summary>
-        /// 
+        /// 批量保存
         /// </summary>
         /// <param name="userId"></param>
         /// <param name="client"></param>
@@ -95,7 +95,7 @@ namespace Com.Scm.Sys.Config
         /// <param name="value"></param>
         /// <param name="data"></param>
         /// <returns></returns>
-        public async Task<bool> SaveConfigAsync(long userId, ScmClientTypeEnum client, string key, string value, ScmDataTypeEnum data)
+        private async Task<bool> SaveConfigAsync(long userId, ScmClientTypeEnum client, string key, string value, ScmDataTypeEnum data)
         {
             var dao = await _thisRepository.GetFirstAsync(a => a.user_id == userId && a.key == key);
             if (dao == null)
@@ -104,15 +104,14 @@ namespace Com.Scm.Sys.Config
                 dao.user_id = userId;
                 dao.client = client;
                 dao.key = key;
-                dao.value = value;
+                dao.value = value ?? "";
                 dao.data = data;
                 return await _thisRepository.InsertAsync(dao);
             }
 
             dao.client = client;
-            dao.client = client;
             dao.key = key;
-            dao.value = value;
+            dao.value = value ?? "";
             dao.data = data;
             return await _thisRepository.UpdateAsync(dao);
         }
@@ -122,11 +121,17 @@ namespace Com.Scm.Sys.Config
         /// </summary>
         /// <param name="request"></param>
         /// <returns></returns>
-        public async Task<bool> SaveAsync(SaveConfigRequest request)
+        [HttpPost]
+        public async Task<bool> BatchAsync(List<ConfigDto> items)
         {
             var user = _jwtHolder.GetToken();
 
-            return await SaveConfigAsync(user.user_id, request.client, request.key, request.value, request.data);
+            foreach (var item in items)
+            {
+                await SaveConfigAsync(user.user_id, item.client, item.key, item.value, item.data);
+            }
+
+            return true;
         }
 
         /// <summary>

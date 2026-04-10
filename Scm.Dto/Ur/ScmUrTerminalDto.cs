@@ -44,6 +44,11 @@ namespace Com.Scm.Ur
         public string pass { get; set; }
 
         /// <summary>
+        /// 终端图标
+        /// </summary>
+        public string icon { get; set; }
+
+        /// <summary>
         /// 绑定状态
         /// </summary>
         public ScmBoolEnum binded { get; set; }
@@ -74,5 +79,39 @@ namespace Com.Scm.Ur
         /// 系统名称
         /// </summary>
         public string os { get; set; }
+
+        /// <summary>
+        /// 在线状态
+        /// </summary>
+        public ScmBoolEnum online { get; set; }
+
+        [StringLength(256)]
+        public string remark { get; set; }
+
+        public void GenIcon()
+        {
+            this.icon = "ms-devices";
+            switch (types)
+            {
+                case ScmClientTypeEnum.Web:
+                    this.icon = "ms-laptop";
+                    break;
+                case ScmClientTypeEnum.Windows:
+                    this.icon = "ms-computer";
+                    break;
+                case ScmClientTypeEnum.Android:
+                    this.icon = "ms-smartphone";
+                    break;
+                case ScmClientTypeEnum.iOS:
+                    this.icon = "ms-smartphone";
+                    break;
+                case ScmClientTypeEnum.SmallApp:
+                    this.icon = "ms-tablet";
+                    break;
+                default:
+                    this.icon = "ms-devices";
+                    break;
+            }
+        }
     }
 }

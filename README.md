@@ -107,17 +107,28 @@
 [![Gitee license](https://img.shields.io/github/license/argozhang/bootstrapadmin.svg?logo=git&logoColor=red)](https://gitee.com/openscm/scm.net/blob/master/LICENSE)
 
 ## 项目截图
-电脑端页面   
-![后台首页](https://gitee.com/openscm/scm.net/raw/master/screenshots/pc-home.png)  
-![接口日志](https://gitee.com/openscm/scm.net/raw/master/screenshots/pc-logapi.png)  
-![在线SQL](https://gitee.com/openscm/scm.net/raw/master/screenshots/pc-sql.png)  
-![任务调度](https://gitee.com/openscm/scm.net/raw/master/screenshots/pc-task.png)  
-![系统监控](https://gitee.com/openscm/scm.net/raw/master/screenshots/pc-monitor.png)  
+工作台模式   
+![后台首页](screenshots/web-02-home.png)  
+![用户管理](screenshots/web-03-user.png)  
+![文件管理](screenshots/web-04-file.png)  
+![日程管理](screenshots/web-05-calendar.png)  
+![电子邮件](screenshots/web-06-email.png)  
+![系统监控](screenshots/web-07-monitor.png)   
+![在线文档](screenshots/web-08-docs.png)   
+
+云桌面模式   
+![用户首页](screenshots/wos-02-desktop-default.png)
+![文件管理](screenshots/wos-09-cloud.png)  
+![记事](screenshots/wos-10-notepad.png)  
+![图像](screenshots/wos-11-image.png)  
+![音频](screenshots/wos-12-audio.png)  
+![待办](screenshots/wos-13-gtd.png)  
+![终端管理](screenshots/wos-14-terminal.png)  
 
 手机端页面   
-![用户登录](https://gitee.com/openscm/scm.net/raw/master/screenshots/mp-login.jpg)  
-![用户首页](https://gitee.com/openscm/scm.net/raw/master/screenshots/mp-home.jpg)  
-![系统菜单](https://gitee.com/openscm/scm.net/raw/master/screenshots/mp-menu.jpg)  
+![用户登录](screenshots/mp-login.jpg)  
+![用户首页](screenshots/mp-home.jpg)  
+![系统菜单](screenshots/mp-menu.jpg)  
 
 更多截图请点击 [查看文档](https://gitee.com/openscm/scm.net/wikis) 查看项目截图小节  
 
@@ -128,10 +139,10 @@
 ## QQ交流群
 
 ![QQ](https://img.shields.io/badge/QQ-415872667-green.svg?logo=tencent%20qq&logoColor=red)  
-<img src="https://gitee.com/openscm/scm.net/raw/master/qq.jpg" width="30%"/>
+<img src="qq.jpg" width="30%"/>
 
 ## 支持作者
 
 如果这个项目对您有所帮助，并希望能够给予更多的开发人员提供方便，请给予笔者支持，深表感谢。
 
-<img src="https://gitee.com/openscm/scm.net/raw/master/wepay.jpg" width="30%"/>
+<img src="wepay.jpg" width="30%"/>

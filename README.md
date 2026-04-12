@@ -141,8 +141,3 @@
 ![QQ](https://img.shields.io/badge/QQ-415872667-green.svg?logo=tencent%20qq&logoColor=red)  
 <img src="qq.jpg" width="30%"/>
 
-## 支持作者
-
-如果这个项目对您有所帮助，并希望能够给予更多的开发人员提供方便，请给予笔者支持，深表感谢。
-
-<img src="wepay.jpg" width="30%"/>

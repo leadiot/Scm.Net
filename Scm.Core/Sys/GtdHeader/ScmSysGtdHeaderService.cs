@@ -54,7 +54,7 @@ namespace Com.Scm.Sys.GtdHeader
         public async Task<List<GtdHeaderDvo>> GetListAsync(SearchRequest request)
         {
             var result = await _thisRepository.AsQueryable()
-                .Where(a => a.row_status == ScmRowStatusEnum.Enabled)
+                .Where(a => a.row_status == ScmRowStatusEnum.Enabled && a.row_delete == ScmRowDeleteEnum.No)
                 .WhereIF(IsValidId(request.cat_id), a => a.cat_id == request.cat_id)
                 .WhereIF(request.handle != ScmGtdHandleEnum.None, a => a.handle == request.handle)
                 .WhereIF(!string.IsNullOrEmpty(request.key), a => a.title.Contains(request.key))
@@ -147,6 +147,21 @@ namespace Com.Scm.Sys.GtdHeader
 
             dao.handle = model.handle;
             return await _thisRepository.UpdateAsync(dao);
+        }
+
+        /// <summary>
+        /// 清除已完成
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public async Task<bool> ClearAsync()
+        {
+            _thisRepository.AsUpdateable()
+                .SetColumns(a => a.row_delete == ScmRowDeleteEnum.Yes)
+                .Where(a => a.handle == ScmGtdHandleEnum.Done && a.row_delete == ScmRowDeleteEnum.No)
+                .ExecuteCommand();
+            return true;
         }
 
         /// <summary>

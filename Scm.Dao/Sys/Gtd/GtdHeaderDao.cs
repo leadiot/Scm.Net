@@ -1,4 +1,5 @@
 using Com.Scm.Dao.User;
+using Com.Scm.Enums;
 using Com.Scm.Sys.Enums;
 using SqlSugar;
 using System.ComponentModel.DataAnnotations;
@@ -60,8 +61,13 @@ namespace Com.Scm.Sys.Gtd
         public long next_time { get; set; }
 
         /// <summary>
-        /// 
+        /// 处理状态
         /// </summary>
         public ScmGtdHandleEnum handle { get; set; }
+
+        /// <summary>
+        /// 删除标识
+        /// </summary>
+        public ScmRowDeleteEnum row_delete { get; set; } = ScmRowDeleteEnum.No;
     }
 }

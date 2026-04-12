@@ -79,6 +79,11 @@ namespace Com.Scm.Sys.Menu
         public string color { get; set; }
 
         /// <summary>
+        /// 界面布局
+        /// </summary>
+        public string layout { get; set; }
+
+        /// <summary>
         /// 菜单层级
         /// </summary>
         public int layer { get; set; } = 1;

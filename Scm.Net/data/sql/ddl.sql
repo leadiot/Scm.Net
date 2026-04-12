@@ -32,3 +32,5 @@ CREATE TABLE [scm_gtd_header] (
 
 CREATE INDEX [IDX_scm_gtd_header_user_id]
 	ON [scm_gtd_header] ([user_id]);
+
+ALTER TABLE [scm_gtd_header] ADD row_delete TINYINT NOT NULL DEFAULT 0;

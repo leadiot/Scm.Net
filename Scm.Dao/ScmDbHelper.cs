@@ -77,10 +77,12 @@ namespace Com.Scm
             if (verDao.major == 0)
             {
                 InitDml();
-            }
 
-            var ddlFile = Path.Combine(_BaseDir, "ddl.sql");
-            ExecuteSql(ddlFile, verDao.major);
+                var ddlFile = Path.Combine(_BaseDir, "ddl.sql");
+                ExecuteSql(ddlFile, verDao.major);
+
+                verDao.major = MAJOR;
+            }
 
             var dmlFile = Path.Combine(_BaseDir, "dml.sql");
             ExecuteSql(dmlFile, verDao.major);
@@ -504,8 +506,10 @@ namespace Com.Scm
             var homeDao = CreateMenu(1000000000000001000, "home", "主页", rootDao.id, 1, 1, "/home", "home", "sc-home-4-line");
             roleAdminList.Add(new RoleAuthDao { role_id = roleAdminDao.id, auth_id = homeDao.id, types = ScmRoleAuthTypesEnum.RoleMenu });
             // 工作台
-            var homeDashboardDao = CreateMenu(1000000000000001100, "dashboard", "工作台", homeDao.id, 2, 1, "/dashboard", "home", "sc-menu-line");
-            roleAdminList.Add(new RoleAuthDao { role_id = roleAdminDao.id, auth_id = homeDashboardDao.id, types = ScmRoleAuthTypesEnum.RoleMenu });
+            var homeConsoleDao = CreateMenu(1000000000000001101, "console", "工作台", homeDao.id, 2, 1, "/console", "home", "sc-menu-line");
+            roleAdminList.Add(new RoleAuthDao { role_id = roleAdminDao.id, auth_id = homeConsoleDao.id, types = ScmRoleAuthTypesEnum.RoleMenu });
+            var homeDesktopDao = CreateMenu(1000000000000001102, "desktop", "云桌面", homeDao.id, 2, 2, "/desktop", "home/desktop", "sc-menu-line");
+            roleAdminList.Add(new RoleAuthDao { role_id = roleAdminDao.id, auth_id = homeDesktopDao.id, types = ScmRoleAuthTypesEnum.RoleMenu });
             // 我的收藏
             var homeFavoritesDao = CreateMenu(1000000000000001200, "favorites", "我的收藏", homeDao.id, 2, 2, "/favorites", "", "sc-heart-3-line");
             roleAdminList.Add(new RoleAuthDao { role_id = roleAdminDao.id, auth_id = homeFavoritesDao.id, types = ScmRoleAuthTypesEnum.RoleMenu });
@@ -607,6 +611,7 @@ namespace Com.Scm
             terminalDao.codec = "";
             terminalDao.names = "";
             terminalDao.namec = "";
+            terminalDao.icon = "";
             terminalDao.pass = "";
             terminalDao.access_token = "";
             terminalDao.refresh_token = "";

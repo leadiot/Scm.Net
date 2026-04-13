@@ -58,6 +58,8 @@ namespace Com.Scm.Ur
         /// <summary>
         /// 终端图标
         /// </summary>
+        [StringLength(16)]
+        [SugarColumn(Length = 16, IsNullable = true)]
         public string icon { get; set; }
 
         /// <summary>

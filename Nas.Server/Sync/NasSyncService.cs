@@ -344,7 +344,7 @@ namespace Com.Scm.Nas.Sync
                 return SyncResult.Failure("上传对象为空！");
             }
 
-            LogUtils.Debug("PostSync", "上传同步日志", dto.ToJsonString());
+            LogUtils.Info("PostSync", "上传同步日志", dto.ToJsonString());
 
             var token = ScmToken.FromAppToken(appToken);
             var terminalDao = _ResHolder.GetRes<ScmUrTerminalDao>(token.terminal_id);

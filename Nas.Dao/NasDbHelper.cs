@@ -7,10 +7,7 @@ namespace Com.Scm.Nas
 {
     public class NasDbHelper : ScmDbHelper
     {
-        private const int MAJOR = 1;
-        private const int MINOR = 0;
-        private const int PATCH = 0;
-        private const string BUILD = "2026020601";
+        private const int VER = 1;
         private const string RELEASE_DATE = "2026-02-06";
 
         public NasDbHelper()
@@ -37,22 +34,22 @@ namespace Com.Scm.Nas
 
             InitTable(Assembly.GetExecutingAssembly());
 
-            if (verDao.major == 0)
+            if (verDao.ver == 0)
             {
                 InitDml();
             }
 
             var ddlFile = Path.Combine(_BaseDir, "ddl-nas.sql");
-            ExecuteSql(ddlFile, verDao.major);
+            ExecuteSql(ddlFile, verDao.ver);
 
             var dmlFile = Path.Combine(_BaseDir, "dml-nas.sql");
-            ExecuteSql(dmlFile, verDao.major);
+            ExecuteSql(dmlFile, verDao.ver);
 
-            verDao.major = MAJOR;
-            verDao.minor = MINOR;
-            verDao.patch = PATCH;
-            verDao.build = BUILD;
-            verDao.release_date = RELEASE_DATE;
+            verDao.ver = VER;
+            //verDao.minor = MINOR;
+            //verDao.patch = PATCH;
+            //verDao.build = BUILD;
+            verDao.date = RELEASE_DATE;
             verDao.update_time = TimeUtils.GetUnixTime();
             SaveDbVer(verDao);
             return true;

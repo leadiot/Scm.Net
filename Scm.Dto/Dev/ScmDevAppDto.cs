@@ -36,9 +36,29 @@ namespace Com.Scm.Dev
         public string name { get; set; }
 
         /// <summary>
+        /// 主版本号
+        /// </summary>
+        public int major { get; set; }
+
+        /// <summary>
+        /// 子版本号
+        /// </summary>
+        public int minor { get; set; }
+
+        /// <summary>
+        /// 修订版本号
+        /// </summary>
+        public int patch { get; set; }
+
+        /// <summary>
+        /// 构建版本号，默认自增
+        /// </summary>
+        public int build { get; set; }
+
+        /// <summary>
         /// 应用简介
         /// </summary>
         [StringLength(1024)]
-        public string content { get; set; }
+        public string remark { get; set; }
     }
 }

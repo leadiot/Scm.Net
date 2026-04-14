@@ -15,16 +15,32 @@
         /// </summary>
         Windows = 20,
         /// <summary>
+        /// Linux
+        /// </summary>
+        Linux = 30,
+        /// <summary>
+        /// Mac
+        /// </summary>
+        MacOS = 40,
+        /// <summary>
         /// 安卓
         /// </summary>
-        Android = 30,
+        Android = 50,
         /// <summary>
         /// 苹果
         /// </summary>
-        iOS = 40,
+        iOS = 60,
+        /// <summary>
+        /// 鸿蒙
+        /// </summary>
+        HarmonyOS = 70,
         /// <summary>
         /// 小程序
         /// </summary>
-        SmallApp = 50
+        SmallApp = 80,
+        /// <summary>
+        /// 其它
+        /// </summary>
+        Other = 90
     }
 }

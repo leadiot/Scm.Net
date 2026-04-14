@@ -25,6 +25,6 @@ namespace Com.Scm.Dev.App.Dvo
         /// <summary>
         /// 应用简介
         /// </summary>
-        public string content { get; set; }
+        public string remark { get; set; }
     }
 }

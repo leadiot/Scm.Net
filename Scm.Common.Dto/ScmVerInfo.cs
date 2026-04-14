@@ -1,5 +1,4 @@
 ﻿using Com.Scm.Dto;
-using Com.Scm.Enums;
 using System.Text.RegularExpressions;
 
 namespace Com.Scm
@@ -7,39 +6,39 @@ namespace Com.Scm
     public class ScmVerInfo : ScmDto
     {
         /// <summary>
-        /// 终端类型
-        /// </summary>
-        public ScmClientTypeEnum client { get; set; }
-
-        /// <summary>
-        /// 当前版本
-        /// </summary>
-        public string ver { get; set; }
-
-        /// <summary>
-        /// 主版本号
+        /// 主要版本
         /// </summary>
         public int major { get; set; }
 
         /// <summary>
-        /// 次版本号
+        /// 次要版本
         /// </summary>
         public int minor { get; set; }
 
         /// <summary>
-        /// 修订号
+        /// 修订版本
         /// </summary>
         public int patch { get; set; }
 
         /// <summary>
-        /// 发布日期
-        /// </summary>
-        public string date { get; set; }
-
-        /// <summary>
         /// 构建版本
         /// </summary>
-        public string build { get; set; }
+        public int build { get; set; }
+
+        /// <summary>
+        /// 当前版本
+        /// </summary>
+        public string ver_info { get; set; }
+
+        /// <summary>
+        /// 发行日期
+        /// </summary>
+        public string ver_date { get; set; }
+
+        /// <summary>
+        /// 发行代号
+        /// </summary>
+        public string ver_code { get; set; }
 
         /// <summary>
         /// 最小版本
@@ -54,12 +53,7 @@ namespace Com.Scm
         /// <summary>
         /// 是否内测
         /// </summary>
-        public bool alpha { get; set; }
-
-        /// <summary>
-        /// 是否公测
-        /// </summary>
-        public bool beta { get; set; }
+        public int stage { get; set; }
 
         /// <summary>
         /// 强制更新
@@ -77,6 +71,11 @@ namespace Com.Scm
         public string url { get; set; }
 
         /// <summary>
+        /// 文件大小
+        /// </summary>
+        public int size { get; set; }
+
+        /// <summary>
         /// 更新事项
         /// </summary>
         public string remark { get; set; }
@@ -84,6 +83,11 @@ namespace Com.Scm
         public string GetVer()
         {
             return $"{major}.{minor}.{patch}";
+        }
+
+        public bool IsNewer(int build)
+        {
+            return this.build > build;
         }
 
         public bool IsMatch(ScmVerInfo info)
@@ -116,7 +120,7 @@ namespace Com.Scm
 
         public bool IsMatch(string newVer)
         {
-            return IsMatch(ver, newVer);
+            return IsMatch(ver_info, newVer);
         }
 
         public static bool IsMatch(string oldVer, string newVer)

@@ -31,20 +31,40 @@ namespace Com.Scm.Dev
         public string ver { get; set; }
 
         /// <summary>
+        /// 主版本号
+        /// </summary>
+        public int major { get; set; }
+
+        /// <summary>
+        /// 子版本号
+        /// </summary>
+        public int minor { get; set; }
+
+        /// <summary>
+        /// 修订版本号
+        /// </summary>
+        public int patch { get; set; }
+
+        /// <summary>
+        /// 构建版本号，默认自增
+        /// </summary>
+        public int build { get; set; }
+
+        /// <summary>
         /// 发布日期
         /// </summary>
         [Required]
         [StringLength(10)]
         [SugarColumn(Length = 10)]
-        public string date { get; set; }
+        public string release_date { get; set; }
 
         /// <summary>
-        /// 构建版本
+        /// 发行版本
         /// </summary>
         [Required]
         [StringLength(16)]
         [SugarColumn(Length = 16)]
-        public string build { get; set; }
+        public string release_code { get; set; }
 
         /// <summary>
         /// 最小版本
@@ -71,6 +91,16 @@ namespace Com.Scm.Dev
         public bool beta { get; set; }
 
         /// <summary>
+        /// 修选版本
+        /// </summary>
+        public bool rc { get; set; }
+
+        /// <summary>
+        /// 正式版本
+        /// </summary>
+        public bool ga { get; set; }
+
+        /// <summary>
         /// 强制更新
         /// </summary>
         public bool forced { get; set; }
@@ -93,5 +123,10 @@ namespace Com.Scm.Dev
         [StringLength(256)]
         [SugarColumn(Length = 256, IsNullable = true)]
         public string url { get; set; }
+
+        /// <summary>
+        /// 文件大小
+        /// </summary>
+        public int size { get; set; }
     }
 }

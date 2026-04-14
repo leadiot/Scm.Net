@@ -18,23 +18,11 @@ namespace Com.Scm
         /// <summary>
         /// 主版本
         /// </summary>
-        private const int MAJOR = 10;
-        /// <summary>
-        /// 子版本
-        /// </summary>
-        private const int MINOR = 10;
-        /// <summary>
-        /// 修订版本
-        /// </summary>
-        private const int PATCH = 17;
-        /// <summary>
-        /// 构建版本
-        /// </summary>
-        private const string BUILD = "2026031201";
+        private const int VER = 3;
         /// <summary>
         /// 发行日期
         /// </summary>
-        private const string RELEASE_DATE = "2026-03-12";
+        private const string DATE = "2026-03-12";
 
         protected ISqlSugarClient _SqlClient;
         protected string _BaseDir;
@@ -74,24 +62,21 @@ namespace Com.Scm
 
             InitTable(Assembly.GetExecutingAssembly());
 
-            if (verDao.major == 0)
+            if (verDao.ver == 0)
             {
                 InitDml();
 
                 var ddlFile = Path.Combine(_BaseDir, "ddl.sql");
-                ExecuteSql(ddlFile, verDao.major);
+                ExecuteSql(ddlFile, verDao.ver);
 
-                verDao.major = MAJOR;
+                verDao.ver = VER;
             }
 
             var dmlFile = Path.Combine(_BaseDir, "dml.sql");
-            ExecuteSql(dmlFile, verDao.major);
+            ExecuteSql(dmlFile, verDao.ver);
 
-            verDao.major = MAJOR;
-            verDao.minor = MINOR;
-            verDao.patch = PATCH;
-            verDao.build = BUILD;
-            verDao.release_date = RELEASE_DATE;
+            verDao.ver = VER;
+            verDao.date = DATE;
             verDao.update_time = TimeUtils.GetUnixTime();
             SaveDbVer(verDao);
             return true;
@@ -695,7 +680,7 @@ namespace Com.Scm
             appDao.od = od;
             appDao.code = code;
             appDao.name = name;
-            appDao.content = content;
+            appDao.remark = content;
             SaveDao(appDao);
 
             return appDao;

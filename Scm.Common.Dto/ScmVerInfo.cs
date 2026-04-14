@@ -1,4 +1,5 @@
 ﻿using Com.Scm.Dto;
+using Com.Scm.Enums;
 using System.Text.RegularExpressions;
 
 namespace Com.Scm
@@ -53,7 +54,7 @@ namespace Com.Scm
         /// <summary>
         /// 是否内测
         /// </summary>
-        public int stage { get; set; }
+        public ScmPhaseEnum phase { get; set; }
 
         /// <summary>
         /// 强制更新

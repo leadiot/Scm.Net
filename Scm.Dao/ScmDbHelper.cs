@@ -220,41 +220,45 @@ namespace Com.Scm
             var lines = File.ReadAllLines(file);
             var inComment = false;
             var needRun = false;
-            foreach (var line in lines)
+
+            _SqlClient.Ado.UseTran(() =>
             {
-                if (string.IsNullOrWhiteSpace(line))
+                foreach (var line in lines)
                 {
-                    continue;
-                }
+                    if (string.IsNullOrWhiteSpace(line))
+                    {
+                        continue;
+                    }
 
-                var sql = line.Trim();
-                if (sql.StartsWith("/*"))
-                {
-                    inComment = true;
-                }
+                    var sql = line.Trim();
+                    if (sql.StartsWith("/*"))
+                    {
+                        inComment = true;
+                    }
 
-                if (inComment)
-                {
+                    if (inComment)
+                    {
+                        if (!needRun)
+                        {
+                            needRun = ver < GetSqlVer(sql);
+                        }
+
+                        if (sql.EndsWith("*/"))
+                        {
+                            inComment = false;
+                        }
+
+                        continue;
+                    }
+
                     if (!needRun)
                     {
-                        needRun = ver < GetSqlVer(sql);
+                        continue;
                     }
 
-                    if (sql.EndsWith("*/"))
-                    {
-                        inComment = false;
-                    }
-
-                    continue;
+                    _SqlClient.Ado.ExecuteCommand(line);
                 }
-
-                if (!needRun)
-                {
-                    continue;
-                }
-
-                _SqlClient.Ado.ExecuteCommand(line);
-            }
+            });
         }
 
         /// <summary>

@@ -57,7 +57,7 @@ namespace Com.Scm.Nas
 
         private void InitDml()
         {
-            CreateApp(1000000000000002002, 10, 3, "nas.net", "私有云盘", "<p>Nas.Net是一款针对个人、家庭以及小团队的私有云存储软件，可以直接运行于已有的多种设备上，让您的老旧设备再次焕发新的机会。</p><img src=\"/img/loginbg.svg\" alt=\"logo\"/>");
+            CreateApp(1000000000000002002, 10, 3, "nas.net", "私有云盘", "<p>Nas.Net是一款针对个人、家庭以及小团队的私有云存储软件，可以直接运行于已有的多种设备上，让您的老旧设备再次焕发新的机会。</p><img src=\"/images/loginbg.svg\" alt=\"logo\"/>");
 
             var roleId = 1000000000000001030L;
             var roleAdminList = new List<RoleAuthDao>();

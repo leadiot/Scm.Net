@@ -10,6 +10,7 @@ using Com.Scm.Holder;
 using Com.Scm.Hubs;
 using Com.Scm.Login.Otp;
 using Com.Scm.Mapper;
+using Com.Scm.Nas;
 using Com.Scm.Phone.Config;
 using Com.Scm.Quartz;
 using Com.Scm.Quartz.Config;
@@ -319,8 +320,17 @@ namespace Com.Scm
             });
 
             LogUtils.Info("正在初始化数据库...");
+            var sqlDir = envConfig.GetDataPath("sql");
             ScmDbHelper dbHelper = new ScmDbHelper();
-            dbHelper.Init(sugarScope, envConfig.GetDataPath("sql"));
+            dbHelper.Init(sugarScope, sqlDir);
+            dbHelper.InitDb();
+
+            dbHelper = new SamplesDbHelper();
+            dbHelper.Init(sugarScope, sqlDir);
+            dbHelper.InitDb();
+
+            dbHelper = new NasDbHelper();
+            dbHelper.Init(sugarScope, sqlDir);
             dbHelper.InitDb();
             LogUtils.Info("数据库初始化完成！");
 

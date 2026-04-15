@@ -60,8 +60,15 @@ namespace Com.Scm.Dev
         /// <summary>
         /// 应用简介
         /// </summary>
+        [StringLength(128)]
+        [SugarColumn(Length = 128, IsNullable = true)]
+        public string slogan { get; set; }
+
+        /// <summary>
+        /// 应用简介
+        /// </summary>
         [StringLength(1024)]
         [SugarColumn(Length = 1024, IsNullable = true)]
-        public string remark { get; set; }
+        public string content { get; set; }
     }
 }

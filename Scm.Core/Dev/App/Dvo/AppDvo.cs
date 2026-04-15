@@ -23,8 +23,13 @@ namespace Com.Scm.Dev.App.Dvo
         public string name { get; set; }
 
         /// <summary>
+        /// SLOGAN
+        /// </summary>
+        public string slogan { get; set; }
+
+        /// <summary>
         /// 应用简介
         /// </summary>
-        public string remark { get; set; }
+        public string content { get; set; }
     }
 }

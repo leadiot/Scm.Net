@@ -56,9 +56,14 @@ namespace Com.Scm.Dev
         public int build { get; set; }
 
         /// <summary>
+        /// 
+        /// </summary>
+        public string slogan { get; set; }
+
+        /// <summary>
         /// 应用简介
         /// </summary>
         [StringLength(1024)]
-        public string remark { get; set; }
+        public string content { get; set; }
     }
 }

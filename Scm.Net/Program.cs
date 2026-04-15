@@ -55,6 +55,7 @@ namespace Com.Scm
             UidUtils.InitConfig(uidConfig);
 
             // Sql≈‰÷√
+            RenameFile(envConfig, "scm-origin.db", "scm.db");
             var sqlConfig = AppUtils.GetConfig<SqlConfig>(SqlConfig.NAME) ?? new SqlConfig();
             sqlConfig.Prepare(envConfig);
             SqlSetup(services, envConfig, sqlConfig);

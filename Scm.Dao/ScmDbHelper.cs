@@ -22,7 +22,7 @@ namespace Com.Scm
         /// <summary>
         /// 发行日期
         /// </summary>
-        private const string DATE = "2026-03-12";
+        private const string DATE = "2026-04-15";
 
         protected ISqlSugarClient _SqlClient;
         protected string _SqlDir;

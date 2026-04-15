@@ -39,10 +39,10 @@ namespace Com.Scm.Nas
                 InitDml();
             }
 
-            var ddlFile = Path.Combine(_BaseDir, "ddl-nas.sql");
+            var ddlFile = Path.Combine(_SqlDir, "ddl-nas.sql");
             ExecuteSql(ddlFile, verDao.ver);
 
-            var dmlFile = Path.Combine(_BaseDir, "dml-nas.sql");
+            var dmlFile = Path.Combine(_SqlDir, "dml-nas.sql");
             ExecuteSql(dmlFile, verDao.ver);
 
             verDao.ver = VER;

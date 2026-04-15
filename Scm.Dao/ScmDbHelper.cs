@@ -25,12 +25,12 @@ namespace Com.Scm
         private const string DATE = "2026-03-12";
 
         protected ISqlSugarClient _SqlClient;
-        protected string _BaseDir;
+        protected string _SqlDir;
 
-        public void Init(ISqlSugarClient sqlClient, string baseDir)
+        public void Init(ISqlSugarClient sqlClient, string sqlDir)
         {
             _SqlClient = sqlClient;
-            _BaseDir = baseDir;
+            _SqlDir = sqlDir;
         }
 
         /// <summary>
@@ -66,13 +66,13 @@ namespace Com.Scm
             {
                 InitDml();
 
-                var ddlFile = Path.Combine(_BaseDir, "ddl.sql");
+                var ddlFile = Path.Combine(_SqlDir, "ddl.sql");
                 ExecuteSql(ddlFile, verDao.ver);
 
                 verDao.ver = VER;
             }
 
-            var dmlFile = Path.Combine(_BaseDir, "dml.sql");
+            var dmlFile = Path.Combine(_SqlDir, "dml.sql");
             ExecuteSql(dmlFile, verDao.ver);
 
             verDao.ver = VER;
@@ -209,8 +209,8 @@ namespace Com.Scm
         /// 执行外部脚本
         /// </summary>
         /// <param name="file"></param>
-        /// <param name="major"></param>
-        protected void ExecuteSql(string file, int major)
+        /// <param name="ver"></param>
+        protected void ExecuteSql(string file, int ver)
         {
             if (!File.Exists(file))
             {
@@ -237,11 +237,7 @@ namespace Com.Scm
                 {
                     if (!needRun)
                     {
-                        var ver = GetSqlVer(sql);
-                        if (ver > major)
-                        {
-                            needRun = true;
-                        }
+                        needRun = ver < GetSqlVer(sql);
                     }
 
                     if (sql.EndsWith("*/"))
@@ -254,7 +250,7 @@ namespace Com.Scm
 
                 if (!needRun)
                 {
-                    return;
+                    continue;
                 }
 
                 _SqlClient.Ado.ExecuteCommand(line);

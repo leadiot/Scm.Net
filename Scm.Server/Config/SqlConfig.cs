@@ -9,6 +9,14 @@
 
         public void Prepare(EnvConfig config)
         {
+            if (string.IsNullOrEmpty(Type))
+            {
+                Type = "Sqlite";
+            }
+            if (string.IsNullOrEmpty(Text))
+            {
+                Text = "Data Source=./data/scm.db";
+            }
         }
     }
 }

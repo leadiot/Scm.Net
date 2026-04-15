@@ -12,6 +12,9 @@ namespace Com.Scm.Ur;
 [SugarTable("scm_ur_role_auth")]
 public class RoleAuthDao : ScmDataDao
 {
+    [SugarColumn(IsPrimaryKey = true, IsIdentity = true)]
+    public new long id { get; set; }
+
     /// <summary>
     /// 角色编号
     /// </summary>

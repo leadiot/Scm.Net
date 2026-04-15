@@ -37,10 +37,10 @@ namespace Com.Scm.Samples
                 InitDml();
             }
 
-            var ddlFile = Path.Combine(_BaseDir, "ddl-samples.sql");
+            var ddlFile = Path.Combine(_SqlDir, "ddl-samples.sql");
             ExecuteSql(ddlFile, verDao.ver);
 
-            var dmlFile = Path.Combine(_BaseDir, "dml-samples.sql");
+            var dmlFile = Path.Combine(_SqlDir, "dml-samples.sql");
             ExecuteSql(dmlFile, verDao.ver);
 
             verDao.ver = VER;

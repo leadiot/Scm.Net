@@ -24,7 +24,8 @@ CREATE TABLE [scm_gtd_header] (
 	[last_time] bigint, 
 	[next_time] bigint, 
 	[handle] tinyint NOT NULL DEFAULT 0, 
-	[row_status] tinyint, 
+	[row_delete] tinyint NOT NULL DEFAULT 0, 
+	[row_status] tinyint NOT NULL DEFAULT 0, 
 	[update_time] bigint, 
 	[update_user] bigint, 
 	[create_time] bigint, 
@@ -33,7 +34,5 @@ CREATE TABLE [scm_gtd_header] (
 
 CREATE INDEX [IDX_scm_gtd_header_user_id]
 	ON [scm_gtd_header] ([user_id]);
-
-ALTER TABLE [scm_gtd_header] ADD row_delete TINYINT NOT NULL DEFAULT 0;
 
 update scm_sys_menu set codec='console', uri='/console' where id='1000000000000001100';

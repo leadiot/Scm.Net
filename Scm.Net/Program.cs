@@ -1,6 +1,7 @@
+using Com.Scm.Config;
 using Com.Scm.Configure.Filters;
 using Com.Scm.Configure.Middleware;
-using Com.Scm.Config;
+using Com.Scm.Dsa;
 using Com.Scm.Dsa.Dba.Sugar.UnitOfWork.Filters;
 using Com.Scm.Email.Config;
 using Com.Scm.Extensions;
@@ -19,6 +20,7 @@ using Com.Scm.Uid.Config;
 using Com.Scm.Utils;
 using Microsoft.Extensions.FileProviders;
 using Serilog;
+using SqlSugar;
 
 namespace Com.Scm
 {
@@ -37,19 +39,25 @@ namespace Com.Scm
 
             var services = builder.Services;
 
+            var kestrelConfig = AppUtils.GetConfig<KestrelConfig>(KestrelConfig.NAME);
+
             // 环境变量
             var envConfig = AppUtils.GetConfig<EnvConfig>(EnvConfig.NAME) ?? new EnvConfig();
             envConfig.Prepare(builder);
             services.AddSingleton(envConfig);
 
-            // Sql配置
-            var sqlConfig = AppUtils.GetConfig<SqlConfig>(SqlConfig.NAME);
-            sqlConfig.Prepare(envConfig);
-            services.SqlSugarSetup(sqlConfig);
+            // 单位配置
+            RenameFile(envConfig, "unit-origin.json", "unit.json");
 
             // Uid配置
+            RenameFile(envConfig, "uid-origin.db", "uid.db");
             var uidConfig = AppUtils.GetConfig<UidConfig>(UidConfig.NAME);
             UidUtils.InitConfig(uidConfig);
+
+            // Sql配置
+            var sqlConfig = AppUtils.GetConfig<SqlConfig>(SqlConfig.NAME) ?? new SqlConfig();
+            sqlConfig.Prepare(envConfig);
+            SqlSetup(services, envConfig, sqlConfig);
 
             // 缓存配置
             services.CacheSetup(envConfig);
@@ -214,7 +222,109 @@ namespace Com.Scm
             app.MapControllers().RequireAuthorization();
             app.MapHub<ScmHub>("/scmhub");
 
+            if (kestrelConfig != null)
+            {
+                var url = kestrelConfig?.Endpoints?.Http?.Url;
+                if (url == null)
+                {
+                    url = "http://*:9999";
+                }
+                url = url.Replace("*", "localhost");
+                LogUtils.Info("系统启动完成，您可以通过以下地址访问系统：" + url);
+            }
+            else
+            {
+                LogUtils.Info("系统启动完成！");
+            }
+
             app.Run();
+        }
+
+        private static void RenameFile(EnvConfig envConfig, string src, string dst)
+        {
+            var dstFile = envConfig.GetDataPath(dst);
+            if (File.Exists(dstFile))
+            {
+                return;
+            }
+
+            var srcFile = envConfig.GetDataPath(src);
+            if (!File.Exists(srcFile))
+            {
+                return;
+            }
+
+            File.Move(srcFile, dstFile);
+        }
+
+        /// <summary>
+        /// 注册单例服务
+        /// </summary>
+        /// <param name="services"></param>
+        public static void SqlSetup(IServiceCollection services, EnvConfig envConfig, SqlConfig sqlConfig)
+        {
+            var dbType = SqlSugarUtils.GetDbType(sqlConfig.Type);
+            SqlSugarScope sugarScope = new SqlSugarScope(new ConnectionConfig()
+            {
+                DbType = dbType,
+                ConnectionString = sqlConfig.Text,
+                InitKeyType = InitKeyType.Attribute,
+                IsAutoCloseConnection = true,
+                ConfigureExternalServices = new ConfigureExternalServices
+                {
+                    EntityService = (c, p) =>
+                    {
+                        if (c.PropertyType.IsGenericType && c.PropertyType.GetGenericTypeDefinition() == typeof(Nullable<>))
+                        {
+                            p.IsNullable = true;
+                        }
+
+                        if (dbType == DbType.Sqlite)
+                        {
+                            if (c.PropertyType.IsEnum)
+                            {
+                                p.DataType = "INTEGER";
+                            }
+                            else if (c.PropertyType == typeof(long))
+                            {
+                                p.DataType = "INTEGER";
+                            }
+                        }
+                        else
+                        {
+                            if (c.PropertyType.IsEnum)
+                            {
+                                p.DataType = "TINYINT";
+                            }
+                        }
+                    }
+                }
+            },
+            db =>
+            {
+                //每次Sql执行前事件
+                db.Aop.OnLogExecuting = (s, p) =>
+                {
+                    //var sqlValue = string.Empty;
+                    var sql = s;
+                    foreach (var item in p)
+                    {
+                        sql = sql.Replace(item.ParameterName, "'" + item.Value + "'");
+                    }
+                    //LogUtils.Debug("Sql脚本：" + sql, "db");
+                };
+            });
+
+            LogUtils.Info("正在初始化数据库...");
+            ScmDbHelper dbHelper = new ScmDbHelper();
+            dbHelper.Init(sugarScope, envConfig.GetDataPath("sql"));
+            dbHelper.InitDb();
+            LogUtils.Info("数据库初始化完成！");
+
+            // 单例注册SqlSugar
+            services.AddSingleton<ISqlSugarClient>(sugarScope);
+            //注册仓储
+            services.AddScoped(typeof(SugarRepository<>));
         }
     }
 }

@@ -37,7 +37,6 @@
     <ProjectReference Include="..\Scm.Server.Quartz\Scm.Server.Quartz.csproj" />
     <ProjectReference Include="..\Scm.Server.Service\Scm.Server.Service.csproj" />
     <ProjectReference Include="..\Scm.Server.SignalR\Scm.Server.SignalR.csproj" />
-    <ProjectReference Include="..\Scm.Server.SqlSugar\Scm.Server.SqlSugar.csproj" />
     <ProjectReference Include="..\Scm.Server.Swagger\Scm.Server.Swagger.csproj" />
   </ItemGroup>
 

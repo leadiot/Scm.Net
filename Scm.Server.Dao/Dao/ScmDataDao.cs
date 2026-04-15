@@ -10,7 +10,7 @@ namespace Com.Scm.Dao
         /// 状态
         /// </summary>
         [SugarColumn(ColumnDataType = "tinyint", IsNullable = false)]
-        public ScmRowStatusEnum row_status { get; set; }
+        public ScmRowStatusEnum row_status { get; set; } = ScmRowStatusEnum.Enabled;
 
         /// <summary>
         /// 创建时间

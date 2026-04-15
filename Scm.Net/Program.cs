@@ -28,6 +28,8 @@ namespace Com.Scm
     {
         private static void Main(string[] args)
         {
+            Console.WriteLine("正在启动系统...");
+
             var builder = WebApplication.CreateBuilder(args);
 
             AppUtils.Init(builder.Configuration);

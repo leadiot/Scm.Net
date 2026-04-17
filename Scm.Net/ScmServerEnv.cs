@@ -1,6 +1,6 @@
 ﻿namespace Com.Scm
 {
-    public class ScmServerEnv
+    public class ScmServerEnv : ScmEnv
     {
         /// <summary>
         /// 发行日期

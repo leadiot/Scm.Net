@@ -1,4 +1,5 @@
 ﻿using Com.Scm.Image.Barcode;
+using Com.Scm.Utils;
 using SixLabors.Fonts;
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.Drawing.Processing;
@@ -149,14 +150,14 @@ namespace Com.Scm.Barcode.Zxing
             return writer.Write(text);
         }
 
-        public SixLabors.ImageSharp.Image GenBar(SixLabors.ImageSharp.Image image, string text, PositionEnum position, string fontName = "simhei", int fontSize = 14)
+        public SixLabors.ImageSharp.Image GenBar(SixLabors.ImageSharp.Image image, string text, PositionEnum position, string fontName, int fontSize = 14)
         {
             //FontUtils.InitFonts(24);
 
             var tmp = new Image<Rgba32>(image.Width, image.Height);
             tmp.Mutate(x => x.DrawImage(image, new SixLabors.ImageSharp.Point(0, 0), 1.0f));
 
-            var font = SystemFonts.CreateFont(fontName, fontSize, FontStyle.Bold);
+            var font = SystemFonts.CreateFont(FontUtils.GetValidFontName(fontName), fontSize, FontStyle.Bold);
             var option = new TextOptions(font);
             FontRectangle rect = TextMeasurer.MeasureSize(text, option);
             var width = (int)rect.Width;

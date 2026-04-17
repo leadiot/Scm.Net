@@ -8,6 +8,7 @@ using Com.Scm.Image.Enums;
 using Com.Scm.Image.WaterMark;
 using Com.Scm.Plugin;
 using Com.Scm.Plugin.Image;
+using Com.Scm.Utils;
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.PixelFormats;
 using SixLabors.ImageSharp.Processing;
@@ -24,6 +25,21 @@ namespace Com.Scm.Image.ImageSharp
 
         public ImageEngine()
         {
+        }
+
+        public static void LoadFont(string dir)
+        {
+            FontUtils.LoadFontsFromDirectory(dir);
+        }
+
+        public static void AddFont(Stream stream)
+        {
+            FontUtils.AddFont(stream);
+        }
+
+        public static void SetDefaultFontName(string fontName)
+        {
+            FontUtils.SetDefaultFontName(fontName);
         }
 
         public bool IsImageFile(string ext)

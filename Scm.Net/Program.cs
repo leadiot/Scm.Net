@@ -8,6 +8,7 @@ using Com.Scm.Extensions;
 using Com.Scm.Generator.Config;
 using Com.Scm.Holder;
 using Com.Scm.Hubs;
+using Com.Scm.Image.ImageSharp;
 using Com.Scm.Login.Otp;
 using Com.Scm.Mapper;
 using Com.Scm.Nas;
@@ -62,6 +63,9 @@ namespace Com.Scm
             var sqlConfig = AppUtils.GetConfig<SqlConfig>(SqlConfig.NAME) ?? new SqlConfig();
             sqlConfig.Prepare(envConfig);
             SqlSetup(services, envConfig, sqlConfig);
+
+            // ◊÷ÃÂ≈‰÷√
+            FontSetup(services, envConfig);
 
             // ª∫¥Ê≈‰÷√
             services.CacheSetup(envConfig);
@@ -338,6 +342,23 @@ namespace Com.Scm
             services.AddSingleton<ISqlSugarClient>(sugarScope);
             //◊¢≤·≤÷¥¢
             services.AddScoped(typeof(SugarRepository<>));
+        }
+
+        public static void FontSetup(IServiceCollection services, EnvConfig envConfig)
+        {
+            ImageEngine.LoadFont(envConfig.Fonts);
+
+            var fontFile = Path.Combine("Fonts", "DejaVuSans.ttf");
+            if (!File.Exists(fontFile))
+            {
+                return;
+            }
+
+            using (var stream = File.OpenRead(fontFile))
+            {
+                ImageEngine.AddFont(stream);
+            }
+            ImageEngine.SetDefaultFontName("DejaVu Sans");
         }
     }
 }

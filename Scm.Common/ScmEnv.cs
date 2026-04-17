@@ -28,5 +28,7 @@
         /// 跨域配置
         /// </summary>
         public const string SCM_CORS = "ScmCors";
+
+        public const string FONT_NAME = "DejaVu Sans";
     }
 }

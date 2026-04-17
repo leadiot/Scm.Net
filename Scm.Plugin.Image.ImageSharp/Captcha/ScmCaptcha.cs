@@ -1,4 +1,5 @@
 ﻿using Com.Scm.Image.Captcha;
+using Com.Scm.Utils;
 using SixLabors.Fonts;
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.Drawing.Processing;
@@ -67,7 +68,7 @@ namespace Com.Scm.Captcha
             using var image = new Image<Rgba32>(_Option.Width, _Option.Height);
 
             // 字体（ImageSharp 自带，不依赖系统字体）
-            var font = SystemFonts.CreateFont(_Option.FontName, _Option.FontSize, FontStyle.Bold);
+            var font = SystemFonts.CreateFont(FontUtils.GetValidFontName(_Option.FontName), _Option.FontSize, FontStyle.Bold);
 
             // 清空背景（白色/透明）
             image.Mutate(x => x.BackgroundColor(GetBackgroundColor()));

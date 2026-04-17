@@ -37,7 +37,7 @@
         /// <summary>
         /// 字体名称
         /// </summary>
-        public string FontName = "Verdana";
+        public string FontName;
         /// <summary>
         /// 随机码的旋转角度
         /// </summary>

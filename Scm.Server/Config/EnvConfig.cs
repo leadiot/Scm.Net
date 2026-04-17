@@ -39,6 +39,11 @@ namespace Com.Scm.Config
         public string Avatar { get; set; }
 
         /// <summary>
+        /// 字体目录，相对于dataDir
+        /// </summary>
+        public string Fonts { get; set; }
+
+        /// <summary>
         /// 语言资源路径
         /// </summary>
         public string ResourcesPath { get; set; }

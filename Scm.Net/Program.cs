@@ -321,7 +321,7 @@ namespace Com.Scm
 
             LogUtils.Info("正在初始化数据库...");
             var sqlDir = envConfig.GetDataPath("sql");
-            ScmDbHelper dbHelper = new ScmDbHelper();
+            IModelHelper dbHelper = new ScmDbHelper();
             dbHelper.Init(sugarScope, sqlDir);
             dbHelper.InitDb();
 

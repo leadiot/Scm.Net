@@ -1,4 +1,4 @@
-﻿using Com.Scm.Quartz.Config;
+using Com.Scm.Quartz.Config;
 using Com.Scm.Quartz.Dao;
 using Com.Scm.Utils;
 using System.Linq.Expressions;
@@ -10,6 +10,7 @@ namespace Com.Scm.Quartz.Service.Df
     public class QuartzFileHelper
     {
         private QuartzConfig _Config;
+        private readonly object _lockObj = new();
 
         public QuartzFileHelper(QuartzConfig config)
         {
@@ -31,7 +32,12 @@ namespace Com.Scm.Quartz.Service.Df
                 return list;
             }
 
-            var tasks = FileUtils.ReadText(path);
+            string tasks;
+            lock (_lockObj)
+            {
+                tasks = FileUtils.ReadText(path);
+            }
+
             if (string.IsNullOrEmpty(tasks))
             {
                 return null;
@@ -88,21 +94,28 @@ namespace Com.Scm.Quartz.Service.Df
         public void WriteJobConfig(List<QuarzTaskJobDao> taskList)
         {
             string jobs = taskList.ToJsonString();
-            //写入配置文件
-            FileUtils.WriteText(_Config.JobFile, jobs);
+            lock (_lockObj)
+            {
+                FileUtils.WriteText(_Config.JobFile, jobs);
+            }
         }
 
         public void WriteStartLog(string content)
         {
             content = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + "," + content + Environment.NewLine;
-
-            FileUtils.WriteText(_Config.GetLogsFile("start.txt"), content, true);
+            lock (_lockObj)
+            {
+                FileUtils.WriteText(_Config.GetLogsFile("start.txt"), content, true);
+            }
         }
 
         public void WriteJobLogs(QuarzTaskLogDao log)
         {
             var content = log.ToJsonString() + Environment.NewLine;
-            FileUtils.WriteText(_Config.GetLogsFile("logs.txt"), content, true);
+            lock (_lockObj)
+            {
+                FileUtils.WriteText(_Config.GetLogsFile("logs.txt"), content, true);
+            }
         }
 
         public List<QuarzTaskLogDao> GetJobsLog(int pageSize = 1)

@@ -1,4 +1,4 @@
-﻿using Com.Scm.Quartz.Dao;
+using Com.Scm.Quartz.Dao;
 using Com.Scm.Quartz.Service;
 using Com.Scm.Utils;
 using Microsoft.Extensions.Logging;
@@ -22,7 +22,6 @@ namespace Com.Scm.Quartz.Jobs
             this._quartzLogService = quartzLogService;
             this._quartzJobService = quartzService;
             this._logger = logger;
-            //serviceProvider.GetService()
         }
 
         public async Task Execute(IJobExecutionContext context)
@@ -40,29 +39,27 @@ namespace Com.Scm.Quartz.Jobs
             }
             if (taskOptions == null)
             {
-                _logger.LogError($"组别:{trigger.Group},名称:{trigger.Name},的作业未找到,可能已被移除");
-                // FileHelper.WriteFile(FileQuartz.LogPath + trigger.Group, $"{trigger.Name}.txt", "未到找作业或可能被移除", true);
+                _logger.LogWarning("组别:{Group},名称:{Name},的作业未找到,可能已被移除", trigger.Group, trigger.Name);
                 return;
             }
-            _logger.LogError($"组别:{trigger.Group},名称:{trigger.Name},的作业开始执行,时间:{DateTime.Now.ToString("yyyy-MM-dd HH:mm:sss")}");
-            LogUtils.Info($"作业[{taskOptions.names}]开始:{DateTime.Now.ToString("yyyy-MM-dd HH:mm:sss")}");
+            _logger.LogInformation("组别:{Group},名称:{Name},的作业开始执行,时间:{Time}", trigger.Group, trigger.Name, DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"));
+            LogUtils.Info($"作业[{taskOptions.names}]开始:{DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss")}");
             QuarzTaskLogDao tab_Quarz_Tasklog = new QuarzTaskLogDao() { task = taskOptions.names, group = taskOptions.group, begin_time = DateTime.Now };
             if (string.IsNullOrEmpty(taskOptions.api_uri) || taskOptions.api_uri == "/")
             {
-                _logger.LogError($"组别:{trigger.Group},名称:{trigger.Name},参数非法或者异常!,时间:{DateTime.Now.ToString("yyyy-MM-dd HH:mm:sss")}");
-                //FileHelper.WriteFile(FileQuartz.LogPath + trigger.Group, $"{trigger.Name}.txt", $"{ DateTime.Now.ToString("yyyy-MM-dd HH:mm:sss")}未配置url,", true);
+                _logger.LogWarning("组别:{Group},名称:{Name},参数非法或者异常!,时间:{Time}", trigger.Group, trigger.Name, DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"));
                 return;
             }
 
             try
             {
                 Dictionary<string, string> header = new Dictionary<string, string>();
-                if (!string.IsNullOrEmpty(taskOptions.api_uri))
+                if (!string.IsNullOrEmpty(taskOptions.api_headers))
                 {
                     header = taskOptions.api_headers.AsJsonObject<Dictionary<string, string>>();
                 }
                 Dictionary<string, string> body = new Dictionary<string, string>();
-                if (string.IsNullOrEmpty(taskOptions.api_parameter))
+                if (!string.IsNullOrEmpty(taskOptions.api_parameter))
                 {
                     body = taskOptions.api_parameter.AsJsonObject<Dictionary<string, string>>();
                 }
@@ -80,19 +77,20 @@ namespace Com.Scm.Quartz.Jobs
             catch (Exception ex)
             {
                 httpMessage = ex.Message;
+                _logger.LogError(ex, "组别:{Group},名称:{Name},作业执行异常", trigger.Group, trigger.Name);
             }
 
             try
             {
-                //string logContent = $"{(string.IsNullOrEmpty(httpMessage) ? "OK" : httpMessage)}\r\n";
                 tab_Quarz_Tasklog.end_time = DateTime.Now;
                 tab_Quarz_Tasklog.remark = httpMessage;
                 await _quartzLogService.AddLog(tab_Quarz_Tasklog);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                _logger.LogError(ex, "组别:{Group},名称:{Name},日志写入失败", trigger.Group, trigger.Name);
             }
-            LogUtils.Info(trigger.FullName + " " + DateTime.Now.ToString("yyyy-MM-dd HH:mm:sss") + " " + httpMessage);
+            LogUtils.Info(trigger.FullName + " " + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + " " + httpMessage);
             return;
         }
 

@@ -128,9 +128,9 @@ public class AdmMenuDao : ScmDataDao, ISortableDao, IDeleteDao
     /// <summary>
     /// 界面布局
     /// </summary>
-    //[StringLength(32)]
-    //[SugarColumn(Length = 32, IsNullable = true)]
-    //public string layout { get; set; }
+    [StringLength(32)]
+    [SugarColumn(Length = 32, IsNullable = true)]
+    public string layout { get; set; }
 
     /// <summary>
     /// 删除状态

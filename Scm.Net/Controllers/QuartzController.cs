@@ -1,10 +1,8 @@
-using Com.Scm.Controllers;
 using Com.Scm.Quartz;
 using Com.Scm.Quartz.Dao;
 using Com.Scm.Quartz.Enums;
 using Com.Scm.Quartz.Service;
 using Com.Scm.Utils;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Com.Scm.Controllers
@@ -25,7 +23,7 @@ namespace Com.Scm.Controllers
         /// 执行任务Http
         /// </summary>
         /// <returns></returns>
-        [HttpGet("job"), AllowAnonymous]
+        [HttpGet("job")]
         public IActionResult TestJob()
         {
             LogUtils.Info("执行任务：" + DateTime.Now);

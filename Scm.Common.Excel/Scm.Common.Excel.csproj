@@ -6,7 +6,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="MiniExcel" Version="1.42.0" />
+    <PackageReference Include="MiniExcel" Version="1.43.0" />
   </ItemGroup>
 
 </Project>

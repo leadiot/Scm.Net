@@ -1,4 +1,4 @@
-﻿using Com.Scm.Quartz.Dao;
+using Com.Scm.Quartz.Dao;
 using Com.Scm.Quartz.Enums;
 using Com.Scm.Quartz.Jobs;
 using Com.Scm.Quartz.Service;
@@ -95,10 +95,16 @@ namespace Com.Scm.Quartz
             }
         }
 
-        public async void InitJobs()
+        public async Task InitJobs()
         {
             var jobs = await _quartzJobService.GetJobs();
             IScheduler scheduler = await _schedulerFactory.GetScheduler();
+
+            if (_jobFactory != null)
+            {
+                scheduler.JobFactory = _jobFactory;
+            }
+
             foreach (var item in jobs)
             {
                 try
@@ -123,11 +129,6 @@ namespace Com.Scm.Quartz
                        .WithCronSchedule(item.cron)
                        .Build();
 
-                    if (_jobFactory != null)
-                    {
-                        scheduler.JobFactory = _jobFactory;
-                    }
-
                     if (item.handle == JobHandleEnum.Running)
                     {
                         await scheduler.ScheduleJob(job, trigger);
@@ -138,8 +139,6 @@ namespace Com.Scm.Quartz
                         await scheduler.ScheduleJob(job, trigger);
                         await Pause(item);
                         LogUtils.Error($"任务初始化,未启动,状态为:{item.handle}");
-                        //await _quartzLogService.AddLog(new tab_quarz_tasklog() { TaskName = item.TaskName, GroupName = item.GroupName, Msg = $"任务初始化,未启动,状态为:{item.Status}" });
-                        //FileQuartz.WriteStartLog($"作业:{taskOptions.TaskName},分组:{taskOptions.GroupName},新建时未启动原因,状态为:{taskOptions.Status}");
                     }
                 }
                 catch (Exception ex)
@@ -147,8 +146,9 @@ namespace Com.Scm.Quartz
                     await _quartzLogService.AddLog(new QuarzTaskLogDao() { task = item.names, group = item.group, remark = $"任务初始化未启动,出现异常,异常信息{ex.Message}" });
                     continue;
                 }
-                await scheduler.Start();
             }
+
+            await scheduler.Start();
         }
 
         /// <summary>

@@ -1,4 +1,4 @@
-﻿using Com.Scm.Quartz.Dao;
+using Com.Scm.Quartz.Dao;
 using SqlSugar;
 using System.Linq.Expressions;
 
@@ -21,10 +21,10 @@ namespace Com.Scm.Quartz.Service.Db
             var date = await _Client.Insertable(model).ExecuteCommandAsync();
             if (date > 0)
             {
-                JobResult.Success("数据库添加成功！");
+                return JobResult.Success("数据库添加成功！");
             }
 
-            return JobResult.Failure("数据加添加异常！");
+            return JobResult.Failure("数据添加异常！");
         }
 
         public async Task<List<QuarzTaskJobDao>> GetJobs(Expression<Func<QuarzTaskJobDao, bool>> where = null)

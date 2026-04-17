@@ -1,4 +1,4 @@
-﻿using Com.Scm.Quartz.Config;
+using Com.Scm.Quartz.Config;
 using Com.Scm.Quartz.Jobs;
 using Com.Scm.Quartz.Service;
 using Com.Scm.Quartz.Service.Db;
@@ -84,7 +84,7 @@ namespace Com.Scm.Quartz
             var services = builder.ApplicationServices;
             using var serviceScope = services.CreateScope();
             var handle = serviceScope.ServiceProvider.GetService<IQuartzService>();
-            handle?.InitJobs();
+            handle?.InitJobs().GetAwaiter().GetResult();
 
             return builder;
         }

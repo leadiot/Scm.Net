@@ -1,4 +1,4 @@
-﻿using Com.Scm.Quartz.Dao;
+using Com.Scm.Quartz.Dao;
 
 namespace Com.Scm.Quartz
 {
@@ -37,7 +37,7 @@ namespace Com.Scm.Quartz
         /// <summary>
         /// 初始化任务
         /// </summary>
-        void InitJobs();
+        Task InitJobs();
 
         /// <summary>
         /// 是否为定时任务

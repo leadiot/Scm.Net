@@ -105,6 +105,11 @@ namespace Com.Scm.Adm.Menu
         public bool keepAlive { get; set; }
 
         /// <summary>
+        /// 布局
+        /// </summary>
+        public string layout { get; set; }
+
+        /// <summary>
         /// 接口权限
         /// </summary>
         public List<SysMenuApiUrl> api { get; set; } = new();

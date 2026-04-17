@@ -1,7 +1,6 @@
 using Com.Scm.Cache;
-using Com.Scm.Controllers;
 using Com.Scm.Filters;
-using Com.Scm.Image.SkiaSharp;
+using Com.Scm.Image.ImageSharp;
 using Com.Scm.Utils;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;

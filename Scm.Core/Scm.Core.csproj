@@ -16,7 +16,7 @@
     <ProjectReference Include="..\Scm.Dto\Scm.Dto.csproj" />
     <ProjectReference Include="..\Scm.Email\Scm.Email.csproj" />
     <ProjectReference Include="..\Scm.Phone\Scm.Phone.csproj" />
-    <ProjectReference Include="..\Scm.Plugin.Image.SkiaSharp\Scm.Plugin.Image.SkiaSharp.csproj" />
+    <ProjectReference Include="..\Scm.Plugin.Image.ImageSharp\Scm.Plugin.Image.ImageSharp.csproj" />
     <ProjectReference Include="..\Scm.Server.Aiml\Scm.Server.Aiml.csproj" />
     <ProjectReference Include="..\Scm.Server.Api\Scm.Server.Api.csproj" />
     <ProjectReference Include="..\Scm.Server.Quartz\Scm.Server.Quartz.csproj" />

@@ -5,8 +5,6 @@ using Com.Scm.Image.Enums;
 using Com.Scm.Image.WaterMark;
 using Com.Scm.Plugin.Image;
 using ImageMagick;
-using System;
-using System.IO;
 
 namespace Com.Scm.Image.Magick.Formats.Bit
 {

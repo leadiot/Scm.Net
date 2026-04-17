@@ -1,7 +1,7 @@
 ﻿using Com.Scm.Adm.Files.Dvo;
 using Com.Scm.Config;
 using Com.Scm.Filters;
-using Com.Scm.Image.SkiaSharp;
+using Com.Scm.Image.ImageSharp;
 using Com.Scm.Sys.SysSafety;
 using Com.Scm.Utils;
 using Microsoft.AspNetCore.Authorization;

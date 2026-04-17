@@ -1,26 +1,26 @@
 ﻿using Com.Scm.Plugin.Image;
-using ImageMagick;
+using SixLabors.ImageSharp;
+using SixLabors.ImageSharp.Formats;
 
-namespace Com.Scm.Image.Magick
+namespace Com.Scm.Image.ImageSharp
 {
     public class PluginFrame : ScmFrame
     {
-        public MagickImage Image { get; set; }
+        public ImageFrame Frame { get; set; }
 
         public PluginFrame()
         {
-
         }
 
-        public PluginFrame(MagickImage image)
+        public PluginFrame(ImageFrame image)
         {
-            Image = image;
+            Frame = image;
             Delay = 0;
         }
 
-        public PluginFrame(MagickImage image, int delay)
+        public PluginFrame(ImageFrame image, int delay)
         {
-            Image = image;
+            Frame = image;
             Delay = delay;
         }
 
@@ -47,35 +47,35 @@ namespace Com.Scm.Image.Magick
 
         public override bool Save(Stream stream, ScmImageFormat format)
         {
-            MagickFormat fmt;
+            IImageFormat fmt;
             switch (format)
             {
                 case ScmImageFormat.Png:
-                    fmt = MagickFormat.Png;
+                    fmt = SixLabors.ImageSharp.Formats.Png.PngFormat.Instance;
                     break;
                 case ScmImageFormat.Jpg:
-                    fmt = MagickFormat.Jpg;
+                    fmt = SixLabors.ImageSharp.Formats.Jpeg.JpegFormat.Instance;
                     break;
                 case ScmImageFormat.Bmp:
-                    fmt = MagickFormat.Bmp;
+                    fmt = SixLabors.ImageSharp.Formats.Bmp.BmpFormat.Instance;
                     break;
                 case ScmImageFormat.Gif:
-                    fmt = MagickFormat.Gif;
+                    fmt = SixLabors.ImageSharp.Formats.Gif.GifFormat.Instance;
                     break;
                 case ScmImageFormat.Ico:
-                    fmt = MagickFormat.Ico;
+                    fmt = SixLabors.ImageSharp.Formats.Bmp.BmpFormat.Instance;
                     break;
                 default:
                     return false;
             }
 
-            Image.Write(stream, fmt);
             return true;
         }
 
         public override byte[] ToBytes(ScmImageFormat format)
         {
-            return Image.ToByteArray();
+            //return Frame.ToByteArray();
+            return null;
         }
     }
 }

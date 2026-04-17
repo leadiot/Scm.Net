@@ -1,7 +1,7 @@
 ﻿using Com.Scm.Dvo;
 using Com.Scm.Filters;
 using Com.Scm.Image.Barcode;
-using Com.Scm.Image.SkiaSharp;
+using Com.Scm.Image.ImageSharp;
 using Com.Scm.Plugin.Image;
 using Com.Scm.Service;
 using Com.Scm.Tools.Barcode.Dvo;

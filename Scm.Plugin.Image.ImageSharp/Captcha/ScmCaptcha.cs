@@ -1,5 +1,9 @@
 ﻿using Com.Scm.Image.Captcha;
-using SkiaSharp;
+using SixLabors.Fonts;
+using SixLabors.ImageSharp;
+using SixLabors.ImageSharp.Drawing.Processing;
+using SixLabors.ImageSharp.PixelFormats;
+using SixLabors.ImageSharp.Processing;
 using System.Text;
 
 namespace Com.Scm.Captcha
@@ -59,67 +63,62 @@ namespace Com.Scm.Captcha
         public void GenImage(CaptchaResult result)
         {
             _Result = result;
+            // 创建图片（透明背景）
+            using var image = new Image<Rgba32>(_Option.Width, _Option.Height);
 
-            //创建位图
-            using (var image = new SKBitmap(_Option.Width, _Option.Height))
+            // 字体（ImageSharp 自带，不依赖系统字体）
+            var font = SystemFonts.CreateFont(_Option.FontName, _Option.FontSize, FontStyle.Bold);
+
+            // 清空背景（白色/透明）
+            image.Mutate(x => x.BackgroundColor(GetBackgroundColor()));
+
+            // ----------------------
+            // 画干扰线
+            // ----------------------
+            AddBacknoiseLine(image);
+
+            // ----------------------
+            // 画噪点
+            // ----------------------
+            AddBacknoisePoint(image);
+
+            // ----------------------
+            // 画文字（带偏移）
+            // ----------------------
+            float xPos = _Option.Padding;
+            foreach (char c in result.Value)
             {
-                //创建画笔
-                using (var canvas = new SKCanvas(image))
-                {
-                    //填充白色背景
-                    canvas.Clear(GetBackgroundColor());
+                // 随机颜色
+                var color = GetFontColor();
 
-                    AddBacknoiseLine(image, canvas);
-                    AddBacknoisePoint(image, canvas);
+                // 随机偏移
+                float yPos = _Option.Padding + _Random.Next(5);
 
-                    //canvas.DrawColor(SKColors.White);
-                    //将文字写到画布上
+                // 画单个字符
+                image.Mutate(x => x.DrawText(
+                    c.ToString(),
+                    font,
+                    color,
+                    new PointF(xPos, yPos)));
 
-                    var drawFont = new SKFont
-                    {
-                        Size = _Option.FontSize,
-                        Typeface = SKTypeface.FromFamilyName(_Option.FontName, SKFontStyleWeight.SemiBold, SKFontStyleWidth.ExtraCondensed, SKFontStyleSlant.Upright)
-                    };
-                    var drawStyle = new SKPaint();
-                    drawStyle.IsAntialias = true;
-                    //drawStyle.TextSize = _Option.FontSize;
-                    //drawStyle.Typeface = SKTypeface.FromFamilyName(_Option.FontName, SKFontStyleWeight.SemiBold, SKFontStyleWidth.ExtraCondensed, SKFontStyleSlant.Upright);
+                xPos += 24; // 字符间距
+            }
 
-                    char[] chars = _Result.Key.ToCharArray();
-                    for (int i = 0; i < chars.Length; i++)
-                    {
-                        canvas.Translate(_Option.Padding, _Option.Padding);
+            // ----------------------
+            // 画噪点
+            // ----------------------
+            AddForenoisePoint(image);
 
-                        float px = (i) * _Option.FontSize;
-                        float py = _Option.Height / 2;
+            // ----------------------
+            // 画干扰线
+            // ----------------------
+            AddForenoiseLine(image);
 
-                        //转动的度数
-                        var angle = _Option.TextRotate > 0 ? _Random.Next(-_Option.TextRotate, _Option.TextRotate) : 0;
-                        canvas.RotateDegrees(angle, px, py);
-
-                        drawStyle.Color = GetFontColor();
-                        //写字 (i + 1) * 16, 28
-                        canvas.DrawText(chars[i].ToString(), px, py, drawFont, drawStyle);
-
-                        // canvas.DrawText(chars[i].ToString(), (i ) * SetFontSize, (SetHeight-1), drawStyle);
-
-                        canvas.RotateDegrees(-angle, px, py);
-                        canvas.Translate(-_Option.Padding, -_Option.Padding);
-                    }
-
-                    //    using (SKPaint drawStyle = CreatePaint(SKColors.Black, SetHeight))
-                    //{
-                    //    Console.WriteLine( drawStyle.TextSize );
-                    //    drawStyle.TextSize = SetFontSize;
-
-                    //    canvas.DrawText(SetVerifyCodeText, 1, SetHeight-1, drawStyle);
-                    //}
-
-                    AddForenoiseLine(image, canvas);
-                    AddForenoisePoint(image, canvas);
-                }
-
-                result.Image = image.Encode(SKEncodedImageFormat.Png, 100).ToArray();
+            // 输出为 PNG
+            using (var ms = new MemoryStream())
+            {
+                image.SaveAsPng(ms);
+                result.Image = ms.ToArray();
             }
         }
 
@@ -241,11 +240,11 @@ namespace Com.Scm.Captcha
         /// 获取前景画布颜色
         /// </summary>
         /// <returns></returns>
-        private SKColor GetFontColor()
+        private Color GetFontColor()
         {
             if (!_Option.ForegroundColorRandom)
             {
-                return SKColor.Parse(_Option.FontColor);
+                return Color.Parse(_Option.FontColor);
             }
 
             Random RandomNum_First = new Random((int)DateTime.Now.Ticks);
@@ -253,122 +252,90 @@ namespace Com.Scm.Captcha
             System.Threading.Thread.Sleep(RandomNum_First.Next(50));
             Random RandomNum_Sencond = new Random((int)DateTime.Now.Ticks);
             // 为了在白色背景上显示，尽量生成深色
-            int int_Red = RandomNum_First.Next(256);
-            int int_Green = RandomNum_Sencond.Next(256);
-            int int_Blue = (int_Red + int_Green > 400) ? 0 : 400 - int_Red - int_Green;
-            int_Blue = (int_Blue > 255) ? 255 : int_Blue;
-            return SKColor.FromHsv(int_Red, int_Green, int_Blue);
+            int red = RandomNum_First.Next(256);
+            int green = RandomNum_Sencond.Next(256);
+            int blue = (red + green > 400) ? 0 : 400 - red - green;
+            blue = (blue > 255) ? 255 : blue;
+            return Color.FromRgb((byte)red, (byte)green, (byte)blue);
         }
 
         /// <summary>
         /// 获取前景噪音颜色
         /// </summary>
         /// <returns></returns>
-        private SKColor GetForenoiseColor()
+        private Color GetForenoiseColor()
         {
             var colors = _Option.ForenoiseColor;
             if (colors != null)
             {
                 var color = colors[_Random.Next(colors.Length)];
-                return SKColor.Parse(color);
+                return Color.Parse(color);
             }
 
-            return SKColors.White;
+            return Color.White;
         }
 
         /// <summary>
         /// 获取背景画布颜色
         /// </summary>
         /// <returns></returns>
-        private SKColor GetBackgroundColor()
+        private Color GetBackgroundColor()
         {
             if (!_Option.BackgroundColorRandom)
             {
-                return SKColor.Parse(_Option.BackgroundColor);
+                return Color.Parse(_Option.BackgroundColor);
             }
             var colors = _Option.BacknoiseColor;
             if (colors != null)
             {
                 var color = colors[_Random.Next(colors.Length)];
-                return SKColor.Parse(color);
+                return Color.Parse(color);
             }
 
-            return SKColors.White;
+            return Color.White;
         }
 
         /// <summary>
         /// 获取背景噪音颜色
         /// </summary>
         /// <returns></returns>
-        private SKColor GetBacknoiseColor()
+        private Color GetBacknoiseColor()
         {
             var colors = _Option.BacknoiseColor;
             if (colors != null)
             {
                 var color = colors[_Random.Next(colors.Length)];
-                return SKColor.Parse(color);
+                return Color.Parse(color);
             }
 
-            return SKColors.White;
-        }
-
-        /// <summary>
-        /// 创建画笔
-        /// </summary>
-        /// <param name="color"></param>
-        /// <param name="fontSize"></param>
-        /// <returns></returns>
-        private SKPaint CreatePaint(SKColor color, float fontSize)
-        {
-            var font = SKTypeface.FromFamilyName(null, SKFontStyleWeight.SemiBold, SKFontStyleWidth.ExtraCondensed, SKFontStyleSlant.Upright);
-            SKPaint paint = new SKPaint();
-            paint.IsAntialias = true;
-            paint.Color = color;
-            //paint.Typeface = font;
-            //paint.TextSize = fontSize;
-            return paint;
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="color"></param>
-        /// <returns></returns>
-        private SKPaint CreatePaint(SKColor color)
-        {
-            SKPaint paint = new SKPaint();
-            paint.IsAntialias = true;
-            paint.Color = color;
-            return paint;
+            return Color.White;
         }
 
         /// <summary>
         /// 绘制前景噪音点
         /// </summary>
-        /// <param name="objBitmap"></param>
-        private void AddForenoisePoint(SKBitmap objBitmap, SKCanvas objGraphics)
+        /// <param name="image"></param>
+        private void AddForenoisePoint(Image<Rgba32> image)
         {
             if (!_Option.HasForenoisePoint)
             {
                 return;
             }
 
-            for (int i = 0; i < objBitmap.Width * _Option.ForenoisePointCount; i++)
+            for (int i = 0; i < image.Width * _Option.ForenoisePointCount; i++)
             {
-                //objBitmap.SetPixel(_Random.Next(objBitmap.Width), _Random.Next(objBitmap.Height), GetForenoiseColor());
-                using (SKPaint objPen = CreatePaint(GetForenoiseColor()))
-                {
-                    objGraphics.DrawRect(_Random.Next(objBitmap.Width), _Random.Next(objBitmap.Height), 1, 1, objPen);
-                }
+                int x = _Random.Next(image.Width);
+                int y = _Random.Next(image.Height);
+                image[x, y] = GetForenoiseColor();
             }
         }
 
         /// <summary>
         /// 绘制前景噪音线
         /// </summary>
-        /// <param name="objBitmap"></param>
+        /// <param name="image"></param>
         /// <param name="objGraphics"></param>
-        private void AddForenoiseLine(SKBitmap objBitmap, SKCanvas objGraphics)
+        private void AddForenoiseLine(Image<Rgba32> image)
         {
             if (!_Option.HasForenoiseLine)
             {
@@ -378,36 +345,36 @@ namespace Com.Scm.Captcha
             //画图片的背景噪音线
             for (var i = 0; i < _Option.ForenoiseLineCount; i++)
             {
-                var x1 = _Random.Next(objBitmap.Width);
-                var x2 = _Random.Next(objBitmap.Width);
-                var y1 = _Random.Next(objBitmap.Height);
-                var y2 = _Random.Next(objBitmap.Height);
+                var x1 = _Random.Next(image.Width);
+                var x2 = _Random.Next(image.Width);
+                var y1 = _Random.Next(image.Height);
+                var y2 = _Random.Next(image.Height);
 
                 var color = GetForenoiseColor();
-                var paint = CreatePaint(color);
-                paint.StrokeWidth = _Option.ForenoiseLineWidth;
-                objGraphics.DrawLine(x1, y1, x2, y2, paint);
+                var pen = Pens.Solid(color, _Option.ForenoiseLineWidth);
+                var p1 = new PointF(x1, y1);
+                var p2 = new PointF(x2, y2);
+                image.Mutate(x => x.DrawLine(pen, p1, p2));
             }
         }
 
         /// <summary>
         /// 绘制背景噪音点
         /// </summary>
-        /// <param name="objBitmap"></param>
+        /// <param name="image"></param>
         /// <param name="objGraphics"></param>
-        private void AddBacknoisePoint(SKBitmap objBitmap, SKCanvas objGraphics)
+        private void AddBacknoisePoint(Image<Rgba32> image)
         {
             if (!_Option.HasBacknoisePoint)
             {
                 return;
             }
 
-            for (int i = 0; i < objBitmap.Width * 2; i++)
+            for (int i = 0; i < image.Width * 2; i++)
             {
-                using (SKPaint objPen = CreatePaint(GetBacknoiseColor()))
-                {
-                    objGraphics.DrawRect(_Random.Next(objBitmap.Width), _Random.Next(objBitmap.Height), 1, 1, objPen);
-                }
+                int x = _Random.Next(image.Width);
+                int y = _Random.Next(image.Height);
+                image[x, y] = GetBacknoiseColor();
             }
         }
 
@@ -416,7 +383,7 @@ namespace Com.Scm.Captcha
         /// </summary>
         /// <param name="objBitmap"></param>
         /// <param name="objGraphics"></param>
-        private void AddBacknoiseLine(SKBitmap objBitmap, SKCanvas objGraphics)
+        private void AddBacknoiseLine(Image<Rgba32> image)
         {
             if (!_Option.HasBacknoiseLine)
             {
@@ -426,15 +393,16 @@ namespace Com.Scm.Captcha
             //画图片的背景噪音线
             for (var i = 0; i < _Option.BacknoiseLineCount; i++)
             {
-                var x1 = _Random.Next(objBitmap.Width);
-                var x2 = _Random.Next(objBitmap.Width);
-                var y1 = _Random.Next(objBitmap.Height);
-                var y2 = _Random.Next(objBitmap.Height);
+                var x1 = _Random.Next(image.Width);
+                var x2 = _Random.Next(image.Width);
+                var y1 = _Random.Next(image.Height);
+                var y2 = _Random.Next(image.Height);
 
                 var color = GetBacknoiseColor();
-                var paint = CreatePaint(color);
-                paint.StrokeWidth = _Option.BacknoiseLineWidth;
-                objGraphics.DrawLine(x1, y1, x2, y2, paint);
+                var pen = Pens.Solid(color, _Option.BacknoiseLineWidth);
+                var p1 = new PointF(x1, y1);
+                var p2 = new PointF(x2, y2);
+                image.Mutate(x => x.DrawLine(pen, p1, p2));
             }
         }
         #endregion

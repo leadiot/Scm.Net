@@ -1,3 +1,6 @@
+Ôªøusing Com.Scm.Barcode;
+using Com.Scm.Barcode.Zxing;
+using Com.Scm.Captcha;
 using Com.Scm.Image.Avatar;
 using Com.Scm.Image.Barcode;
 using Com.Scm.Image.Captcha;
@@ -5,15 +8,17 @@ using Com.Scm.Image.Enums;
 using Com.Scm.Image.WaterMark;
 using Com.Scm.Plugin;
 using Com.Scm.Plugin.Image;
-using ImageMagick;
+using SixLabors.ImageSharp;
+using SixLabors.ImageSharp.PixelFormats;
+using SixLabors.ImageSharp.Processing;
 
-namespace Com.Scm.Image.Magick
+namespace Com.Scm.Image.ImageSharp
 {
     public class ImageEngine : IPluginImage
     {
         public PluginType Type { get { return PluginType.Image; } }
 
-        public string Name { get { return "Magick"; } }
+        public string Name { get { return "ImageSharp"; } }
 
         private static Dictionary<string, bool> _ImgExts;
 
@@ -28,7 +33,36 @@ namespace Com.Scm.Image.Magick
 
         public bool IsReadableFile(string ext)
         {
-            return true;
+            if (_ImgExts == null)
+            {
+                var manager = Configuration.Default.ImageFormatsManager;
+                _ImgExts = new Dictionary<string, bool>();
+                var nameList = manager.ImageFormats;
+                foreach (var name in nameList)
+                {
+                    if (manager.GetDecoder(name) != null)
+                    {
+                        _ImgExts["." + name.FileExtensions] = true;
+                    }
+                }
+                _ImgExts[".jfif"] = true;
+                //if (_ImgExts.ContainsKey(".pdf"))
+                {
+                    _ImgExts.Remove(".pdf");
+                    _ImgExts.Remove(".txt");
+                }
+            }
+
+            if (string.IsNullOrWhiteSpace(ext))
+            {
+                return false;
+            }
+
+            if (ext[0] != '.')
+            {
+                ext = '.' + ext;
+            }
+            return _ImgExts.ContainsKey(ext.ToLower());
         }
 
         public List<FileExt> GetReadableExts()
@@ -37,7 +71,7 @@ namespace Com.Scm.Image.Magick
         }
 
         /// <summary>
-        ///  «∑ÒÀ˘”–÷ß≥÷µƒÕº∆¨Œƒº˛
+        /// ÊòØÂê¶ÊâÄÊúâÊîØÊåÅÁöÑÂõæÁâáÊñá‰ª∂
         /// </summary>
         /// <param name="ext"></param>
         /// <returns></returns>
@@ -45,11 +79,15 @@ namespace Com.Scm.Image.Magick
         {
             if (_ImgExts == null)
             {
+                var manager = Configuration.Default.ImageFormatsManager;
                 _ImgExts = new Dictionary<string, bool>();
-                string[] nameList = System.Enum.GetNames(typeof(MagickFormat));
+                var nameList = manager.ImageFormats;
                 foreach (var name in nameList)
                 {
-                    _ImgExts["." + name.ToLower()] = true;
+                    if (manager.GetEncoder(name) != null)
+                    {
+                        _ImgExts["." + name.FileExtensions] = true;
+                    }
                 }
                 _ImgExts[".jfif"] = true;
                 //if (_ImgExts.ContainsKey(".pdf"))
@@ -76,30 +114,29 @@ namespace Com.Scm.Image.Magick
             return null;
         }
 
-        #region ≤Ÿ◊˜Stream
+        #region Êìç‰ΩúStream
         public ScmImageMeta GetImageInfo(Stream stream)
         {
             stream.Position = 0;
 
-            var info = new MagickImageInfo();
-            info.Read(stream);
+            var image = SixLabors.ImageSharp.Image.Load(stream);
+            var meta = image.Metadata;
 
-            return new ScmImageMeta { Width = (int)info.Width, Height = (int)info.Height, Format = info.Format.ToString() };
+            return new ScmImageMeta { Width = (int)image.Width, Height = (int)image.Height, Format = meta.DecodedImageFormat.Name };
         }
 
         public List<ImageColor> GetImageColor(Stream stream, int count, int delta = 16)
         {
             stream.Position = 0;
 
-            var image = new MagickImage();
-            image.Read(stream);
+            var image = SixLabors.ImageSharp.Image.Load(stream);
 
             //return Analyser.Analysis(image.ToBitmap(), count, delta);
             return null;
         }
         #endregion
 
-        #region ≤Ÿ◊˜Image∂‘œÛ
+        #region Êìç‰ΩúImageÂØπË±°
         private PluginImage _Image;
         public bool ReadImage(string file)
         {
@@ -120,7 +157,7 @@ namespace Com.Scm.Image.Magick
         }
 
         /// <summary>
-        /// ∏Ò Ω◊™ªª
+        /// Ê†ºÂºèËΩ¨Êç¢
         /// </summary>
         /// <param name="input"></param>
         /// <returns></returns>
@@ -194,7 +231,7 @@ namespace Com.Scm.Image.Magick
         public double PixelHeight { get { return _Image.VisualHeight; } }
         #endregion
 
-        #region Àı¬‘Õº
+        #region Áº©Áï•Âõæ
         //public BitmapSource GetBitmapSourceThumb(FileInfo fileInfo, byte quality = 100, int size = 500, bool checkSize = false)
         //{
         //    if (!fileInfo.Exists)
@@ -299,14 +336,26 @@ namespace Com.Scm.Image.Magick
             throw new NotImplementedException();
         }
 
-        public IImage GenCaptcha()
+        public IImage GenBarcode(IImage image, string text, PositionEnum position, string font, int size)
         {
             throw new NotImplementedException();
         }
 
-        public IImage GenBarcode(IImage image, string text, PositionEnum position, string font, int size)
+        //private static IBarcode _Barcode;
+        public static IBarcode GetBarcodeInstance()
         {
-            throw new NotImplementedException();
+            //if (_Barcode == null)
+            //{
+            //    _Barcode = new ZxingBarcode();
+            //}
+            //return _Barcode;
+
+            return new ZxingBarcode();
+        }
+
+        public CaptchaResult GenCaptcha()
+        {
+            return new ScmCaptcha().GenCaptcha();
         }
 
         public CaptchaResult GenCaptcha(CaptchaOption option = null)
@@ -314,9 +363,32 @@ namespace Com.Scm.Image.Magick
             throw new NotImplementedException();
         }
 
+        private static Dictionary<int, AvatarResult> _Avatars = new Dictionary<int, AvatarResult>();
         public AvatarResult GenAvatar(AvatarOption option = null)
         {
-            throw new NotImplementedException();
+            if (option == null)
+            {
+                option = new AvatarOption();
+            }
+
+            var size = option.Size;
+            if (_Avatars.ContainsKey(size))
+            {
+                return _Avatars[size];
+            }
+
+            var result = new AvatarResult();
+
+            var image = new Image<Rgba32>(size, size);
+            image.Mutate(x => x.BackgroundColor(Color.LightGray));
+
+            using (var stream = new MemoryStream())
+            {
+                image.SaveAsPng(stream);
+                result.Image = stream.ToArray();
+            }
+
+            return result;
         }
     }
 }

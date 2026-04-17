@@ -4,7 +4,6 @@ using Com.Scm.Image.Magick.Formats.Ico;
 using Com.Scm.Image.WaterMark;
 using Com.Scm.Plugin.Image;
 using ImageMagick;
-using System.Collections.Generic;
 
 namespace Com.Scm.Image.Magick
 {

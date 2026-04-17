@@ -18,11 +18,11 @@ namespace Com.Scm
         /// <summary>
         /// 主版本
         /// </summary>
-        private const int VER = 3;
+        private const int VER = 4;
         /// <summary>
         /// 发行日期
         /// </summary>
-        private const string DATE = "2026-04-15";
+        private const string DATE = "2026-04-17";
 
         protected ISqlSugarClient _SqlClient;
         protected string _SqlDir;
@@ -493,7 +493,7 @@ namespace Com.Scm
             // 工作台
             var homeConsoleDao = CreateMenu(1000000000000001101, "console", "工作台", homeDao.id, 2, 1, "/console", "home", "sc-menu-line");
             roleAdminList.Add(new RoleAuthDao { role_id = roleAdminDao.id, auth_id = homeConsoleDao.id, types = ScmRoleAuthTypesEnum.RoleMenu });
-            var homeDesktopDao = CreateMenu(1000000000000001102, "desktop", "云桌面", homeDao.id, 2, 2, "/desktop", "home/desktop", "sc-menu-line");
+            var homeDesktopDao = CreateMenu(1000000000000001102, "desktop", "云桌面", homeDao.id, 2, 2, "/desktop", "home/desktop", "sc-menu-line", "desktop");
             roleAdminList.Add(new RoleAuthDao { role_id = roleAdminDao.id, auth_id = homeDesktopDao.id, types = ScmRoleAuthTypesEnum.RoleMenu });
             // 我的收藏
             var homeFavoritesDao = CreateMenu(1000000000000001200, "favorites", "我的收藏", homeDao.id, 2, 2, "/favorites", "", "sc-heart-3-line");
@@ -750,6 +750,7 @@ namespace Com.Scm
             string uri,
             string view,
             string icon,
+            string layout = "console",
             ScmRowStatusEnum status = ScmRowStatusEnum.Enabled)
         {
             var menuDao = new MenuDao();
@@ -768,6 +769,7 @@ namespace Com.Scm
             menuDao.visible = true;
             menuDao.enabled = true;
             menuDao.keepAlive = true;
+            menuDao.layout = layout;
             menuDao.row_delete = ScmRowDeleteEnum.No;
             SaveDao(menuDao);
             return menuDao;

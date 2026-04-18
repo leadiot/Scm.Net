@@ -43,5 +43,7 @@
         /// 格式：Scm.Net 10.13.25.45 (Build 2026041501)
         /// </summary>
         public static readonly string VER_INFO = $"{MAJOR}.{MINOR}.{PATCH}.{BUILD} @Build {VER_CODE}";
+
+        public const long USER_ID = 1000000000000001030L;
     }
 }

@@ -1,4 +1,5 @@
 ﻿using Com.Scm.Enums;
+using Com.Scm.Sys.Config;
 using Com.Scm.Ur;
 using Com.Scm.Utils;
 using System.Reflection;
@@ -143,6 +144,22 @@ namespace Com.Scm.Nas
             //roleAdminList.Add(new RoleAuthDao { role_id = roleId, auth_id = nasShareDao.id, types = ScmRoleAuthTypesEnum.RoleMenu });
 
             _SqlClient.Insertable(roleAdminList).ExecuteCommand();
+
+            var config = new ConfigDao();
+            config.user_id = 1000000000000001030L;
+            config.client = ScmClientTypeEnum.Web;
+            config.key = "desktop_background_type";
+            config.value = "image";
+            config.PrepareCreate(1000000000000001030L);
+            _SqlClient.Insertable(config).ExecuteCommand();
+
+            config = new ConfigDao();
+            config.user_id = 1000000000000001030L;
+            config.client = ScmClientTypeEnum.Web;
+            config.key = "desktop_background_image";
+            config.value = "/images/01.jpg";
+            config.PrepareCreate(1000000000000001030L);
+            _SqlClient.Insertable(config).ExecuteCommand();
         }
     }
 }

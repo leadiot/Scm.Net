@@ -18,7 +18,7 @@
         /// 构建版本
         /// TODO: （必需修改）构建版本，发布前需要修改此处，格式为 X，其中 X 是一个整数，表示构建版本号，通常在每次构建时增加，即使没有功能更新或错误修复
         /// </summary>
-        public const int BUILD = 45;
+        public const int BUILD = 47;
 
         /// <summary>
         /// 修正版本

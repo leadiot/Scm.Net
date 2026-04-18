@@ -8,9 +8,14 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Scm.Cache.Dictionary\Scm.Cache.Dictionary.csproj" />
     <ProjectReference Include="..\Scm.Cache\Scm.Cache.csproj" />
     <ProjectReference Include="..\Scm.Server\Scm.Server.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="Scm.Cache.Dictionary">
+      <HintPath>..\..\Libs\net10.0\Scm.Cache.Dictionary.dll</HintPath>
+    </Reference>
   </ItemGroup>
 
 </Project>

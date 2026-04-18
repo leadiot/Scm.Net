@@ -1,9 +1,14 @@
-﻿using Com.Scm.Request;
+﻿using Com.Scm.Enums;
+using Com.Scm.Request;
 
 namespace Com.Scm.Terminal.Dvo
 {
     public class BindRequest : ScmRequest
     {
+        /// <summary>
+        /// 终端类型
+        /// </summary>
+        public ScmClientTypeEnum types { get; set; }
         /// <summary>
         /// 终端代码
         /// </summary>

@@ -1,6 +1,4 @@
 ﻿using Com.Scm.Utils;
-using System.Collections.Generic;
-using System.IO;
 using System.Reflection;
 
 namespace Com.Scm.Addon

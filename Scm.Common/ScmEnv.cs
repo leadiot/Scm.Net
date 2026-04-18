@@ -30,5 +30,15 @@
         public const string SCM_CORS = "ScmCors";
 
         public const string FONT_NAME = "DejaVu Sans";
+
+        /// <summary>
+        /// 网络路径分隔符
+        /// </summary>
+        public static readonly char WebSeparator = '/';
+
+        /// <summary>
+        /// 当前系统路径分隔符
+        /// </summary>
+        public static readonly char DirSeparator = System.IO.Path.DirectorySeparatorChar;
     }
 }

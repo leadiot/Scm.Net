@@ -30,8 +30,6 @@ namespace Com.Scm
     {
         private static void Main(string[] args)
         {
-            Console.WriteLine("正在启动系统...");
-
             var builder = WebApplication.CreateBuilder(args);
 
             AppUtils.Init(builder.Configuration);
@@ -41,11 +39,12 @@ namespace Com.Scm
                 .ReadFrom.Configuration(builder.Configuration)
                 .CreateLogger();
 
+            LogUtils.Info("正在启动系统...");
+
             var services = builder.Services;
 
-            var kestrelConfig = AppUtils.GetConfig<KestrelConfig>(KestrelConfig.NAME);
-
             // 环境变量
+            LogUtils.Info("正在进行环境配置...");
             var envConfig = AppUtils.GetConfig<EnvConfig>(EnvConfig.NAME) ?? new EnvConfig();
             envConfig.Prepare(builder);
             services.AddSingleton(envConfig);
@@ -54,17 +53,20 @@ namespace Com.Scm
             RenameFile(envConfig, "unit-origin.json", "unit.json");
 
             // Uid配置
+            LogUtils.Info("正在进行Uid配置...");
             RenameFile(envConfig, "uid-origin.db", "uid.db");
             var uidConfig = AppUtils.GetConfig<UidConfig>(UidConfig.NAME);
             UidUtils.InitConfig(uidConfig);
 
             // Sql配置
+            LogUtils.Info("正在进行Sql配置...");
             RenameFile(envConfig, "scm-origin.db", "scm.db");
             var sqlConfig = AppUtils.GetConfig<SqlConfig>(SqlConfig.NAME) ?? new SqlConfig();
             sqlConfig.Prepare(envConfig);
             SqlSetup(services, envConfig, sqlConfig);
 
             // 字体配置
+            LogUtils.Info("正在进行字体配置...");
             FontSetup(services, envConfig);
 
             // 缓存配置
@@ -75,11 +77,12 @@ namespace Com.Scm
             services.SwaggerSetup(swaggerConfig);
 
             // 数据配置
-            var dataConfig = AppUtils.GetConfig<DataConfig>(DataConfig.NAME) ?? new DataConfig();
-            dataConfig.Prepare(builder.Environment);
-            services.AddSingleton(dataConfig);
+            //var dataConfig = AppUtils.GetConfig<DataConfig>(DataConfig.NAME) ?? new DataConfig();
+            //dataConfig.Prepare(builder.Environment);
+            //services.AddSingleton(dataConfig);
 
             // 安全配置
+            LogUtils.Info("正在进行安全配置...");
             var secConfig = AppUtils.GetConfig<SecurityConfig>(SecurityConfig.NAME);
             secConfig.Prepare(builder.Environment);
             services.AddSingleton(secConfig);
@@ -127,6 +130,7 @@ namespace Com.Scm
                 corsConfig.Prepare(envConfig);
             }
 
+            LogUtils.Info("正在进行服务配置...");
             services.AddScoped<IResHolder, ScmResHolder>();
             services.AddScoped<ILogService, ScmLogService>();
             services.AddScoped<IDicService, ScmDicService>();
@@ -197,6 +201,7 @@ namespace Com.Scm
             app.UseRouting();
 
             // 跨域设置
+            LogUtils.Info("正在进行跨域设置...");
             if (corsConfig != null)
             {
                 if (corsConfig.GlobalCors)
@@ -230,6 +235,7 @@ namespace Com.Scm
             app.MapControllers().RequireAuthorization();
             app.MapHub<ScmHub>("/scmhub");
 
+            var kestrelConfig = AppUtils.GetConfig<KestrelConfig>(KestrelConfig.NAME);
             if (kestrelConfig != null)
             {
                 var url = kestrelConfig?.Endpoints?.Http?.Url;
@@ -244,6 +250,8 @@ namespace Com.Scm
             {
                 LogUtils.Info("系统启动完成！");
             }
+
+            LogUtils.Info("===========");
 
             app.Run();
         }
@@ -271,6 +279,8 @@ namespace Com.Scm
         /// <param name="services"></param>
         public static void SqlSetup(IServiceCollection services, EnvConfig envConfig, SqlConfig sqlConfig)
         {
+            //LogUtils.Info("正在初始化数据库...");
+
             var dbType = SqlSugarUtils.GetDbType(sqlConfig.Type);
             SqlSugarScope sugarScope = new SqlSugarScope(new ConnectionConfig()
             {
@@ -323,7 +333,6 @@ namespace Com.Scm
                 };
             });
 
-            LogUtils.Info("正在初始化数据库...");
             var sqlDir = envConfig.GetDataPath("sql");
             IModelHelper dbHelper = new ScmDbHelper();
             dbHelper.Init(sugarScope, sqlDir);
@@ -336,7 +345,7 @@ namespace Com.Scm
             dbHelper = new NasDbHelper();
             dbHelper.Init(sugarScope, sqlDir);
             dbHelper.InitDb();
-            LogUtils.Info("数据库初始化完成！");
+            //LogUtils.Info("数据库初始化完成！");
 
             // 单例注册SqlSugar
             services.AddSingleton<ISqlSugarClient>(sugarScope);
@@ -346,19 +355,10 @@ namespace Com.Scm
 
         public static void FontSetup(IServiceCollection services, EnvConfig envConfig)
         {
+            LogUtils.Info("字体目录：" + envConfig.Fonts);
             ImageEngine.LoadFont(envConfig.Fonts);
-
-            var fontFile = Path.Combine("Fonts", "DejaVuSans.ttf");
-            if (!File.Exists(fontFile))
-            {
-                return;
-            }
-
-            using (var stream = File.OpenRead(fontFile))
-            {
-                ImageEngine.AddFont(stream);
-            }
-            ImageEngine.SetDefaultFontName("DejaVu Sans");
+            LogUtils.Info("默认字体：" + envConfig.DefaultFont);
+            ImageEngine.SetDefaultFontName(envConfig.DefaultFont);
         }
     }
 }

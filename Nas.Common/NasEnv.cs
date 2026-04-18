@@ -1,6 +1,6 @@
 ﻿namespace Com.Scm.Nas
 {
-    public class NasEnv
+    public class NasEnv : ScmEnv
     {
         /// <summary>
         /// 服务路径（公有）
@@ -41,16 +41,6 @@
         /// Nas数据目录
         /// </summary>
         public const string DEF_NAS_DIR = "Nas";
-
-        /// <summary>
-        /// 当前系统路径分隔符
-        /// </summary>
-        public static readonly char DirSeparator = System.IO.Path.DirectorySeparatorChar;
-
-        /// <summary>
-        /// 网络路径分隔符
-        /// </summary>
-        public static readonly char WebSeparator = '/';
 
         /// <summary>
         /// 块文件大小

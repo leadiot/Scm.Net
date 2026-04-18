@@ -42,6 +42,10 @@ namespace Com.Scm.Config
         /// 字体目录，相对于dataDir
         /// </summary>
         public string Fonts { get; set; }
+        /// <summary>
+        /// 默认字体
+        /// </summary>
+        public string DefaultFont { get; set; }
 
         /// <summary>
         /// 语言资源路径
@@ -68,7 +72,7 @@ namespace Com.Scm.Config
         public virtual void Prepare(WebApplicationBuilder builder)
         {
             DataDir = GetPath(builder.Environment.ContentRootPath, DataDir, "data");
-            if (DataDir.EndsWith("\\"))
+            if (DataDir.EndsWith(ScmEnv.DirSeparator))
             {
                 DataDir = DataDir.Substring(0, DataDir.Length - 1);
             }
@@ -82,6 +86,8 @@ namespace Com.Scm.Config
             Logs = GetPath(DataDir, Logs, "logs");
 
             Temp = GetPath(DataDir, Temp, "temp");
+
+            Fonts = GetPath(DataDir, Fonts, "fonts");
 
             ResourcesPath = "Resources";
 
@@ -101,6 +107,7 @@ namespace Com.Scm.Config
             {
                 path = def;
             }
+            path = ScmUtils.ToMachinePath(path);
             if (!Path.IsPathRooted(path))
             {
                 path = Path.Combine(root, path);
@@ -151,7 +158,7 @@ namespace Com.Scm.Config
             }
 
             path = ScmUtils.ToMachinePath(path);
-            if (path[0] == '\\')
+            if (path[0] == ScmEnv.DirSeparator)
             {
                 path = path.Substring(1);
             }
@@ -166,7 +173,7 @@ namespace Com.Scm.Config
 
         public string ToUri(string path)
         {
-            return path.Replace(DataDir, DataUri).Replace("\\", "/");
+            return ScmUtils.ToWebPath(path.Replace(DataDir, DataUri));
         }
 
         #region 文件相关

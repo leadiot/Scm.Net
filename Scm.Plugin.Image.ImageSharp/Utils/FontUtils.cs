@@ -62,8 +62,10 @@ namespace Com.Scm.Utils
         /// </summary>
         public static Font GetFont(string fontFamily, float size, FontStyle style = FontStyle.Regular)
         {
-            if (Collection.TryGet(fontFamily, out var family))
+            if (Collection.TryGet(GetValidFontName(fontFamily), out var family))
+            {
                 return family.CreateFont(size, style);
+            }
 
             // 找不到就用第一个加载的字体兜底
             return Collection.Families.First().CreateFont(size, style);

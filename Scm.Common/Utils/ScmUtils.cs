@@ -133,7 +133,17 @@ namespace Com.Scm.Utils
         /// <returns></returns>
         public static string ToMachinePath(string uri)
         {
-            return uri.Replace('/', Path.DirectorySeparatorChar);
+            return uri.Replace(ScmEnv.WebSeparator, ScmEnv.DirSeparator);
+        }
+
+        /// <summary>
+        /// 转换为Web路径
+        /// </summary>
+        /// <param name="uri"></param>
+        /// <returns></returns>
+        public static string ToWebPath(string uri)
+        {
+            return uri.Replace(ScmEnv.DirSeparator, ScmEnv.WebSeparator);
         }
 
         /// <summary>
@@ -151,9 +161,10 @@ namespace Com.Scm.Utils
 
             if (basePath[basePath.Length - 1] != Path.DirectorySeparatorChar)
             {
-                basePath += Path.DirectorySeparatorChar;
+                basePath += ScmEnv.DirSeparator;
             }
-            return path.Replace(basePath, "/").Replace(Path.DirectorySeparatorChar, '/');
+            basePath = ToWebPath(basePath);
+            return ToWebPath(path).Replace(basePath, ScmEnv.WebSeparator.ToString());
         }
 
         #region 目录操作
@@ -191,7 +202,7 @@ namespace Com.Scm.Utils
             {
                 var folder = new ScmDirInfo();
                 folder.Name = sub.Name;
-                folder.Uri = baseUri + "/" + sub.Name;
+                folder.Uri = baseUri + ScmEnv.WebSeparator + sub.Name;
                 folder.Children = GetFolders(sub, folder.Uri);
                 list.Add(folder);
             }

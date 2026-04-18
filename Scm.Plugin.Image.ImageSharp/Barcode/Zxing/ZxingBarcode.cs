@@ -157,7 +157,8 @@ namespace Com.Scm.Barcode.Zxing
             var tmp = new Image<Rgba32>(image.Width, image.Height);
             tmp.Mutate(x => x.DrawImage(image, new SixLabors.ImageSharp.Point(0, 0), 1.0f));
 
-            var font = SystemFonts.CreateFont(FontUtils.GetValidFontName(fontName), fontSize, FontStyle.Bold);
+            //var font = SystemFonts.CreateFont(FontUtils.GetValidFontName(fontName), fontSize, FontStyle.Bold);
+            var font = FontUtils.GetFont(fontName, fontSize, FontStyle.Bold);
             var option = new TextOptions(font);
             FontRectangle rect = TextMeasurer.MeasureSize(text, option);
             var width = (int)rect.Width;

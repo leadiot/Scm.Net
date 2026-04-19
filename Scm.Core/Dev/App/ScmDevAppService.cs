@@ -71,7 +71,7 @@ namespace Com.Scm.Dev.App
         /// </summary>
         /// <param name="types"></param>
         /// <returns></returns>
-        [HttpGet("{types}")]
+        [HttpGet]
         public async Task<List<ResOptionDvo>> OptionAsync(int types)
         {
             return await _thisRepository.AsQueryable()

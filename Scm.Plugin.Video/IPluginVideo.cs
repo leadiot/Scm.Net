@@ -1,6 +1,6 @@
 ﻿namespace Com.Scm.Plugin.Vedio
 {
-    public interface IPluginVedio : IPlugin
+    public interface IPluginVideo : IPlugin
     {
         bool IsWritableFile(string ext);
 

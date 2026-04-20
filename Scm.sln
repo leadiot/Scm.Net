@@ -71,7 +71,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Scm.Common.Time", "Scm.Comm
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Scm.Plugin.Audio", "Scm.Plugin.Audio\Scm.Plugin.Audio.csproj", "{6B4D7A66-3A5C-46FC-904A-2A7B1FE79F61}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Scm.Plugin.Vedio", "Scm.Plugin.Vedio\Scm.Plugin.Vedio.csproj", "{B25D951A-CB89-4E7E-A801-60F6B8433400}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Scm.Plugin.Video", "Scm.Plugin.Video\Scm.Plugin.Video.csproj", "{B25D951A-CB89-4E7E-A801-60F6B8433400}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Scm.Addon", "Scm.Addon", "{69B8AC8B-DE36-4463-8D20-3E280305EA6E}"
 EndProject

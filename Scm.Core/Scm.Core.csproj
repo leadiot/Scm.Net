@@ -10,13 +10,13 @@
   <ItemGroup>
     <ProjectReference Include="..\Scm.Cache\Scm.Cache.csproj" />
     <ProjectReference Include="..\Scm.Common.Dto\Scm.Common.Dto.csproj" />
-    <ProjectReference Include="..\Scm.Common.Image\Scm.Plugin.Image.csproj" />
     <ProjectReference Include="..\Scm.Common.Log\Scm.Common.Log.csproj" />
     <ProjectReference Include="..\Scm.Common.OS\Scm.Common.Os.csproj" />
     <ProjectReference Include="..\Scm.Common\Scm.Common.csproj" />
     <ProjectReference Include="..\Scm.Dto\Scm.Dto.csproj" />
     <ProjectReference Include="..\Scm.Email\Scm.Email.csproj" />
     <ProjectReference Include="..\Scm.Phone\Scm.Phone.csproj" />
+    <ProjectReference Include="..\Scm.Plugin.Image\Scm.Plugin.Image.csproj" />
     <ProjectReference Include="..\Scm.Server.Aiml\Scm.Server.Aiml.csproj" />
     <ProjectReference Include="..\Scm.Server.Api\Scm.Server.Api.csproj" />
     <ProjectReference Include="..\Scm.Server.Quartz\Scm.Server.Quartz.csproj" />

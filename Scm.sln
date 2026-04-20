@@ -57,7 +57,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Scm.Plugin", "Scm.Plugin", 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Scm.Plugin", "Scm.Plugin\Scm.Plugin.csproj", "{914F4794-EC84-494F-BF1C-67362A3C0039}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Scm.Plugin.Image", "Scm.Common.Image\Scm.Plugin.Image.csproj", "{757702A2-424C-479B-929E-7FFA70CABB3F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Scm.Plugin.Image", "Scm.Plugin.Image\Scm.Plugin.Image.csproj", "{757702A2-424C-479B-929E-7FFA70CABB3F}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Scm.Server.SignalR", "Scm.Server.SignalR\Scm.Server.SignalR.csproj", "{8397AAFB-65FD-459B-90B2-2A8B6E3A64C3}"
 EndProject

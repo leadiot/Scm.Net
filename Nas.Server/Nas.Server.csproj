@@ -9,8 +9,9 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Core" Version="2.3.9" />
-    <PackageReference Include="MiniExcel" Version="1.43.0" />
+    <PackageReference Include="MiniExcel" Version="1.43.1" />
     <PackageReference Include="SqlSugarCore" Version="5.1.4.214" />
+    <PackageReference Include="Microsoft.AspNetCore.SignalR" Version="1.2.9" />
   </ItemGroup>
 
   <ItemGroup>
@@ -23,6 +24,7 @@
     <ProjectReference Include="..\Scm.Dao\Scm.Dao.csproj" />
     <ProjectReference Include="..\Scm.Server.Dao\Scm.Server.Dao.csproj" />
     <ProjectReference Include="..\Scm.Server\Scm.Server.csproj" />
+    <ProjectReference Include="..\Scm.Server.SignalR\Scm.Server.SignalR.csproj" />
   </ItemGroup>
 
   <ItemGroup>

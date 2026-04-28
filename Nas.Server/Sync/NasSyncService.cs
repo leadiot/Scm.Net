@@ -4,8 +4,10 @@ using Com.Scm.Enums;
 using Com.Scm.Filters;
 using Com.Scm.Nas.Cfg;
 using Com.Scm.Nas.Log;
+using Com.Scm.Nas.Msg;
 using Com.Scm.Nas.Res;
 using Com.Scm.Nas.Sync.Dvo;
+using Com.Scm.Nas.Dto.Msg;
 using Com.Scm.Response;
 using Com.Scm.Service;
 using Com.Scm.Token;
@@ -33,11 +35,13 @@ namespace Com.Scm.Nas.Sync
         /// <param name="resHolder"></param>
         public NasSyncService(ISqlSugarClient sqlClient,
             EnvConfig envConfig,
-            IResHolder resHolder)
+            IResHolder resHolder,
+            NasMessageService messageService)
         {
             _SqlClient = sqlClient;
             _EnvConfig = envConfig;
             _ResHolder = resHolder;
+            _MessageService = messageService;
         }
 
         public SyncResult TestAsync()
@@ -477,6 +481,17 @@ namespace Com.Scm.Nas.Sync
 
             LogUtils.Info(TAG_DELETE_FILE, "文档删除完成", dto.path);
             result.SetSuccess(resId, ver);
+            
+            // 发送文件删除消息
+            var message = new NasMessage
+            {
+                Type = NasMessageType.FileOperation,
+                Title = "文件删除",
+                Content = $"文件 {dto.name} 已删除",
+                Path = dto.path
+            };
+            _MessageService.SendMessage(token.user_id, message).Wait();
+            
             return true;
         }
 
@@ -599,6 +614,10 @@ namespace Com.Scm.Nas.Sync
 
             LogUtils.Info(TAG_CREATE_FILE, "目录创建完成", dto.path);
             result.SetSuccess(dirDao.id, dirDao.ver);
+            
+            // 发送目录创建消息
+            await _MessageService.SendFolderChange(token.user_id, dto.path, NasFolderChangeType.Created);
+            
             return true;
         }
 
@@ -643,6 +662,17 @@ namespace Com.Scm.Nas.Sync
 
             LogUtils.Info(TAG_CREATE_FILE, "文档创建完成", dto.path);
             result.SetSuccess(docDao.id, docDao.ver);
+            
+            // 发送文件创建消息
+            var message = new NasMessage
+            {
+                Type = NasMessageType.FileOperation,
+                Title = "文件创建",
+                Content = $"文件 {dto.name} 已创建",
+                Path = dto.path
+            };
+            await _MessageService.SendMessage(token.user_id, message);
+            
             return true;
         }
 
@@ -1769,6 +1799,11 @@ namespace Com.Scm.Nas.Sync
                  .Where(a => a.id == folderId && a.row_status == ScmRowStatusEnum.Enabled)
                  .First();
         }
+
+        private ISqlSugarClient _SqlClient;
+        private EnvConfig _EnvConfig;
+        private IResHolder _ResHolder;
+        private NasMessageService _MessageService;
         #endregion
     }
 }

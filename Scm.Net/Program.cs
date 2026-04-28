@@ -12,6 +12,7 @@ using Com.Scm.Image.ImageSharp;
 using Com.Scm.Login.Otp;
 using Com.Scm.Mapper;
 using Com.Scm.Nas;
+using Com.Scm.Nas.Msg;
 using Com.Scm.Phone.Config;
 using Com.Scm.Quartz;
 using Com.Scm.Quartz.Config;
@@ -165,6 +166,8 @@ namespace Com.Scm
 
             // SignalR
             services.AddSignalR();
+            //// NAS 消息服务
+            //services.AddNasMessageService();
 
             // Mapper
             services.AddMapperProfile();

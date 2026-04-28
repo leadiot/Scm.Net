@@ -39,7 +39,6 @@ namespace Com.Scm.Enums
 
         [Description("字节文件")]
         Byte = 20,
-
         [Description("执行程序")]
         Exe = 21,
         [Description("类库文件")]
@@ -69,6 +68,10 @@ namespace Com.Scm.Enums
         [Description("归档文件")]
         Archive = 60,
 
+        [Description("备份文件")]
+        Backup = 97,
+        [Description("临时文件")]
+        Temp = 98,
         [Description("未知文件")]
         Unknown = 99
     }

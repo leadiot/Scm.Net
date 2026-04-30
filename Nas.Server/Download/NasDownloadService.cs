@@ -62,18 +62,18 @@ namespace Com.Scm.Nas.Download
             // 先保存到数据库，获取自增 ID
             var dao = new NasDownloadDao
             {
-                Url = request.Url,
+                url = request.Url,
                 LinkType = linkType,
-                FileName = fileName,
-                SavePath = saveDir,
-                Threads = Math.Clamp(request.Threads, 1, 16),
-                FtpUser = request.FtpUser,
-                FtpPassword = request.FtpPassword,
-                TotalSize = -1,
-                DownloadedSize = 0,
-                Progress = 0,
-                Status = NasDownloadStatus.Pending,
-                FinishTime = 0
+                file_name = fileName,
+                file_path = saveDir,
+                threads = Math.Clamp(request.Threads, 1, 16),
+                ftp_user = request.FtpUser,
+                ftp_pass = request.FtpPassword,
+                total_size = -1,
+                downloaded_size = 0,
+                progress = 0,
+                status = NasDownloadStatus.Pending,
+                finish_time = 0
             };
             await _thisRepository.InsertAsync(dao);
 
@@ -81,13 +81,13 @@ namespace Com.Scm.Nas.Download
             var task = new NasDownloadTask
             {
                 id = dao.id,
-                Url = dao.Url,
+                Url = dao.url,
                 LinkType = linkType,
                 SaveDir = saveDir,
                 FileName = fileName,
-                Threads = dao.Threads,
-                FtpUser = dao.FtpUser,
-                FtpPassword = dao.FtpPassword,
+                Threads = dao.threads,
+                FtpUser = dao.ftp_user,
+                FtpPassword = dao.ftp_pass,
                 CreateTime = now
             };
 
@@ -144,9 +144,9 @@ namespace Com.Scm.Nas.Download
 
             // 从数据库补充已完成/失败/取消的任务（不在内存中的）
             var dbTasks = _thisRepository.GetList(
-                    d => d.Status == NasDownloadStatus.Completed
-                      || d.Status == NasDownloadStatus.Failed
-                      || d.Status == NasDownloadStatus.Cancelled)
+                    d => d.status == NasDownloadStatus.Completed
+                      || d.status == NasDownloadStatus.Failed
+                      || d.status == NasDownloadStatus.Cancelled)
                 .Where(d => !activeIds.Contains(d.id))
                 .OrderByDescending(d => d.create_time)
                 .Select(MapDaoToDto)
@@ -186,27 +186,27 @@ namespace Com.Scm.Nas.Download
                     NasDownloadStatus.Downloading
                 };
 
-                var daos = _thisRepository.GetList(d => pendingStatuses.Contains(d.Status));
+                var daos = _thisRepository.GetList(d => pendingStatuses.Contains(d.status));
                 foreach (var dao in daos)
                 {
                     var task = new NasDownloadTask
                     {
                         id = dao.id,
-                        Url = dao.Url,
+                        Url = dao.url,
                         LinkType = dao.LinkType,
-                        SaveDir = dao.SavePath,
-                        FileName = dao.FileName,
-                        Threads = dao.Threads,
-                        FtpUser = dao.FtpUser,
-                        FtpPassword = dao.FtpPassword,
-                        TotalSize = dao.TotalSize,
+                        SaveDir = dao.file_path,
+                        FileName = dao.file_name,
+                        Threads = dao.threads,
+                        FtpUser = dao.ftp_user,
+                        FtpPassword = dao.ftp_pass,
+                        TotalSize = dao.total_size,
                         DownloadedSize = 0,  // 重新开始下载
                         Status = NasDownloadStatus.Pending,
                         CreateTime = dao.create_time
                     };
 
                     // 重置数据库状态为 Pending
-                    dao.Status = NasDownloadStatus.Pending;
+                    dao.status = NasDownloadStatus.Pending;
                     dao.PrepareUpdate(0);
                     _thisRepository.Update(dao);
 
@@ -229,12 +229,12 @@ namespace Com.Scm.Nas.Download
                 var dao = _thisRepository.GetById(task.id);
                 if (dao == null) return;
 
-                dao.Status = newStatus;
-                dao.TotalSize = task.TotalSize;
-                dao.DownloadedSize = task.DownloadedSize;
-                dao.Progress = task.Progress;
-                dao.ErrorMessage = task.ErrorMessage;
-                dao.FinishTime = task.FinishTime;
+                dao.status = newStatus;
+                dao.total_size = task.TotalSize;
+                dao.downloaded_size = task.DownloadedSize;
+                dao.progress = task.Progress;
+                dao.message = task.ErrorMessage;
+                dao.finish_time = task.FinishTime;
                 _thisRepository.Update(dao);
             }
             catch (Exception ex)
@@ -251,19 +251,19 @@ namespace Com.Scm.Nas.Download
             return new NasDownloadTaskDto
             {
                 id = task.id,
-                Url = task.Url,
-                LinkType = task.LinkType,
-                FileName = task.FileName,
-                SavePath = task.SaveDir,
-                TotalSize = task.TotalSize,
-                DownloadedSize = task.DownloadedSize,
-                Progress = task.Progress,
-                Speed = task.Speed,
-                Status = task.Status,
-                ErrorMessage = task.ErrorMessage,
+                url = task.Url,
+                link_type = task.LinkType,
+                file_name = task.FileName,
+                file_path = task.SaveDir,
+                total_size = task.TotalSize,
+                downloaded_size = task.DownloadedSize,
+                progress = task.Progress,
+                speed = task.Speed,
+                status = task.Status,
+                message = task.ErrorMessage,
                 create_time = task.CreateTime,
-                FinishTime = task.FinishTime,
-                Threads = task.Threads
+                finish_time = task.FinishTime,
+                threads = task.Threads
             };
         }
 
@@ -275,19 +275,19 @@ namespace Com.Scm.Nas.Download
             return new NasDownloadTaskDto
             {
                 id = dao.id,
-                Url = dao.Url,
-                LinkType = dao.LinkType,
-                FileName = dao.FileName,
-                SavePath = dao.SavePath,
-                TotalSize = dao.TotalSize,
-                DownloadedSize = dao.DownloadedSize,
-                Progress = dao.Progress,
-                Speed = 0,
-                Status = dao.Status,
-                ErrorMessage = dao.ErrorMessage,
+                url = dao.url,
+                link_type = dao.LinkType,
+                file_name = dao.file_name,
+                file_path = dao.file_path,
+                total_size = dao.total_size,
+                downloaded_size = dao.downloaded_size,
+                progress = dao.progress,
+                speed = 0,
+                status = dao.status,
+                message = dao.message,
                 create_time = dao.create_time,
-                FinishTime = dao.FinishTime,
-                Threads = dao.Threads
+                finish_time = dao.finish_time,
+                threads = dao.threads
             };
         }
 

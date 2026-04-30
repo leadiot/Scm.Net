@@ -13,65 +13,65 @@ namespace Com.Scm.Nas.Dto.Download
         /// </summary>
         [Required]
         [StringLength(2048)]
-        public string Url { get; set; }
+        public string url { get; set; }
 
         /// <summary>
         /// 链接类型
         /// </summary>
-        public NasDownloadLinkType LinkType { get; set; }
+        public NasDownloadLinkType link_type { get; set; }
 
         /// <summary>
         /// 保存文件名
         /// </summary>
         [Required]
         [StringLength(256)]
-        public string FileName { get; set; }
+        public string file_name { get; set; }
 
         /// <summary>
         /// 保存目录路径
         /// </summary>
         [Required]
         [StringLength(256)]
-        public string SavePath { get; set; }
+        public string file_path { get; set; }
 
         /// <summary>
         /// 文件总大小（字节，-1 表示未知）
         /// </summary>
-        public long TotalSize { get; set; }
+        public long total_size { get; set; }
 
         /// <summary>
         /// 已下载大小（字节）
         /// </summary>
-        public long DownloadedSize { get; set; }
+        public long downloaded_size { get; set; }
 
         /// <summary>
         /// 下载进度（0~100）
         /// </summary>
-        public double Progress { get; set; }
+        public double progress { get; set; }
 
         /// <summary>
         /// 当前速度（字节/秒）
         /// </summary>
-        public long Speed { get; set; }
+        public long speed { get; set; }
 
         /// <summary>
         /// 任务状态
         /// </summary>
-        public NasDownloadStatus Status { get; set; }
+        public NasDownloadStatus status { get; set; }
 
         /// <summary>
         /// 错误信息
         /// </summary>
-        public string ErrorMessage { get; set; }
+        public string message { get; set; }
 
         /// <summary>
         /// 完成时间
         /// </summary>
-        public long FinishTime { get; set; }
+        public long finish_time { get; set; }
 
         /// <summary>
         /// 并发线程数
         /// </summary>
-        public int Threads { get; set; }
+        public int threads { get; set; }
     }
 }

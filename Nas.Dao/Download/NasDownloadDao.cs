@@ -4,7 +4,10 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Com.Scm.Nas.Download
 {
-    [SugarTable("nas_download")]
+    /// <summary>
+    /// 文件下载
+    /// </summary>
+    [SugarTable("nas_fdc")]
     public class NasDownloadDao : ScmDataDao
     {
         /// <summary>
@@ -13,7 +16,7 @@ namespace Com.Scm.Nas.Download
         [Required]
         [StringLength(2048)]
         [SugarColumn(Length = 2048)]
-        public string Url { get; set; }
+        public string url { get; set; }
 
         /// <summary>
         /// 链接类型
@@ -26,7 +29,7 @@ namespace Com.Scm.Nas.Download
         [Required]
         [StringLength(256)]
         [SugarColumn(Length = 256)]
-        public string FileName { get; set; }
+        public string file_name { get; set; }
 
         /// <summary>
         /// 保存目录路径
@@ -34,59 +37,59 @@ namespace Com.Scm.Nas.Download
         [Required]
         [StringLength(512)]
         [SugarColumn(Length = 512)]
-        public string SavePath { get; set; }
+        public string file_path { get; set; }
 
         /// <summary>
         /// 并发线程数
         /// </summary>
-        public int Threads { get; set; } = 4;
+        public int threads { get; set; } = 4;
 
         /// <summary>
         /// FTP 用户名（可选）
         /// </summary>
         [StringLength(128)]
         [SugarColumn(Length = 128, IsNullable = true)]
-        public string FtpUser { get; set; }
+        public string ftp_user { get; set; }
 
         /// <summary>
         /// FTP 密码（可选）
         /// </summary>
         [StringLength(256)]
         [SugarColumn(Length = 256, IsNullable = true)]
-        public string FtpPassword { get; set; }
+        public string ftp_pass { get; set; }
 
         /// <summary>
         /// 文件总大小（字节，-1 表示未知）
         /// </summary>
-        public long TotalSize { get; set; } = -1;
+        public long total_size { get; set; } = -1;
 
         /// <summary>
         /// 已下载大小（字节）
         /// </summary>
-        public long DownloadedSize { get; set; }
+        public long downloaded_size { get; set; }
 
         /// <summary>
         /// 下载进度（0~100）
         /// </summary>
-        public double Progress { get; set; }
+        public double progress { get; set; }
 
         /// <summary>
         /// 任务状态
         /// </summary>
         [StringLength(32)]
         [SugarColumn(Length = 32)]
-        public NasDownloadStatus Status { get; set; }
+        public NasDownloadStatus status { get; set; }
 
         /// <summary>
         /// 错误信息
         /// </summary>
         [StringLength(512)]
         [SugarColumn(Length = 512, IsNullable = true)]
-        public string ErrorMessage { get; set; }
+        public string message { get; set; }
 
         /// <summary>
         /// 完成时间
         /// </summary>
-        public long FinishTime { get; set; }
+        public long finish_time { get; set; }
     }
 }

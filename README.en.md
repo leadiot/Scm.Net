@@ -130,13 +130,13 @@ npm install
 npm run dev
 ```
 
-For detailed setup instructions, see the [Environment Setup Guide](wikis/%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA%E6%95%99%E7%A8%8B).
+For detailed setup instructions, see the [Environment Setup Guide](https://gitee.com/openscm/scm.net/wikis/%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA%E6%95%99%E7%A8%8B).
 
 ## Demo
 
 [Live Demo](http://www.c-scm.net)
 
-> For demo credentials, please visit the [demo instructions page](wikis/%E6%BC%94%E7%A4%BA%E8%AF%B4%E6%98%8E).
+> For demo credentials, please visit the [demo instructions page](https://gitee.com/openscm/scm.net/wikis).
 
 ## Browser Support
 
@@ -157,7 +157,7 @@ All modern browsers are supported (IE is **not** supported):
 
 ## FAQ
 
-[View FAQ](wikis/%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98)
+[View FAQ](https://gitee.com/openscm/scm.net/wikis/%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98)
 
 ## Contributing
 

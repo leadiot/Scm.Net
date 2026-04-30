@@ -102,7 +102,7 @@
 5. 可扩展为**多租户**、**多组织架构**应用；
 6. 完整的 Swagger 接口文档支持，开箱即用。
 
-[查看完整文档](wikis/%E9%A1%B9%E7%9B%AE%E4%BB%8B%E7%BB%8D)
+[查看完整文档](https://gitee.com/openscm/scm.net/wikis/%E9%A1%B9%E7%9B%AE%E4%BB%8B%E7%BB%8D)
 
 ## 快速开始
 
@@ -153,13 +153,13 @@ npm install
 npm run dev
 ```
 
-详细说明请参考：[环境搭建教程](wikis/%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA%E6%95%99%E7%A8%8B) | [数据库配置说明](wikis/%E6%95%B0%E6%8D%AE%E5%BA%93%E9%85%8D%E7%BD%AE)
+详细说明请参考：[环境搭建教程](https://gitee.com/openscm/scm.net/wikis/%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA%E6%95%99%E7%A8%8B) | [数据库配置说明](https://gitee.com/openscm/scm.net/wikis/%E6%95%B0%E6%8D%AE%E5%BA%93%E9%85%8D%E7%BD%AE)
 
 ## 演示地址
 
 【登录地址】[点击访问](http://www.c-scm.net)
 
-> 演示账号请访问 [演示说明页](/wikis/%E6%BC%94%E7%A4%BA%E8%AF%B4%E6%98%8E) 获取。
+> 演示账号请访问 [演示说明页](https://gitee.com/openscm/scm.net/wikis/https://gitee.com/leadiot/scm.net/wikis/%E6%BC%94%E7%A4%BA%E8%AF%B4%E6%98%8E) 获取。
 
 ## 浏览器支持
 
@@ -187,7 +187,7 @@ npm run dev
 
 ## 常见问题
 
-[查看常见问题](wikis/%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98)
+[查看常见问题](https://gitee.com/openscm/scm.net/wikis/%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98)
 
 ## 开源协议
 
@@ -223,7 +223,7 @@ npm run dev
 ![用户首页](screenshots/mp-home.jpg)
 ![系统菜单](screenshots/mp-menu.jpg)
 
-更多截图请访问 [项目文档](wikis)。
+更多截图请访问 [项目文档](https://gitee.com/openscm/scm.net/wikis)。
 
 ## 特别鸣谢
 

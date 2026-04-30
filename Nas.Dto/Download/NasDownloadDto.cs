@@ -57,7 +57,7 @@ namespace Com.Scm.Nas.Dto.Download
         /// <summary>
         /// 任务状态
         /// </summary>
-        public string Status { get; set; }
+        public NasDownloadStatus Status { get; set; }
 
         /// <summary>
         /// 错误信息

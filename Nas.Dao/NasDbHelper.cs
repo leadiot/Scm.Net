@@ -100,8 +100,8 @@ namespace Com.Scm.Nas
             roleAdminList.Add(new RoleAuthDao { role_id = roleId, auth_id = nasResPublicDao.id, types = ScmRoleAuthTypesEnum.RoleMenu });
             //var nasResSecretDao = CreateMenu(2008533412662619628, "nas-res-secret", "密盘", nasResDao.id, 3, 3, "/nas/res/secret", "nas/res/secret", "");
             //roleAdminList.Add(new RoleAuthDao { role_id = roleId, auth_id = nasResSecretDao.id, types = ScmRoleAuthTypesEnum.RoleMenu });
-            //var nasResDownDao = CreateMenu(2008531097767514112, "nas-res-down", "下载", nasResDao.id, 3, 4, "/nas/res/down", "nas/res/download", "");
-            //roleAdminList.Add(new RoleAuthDao { role_id = roleId, auth_id = nasResDownDao.id, types = ScmRoleAuthTypesEnum.RoleMenu });
+            var nasResDownDao = CreateMenu(2008531097767514112, "nas-res-down", "下载", nasResDao.id, 3, 4, "/nas/res/down", "nas/res/download", "");
+            roleAdminList.Add(new RoleAuthDao { role_id = roleId, auth_id = nasResDownDao.id, types = ScmRoleAuthTypesEnum.RoleMenu });
             //var nasResAppsDao = CreateMenu(2008531271671746560, "nas-res-apps", "应用", nasResDao.id, 3, 5, "/nas/res/apps", "nas/res/apps", "");
             //roleAdminList.Add(new RoleAuthDao { role_id = roleId, auth_id = nasResAppsDao.id, types = ScmRoleAuthTypesEnum.RoleMenu });
 

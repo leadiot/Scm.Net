@@ -1,4 +1,6 @@
-﻿namespace Com.Scm.Nas.Download.Dvo
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace Com.Scm.Nas.Download.Dvo
 {
     /// <summary>
     /// 添加下载任务请求
@@ -8,16 +10,20 @@
         /// <summary>
         /// 下载链接（支持 http/https/ftp/file/nas:/ 协议）
         /// </summary>
+        [Required]
+        [StringLength(2048)]
         public string Url { get; set; }
 
         /// <summary>
         /// 保存到 NAS 的目标目录路径（留空则存入 /Downloads）
         /// </summary>
+        [StringLength(256)]
         public string SavePath { get; set; }
 
         /// <summary>
         /// 保存文件名（留空则从 URL 自动推断）
         /// </summary>
+        [StringLength(256)]
         public string SaveName { get; set; }
 
         /// <summary>

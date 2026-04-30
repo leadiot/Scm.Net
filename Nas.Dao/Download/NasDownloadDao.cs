@@ -32,14 +32,33 @@ namespace Com.Scm.Nas.Download
         /// 保存目录路径
         /// </summary>
         [Required]
-        [StringLength(256)]
-        [SugarColumn(Length = 256)]
+        [StringLength(512)]
+        [SugarColumn(Length = 512)]
         public string SavePath { get; set; }
+
+        /// <summary>
+        /// 并发线程数
+        /// </summary>
+        public int Threads { get; set; } = 4;
+
+        /// <summary>
+        /// FTP 用户名（可选）
+        /// </summary>
+        [StringLength(128)]
+        [SugarColumn(Length = 128, IsNullable = true)]
+        public string FtpUser { get; set; }
+
+        /// <summary>
+        /// FTP 密码（可选）
+        /// </summary>
+        [StringLength(256)]
+        [SugarColumn(Length = 256, IsNullable = true)]
+        public string FtpPassword { get; set; }
 
         /// <summary>
         /// 文件总大小（字节，-1 表示未知）
         /// </summary>
-        public long TotalSize { get; set; }
+        public long TotalSize { get; set; } = -1;
 
         /// <summary>
         /// 已下载大小（字节）
@@ -52,18 +71,17 @@ namespace Com.Scm.Nas.Download
         public double Progress { get; set; }
 
         /// <summary>
-        /// 当前速度（字节/秒）
-        /// </summary>
-        public long Speed { get; set; }
-
-        /// <summary>
         /// 任务状态
         /// </summary>
-        public string Status { get; set; }
+        [StringLength(32)]
+        [SugarColumn(Length = 32)]
+        public NasDownloadStatus Status { get; set; }
 
         /// <summary>
         /// 错误信息
         /// </summary>
+        [StringLength(512)]
+        [SugarColumn(Length = 512, IsNullable = true)]
         public string ErrorMessage { get; set; }
 
         /// <summary>

@@ -105,6 +105,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nas.Dto", "Nas.Dto\Nas.Dto.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nas.Server", "Nas.Server\Nas.Server.csproj", "{5ABF5FDC-7643-D85A-9C1B-2C2052A486C2}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Scm.Server.MQTT", "Scm.Server.MQTT\Scm.Server.MQTT.csproj", "{D6161767-059E-4DEA-968E-3F920DB01FAD}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -279,6 +281,10 @@ Global
 		{5ABF5FDC-7643-D85A-9C1B-2C2052A486C2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5ABF5FDC-7643-D85A-9C1B-2C2052A486C2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5ABF5FDC-7643-D85A-9C1B-2C2052A486C2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D6161767-059E-4DEA-968E-3F920DB01FAD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D6161767-059E-4DEA-968E-3F920DB01FAD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D6161767-059E-4DEA-968E-3F920DB01FAD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D6161767-059E-4DEA-968E-3F920DB01FAD}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -326,6 +332,7 @@ Global
 		{27139ED9-6BF7-8D14-A60A-F4D63A799946} = {625CF152-5C5C-4151-81D2-924C8BB78F70}
 		{54C1E697-DBF4-2187-DDBB-A2B2F254CAA4} = {625CF152-5C5C-4151-81D2-924C8BB78F70}
 		{5ABF5FDC-7643-D85A-9C1B-2C2052A486C2} = {625CF152-5C5C-4151-81D2-924C8BB78F70}
+		{D6161767-059E-4DEA-968E-3F920DB01FAD} = {F31CAB49-534E-4B14-AE02-8F99D01B6DB5}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {E3837A3D-CB67-4767-B922-BCB491FA6C81}

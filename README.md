@@ -159,7 +159,7 @@ npm run dev
 
 【登录地址】[点击访问](http://www.c-scm.net)
 
-> 演示账号请访问 [演示说明页](https://gitee.com/openscm/scm.net/wikis/https://gitee.com/leadiot/scm.net/wikis/%E6%BC%94%E7%A4%BA%E8%AF%B4%E6%98%8E) 获取。
+> 演示账号请访问 [演示说明页](https://gitee.com/leadiot/scm.net/wikis/%E6%BC%94%E7%A4%BA%E8%AF%B4%E6%98%8E) 获取。
 
 ## 浏览器支持
 

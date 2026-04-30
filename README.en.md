@@ -136,7 +136,7 @@ For detailed setup instructions, see the [Environment Setup Guide](https://gitee
 
 [Live Demo](http://www.c-scm.net)
 
-> For demo credentials, please visit the [demo instructions page](https://gitee.com/openscm/scm.net/wikis).
+> For demo credentials, please visit the [demo instructions page](https://gitee.com/leadiot/scm.net/wikis/%E6%BC%94%E7%A4%BA%E8%AF%B4%E6%98%8E).
 
 ## Browser Support
 

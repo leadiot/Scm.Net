@@ -13,7 +13,7 @@ namespace Com.Scm.Nas.Download.Strategy
 
         public async Task DownloadAsync(NasDownloadTask task, CancellationToken cancellationToken)
         {
-            Directory.CreateDirectory(task.SaveDir);
+            Directory.CreateDirectory(task.FilePath);
 
             // 先获取文件大小
             try
@@ -47,7 +47,7 @@ namespace Com.Scm.Nas.Download.Strategy
                 req.BeginGetResponse, req.EndGetResponse, null);
 
             using var ftpStream = resp.GetResponseStream();
-            using var fileStream = new FileStream(task.FullSavePath, FileMode.Create, FileAccess.Write, FileShare.None, 81920, true);
+            using var fileStream = new FileStream(task.FullPath, FileMode.Create, FileAccess.Write, FileShare.None, 81920, true);
 
             var buffer = new byte[81920];
             int bytesRead;

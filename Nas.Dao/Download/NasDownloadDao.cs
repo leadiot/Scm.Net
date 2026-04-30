@@ -21,7 +21,7 @@ namespace Com.Scm.Nas.Download
         /// <summary>
         /// 链接类型
         /// </summary>
-        public NasDownloadLinkType LinkType { get; set; }
+        public NasDownloadLinkType link_type { get; set; }
 
         /// <summary>
         /// 保存文件名

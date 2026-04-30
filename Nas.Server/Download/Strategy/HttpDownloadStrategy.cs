@@ -20,7 +20,7 @@ namespace Com.Scm.Nas.Download.Strategy
 
         public async Task DownloadAsync(NasDownloadTask task, CancellationToken cancellationToken)
         {
-            Directory.CreateDirectory(task.SaveDir);
+            Directory.CreateDirectory(task.FilePath);
 
             // 探测文件大小及是否支持 Range
             long fileSize = -1;
@@ -73,7 +73,7 @@ namespace Com.Scm.Nas.Download.Strategy
                 int idx = i;
                 long from = idx * chunkSize;
                 long to = (idx == threads - 1) ? fileSize - 1 : from + chunkSize - 1;
-                tempFiles[idx] = task.FullSavePath + $".part{idx}";
+                tempFiles[idx] = task.FullPath + $".part{idx}";
 
                 downloadTasks[idx] = DownloadChunkAsync(task.Url, from, to, tempFiles[idx],
                     bytes =>
@@ -87,7 +87,7 @@ namespace Com.Scm.Nas.Download.Strategy
             await Task.WhenAll(downloadTasks);
 
             // 合并分片
-            await MergeChunksAsync(tempFiles, task.FullSavePath);
+            await MergeChunksAsync(tempFiles, task.FullPath);
         }
 
         /// <summary>
@@ -147,7 +147,7 @@ namespace Com.Scm.Nas.Download.Strategy
             }
 
             using var stream = await response.Content.ReadAsStreamAsync(cancellationToken);
-            using var fileStream = new FileStream(task.FullSavePath, FileMode.Create, FileAccess.Write, FileShare.None, 81920, true);
+            using var fileStream = new FileStream(task.FullPath, FileMode.Create, FileAccess.Write, FileShare.None, 81920, true);
 
             var buffer = new byte[81920];
             int bytesRead;

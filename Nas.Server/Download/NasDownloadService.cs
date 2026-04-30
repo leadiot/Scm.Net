@@ -29,10 +29,12 @@ namespace Com.Scm.Nas.Download
             _EnvConfig = envConfig;
             _thisRepository = repository;
             _defaultSaveRoot = _EnvConfig.GetDataPath(NasEnv.PathDownloads);
-            _manager = new NasDownloadManager { MaxConcurrent = maxConcurrent };
-
-            // 注册状态变更回调，同步到数据库
-            _manager.OnStatusChanged = OnTaskStatusChanged;
+            _manager = new NasDownloadManager
+            {
+                MaxConcurrent = maxConcurrent,
+                // 注册状态变更回调，同步到数据库
+                OnStatusChanged = OnTaskStatusChanged
+            };
 
             // 从数据库恢复未完成任务
             RestoreTasksFromDb();
@@ -63,7 +65,7 @@ namespace Com.Scm.Nas.Download
             var dao = new NasDownloadDao
             {
                 url = request.Url,
-                LinkType = linkType,
+                link_type = linkType,
                 file_name = fileName,
                 file_path = saveDir,
                 threads = Math.Clamp(request.Threads, 1, 16),
@@ -83,7 +85,7 @@ namespace Com.Scm.Nas.Download
                 id = dao.id,
                 Url = dao.url,
                 LinkType = linkType,
-                SaveDir = saveDir,
+                FilePath = saveDir,
                 FileName = fileName,
                 Threads = dao.threads,
                 FtpUser = dao.ftp_user,
@@ -193,8 +195,8 @@ namespace Com.Scm.Nas.Download
                     {
                         id = dao.id,
                         Url = dao.url,
-                        LinkType = dao.LinkType,
-                        SaveDir = dao.file_path,
+                        LinkType = dao.link_type,
+                        FilePath = dao.file_path,
                         FileName = dao.file_name,
                         Threads = dao.threads,
                         FtpUser = dao.ftp_user,
@@ -254,7 +256,7 @@ namespace Com.Scm.Nas.Download
                 url = task.Url,
                 link_type = task.LinkType,
                 file_name = task.FileName,
-                file_path = task.SaveDir,
+                file_path = task.FilePath,
                 total_size = task.TotalSize,
                 downloaded_size = task.DownloadedSize,
                 progress = task.Progress,
@@ -276,7 +278,7 @@ namespace Com.Scm.Nas.Download
             {
                 id = dao.id,
                 url = dao.url,
-                link_type = dao.LinkType,
+                link_type = dao.link_type,
                 file_name = dao.file_name,
                 file_path = dao.file_path,
                 total_size = dao.total_size,

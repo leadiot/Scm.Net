@@ -228,7 +228,7 @@ namespace Com.Scm.Nas.Download
         {
             try
             {
-                var dir = task.SaveDir;
+                var dir = task.FilePath;
                 if (!Directory.Exists(dir)) return;
                 var prefix = task.FileName + ".part";
                 foreach (var f in Directory.GetFiles(dir, prefix + "*"))

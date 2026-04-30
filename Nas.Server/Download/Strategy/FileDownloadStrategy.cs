@@ -10,7 +10,7 @@ namespace Com.Scm.Nas.Download.Strategy
 
         public async Task DownloadAsync(NasDownloadTask task, CancellationToken cancellationToken)
         {
-            Directory.CreateDirectory(task.SaveDir);
+            Directory.CreateDirectory(task.FilePath);
 
             // 规范化源路径（去除 file:// 前缀）
             var sourcePath = task.Url;
@@ -28,7 +28,7 @@ namespace Com.Scm.Nas.Download.Strategy
             task.TotalSize = fileInfo.Length;
 
             using var sourceStream = new FileStream(sourcePath, FileMode.Open, FileAccess.Read, FileShare.Read, 81920, true);
-            using var destStream = new FileStream(task.FullSavePath, FileMode.Create, FileAccess.Write, FileShare.None, 81920, true);
+            using var destStream = new FileStream(task.FullPath, FileMode.Create, FileAccess.Write, FileShare.None, 81920, true);
 
             var buffer = new byte[81920];
             int bytesRead;

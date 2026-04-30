@@ -23,7 +23,7 @@ namespace Com.Scm.Nas.Download
         /// <summary>
         /// 保存目录（本地物理路径）
         /// </summary>
-        public string SaveDir { get; set; }
+        public string FilePath { get; set; }
 
         /// <summary>
         /// 保存文件名
@@ -33,7 +33,7 @@ namespace Com.Scm.Nas.Download
         /// <summary>
         /// 完整保存路径
         /// </summary>
-        public string FullSavePath => Path.Combine(SaveDir, FileName);
+        public string FullPath => Path.Combine(FilePath, FileName);
 
         /// <summary>
         /// 并发线程数

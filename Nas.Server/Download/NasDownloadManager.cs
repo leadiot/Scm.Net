@@ -87,6 +87,8 @@ namespace Com.Scm.Nas.Download
 
             task.IsPauseRequested = false;
             task.Handle = ScmHandleEnum.Doing;
+            OnStatusChanged?.Invoke(task, task.Handle, task.Result);
+
             _ = RunTaskAsync(task);
             return true;
         }

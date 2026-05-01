@@ -5,6 +5,7 @@ using Com.Scm.Nas.Download.Dvo;
 using Com.Scm.Nas.Dto.Download;
 using Com.Scm.Service;
 using Com.Scm.Utils;
+using Microsoft.AspNetCore.Mvc;
 
 namespace Com.Scm.Nas.Download
 {
@@ -134,9 +135,10 @@ namespace Com.Scm.Nas.Download
         /// <summary>
         /// 恢复已暂停的下载任务
         /// </summary>
-        public bool Resume(long taskId)
+        [HttpGet("{id}")]
+        public bool Resume(long id)
         {
-            return _manager.Resume(taskId);
+            return _manager.Resume(id);
         }
 
         public async Task<int> RemoveAsync(List<long> ids)

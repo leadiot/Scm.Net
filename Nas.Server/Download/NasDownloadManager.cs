@@ -1,3 +1,4 @@
+using Com.Scm.Enums;
 using Com.Scm.Nas.Download.Strategy;
 using Com.Scm.Utils;
 using System.Collections.Concurrent;
@@ -18,7 +19,7 @@ namespace Com.Scm.Nas.Download
         /// <summary>
         /// 任务状态变更回调（任务、旧状态、新状态），用于持久化
         /// </summary>
-        public Action<NasDownloadTask, NasDownloadStatus, NasDownloadStatus> OnStatusChanged { get; set; }
+        public Action<NasDownloadTask, ScmHandleEnum, ScmResultEnum> OnStatusChanged { get; set; }
 
         private readonly ConcurrentDictionary<long, NasDownloadTask> _tasks = new();
         private readonly Dictionary<NasDownloadLinkType, IDownloadStrategy> _strategies = new();
@@ -66,13 +67,13 @@ namespace Com.Scm.Nas.Download
         public bool Pause(long taskId)
         {
             if (!_tasks.TryGetValue(taskId, out var task)) return false;
-            if (task.Status != NasDownloadStatus.Downloading) return false;
+            if (task.Handle != ScmHandleEnum.Doing) return false;
 
-            var oldStatus = task.Status;
+            var oldStatus = task.Handle;
             task.IsPauseRequested = true;
             task.Cts?.Cancel();
-            task.Status = NasDownloadStatus.Paused;
-            OnStatusChanged?.Invoke(task, oldStatus, task.Status);
+            task.Handle = ScmHandleEnum.Pause;
+            OnStatusChanged?.Invoke(task, task.Handle, task.Result);
             return true;
         }
 
@@ -82,10 +83,10 @@ namespace Com.Scm.Nas.Download
         public bool Resume(long taskId)
         {
             if (!_tasks.TryGetValue(taskId, out var task)) return false;
-            if (task.Status != NasDownloadStatus.Paused) return false;
+            if (task.Handle != ScmHandleEnum.Pause) return false;
 
             task.IsPauseRequested = false;
-            task.Status = NasDownloadStatus.Pending;
+            task.Handle = ScmHandleEnum.Doing;
             _ = RunTaskAsync(task);
             return true;
         }
@@ -95,13 +96,16 @@ namespace Com.Scm.Nas.Download
         /// </summary>
         public bool Remove(long taskId)
         {
-            if (!_tasks.TryGetValue(taskId, out var task)) return false;
+            if (!_tasks.TryGetValue(taskId, out var task))
+            {
+                return false;
+            }
 
-            var oldStatus = task.Status;
+            //var oldStatus = task.Handle;
             task.Cts?.Cancel();
-            task.Status = NasDownloadStatus.Cancelled;
+            task.Handle = ScmHandleEnum.Done;
             _tasks.TryRemove(taskId, out _);
-            OnStatusChanged?.Invoke(task, oldStatus, task.Status);
+            //OnStatusChanged?.Invoke(task, task.Handle, task.Result);
 
             // 清理临时分片文件
             CleanupTempFiles(task);
@@ -133,10 +137,13 @@ namespace Com.Scm.Nas.Download
             await _semaphore.WaitAsync();
             try
             {
-                if (task.Status == NasDownloadStatus.Cancelled) return;
+                if (task.Handle == ScmHandleEnum.Done)
+                {
+                    return;
+                }
 
                 task.Cts = new CancellationTokenSource();
-                task.Status = NasDownloadStatus.Downloading;
+                task.Handle = ScmHandleEnum.Doing;
                 task.SpeedSnapshotTime = DateTime.Now;
                 task.SpeedSnapshotBytes = task.DownloadedSize;
 
@@ -149,29 +156,32 @@ namespace Com.Scm.Nas.Download
 
                 if (!task.IsPauseRequested)
                 {
-                    var oldStatus = task.Status;
-                    task.Status = NasDownloadStatus.Completed;
+                    var oldStatus = task.Handle;
+                    task.Handle = ScmHandleEnum.Done;
+                    task.Result = ScmResultEnum.Success;
                     task.FinishTime = TimeUtils.GetUnixTime();
                     task.Speed = 0;
-                    OnStatusChanged?.Invoke(task, oldStatus, task.Status);
+                    OnStatusChanged?.Invoke(task, task.Handle, task.Result);
                 }
             }
             catch (OperationCanceledException)
             {
                 if (!task.IsPauseRequested)
                 {
-                    var oldStatus = task.Status;
-                    task.Status = NasDownloadStatus.Cancelled;
-                    OnStatusChanged?.Invoke(task, oldStatus, task.Status);
+                    var oldStatus = task.Handle;
+                    task.Handle = ScmHandleEnum.Done;
+                    task.Result = ScmResultEnum.Failure;
+                    OnStatusChanged?.Invoke(task, task.Handle, task.Result);
                 }
             }
             catch (Exception ex)
             {
-                var oldStatus = task.Status;
-                task.Status = NasDownloadStatus.Failed;
+                var oldStatus = task.Handle;
+                task.Handle = ScmHandleEnum.Done;
+                task.Result = ScmResultEnum.Failure;
                 task.ErrorMessage = ex.Message;
                 task.Speed = 0;
-                OnStatusChanged?.Invoke(task, oldStatus, task.Status);
+                OnStatusChanged?.Invoke(task, task.Handle, task.Result);
                 Console.WriteLine($"[NasDownload] 任务 {task.id} 下载失败: {ex.Message}");
             }
             finally

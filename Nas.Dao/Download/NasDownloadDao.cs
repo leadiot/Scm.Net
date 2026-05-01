@@ -1,4 +1,5 @@
-﻿using Com.Scm.Dao;
+﻿using Com.Scm.Dao.User;
+using Com.Scm.Enums;
 using SqlSugar;
 using System.ComponentModel.DataAnnotations;
 
@@ -8,7 +9,7 @@ namespace Com.Scm.Nas.Download
     /// 文件下载
     /// </summary>
     [SugarTable("nas_fdc")]
-    public class NasDownloadDao : ScmDataDao
+    public class NasDownloadDao : ScmUserDataDao
     {
         /// <summary>
         /// 原始下载链接
@@ -76,9 +77,12 @@ namespace Com.Scm.Nas.Download
         /// <summary>
         /// 任务状态
         /// </summary>
-        [StringLength(32)]
-        [SugarColumn(Length = 32)]
-        public NasDownloadStatus status { get; set; }
+        public ScmHandleEnum handle { get; set; }
+
+        /// <summary>
+        /// 执行结果
+        /// </summary>
+        public ScmResultEnum result { get; set; }
 
         /// <summary>
         /// 错误信息

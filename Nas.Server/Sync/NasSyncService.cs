@@ -1,13 +1,13 @@
-﻿﻿using Com.Scm.Config;
+﻿﻿﻿﻿using Com.Scm.Config;
 using Com.Scm.Dto;
 using Com.Scm.Enums;
 using Com.Scm.Filters;
 using Com.Scm.Nas.Cfg;
+using Com.Scm.Nas.Dto.Msg;
 using Com.Scm.Nas.Log;
 using Com.Scm.Nas.Msg;
 using Com.Scm.Nas.Res;
 using Com.Scm.Nas.Sync.Dvo;
-using Com.Scm.Nas.Dto.Msg;
 using Com.Scm.Response;
 using Com.Scm.Service;
 using Com.Scm.Token;
@@ -1800,9 +1800,6 @@ namespace Com.Scm.Nas.Sync
                  .First();
         }
 
-        private ISqlSugarClient _SqlClient;
-        private EnvConfig _EnvConfig;
-        private IResHolder _ResHolder;
         private NasMessageService _MessageService;
         #endregion
     }

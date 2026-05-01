@@ -1,4 +1,5 @@
 using Com.Scm.Dto;
+using Com.Scm.Enums;
 using System.ComponentModel.DataAnnotations;
 
 namespace Com.Scm.Nas.Dto.Download
@@ -6,7 +7,7 @@ namespace Com.Scm.Nas.Dto.Download
     /// <summary>
     /// 下载任务信息 DTO
     /// </summary>
-    public class NasDownloadTaskDto : ScmDataDto
+    public class NasDownloadDto : ScmDataDto
     {
         /// <summary>
         /// 原始下载链接
@@ -57,7 +58,9 @@ namespace Com.Scm.Nas.Dto.Download
         /// <summary>
         /// 任务状态
         /// </summary>
-        public NasDownloadStatus status { get; set; }
+        public ScmHandleEnum handle { get; set; }
+
+        public ScmResultEnum result { get; set; }
 
         /// <summary>
         /// 错误信息

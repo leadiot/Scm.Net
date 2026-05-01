@@ -10,7 +10,7 @@ namespace Com.Scm.Nas.Download.Dvo
         /// <summary>
         /// 任务列表
         /// </summary>
-        public List<NasDownloadTaskDto> Tasks { get; set; } = new();
+        public List<NasDownloadDto> Tasks { get; set; } = new();
 
         /// <summary>
         /// 总数

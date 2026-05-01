@@ -1,3 +1,5 @@
+using Com.Scm.Enums;
+
 namespace Com.Scm.Nas.Download
 {
     /// <summary>
@@ -53,7 +55,9 @@ namespace Com.Scm.Nas.Download
         /// <summary>
         /// 任务状态
         /// </summary>
-        public NasDownloadStatus Status { get; set; } = NasDownloadStatus.Pending;
+        public ScmHandleEnum Handle { get; set; } = ScmHandleEnum.Todo;
+
+        public ScmResultEnum Result { get; set; }
 
         /// <summary>
         /// 文件总大小（字节，-1 表示未知）

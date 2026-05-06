@@ -38,7 +38,7 @@ namespace Com.Scm.Nas
             InitDdl(verDao);
 
             // 权限处理
-            InitData();
+            InitData(verDao);
 
             // DML处理
             InitDml(verDao);
@@ -52,19 +52,24 @@ namespace Com.Scm.Nas
 
         protected override void InitDdl(ScmVerDao verDao)
         {
+            // 版本较新，不执行DDL
+            if (verDao.ver >= VER)
+            {
+                return;
+            }
+
             var ddlFile = Path.Combine(_SqlDir, "ddl-nas.sql");
             ExecuteSql(ddlFile, verDao.ver);
         }
 
-        protected override void InitDml(ScmVerDao verDao)
+        protected override bool InitData(ScmVerDao verDao)
         {
-            var dmlFile = Path.Combine(_SqlDir, "dml-nas.sql");
-            ExecuteSql(dmlFile, verDao.ver);
-        }
+            base.InitData(verDao);
 
-        protected override bool InitData()
-        {
-            base.InitData();
+            if (verDao.ver != 0)
+            {
+                return true;
+            }
 
             CreateApp(1000000000000002002, 10, 3, "nas.net", "私有云盘", "<p>Nas.Net是一款针对个人、家庭以及小团队的私有云存储软件，可以直接运行于已有的多种设备上，让您的老旧设备再次焕发新的机会。</p><img src=\"/images/loginbg.svg\" alt=\"logo\"/>");
 
@@ -173,6 +178,18 @@ namespace Com.Scm.Nas
             InitTable(Assembly.GetExecutingAssembly());
 
             return true;
+        }
+
+        protected override void InitDml(ScmVerDao verDao)
+        {
+            // 版本较新，不执行DML
+            if (verDao.ver >= VER)
+            {
+                return;
+            }
+
+            var dmlFile = Path.Combine(_SqlDir, "dml-nas.sql");
+            ExecuteSql(dmlFile, verDao.ver);
         }
     }
 }

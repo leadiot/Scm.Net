@@ -350,6 +350,52 @@ namespace Com.Scm
         }
 
         /// <summary>
+        /// 清空表格
+        /// </summary>
+        protected void TruncateTable(Assembly assembly)
+        {
+            var scmDao = typeof(ScmDao);
+            var daoType = assembly.GetTypes().Where(u => u.IsClass && !u.IsAbstract && !u.IsGenericType && u.Name.EndsWith("Dao")).ToList();
+            var daoList = new List<Type>();
+            foreach (var item in daoType.Where(s => !s.IsInterface))
+            {
+                if (!CommonUtils.HasImplementedRawGeneric(item, scmDao))
+                {
+                    continue;
+                }
+
+                var tableAttr = item.GetCustomAttribute<SugarTable>();
+                if (tableAttr == null)
+                {
+                    continue;
+                }
+
+                var infos = _SqlClient.DbMaintenance.GetColumnInfosByTableName(tableAttr.TableName, false);
+                if (infos.Count > 0)
+                {
+                    daoList.Add(item);
+                }
+            }
+
+            _SqlClient.DbMaintenance.TruncateTable(daoList.ToArray());
+        }
+
+        /// <summary>
+        /// 数据库操作
+        /// </summary>
+        protected virtual void InitDdl(ScmVerDao verDao)
+        {
+            // 版本较新，不执行DDL
+            if (verDao.ver >= VER)
+            {
+                return;
+            }
+
+            var ddlFile = Path.Combine(_SqlDir, "ddl.sql");
+            ExecuteSql(ddlFile, verDao.ver);
+        }
+
+        /// <summary>
         /// 数据初始化
         /// </summary>
         /// <returns></returns>
@@ -653,58 +699,12 @@ namespace Com.Scm
         }
 
         /// <summary>
-        /// 清空表格
-        /// </summary>
-        protected void TruncateTable(Assembly assembly)
-        {
-            var scmDao = typeof(ScmDao);
-            var daoType = assembly.GetTypes().Where(u => u.IsClass && !u.IsAbstract && !u.IsGenericType && u.Name.EndsWith("Dao")).ToList();
-            var daoList = new List<Type>();
-            foreach (var item in daoType.Where(s => !s.IsInterface))
-            {
-                if (!CommonUtils.HasImplementedRawGeneric(item, scmDao))
-                {
-                    continue;
-                }
-
-                var tableAttr = item.GetCustomAttribute<SugarTable>();
-                if (tableAttr == null)
-                {
-                    continue;
-                }
-
-                var infos = _SqlClient.DbMaintenance.GetColumnInfosByTableName(tableAttr.TableName, false);
-                if (infos.Count > 0)
-                {
-                    daoList.Add(item);
-                }
-            }
-
-            _SqlClient.DbMaintenance.TruncateTable(daoList.ToArray());
-        }
-
-        /// <summary>
-        /// 数据库操作
-        /// </summary>
-        protected virtual void InitDdl(ScmVerDao verDao)
-        {
-            // 版本为0（表示新应用），不执行DDL
-            if (verDao.ver == 0)
-            {
-                return;
-            }
-
-            var ddlFile = Path.Combine(_SqlDir, "ddl.sql");
-            ExecuteSql(ddlFile, verDao.ver);
-        }
-
-        /// <summary>
         /// 数据库操作
         /// </summary>
         protected virtual void InitDml(ScmVerDao verDao)
         {
-            // 版本为0（表示新应用），不执行DML
-            if (verDao.ver == 0)
+            // 版本较新，不执行DML
+            if (verDao.ver >= VER)
             {
                 return;
             }

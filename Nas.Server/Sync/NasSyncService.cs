@@ -468,14 +468,17 @@ namespace Com.Scm.Nas.Sync
             var docDao = GetDocDaoByPath(token.user_id, dto.path);
 
             var dstFile = GetNativePath(token, dto.path);
+            var isDelete = false;
             if (folderDao.dss == NasDssEnum.Remove)
             {
+                isDelete = true;
                 var trashPath = GetTrashPath(token, docDao);
                 FileUtils.MoveDoc(dstFile, trashPath, true);
                 LogUtils.Debug(TAG_DELETE_FILE, $"逻辑删除文档：{dstFile} -> {trashPath}");
             }
             else if (folderDao.dss == NasDssEnum.Delete)
             {
+                isDelete = true;
                 FileUtils.DeleteDoc(dstFile);
                 LogUtils.Debug(TAG_DELETE_FILE, $"物理删除文档：{dstFile}");
             }
@@ -485,7 +488,7 @@ namespace Com.Scm.Nas.Sync
             var dirId = 0L;
             if (docDao != null)
             {
-                DealDeleteDocDao(docDao);
+                DealDeleteDocDao(docDao, isDelete);
                 resId = docDao.id;
                 ver = docDao.ver;
                 dirId = docDao.dir_id;
@@ -513,9 +516,18 @@ namespace Com.Scm.Nas.Sync
         /// 删除文档数据
         /// </summary>
         /// <param name="dao"></param>
-        private void DealDeleteDocDao(Sync.SyncResFileDao dao)
+        private void DealDeleteDocDao(Sync.SyncResFileDao dao, bool flag)
         {
-            _SqlClient.Deleteable(dao).ExecuteCommand();
+            if (flag)
+            {
+                _SqlClient.Deleteable(dao).ExecuteCommand();
+            }
+            else
+            {
+                dao.s_delete = ScmBoolEnum.True;
+                dao.is_delete = ScmBoolEnum.True;
+                _SqlClient.Updateable(dao).ExecuteCommand();
+            }
         }
 
         /// <summary>
@@ -539,14 +551,17 @@ namespace Com.Scm.Nas.Sync
             var dirDao = GetDirDaoByPath(token, dto.path, parentList);
 
             var dstFile = GetNativePath(token, dto.path);
+            var isDelete = false;
             if (folderDao.dss == NasDssEnum.Remove)
             {
+                isDelete = false;
                 var trashPath = GetTrashPath(token, dirDao);
                 FileUtils.MoveDoc(dstFile, trashPath, true);
                 LogUtils.Debug(TAG_DELETE_FILE, $"逻辑删除目录：{dstFile} -> {trashPath}");
             }
             else if (folderDao.dss == NasDssEnum.Delete)
             {
+                isDelete = true;
                 FileUtils.DeleteDir(dstFile);
                 LogUtils.Debug(TAG_DELETE_FILE, $"物理删除目录：{dstFile}");
             }
@@ -556,9 +571,7 @@ namespace Com.Scm.Nas.Sync
             var ver = 0L;
             if (dirDao != null)
             {
-                DealDeleteDirDao(dirDao);
-
-                DeleteResFileDao(token, dirDao);
+                DealDeleteDirDao(dirDao, isDelete);
 
                 resId = dirDao.id;
                 dirId = dirDao.dir_id;
@@ -573,22 +586,54 @@ namespace Com.Scm.Nas.Sync
         }
 
         /// <summary>
-        /// 级联删除目录数据
+        /// 删除目录数据
         /// </summary>
         /// <param name="dao"></param>
-        private void DealDeleteDirDao(Sync.SyncResFileDao dao)
+        private void DealDeleteDirDao(Sync.SyncResFileDao dao, bool isDelete)
+        {
+            DealDeleteDirSubDao(dao, isDelete);
+
+            if (isDelete)
+            {
+                _SqlClient.Deleteable(dao).ExecuteCommand();
+            }
+            else
+            {
+                dao.p_delete = ScmBoolEnum.True;
+                dao.is_delete = ScmBoolEnum.True;
+                _SqlClient.Updateable(dao).ExecuteCommand();
+            }
+        }
+
+        /// <summary>
+        /// 级联删除目录数据（子级）
+        /// </summary>
+        /// <param name="parent"></param>
+        /// <param name="isDelete"></param>
+        private void DealDeleteDirSubDao(Sync.SyncResFileDao parent, bool isDelete)
         {
             var dirList = _SqlClient.Queryable<Sync.SyncResFileDao>()
-                .Where(a => a.type == ScmFileTypeEnum.Dir && a.dir_id == dao.id)
+                .Where(a => a.type == ScmFileTypeEnum.Dir && a.dir_id == parent.id)
                 .ToList();
             foreach (var dir in dirList)
             {
-                DealDeleteDirDao(dir);
+                DealDeleteDirSubDao(dir);
             }
 
-            _SqlClient.Deleteable<Sync.SyncResFileDao>()
-                .Where(a => a.dir_id == dao.id)
-                .ExecuteCommand();
+            if (isDelete)
+            {
+                _SqlClient.Deleteable<Sync.SyncResFileDao>()
+                    .Where(a => a.dir_id == parent.id)
+                    .ExecuteCommand();
+            }
+            else
+            {
+                _SqlClient.Updateable<Sync.SyncResFileDao>()
+                    .SetColumns(a => a.p_delete == ScmBoolEnum.True)
+                    .SetColumns(a => a.is_delete == ScmBoolEnum.True)
+                    .Where(a => a.dir_id == parent.id)
+                    .ExecuteCommand();
+            }
         }
         #endregion
 

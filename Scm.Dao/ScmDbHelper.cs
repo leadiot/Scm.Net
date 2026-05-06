@@ -15,8 +15,9 @@ namespace Com.Scm
 {
     public class ScmDbHelper : IModelHelper
     {
+        private const string KEY = "Scm.Net";
         /// <summary>
-        /// 主版本
+        /// 数据版本
         /// </summary>
         private const int VER = 4;
         /// <summary>
@@ -24,9 +25,21 @@ namespace Com.Scm
         /// </summary>
         private const string DATE = "2026-04-17";
 
+        /// <summary>
+        /// 
+        /// </summary>
         protected ISqlSugarClient _SqlClient;
+
+        /// <summary>
+        /// SQL脚本目录
+        /// </summary>
         protected string _SqlDir;
 
+        /// <summary>
+        /// 初始化
+        /// </summary>
+        /// <param name="sqlClient"></param>
+        /// <param name="sqlDir"></param>
         public void Init(ISqlSugarClient sqlClient, string sqlDir)
         {
             _SqlClient = sqlClient;
@@ -50,7 +63,7 @@ namespace Com.Scm
         /// <returns></returns>
         public virtual bool InitDb()
         {
-            var key = "scm";
+            var key = KEY;
 
             var verDao = ReadDbVer(key);
             if (verDao == null)
@@ -60,20 +73,14 @@ namespace Com.Scm
                 verDao.create_time = TimeUtils.GetUnixTime();
             }
 
-            InitTable(Assembly.GetExecutingAssembly());
+            // DDL处理
+            InitDdl(verDao);
 
-            if (verDao.ver == 0)
-            {
-                InitDml();
+            // 权限处理
+            InitData();
 
-                var ddlFile = Path.Combine(_SqlDir, "ddl.sql");
-                ExecuteSql(ddlFile, verDao.ver);
-
-                verDao.ver = VER;
-            }
-
-            var dmlFile = Path.Combine(_SqlDir, "dml.sql");
-            ExecuteSql(dmlFile, verDao.ver);
+            // DML处理
+            InitDml(verDao);
 
             verDao.ver = VER;
             verDao.date = DATE;
@@ -169,6 +176,12 @@ namespace Com.Scm
             _SqlClient.Insertable(dao).ExecuteCommand();
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="dao"></param>
+        /// <param name="status"></param>
         protected void SaveDataDao<T>(T dao, ScmRowStatusEnum status = ScmRowStatusEnum.Enabled) where T : ScmDataDao, new()
         {
             var tmpDao = _SqlClient.Queryable<T>().First(a => a.id == dao.id);
@@ -286,7 +299,6 @@ namespace Com.Scm
             return 0;
         }
 
-
         /// <summary>
         /// 删除表格
         /// </summary>
@@ -338,42 +350,14 @@ namespace Com.Scm
         }
 
         /// <summary>
-        /// 清空表格
+        /// 数据初始化
         /// </summary>
-        protected void TruncateTable(Assembly assembly)
+        /// <returns></returns>
+        protected virtual bool InitData()
         {
-            var scmDao = typeof(ScmDao);
-            var daoType = assembly.GetTypes().Where(u => u.IsClass && !u.IsAbstract && !u.IsGenericType && u.Name.EndsWith("Dao")).ToList();
-            var daoList = new List<Type>();
-            foreach (var item in daoType.Where(s => !s.IsInterface))
-            {
-                if (!CommonUtils.HasImplementedRawGeneric(item, scmDao))
-                {
-                    continue;
-                }
+            // 表格处理
+            InitTable(Assembly.GetExecutingAssembly());
 
-                var tableAttr = item.GetCustomAttribute<SugarTable>();
-                if (tableAttr == null)
-                {
-                    continue;
-                }
-
-                var infos = _SqlClient.DbMaintenance.GetColumnInfosByTableName(tableAttr.TableName, false);
-                if (infos.Count > 0)
-                {
-                    daoList.Add(item);
-                }
-            }
-
-            _SqlClient.DbMaintenance.TruncateTable(daoList.ToArray());
-        }
-
-
-        /// <summary>
-        /// 数据库操作
-        /// </summary>
-        private void InitDml()
-        {
             CreateUid(ScmEnv.DEFAULT_ID, "scm", 0, "", "");
             CreateUid(1000000000000000002, "test", 0, "", "");
             CreateUid(1000000000000000011, "scm_sys_uom", 5, "UOM", "");
@@ -660,8 +644,59 @@ namespace Com.Scm
             SaveDao(userRoleDao);
 
             CreateTheme(1, "Default", "{\"page\":{\"backgroundImage\":\"url('http://api.c-scm.net/data/bg/bg01.jpg')\",\"backgroundColor\":\"\",\"backgroundSize\":\"cover\",\"backgroundPosition\":\"center center\",\"backgroundRepeat\":\"no-repeat\"},\"mask\":{\"backgroundColor\":\"rgba(0,0,0,0.5)\"}}");
+            return true;
         }
 
+        /// <summary>
+        /// 清空表格
+        /// </summary>
+        protected void TruncateTable(Assembly assembly)
+        {
+            var scmDao = typeof(ScmDao);
+            var daoType = assembly.GetTypes().Where(u => u.IsClass && !u.IsAbstract && !u.IsGenericType && u.Name.EndsWith("Dao")).ToList();
+            var daoList = new List<Type>();
+            foreach (var item in daoType.Where(s => !s.IsInterface))
+            {
+                if (!CommonUtils.HasImplementedRawGeneric(item, scmDao))
+                {
+                    continue;
+                }
+
+                var tableAttr = item.GetCustomAttribute<SugarTable>();
+                if (tableAttr == null)
+                {
+                    continue;
+                }
+
+                var infos = _SqlClient.DbMaintenance.GetColumnInfosByTableName(tableAttr.TableName, false);
+                if (infos.Count > 0)
+                {
+                    daoList.Add(item);
+                }
+            }
+
+            _SqlClient.DbMaintenance.TruncateTable(daoList.ToArray());
+        }
+
+        /// <summary>
+        /// 数据库操作
+        /// </summary>
+        protected virtual void InitDdl(ScmVerDao verDao)
+        {
+            var ddlFile = Path.Combine(_SqlDir, "ddl.sql");
+            ExecuteSql(ddlFile, verDao.ver);
+        }
+
+        /// <summary>
+        /// 数据库操作
+        /// </summary>
+        protected virtual void InitDml(ScmVerDao verDao)
+        {
+            var dmlFile = Path.Combine(_SqlDir, "dml.sql");
+            ExecuteSql(dmlFile, verDao.ver);
+        }
+
+        #region 具体数据操作
         /// <summary>
         /// 保存应用
         /// </summary>
@@ -774,5 +809,6 @@ namespace Com.Scm
             SaveDao(menuDao);
             return menuDao;
         }
+        #endregion
     }
 }

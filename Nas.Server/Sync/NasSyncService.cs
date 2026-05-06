@@ -1,4 +1,4 @@
-﻿﻿﻿﻿using Com.Scm.Config;
+﻿using Com.Scm.Config;
 using Com.Scm.Dto;
 using Com.Scm.Enums;
 using Com.Scm.Filters;
@@ -459,12 +459,27 @@ namespace Com.Scm.Nas.Sync
         {
             LogUtils.Info(TAG_DELETE_FILE, "删除文档", dto.path);
 
-            var dstFile = GetNativePath(token, dto.path);
-            FileUtils.DeleteDoc(dstFile);
+            var folderDao = GetCfgFolderDaoById(dto.folder_id);
+            if (folderDao == null)
+            {
+                LogUtils.Error(TAG_DELETE_FILE, "目录信息异常！");
+                return false;
+            }
 
             var parentList = new List<SyncResFileDao>();
             var parentDao = GetDirDaoByPath(token, NasUtils.GetParentPath(dto.path), parentList);
             var docDao = GetDocDaoByPath(token.user_id, dto.path);
+
+            var dstFile = GetNativePath(token, dto.path);
+            if (folderDao.dss == NasDssEnum.Remove)
+            {
+                var trashPath = GetTrashPath(token, docDao);
+                FileUtils.MoveDoc(dstFile, trashPath, true);
+            }
+            else if (folderDao.dss == NasDssEnum.Delete)
+            {
+                FileUtils.DeleteDoc(dstFile);
+            }
 
             var resId = 0L;
             var ver = 0L;
@@ -481,7 +496,7 @@ namespace Com.Scm.Nas.Sync
 
             LogUtils.Info(TAG_DELETE_FILE, "文档删除完成", dto.path);
             result.SetSuccess(resId, ver);
-            
+
             // 发送文件删除消息
             var message = new NasMessage
             {
@@ -491,7 +506,7 @@ namespace Com.Scm.Nas.Sync
                 Path = dto.path
             };
             _MessageService.SendMessage(token.user_id, message).Wait();
-            
+
             return true;
         }
 
@@ -514,12 +529,26 @@ namespace Com.Scm.Nas.Sync
         {
             LogUtils.Info(TAG_DELETE_FILE, "删除目录", dto.path);
 
-            var dstFile = GetNativePath(token, dto.path);
-            FileUtils.DeleteDir(dstFile);
+            var folderDao = GetCfgFolderDaoById(dto.folder_id);
+            if (folderDao == null)
+            {
+                LogUtils.Error(TAG_DELETE_FILE, "目录信息异常！");
+                return false;
+            }
 
             var parentList = new List<SyncResFileDao>();
             var dirDao = GetDirDaoByPath(token, dto.path, parentList);
-            //var dirDao = GetDirDaoByPath(token.user_id, dto.path);
+
+            var dstFile = GetNativePath(token, dto.path);
+            if (folderDao.dss == NasDssEnum.Remove)
+            {
+                var trashPath = GetTrashPath(token, dirDao);
+                FileUtils.MoveDoc(dstFile, trashPath, true);
+            }
+            else if (folderDao.dss == NasDssEnum.Delete)
+            {
+                FileUtils.DeleteDir(dstFile);
+            }
 
             var resId = 0L;
             var dirId = 0L;
@@ -614,10 +643,10 @@ namespace Com.Scm.Nas.Sync
 
             LogUtils.Info(TAG_CREATE_FILE, "目录创建完成", dto.path);
             result.SetSuccess(dirDao.id, dirDao.ver);
-            
+
             // 发送目录创建消息
             await _MessageService.SendFolderChange(token.user_id, dto.path, NasFolderChangeType.Created);
-            
+
             return true;
         }
 
@@ -662,7 +691,7 @@ namespace Com.Scm.Nas.Sync
 
             LogUtils.Info(TAG_CREATE_FILE, "文档创建完成", dto.path);
             result.SetSuccess(docDao.id, docDao.ver);
-            
+
             // 发送文件创建消息
             var message = new NasMessage
             {
@@ -672,7 +701,7 @@ namespace Com.Scm.Nas.Sync
                 Path = dto.path
             };
             await _MessageService.SendMessage(token.user_id, message);
-            
+
             return true;
         }
 
@@ -1502,7 +1531,7 @@ namespace Com.Scm.Nas.Sync
                 return path;
             }
 
-            return _EnvConfig.GetDataPath($"/{NasEnv.DEF_NAS_DIR}/{userDao.codes}" + path);
+            return GetNasPath($"/{userDao.codes}" + path);
         }
 
         private string GetClientPath(ScmUrTerminalDao token, string path)
@@ -1525,6 +1554,22 @@ namespace Com.Scm.Nas.Sync
             }
 
             return path;
+        }
+
+        private string GetTrashPath(ScmUrTerminalDao token, SyncResFileDao dao)
+        {
+            var userDao = _ResHolder.GetRes<UserDao>(token.user_id);
+            if (userDao == null)
+            {
+                return GetNasPath("/" + dao.id);
+            }
+
+            return GetNasPath($"/{userDao.codes}/" + dao.id);
+        }
+
+        private string GetNasPath(string path)
+        {
+            return _EnvConfig.GetDataPath($"/{NasEnv.DEF_NAS_DIR}" + path);
         }
 
         /// <summary>

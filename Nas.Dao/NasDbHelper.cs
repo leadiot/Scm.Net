@@ -8,8 +8,9 @@ namespace Com.Scm.Nas
 {
     public class NasDbHelper : ScmDbHelper
     {
+        private const string KEY = "Nas.Net";
         private const int VER = 1;
-        private const string RELEASE_DATE = "2026-02-06";
+        private const string DATE = "2026-02-06";
 
         public NasDbHelper()
         {
@@ -23,7 +24,7 @@ namespace Com.Scm.Nas
 
         public override bool InitDb()
         {
-            var key = "scm.nas";
+            var key = KEY;
 
             var verDao = ReadDbVer(key);
             if (verDao == null)
@@ -33,31 +34,42 @@ namespace Com.Scm.Nas
                 verDao.create_time = TimeUtils.GetUnixTime();
             }
 
-            InitTable(Assembly.GetExecutingAssembly());
+            // DDL处理
+            InitDdl(verDao);
 
-            if (verDao.ver == 0)
-            {
-                InitDml();
-            }
+            // 权限处理
+            InitData();
 
-            var ddlFile = Path.Combine(_SqlDir, "ddl-nas.sql");
-            ExecuteSql(ddlFile, verDao.ver);
-
-            var dmlFile = Path.Combine(_SqlDir, "dml-nas.sql");
-            ExecuteSql(dmlFile, verDao.ver);
+            // DML处理
+            InitDml(verDao);
 
             verDao.ver = VER;
-            //verDao.minor = MINOR;
-            //verDao.patch = PATCH;
-            //verDao.build = BUILD;
-            verDao.date = RELEASE_DATE;
+            verDao.date = DATE;
             verDao.update_time = TimeUtils.GetUnixTime();
             SaveDbVer(verDao);
             return true;
         }
 
-        private void InitDml()
+        protected override void InitDdl(ScmVerDao verDao)
         {
+            base.InitDdl(verDao);
+
+            var ddlFile = Path.Combine(_SqlDir, "ddl-nas.sql");
+            ExecuteSql(ddlFile, verDao.ver);
+        }
+
+        protected override void InitDml(ScmVerDao verDao)
+        {
+            base.InitDml(verDao);
+
+            var dmlFile = Path.Combine(_SqlDir, "dml-nas.sql");
+            ExecuteSql(dmlFile, verDao.ver);
+        }
+
+        protected override bool InitData()
+        {
+            base.InitData();
+
             CreateApp(1000000000000002002, 10, 3, "nas.net", "私有云盘", "<p>Nas.Net是一款针对个人、家庭以及小团队的私有云存储软件，可以直接运行于已有的多种设备上，让您的老旧设备再次焕发新的机会。</p><img src=\"/images/loginbg.svg\" alt=\"logo\"/>");
 
             var roleId = 1000000000000001030L;
@@ -160,6 +172,11 @@ namespace Com.Scm.Nas
             config.value = "/images/01.jpg";
             config.PrepareCreate(1000000000000001030L);
             _SqlClient.Insertable(config).ExecuteCommand();
+
+            // 表格处理
+            InitTable(Assembly.GetExecutingAssembly());
+
+            return true;
         }
     }
 }

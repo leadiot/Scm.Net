@@ -33,6 +33,11 @@ namespace Com.Scm.Nas.Cfg
         public string path { get; set; }
 
         /// <summary>
+        /// 删除策略
+        /// </summary>
+        public NasDssEnum dss { get; set; }
+
+        /// <summary>
         /// 记录ID
         /// </summary>
         public long res_id { get; set; }

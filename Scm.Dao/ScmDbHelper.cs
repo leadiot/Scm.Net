@@ -77,7 +77,7 @@ namespace Com.Scm
             InitDdl(verDao);
 
             // 权限处理
-            InitData();
+            InitData(verDao);
 
             // DML处理
             InitDml(verDao);
@@ -353,10 +353,15 @@ namespace Com.Scm
         /// 数据初始化
         /// </summary>
         /// <returns></returns>
-        protected virtual bool InitData()
+        protected virtual bool InitData(ScmVerDao verDao)
         {
             // 表格处理
             InitTable(Assembly.GetExecutingAssembly());
+
+            if (verDao.ver != 0)
+            {
+                return true;
+            }
 
             CreateUid(ScmEnv.DEFAULT_ID, "scm", 0, "", "");
             CreateUid(1000000000000000002, "test", 0, "", "");
@@ -683,6 +688,12 @@ namespace Com.Scm
         /// </summary>
         protected virtual void InitDdl(ScmVerDao verDao)
         {
+            // 版本为0（表示新应用），不执行DDL
+            if (verDao.ver == 0)
+            {
+                return;
+            }
+
             var ddlFile = Path.Combine(_SqlDir, "ddl.sql");
             ExecuteSql(ddlFile, verDao.ver);
         }
@@ -692,6 +703,12 @@ namespace Com.Scm
         /// </summary>
         protected virtual void InitDml(ScmVerDao verDao)
         {
+            // 版本为0（表示新应用），不执行DML
+            if (verDao.ver == 0)
+            {
+                return;
+            }
+
             var dmlFile = Path.Combine(_SqlDir, "dml.sql");
             ExecuteSql(dmlFile, verDao.ver);
         }

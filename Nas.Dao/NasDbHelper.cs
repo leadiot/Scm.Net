@@ -52,16 +52,12 @@ namespace Com.Scm.Nas
 
         protected override void InitDdl(ScmVerDao verDao)
         {
-            base.InitDdl(verDao);
-
             var ddlFile = Path.Combine(_SqlDir, "ddl-nas.sql");
             ExecuteSql(ddlFile, verDao.ver);
         }
 
         protected override void InitDml(ScmVerDao verDao)
         {
-            base.InitDml(verDao);
-
             var dmlFile = Path.Combine(_SqlDir, "dml-nas.sql");
             ExecuteSql(dmlFile, verDao.ver);
         }

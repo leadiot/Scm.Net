@@ -34,60 +34,60 @@ namespace Com.Scm
 
             AppUtils.Init(builder.Configuration);
 
-            // LOG����
+            // LOG配置
             Serilog.Log.Logger = new LoggerConfiguration()
                 .ReadFrom.Configuration(builder.Configuration)
                 .CreateLogger();
 
-            LogUtils.Info("��������ϵͳ...");
+            LogUtils.Info("正在启动系统...");
 
             var services = builder.Services;
 
-            // ��������
-            LogUtils.Info("���ڽ��л�������...");
+            // 环境变量
+            LogUtils.Info("正在进行环境配置...");
             var envConfig = AppUtils.GetConfig<EnvConfig>(EnvConfig.NAME) ?? new EnvConfig();
             envConfig.Prepare(builder);
             services.AddSingleton(envConfig);
 
-            // ��λ����
+            // 单位配置
             RenameFile(envConfig, "unit-origin.json", "unit.json");
 
-            // Uid����
-            LogUtils.Info("���ڽ���Uid����...");
+            // Uid配置
+            LogUtils.Info("正在进行Uid配置...");
             RenameFile(envConfig, "uid-origin.db", "uid.db");
             var uidConfig = AppUtils.GetConfig<UidConfig>(UidConfig.NAME);
             UidUtils.InitConfig(uidConfig);
 
-            // Sql����
-            LogUtils.Info("���ڽ���Sql����...");
+            // Sql配置
+            LogUtils.Info("正在进行Sql配置...");
             RenameFile(envConfig, "scm-origin.db", "scm.db");
             var sqlConfig = AppUtils.GetConfig<SqlConfig>(SqlConfig.NAME) ?? new SqlConfig();
             sqlConfig.Prepare(envConfig);
             SqlSetup(services, envConfig, sqlConfig);
 
-            // ��������
-            LogUtils.Info("���ڽ�����������...");
+            // 字体配置
+            LogUtils.Info("正在进行字体配置...");
             FontSetup(services, envConfig);
 
-            // ��������
+            // 缓存配置
             services.CacheSetup(envConfig);
 
-            // Swagger����
+            // Swagger配置
             var swaggerConfig = AppUtils.GetConfig<SwaggerConfig>(SwaggerConfig.NAME);
             services.SwaggerSetup(swaggerConfig);
 
-            // ��������
+            // 数据配置
             //var dataConfig = AppUtils.GetConfig<DataConfig>(DataConfig.NAME) ?? new DataConfig();
             //dataConfig.Prepare(builder.Environment);
             //services.AddSingleton(dataConfig);
 
-            // ��ȫ����
-            LogUtils.Info("���ڽ��а�ȫ����...");
+            // 安全配置
+            LogUtils.Info("正在进行安全配置...");
             var secConfig = AppUtils.GetConfig<SecurityConfig>(SecurityConfig.NAME);
             secConfig.Prepare(builder.Environment);
             services.AddSingleton(secConfig);
 
-            // ��������
+            // 代码生成
             var genConfig = AppUtils.GetConfig<GeneratorConfig>(GeneratorConfig.NAME);
             genConfig.Prepare(envConfig);
             services.GeneratorSetup(genConfig);
@@ -130,7 +130,7 @@ namespace Com.Scm
                 corsConfig.Prepare(envConfig);
             }
 
-            LogUtils.Info("���ڽ��з�������...");
+            LogUtils.Info("正在进行服务配置...");
             services.AddScoped<IResHolder, ScmResHolder>();
             services.AddScoped<ILogService, ScmLogService>();
             services.AddScoped<IDicService, ScmDicService>();
@@ -140,10 +140,10 @@ namespace Com.Scm
             services.AddScoped<ITagService, ScmTagService>();
             services.AddScoped<IFlowService, ScmFlowService>();
 
-            // �Զ������
+            // 自定义服务
             SamplesServerUtils.Setup(services);
 
-            // ȫ�ֹ���
+            // 全局过滤
             services.AddControllers(options =>
             {
                 options.Filters.Add<AopActionFilter>();
@@ -152,7 +152,7 @@ namespace Com.Scm
                 options.SuppressImplicitRequiredAttributeForNonNullableReferenceTypes = true;
             }).NewtonJsonSetup();
 
-            // �ӿ�����
+            // 接口配置
             var apiConfig = AppUtils.GetConfig<DllConfig>(DllConfig.NAME);
             apiConfig.Prepare(builder.Environment);
             services.RegisterServices(apiConfig);
@@ -160,12 +160,12 @@ namespace Com.Scm
             // Jwt Config
             services.SetupJwt(envConfig);
 
-            // �������
+            // 跨域访问
             services.CorsSetup(corsConfig);
 
             // SignalR
             services.AddSignalR();
-            //// NAS ��Ϣ����
+            //// NAS 消息服务
             //services.AddNasMessageService();
 
             // Mapper
@@ -202,8 +202,8 @@ namespace Com.Scm
 
             app.UseRouting();
 
-            // ��������
-            LogUtils.Info("���ڽ��п�������...");
+            // 跨域设置
+            LogUtils.Info("正在进行跨域设置...");
             if (corsConfig != null)
             {
                 if (corsConfig.GlobalCors)
@@ -222,14 +222,14 @@ namespace Com.Scm
                 await next(context);
             });
 
-            // ��֤
+            // 认证
             app.UseAuthentication();
-            // ��Ȩ
+            // 授权
             app.UseAuthorization();
 
-            // �м���쳣����
+            // 中间件异常处理
             app.UseMiddleware<ExceptionMiddleware>();
-            // Jwt�м������
+            // Jwt中间件处理
             app.UseMiddleware<JwtMiddleware>();
 
             app.UseQuartz();
@@ -246,11 +246,11 @@ namespace Com.Scm
                     url = "http://*:9999";
                 }
                 url = url.Replace("*", "localhost");
-                LogUtils.Info("ϵͳ������ɣ�������ͨ�����µ�ַ����ϵͳ��" + url);
+                LogUtils.Info("系统启动完成，您可以通过以下地址访问系统：" + url);
             }
             else
             {
-                LogUtils.Info("ϵͳ������ɣ�");
+                LogUtils.Info("系统启动完成！");
             }
 
             LogUtils.Info("===========");
@@ -276,12 +276,12 @@ namespace Com.Scm
         }
 
         /// <summary>
-        /// ע�ᵥ������
+        /// 注册单例服务
         /// </summary>
         /// <param name="services"></param>
         public static void SqlSetup(IServiceCollection services, EnvConfig envConfig, SqlConfig sqlConfig)
         {
-            //LogUtils.Info("���ڳ�ʼ�����ݿ�...");
+            //LogUtils.Info("正在初始化数据库...");
 
             var dbType = SqlSugarUtils.GetDbType(sqlConfig.Type);
             SqlSugarScope sugarScope = new SqlSugarScope(new ConnectionConfig()
@@ -322,7 +322,7 @@ namespace Com.Scm
             },
             db =>
             {
-                //ÿ��Sqlִ��ǰ�¼�
+                //每次Sql执行前事件
                 db.Aop.OnLogExecuting = (s, p) =>
                 {
                     //var sqlValue = string.Empty;
@@ -331,7 +331,7 @@ namespace Com.Scm
                     {
                         sql = sql.Replace(item.ParameterName, "'" + item.Value + "'");
                     }
-                    //LogUtils.Debug("Sql�ű���" + sql, "db");
+                    //LogUtils.Debug("Sql脚本：" + sql, "db");
                 };
             });
 
@@ -347,19 +347,19 @@ namespace Com.Scm
             dbHelper = new NasDbHelper();
             dbHelper.Init(sugarScope, sqlDir);
             dbHelper.InitDb();
-            //LogUtils.Info("���ݿ��ʼ����ɣ�");
+            //LogUtils.Info("数据库初始化完成！");
 
-            // ����ע��SqlSugar
+            // 单例注册SqlSugar
             services.AddSingleton<ISqlSugarClient>(sugarScope);
-            //ע��ִ�
+            //注册仓储
             services.AddScoped(typeof(SugarRepository<>));
         }
 
         public static void FontSetup(IServiceCollection services, EnvConfig envConfig)
         {
-            LogUtils.Info("����Ŀ¼��" + envConfig.Fonts);
+            LogUtils.Info("字体目录：" + envConfig.Fonts);
             ImageEngine.LoadFont(envConfig.Fonts);
-            LogUtils.Info("Ĭ�����壺" + envConfig.DefaultFont);
+            LogUtils.Info("默认字体：" + envConfig.DefaultFont);
             ImageEngine.SetDefaultFontName(envConfig.DefaultFont);
         }
     }

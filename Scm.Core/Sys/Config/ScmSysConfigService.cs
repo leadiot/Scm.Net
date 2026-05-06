@@ -52,7 +52,7 @@ namespace Com.Scm.Sys.Config
         /// <param name="key"></param>
         /// <returns></returns>
         [HttpGet("{key}")]
-        public async Task<ConfigDto> GetAsync(string key)
+        public async Task<ConfigDto> GetConfigAsync(string key)
         {
             var token = _jwtHolder.GetToken();
             var userId = token.user_id;
@@ -63,6 +63,24 @@ namespace Com.Scm.Sys.Config
                 .OrderBy(a => a.user_id, SqlSugar.OrderByType.Desc)
                 .Select<ConfigDto>()
                 .FirstAsync();
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public async Task<bool> PostConfigAsync(List<ConfigDto> items)
+        {
+            var user = _jwtHolder.GetToken();
+
+            foreach (var item in items)
+            {
+                await SaveAsync(user.user_id, item.client, item.key, item.value, item.data);
+            }
+
+            return true;
         }
 
         /// <summary>
@@ -93,24 +111,6 @@ namespace Com.Scm.Sys.Config
             dao.value = value ?? "";
             dao.data = data;
             return await _thisRepository.UpdateAsync(dao);
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="request"></param>
-        /// <returns></returns>
-        [HttpPost]
-        public async Task<bool> PostAsync(List<ConfigDto> items)
-        {
-            var user = _jwtHolder.GetToken();
-
-            foreach (var item in items)
-            {
-                await SaveAsync(user.user_id, item.client, item.key, item.value, item.data);
-            }
-
-            return true;
         }
     }
 }

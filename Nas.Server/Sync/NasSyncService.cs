@@ -617,7 +617,7 @@ namespace Com.Scm.Nas.Sync
                 .ToList();
             foreach (var dir in dirList)
             {
-                DealDeleteDirSubDao(dir);
+                DealDeleteDirSubDao(dir, isDelete);
             }
 
             if (isDelete)

@@ -31,6 +31,7 @@ namespace Com.Scm.Sys.Gtd
         /// 备注
         /// </summary>
         [StringLength(1024)]
+        [SugarColumn(Length = 1024, IsNullable = true)]
         public string remark { get; set; }
 
         /// <summary>

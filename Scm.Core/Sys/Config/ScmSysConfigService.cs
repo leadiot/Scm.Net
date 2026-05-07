@@ -52,7 +52,7 @@ namespace Com.Scm.Sys.Config
         /// <param name="key"></param>
         /// <returns></returns>
         [HttpGet("{key}")]
-        public async Task<ConfigDto> GetConfigAsync(string key)
+        public async Task<ConfigDto> GetAsync(string key)
         {
             var token = _jwtHolder.GetToken();
             var userId = token.user_id;
@@ -71,7 +71,7 @@ namespace Com.Scm.Sys.Config
         /// <param name="request"></param>
         /// <returns></returns>
         [HttpPost]
-        public async Task<bool> PostConfigAsync(List<ConfigDto> items)
+        public async Task<bool> PostAsync(List<ConfigDto> items)
         {
             var user = _jwtHolder.GetToken();
 

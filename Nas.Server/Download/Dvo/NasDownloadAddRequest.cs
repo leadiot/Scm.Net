@@ -18,13 +18,13 @@ namespace Com.Scm.Nas.Download.Dvo
         /// 保存到 NAS 的目标目录路径（留空则存入 /Downloads）
         /// </summary>
         [StringLength(256)]
-        public string SavePath { get; set; }
+        public string Path { get; set; }
 
         /// <summary>
         /// 保存文件名（留空则从 URL 自动推断）
         /// </summary>
         [StringLength(256)]
-        public string SaveName { get; set; }
+        public string Name { get; set; }
 
         /// <summary>
         /// 并发分片数（仅 HTTP 支持，默认 4，最大 16）

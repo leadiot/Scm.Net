@@ -4,6 +4,7 @@ using Com.Scm.Enums;
 using Com.Scm.Nas.Download.Dvo;
 using Com.Scm.Nas.Dto.Download;
 using Com.Scm.Service;
+using Com.Scm.Token;
 using Com.Scm.Utils;
 using Microsoft.AspNetCore.Mvc;
 
@@ -15,8 +16,9 @@ namespace Com.Scm.Nas.Download
     /// </summary>
     public class NasDownloadService : ApiService
     {
-        private readonly NasDownloadManager _manager;
-        private readonly string _defaultSaveRoot;
+        private static NasDownloadManager _Manager;
+
+        private readonly ScmContextHolder _ScmHolder;
         private readonly SugarRepository<NasDownloadDao> _thisRepository;
 
         /// <summary>
@@ -24,17 +26,21 @@ namespace Com.Scm.Nas.Download
         /// <param name="envConfig">环境配置</param>
         /// <param name="repository">下载任务仓储</param>
         /// <param name="maxConcurrent">最大并发任务数</param>
-        public NasDownloadService(EnvConfig envConfig, SugarRepository<NasDownloadDao> repository, int maxConcurrent = 3)
+        public NasDownloadService(SugarRepository<NasDownloadDao> repository, EnvConfig envConfig, ScmContextHolder scmHolder)
         {
-            _EnvConfig = envConfig;
             _thisRepository = repository;
-            _defaultSaveRoot = _EnvConfig.GetDataPath(NasEnv.PathDownloads);
-            _manager = new NasDownloadManager
+            _EnvConfig = envConfig;
+            _ScmHolder = scmHolder;
+
+            if (_Manager == null)
             {
-                MaxConcurrent = maxConcurrent,
-                // 注册状态变更回调，同步到数据库
-                OnStatusChanged = OnTaskStatusChanged
-            };
+                _Manager = new NasDownloadManager
+                {
+                    MaxConcurrent = 3,
+                    // 注册状态变更回调，同步到数据库
+                    OnStatusChanged = OnTaskStatusChanged
+                };
+            }
 
             // 从数据库恢复未完成任务
             RestoreTasksFromDb();
@@ -56,15 +62,16 @@ namespace Com.Scm.Nas.Download
         /// <summary>
         /// 获取单个下载任务（优先内存，次选数据库）
         /// </summary>
-        public async Task<NasDownloadDto> GetAsync(long taskId)
+        [HttpGet("{id}")]
+        public async Task<NasDownloadDto> GetAsync(long id)
         {
-            var task = _manager.Get(taskId);
+            var task = _Manager.Get(id);
             if (task != null)
             {
                 return MapToDto(task);
             }
 
-            var dao = await _thisRepository.GetByIdAsync(taskId);
+            var dao = await _thisRepository.GetByIdAsync(id);
             return dao == null ? null : MapDaoToDto(dao);
         }
 
@@ -73,21 +80,19 @@ namespace Com.Scm.Nas.Download
         /// </summary>
         public async Task<long> AddAsync(NasDownloadAddRequest request)
         {
+            var userCodes = _ScmHolder.GetToken().user_codes;
+
             var linkType = NasDownloadManager.DetectLinkType(request.Url);
             if (linkType == NasDownloadLinkType.Unknown)
             {
                 throw new NotSupportedException($"无法识别的下载链接协议: {request.Url}");
             }
 
-            var saveDir = string.IsNullOrWhiteSpace(request.SavePath)
-                ? _defaultSaveRoot
-                : request.SavePath;
+            var saveDir = _EnvConfig.GetNasDownloadPath(userCodes, request.Path);
 
-            var fileName = string.IsNullOrWhiteSpace(request.SaveName)
+            var fileName = string.IsNullOrWhiteSpace(request.Name)
                 ? NasDownloadManager.InferFileName(request.Url)
-                : request.SaveName;
-
-            var now = TimeUtils.GetUnixTime();
+                : request.Name;
 
             // 先保存到数据库，获取自增 ID
             var dao = new NasDownloadDao
@@ -102,43 +107,38 @@ namespace Com.Scm.Nas.Download
                 total_size = -1,
                 downloaded_size = 0,
                 progress = 0,
-                handle = ScmHandleEnum.Todo,
+                handle = ScmHandleEnum.Doing,
                 finish_time = 0
             };
             await _thisRepository.InsertAsync(dao);
 
             // 构建运行时任务
-            var task = new NasDownloadTask
-            {
-                id = dao.id,
-                Url = dao.url,
-                LinkType = linkType,
-                FilePath = saveDir,
-                FileName = fileName,
-                Threads = dao.threads,
-                FtpUser = dao.ftp_user,
-                FtpPassword = dao.ftp_pass,
-                CreateTime = now
-            };
-
-            return _manager.Add(task);
+            return _Manager.Add(MapDaoToTask(dao));
         }
 
         /// <summary>
         /// 暂停下载任务
         /// </summary>
-        public bool Pause(long taskId)
+        [HttpGet("{id}")]
+        public bool Pause(long id)
         {
-            return _manager.Pause(taskId);
+            return _Manager.Pause(id);
         }
 
         /// <summary>
         /// 恢复已暂停的下载任务
         /// </summary>
         [HttpGet("{id}")]
-        public bool Resume(long id)
+        public async Task<bool> Resume(long id)
         {
-            return _manager.Resume(id);
+            _Manager.Resume(id);
+
+            var dao = await _thisRepository.GetByIdAsync(id);
+            dao.handle = ScmHandleEnum.Doing;
+            await _thisRepository.UpdateAsync(dao);
+
+            _Manager.Add(MapDaoToTask(dao));
+            return true;
         }
 
         public async Task<int> RemoveAsync(List<long> ids)
@@ -146,7 +146,7 @@ namespace Com.Scm.Nas.Download
             int count = 0;
             foreach (var taskId in ids)
             {
-                if (_manager.Remove(taskId))
+                if (_Manager.Remove(taskId))
                 {
                     count += 1;
                 }
@@ -196,12 +196,12 @@ namespace Com.Scm.Nas.Download
                     dao.PrepareUpdate(0);
                     _thisRepository.Update(dao);
 
-                    _manager.Add(task);
+                    _Manager.Add(task);
                 }
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"[NasDownload] 恢复任务失败: {ex.Message}");
+                LogUtils.Error($"[NasDownload] 恢复任务失败: {ex.Message}");
             }
         }
 
@@ -226,7 +226,7 @@ namespace Com.Scm.Nas.Download
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"[NasDownload] 更新任务状态失败 id={task.id}: {ex.Message}");
+                LogUtils.Error($"[NasDownload] 更新任务状态失败 id={task.id}: {ex.Message}");
             }
         }
 
@@ -278,9 +278,25 @@ namespace Com.Scm.Nas.Download
             };
         }
 
+        private static NasDownloadTask MapDaoToTask(NasDownloadDao dao)
+        {
+            return new NasDownloadTask
+            {
+                id = dao.id,
+                Url = dao.url,
+                LinkType = dao.link_type,
+                FilePath = dao.file_path,
+                FileName = dao.file_name,
+                Threads = dao.threads,
+                FtpUser = dao.ftp_user,
+                FtpPassword = dao.ftp_pass,
+                CreateTime = dao.create_time
+            };
+        }
+
         public void Dispose()
         {
-            _manager?.Dispose();
+            _Manager?.Dispose();
         }
     }
 }

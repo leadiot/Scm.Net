@@ -56,7 +56,10 @@ namespace Com.Scm.Nas.Download
         /// <returns>任务 ID</returns>
         public long Add(NasDownloadTask task)
         {
-            _tasks[task.id] = task;
+            if (!_tasks.ContainsKey(task.id))
+            {
+                _tasks[task.id] = task;
+            }
             _ = RunTaskAsync(task);
             return task.id;
         }
@@ -82,15 +85,12 @@ namespace Com.Scm.Nas.Download
         /// </summary>
         public bool Resume(long taskId)
         {
-            if (!_tasks.TryGetValue(taskId, out var task)) return false;
-            if (task.Handle != ScmHandleEnum.Pause) return false;
+            if (!_tasks.TryGetValue(taskId, out var task))
+            {
+                return false;
+            }
 
-            task.IsPauseRequested = false;
-            task.Handle = ScmHandleEnum.Doing;
-            OnStatusChanged?.Invoke(task, task.Handle, task.Result);
-
-            _ = RunTaskAsync(task);
-            return true;
+            return task.Handle == ScmHandleEnum.Doing;
         }
 
         /// <summary>

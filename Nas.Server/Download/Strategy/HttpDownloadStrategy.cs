@@ -102,15 +102,18 @@ namespace Com.Scm.Nas.Download.Strategy
             using var response = await _httpClient.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, cancellationToken);
             response.EnsureSuccessStatusCode();
 
-            using var stream = await response.Content.ReadAsStreamAsync(cancellationToken);
-            using var fileStream = new FileStream(savePath, FileMode.Create, FileAccess.Write, FileShare.None, 81920, true);
-
-            var buffer = new byte[81920];
-            int bytesRead;
-            while ((bytesRead = await stream.ReadAsync(buffer, cancellationToken)) > 0)
+            using (var stream = await response.Content.ReadAsStreamAsync(cancellationToken))
             {
-                await fileStream.WriteAsync(buffer.AsMemory(0, bytesRead), cancellationToken);
-                onProgress(bytesRead);
+                using (var fileStream = new FileStream(savePath, FileMode.Create, FileAccess.Write, FileShare.None, 81920, true))
+                {
+                    var buffer = new byte[81920];
+                    int bytesRead;
+                    while ((bytesRead = await stream.ReadAsync(buffer, cancellationToken)) > 0)
+                    {
+                        await fileStream.WriteAsync(buffer.AsMemory(0, bytesRead), cancellationToken);
+                        onProgress(bytesRead);
+                    }
+                }
             }
         }
 
@@ -146,16 +149,19 @@ namespace Com.Scm.Nas.Download.Strategy
                 task.TotalSize = response.Content.Headers.ContentLength ?? -1;
             }
 
-            using var stream = await response.Content.ReadAsStreamAsync(cancellationToken);
-            using var fileStream = new FileStream(task.FullPath, FileMode.Create, FileAccess.Write, FileShare.None, 81920, true);
-
-            var buffer = new byte[81920];
-            int bytesRead;
-            while ((bytesRead = await stream.ReadAsync(buffer, cancellationToken)) > 0)
+            using (var stream = await response.Content.ReadAsStreamAsync(cancellationToken))
             {
-                await fileStream.WriteAsync(buffer.AsMemory(0, bytesRead), cancellationToken);
-                task.DownloadedSize += bytesRead;
-                task.UpdateSpeed();
+                using (var fileStream = new FileStream(task.FullPath, FileMode.Create, FileAccess.Write, FileShare.None, 81920, true))
+                {
+                    var buffer = new byte[81920];
+                    int bytesRead;
+                    while ((bytesRead = await stream.ReadAsync(buffer, cancellationToken)) > 0)
+                    {
+                        await fileStream.WriteAsync(buffer.AsMemory(0, bytesRead), cancellationToken);
+                        task.DownloadedSize += bytesRead;
+                        task.UpdateSpeed();
+                    }
+                }
             }
         }
     }

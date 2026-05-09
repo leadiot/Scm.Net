@@ -41,9 +41,6 @@ namespace Com.Scm.Nas.Download
                     OnStatusChanged = OnTaskStatusChanged
                 };
             }
-
-            // 从数据库恢复未完成任务
-            RestoreTasksFromDb();
         }
 
         /// <summary>
@@ -51,12 +48,27 @@ namespace Com.Scm.Nas.Download
         /// </summary>
         public async Task<List<NasDownloadDto>> GetListAsync()
         {
-            // 从数据库补充已完成/失败/取消的任务（不在内存中的）
-            return await _thisRepository.AsQueryable()
+            var daoList = await _thisRepository.AsQueryable()
                 .Where(a => a.row_status == ScmRowStatusEnum.Enabled)
                 .OrderByDescending(d => d.id)
-                .Select<NasDownloadDto>()
                 .ToListAsync();
+            var dtoList = new List<NasDownloadDto>();
+            foreach (var dao in daoList)
+            {
+                dtoList.Add(MapDaoToDto(dao));
+
+                if (dao.handle != ScmHandleEnum.Doing)
+                {
+                    continue;
+                }
+
+                var task = _Manager.Get(dao.id);
+                if (task == null)
+                {
+                    _Manager.Add(MapDaoToTask(dao));
+                }
+            }
+            return dtoList;
         }
 
         /// <summary>
@@ -166,46 +178,6 @@ namespace Com.Scm.Nas.Download
         }
 
         /// <summary>
-        /// 启动时从数据库恢复 Pending/Downloading 状态的任务
-        /// </summary>
-        private void RestoreTasksFromDb()
-        {
-            try
-            {
-                var daos = _thisRepository.GetList(d => d.handle == ScmHandleEnum.Doing);
-                foreach (var dao in daos)
-                {
-                    var task = new NasDownloadTask
-                    {
-                        id = dao.id,
-                        Url = dao.url,
-                        LinkType = dao.link_type,
-                        FilePath = dao.file_path,
-                        FileName = dao.file_name,
-                        Threads = dao.threads,
-                        FtpUser = dao.ftp_user,
-                        FtpPassword = dao.ftp_pass,
-                        TotalSize = dao.total_size,
-                        DownloadedSize = 0,  // 重新开始下载
-                        Handle = ScmHandleEnum.Doing,
-                        CreateTime = dao.create_time
-                    };
-
-                    // 重置数据库状态为 Pending
-                    dao.handle = ScmHandleEnum.Doing;
-                    dao.PrepareUpdate(0);
-                    _thisRepository.Update(dao);
-
-                    _Manager.Add(task);
-                }
-            }
-            catch (Exception ex)
-            {
-                LogUtils.Error($"[NasDownload] 恢复任务失败: {ex.Message}");
-            }
-        }
-
-        /// <summary>
         /// 任务状态变更时同步更新数据库
         /// </summary>
         private void OnTaskStatusChanged(NasDownloadTask task, ScmHandleEnum handle, ScmResultEnum result)
@@ -290,6 +262,9 @@ namespace Com.Scm.Nas.Download
                 Threads = dao.threads,
                 FtpUser = dao.ftp_user,
                 FtpPassword = dao.ftp_pass,
+                TotalSize = dao.total_size,
+                DownloadedSize = dao.downloaded_size,
+                Handle = dao.handle,
                 CreateTime = dao.create_time
             };
         }

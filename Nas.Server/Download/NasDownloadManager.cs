@@ -136,14 +136,14 @@ namespace Com.Scm.Nas.Download
         /// </summary>
         private async Task RunTaskAsync(NasDownloadTask task)
         {
+            if (task.Handle == ScmHandleEnum.Done)
+            {
+                return;
+            }
+
             await _semaphore.WaitAsync();
             try
             {
-                if (task.Handle == ScmHandleEnum.Done)
-                {
-                    return;
-                }
-
                 task.Cts = new CancellationTokenSource();
                 task.Handle = ScmHandleEnum.Doing;
                 task.SpeedSnapshotTime = DateTime.Now;

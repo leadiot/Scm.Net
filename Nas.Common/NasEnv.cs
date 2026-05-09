@@ -47,6 +47,11 @@
         /// </summary>
         public const long MAX_CHUNK_SIZE = 1024 * 1024 * 5;
 
+        /// <summary>
+        /// 缓冲大小
+        /// </summary>
+        public const int BUFFER_SIZE = 1024 * 8 * 10;
+
         #region 服务端接口
         /// <summary>
         /// 环境初始化

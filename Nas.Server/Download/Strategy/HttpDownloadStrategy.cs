@@ -34,8 +34,7 @@ namespace Com.Scm.Nas.Download.Strategy
                     if (headResp.IsSuccessStatusCode)
                     {
                         fileSize = headResp.Content.Headers.ContentLength ?? -1;
-                        supportsRange = headResp.Headers.AcceptRanges.Contains("bytes")
-                                     || headResp.StatusCode == System.Net.HttpStatusCode.PartialContent;
+                        supportsRange = headResp.Headers.AcceptRanges.Contains("bytes") || headResp.StatusCode == System.Net.HttpStatusCode.PartialContent;
                     }
                 }
                 catch
@@ -102,13 +101,13 @@ namespace Com.Scm.Nas.Download.Strategy
             using var response = await _httpClient.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, cancellationToken);
             response.EnsureSuccessStatusCode();
 
-            using (var stream = await response.Content.ReadAsStreamAsync(cancellationToken))
+            using (var readStream = await response.Content.ReadAsStreamAsync(cancellationToken))
             {
-                using (var fileStream = new FileStream(savePath, FileMode.Create, FileAccess.Write, FileShare.None, 81920, true))
+                using (var fileStream = new FileStream(savePath, FileMode.Create, FileAccess.Write, FileShare.None, NasEnv.BUFFER_SIZE, true))
                 {
-                    var buffer = new byte[81920];
+                    var buffer = new byte[NasEnv.BUFFER_SIZE];
                     int bytesRead;
-                    while ((bytesRead = await stream.ReadAsync(buffer, cancellationToken)) > 0)
+                    while ((bytesRead = await readStream.ReadAsync(buffer, cancellationToken)) > 0)
                     {
                         await fileStream.WriteAsync(buffer.AsMemory(0, bytesRead), cancellationToken);
                         onProgress(bytesRead);
@@ -122,11 +121,15 @@ namespace Com.Scm.Nas.Download.Strategy
         /// </summary>
         private async Task MergeChunksAsync(string[] tempFiles, string outputPath)
         {
-            using var output = new FileStream(outputPath, FileMode.Create, FileAccess.Write, FileShare.None, 81920, true);
-            foreach (var part in tempFiles)
+            using (var output = new FileStream(outputPath, FileMode.Create, FileAccess.Write, FileShare.None, NasEnv.BUFFER_SIZE, true))
             {
-                using var input = new FileStream(part, FileMode.Open, FileAccess.Read, FileShare.Read, 81920, true);
-                await input.CopyToAsync(output);
+                foreach (var part in tempFiles)
+                {
+                    using (var input = new FileStream(part, FileMode.Open, FileAccess.Read, FileShare.Read, NasEnv.BUFFER_SIZE, true))
+                    {
+                        await input.CopyToAsync(output);
+                    }
+                }
             }
 
             // 清理分片
@@ -151,9 +154,9 @@ namespace Com.Scm.Nas.Download.Strategy
 
             using (var stream = await response.Content.ReadAsStreamAsync(cancellationToken))
             {
-                using (var fileStream = new FileStream(task.FullPath, FileMode.Create, FileAccess.Write, FileShare.None, 81920, true))
+                using (var fileStream = new FileStream(task.FullPath, FileMode.Create, FileAccess.Write, FileShare.None, NasEnv.BUFFER_SIZE, true))
                 {
-                    var buffer = new byte[81920];
+                    var buffer = new byte[NasEnv.BUFFER_SIZE];
                     int bytesRead;
                     while ((bytesRead = await stream.ReadAsync(buffer, cancellationToken)) > 0)
                     {

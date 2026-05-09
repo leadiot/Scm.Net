@@ -158,8 +158,8 @@ npm run dev
 ## 演示地址
 
 【登录地址】[点击访问](http://www.c-scm.net)
-
-> 演示账号请访问 [演示说明页](https://gitee.com/leadiot/scm.net/wikis/%E6%BC%94%E7%A4%BA%E8%AF%B4%E6%98%8E) 获取。
+【登录用户】admin
+【登录口令】123456
 
 ## 浏览器支持
 

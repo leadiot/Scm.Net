@@ -694,7 +694,7 @@ namespace Com.Scm
             userRoleDao.role_id = roleAdminDao.id;
             SaveDao(userRoleDao);
 
-            CreateTheme(1, "Default", "{\"page\":{\"backgroundImage\":\"url('http://api.c-scm.net/data/bg/bg01.jpg')\",\"backgroundColor\":\"\",\"backgroundSize\":\"cover\",\"backgroundPosition\":\"center center\",\"backgroundRepeat\":\"no-repeat\"},\"mask\":{\"backgroundColor\":\"rgba(0,0,0,0.5)\"}}");
+            CreateTheme(1, "Default", "{\"page\":{\"backgroundImage\":\"url('/data/bg/bg01.jpg')\",\"backgroundColor\":\"\",\"backgroundSize\":\"cover\",\"backgroundPosition\":\"center center\",\"backgroundRepeat\":\"no-repeat\"},\"mask\":{\"backgroundColor\":\"rgba(0,0,0,0.5)\"}}");
             return true;
         }
 

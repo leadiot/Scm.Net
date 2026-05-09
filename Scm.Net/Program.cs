@@ -181,15 +181,14 @@ namespace Com.Scm
             }
 
             app.UseHttpsRedirection();
-            //app.UseDefaultFiles(new DefaultFilesOptions
-            //{
-            //    DefaultFileNames = new List<string>
-            //    {
-            //        "index.html"
-            //    }
-            //});
-            //app.UseStaticFiles();
-            app.UseFileServer();
+            app.UseDefaultFiles(new DefaultFilesOptions
+            {
+                DefaultFileNames = new List<string>
+                {
+                    "index.html"
+                }
+            });
+            app.UseStaticFiles();
 
             if (!string.IsNullOrEmpty(envConfig.DataUri))
             {

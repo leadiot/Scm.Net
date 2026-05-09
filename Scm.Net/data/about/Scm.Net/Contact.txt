@@ -2,4 +2,4 @@
 <p>&nbsp;</p>
 <p>QQ交流群：415872667</p>
 <p>&nbsp;</p>
-<p style="text-align: center;"><img src="http://api.c-scm.net/data/qq.jpg" alt="Scm.Net交流群"/></p>
+<p style="text-align: center;"><img src="http://www.c-scm.net/data/qq.jpg" alt="Scm.Net交流群"/></p>

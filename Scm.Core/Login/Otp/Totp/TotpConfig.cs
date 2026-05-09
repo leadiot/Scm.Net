@@ -50,7 +50,7 @@ namespace Com.Scm.Login.Otp.Totp
         {
             if (string.IsNullOrEmpty(Issuer))
             {
-                Issuer = "Scm.Net";
+                Issuer = ScmEnv.ISSUER;
             }
 
             //if (string.IsNullOrEmpty(Algorithm))

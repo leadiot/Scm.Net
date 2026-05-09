@@ -34,11 +34,11 @@ public class JwtConfig
         }
         if (!string.IsNullOrWhiteSpace(Issuer))
         {
-            Issuer = "c-scm";
+            Issuer = ScmEnv.ISSUER;
         }
         if (!string.IsNullOrWhiteSpace(Audience))
         {
-            Audience = "scm.net";
+            Audience = ScmEnv.AUDIENCE;
         }
         if (Expires < 1)
         {

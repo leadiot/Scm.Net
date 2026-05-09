@@ -47,7 +47,7 @@ namespace Com.Scm.Login.Otp.Hotp
         {
             //if (string.IsNullOrEmpty(Issuer))
             //{
-            //    Issuer = "Scm.Net";
+            //    Issuer = ScmEnv.ISSUER;
             //}
 
             //if (string.IsNullOrEmpty(Algorithm))

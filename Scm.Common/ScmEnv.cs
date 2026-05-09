@@ -15,6 +15,11 @@
         /// </summary>
         public static readonly string FORMAT_DATETIME = FORMAT_DATE + ' ' + FORMAT_TIME;
 
+        public const string APP_CODE = "Scm.Net";
+
+        public const string ISSUER = "Scm.Net";
+
+        public const string AUDIENCE = "scm.net";
         /// <summary>
         /// 默认索引
         /// </summary>

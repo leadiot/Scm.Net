@@ -31,7 +31,7 @@ namespace Com.Scm.About
         {
             if (string.IsNullOrWhiteSpace(code))
             {
-                code = "Scm.Net";
+                code = ScmEnv.APP_CODE;
             }
             if (string.IsNullOrEmpty(section))
             {

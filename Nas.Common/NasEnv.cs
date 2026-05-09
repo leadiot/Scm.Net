@@ -5,12 +5,12 @@
         /// <summary>
         /// 服务路径（公有）
         /// </summary>
-        public const string SERVER_URL = "https://api.c-scm.net";
+        public const string SERVER_URL = "https://www.c-scm.net";
 
         /// <summary>
         /// 无端路径（私有）
         /// </summary>
-        public const string REMOTE_URL = "https://api.c-scm.net";
+        public const string REMOTE_URL = "https://www.c-scm.net";
 
         /// <summary>
         /// 虚拟路径标识

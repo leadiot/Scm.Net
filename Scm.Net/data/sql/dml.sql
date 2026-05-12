@@ -8697,3 +8697,4 @@ update scm_sys_menu set view='home/console/unitinfo' where id='10000000000000013
 update scm_sys_menu set view='home/console/userinfo' where id='1000000000000001320';
 update scm_sys_menu set view='home/console/oauth' where id='1000000000000001330';
 update scm_sys_menu set view='home/console/otp' where id='1000000000000001340';
+INSERT INTO [scm_sys_menu] ([id],[client],[types],[lang],[codec],[namec],[icon],[pid],[uri],[layer],[od],[visible],[enabled],[fullpage],[keepAlive],[active],[redirect],[view],[color],[layout],[row_delete],[row_status],[create_time],[create_user],[update_time],[update_user]) VALUES (1000000000000001103,10,1,'zh-cn','monitor','大屏幕','sc-menu-line',1000000000000001000,'/monitor',2,3,1,1,0,1,NULL,NULL,'home/monitor',NULL,'monitor',1,1,1778556492751,1000000000000000001,1778556494591,1000000000000000001);

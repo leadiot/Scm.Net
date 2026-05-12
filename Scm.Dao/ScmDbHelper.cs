@@ -526,11 +526,11 @@ namespace Com.Scm
             var homeDao = CreateMenu(1000000000000001000, "home", "主页", rootDao.id, 1, 1, "/home", "home", "sc-home-4-line");
             roleAdminList.Add(new RoleAuthDao { role_id = roleAdminDao.id, auth_id = homeDao.id, types = ScmRoleAuthTypesEnum.RoleMenu });
             // 工作台
-            var homeConsoleDao = CreateMenu(1000000000000001101, "console", "工作台", homeDao.id, 2, 1, "/console", "home/console", "sc-menu-line", "console");
+            var homeConsoleDao = CreateMenu(1000000000000001101, "console", "工作台", homeDao.id, 2, 1, "/console", "home/console", "ms-dashboard", "console");
             roleAdminList.Add(new RoleAuthDao { role_id = roleAdminDao.id, auth_id = homeConsoleDao.id, types = ScmRoleAuthTypesEnum.RoleMenu });
-            var homeDesktopDao = CreateMenu(1000000000000001102, "desktop", "云桌面", homeDao.id, 2, 2, "/desktop", "home/desktop", "sc-menu-line", "desktop");
+            var homeDesktopDao = CreateMenu(1000000000000001102, "desktop", "云桌面", homeDao.id, 2, 2, "/desktop", "home/desktop", "ms-computer", "desktop");
             roleAdminList.Add(new RoleAuthDao { role_id = roleAdminDao.id, auth_id = homeDesktopDao.id, types = ScmRoleAuthTypesEnum.RoleMenu });
-            var homeMonitorDao = CreateMenu(1000000000000001103, "monitor", "大屏幕", homeDao.id, 2, 3, "/monitor", "home/monitor", "sc-menu-line", "monitor");
+            var homeMonitorDao = CreateMenu(1000000000000001103, "monitor", "大屏幕", homeDao.id, 2, 3, "/monitor", "home/monitor", "ms-monitor", "monitor");
             roleAdminList.Add(new RoleAuthDao { role_id = roleAdminDao.id, auth_id = homeMonitorDao.id, types = ScmRoleAuthTypesEnum.RoleMenu });
             // 我的收藏
             var homeFavoritesDao = CreateMenu(1000000000000001200, "favorites", "我的收藏", homeDao.id, 2, 2, "/favorites", "home/console/favorites", "sc-heart-3-line");

@@ -30,7 +30,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Resource Include="Fonts\DejaVuSans.ttf" />
+    <Resource Include="data\fonts\DejaVuSans.ttf" />
   </ItemGroup>
 
   <ItemGroup>

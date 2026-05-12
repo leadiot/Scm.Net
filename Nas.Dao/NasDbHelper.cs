@@ -32,16 +32,19 @@ namespace Com.Scm.Nas
                 verDao = new ScmVerDao();
                 verDao.key = key;
                 verDao.create_time = TimeUtils.GetUnixTime();
+
+                InitDdl(verDao);
+
+                InitDml(verDao);
             }
+            else
+            {
+                // DDL处理
+                UpgradeDdl(verDao);
 
-            // DDL处理
-            InitDdl(verDao);
-
-            // 权限处理
-            InitData(verDao);
-
-            // DML处理
-            InitDml(verDao);
+                // DML处理
+                UpgradeDml(verDao);
+            }
 
             verDao.ver = VER;
             verDao.date = DATE;
@@ -52,25 +55,12 @@ namespace Com.Scm.Nas
 
         protected override void InitDdl(ScmVerDao verDao)
         {
-            // 版本较新，不执行DDL
-            if (verDao.ver >= VER)
-            {
-                return;
-            }
-
-            var ddlFile = Path.Combine(_SqlDir, "ddl-nas.sql");
-            ExecuteSql(ddlFile, verDao.ver);
+            // 表格处理
+            InitTable(Assembly.GetExecutingAssembly());
         }
 
-        protected override bool InitData(ScmVerDao verDao)
+        protected override void InitDml(ScmVerDao verDao)
         {
-            base.InitData(verDao);
-
-            if (verDao.ver != 0)
-            {
-                return true;
-            }
-
             CreateApp(1000000000000002002, 10, 3, "nas.net", "私有云盘", "<p>Nas.Net是一款针对个人、家庭以及小团队的私有云存储软件，可以直接运行于已有的多种设备上，让您的老旧设备再次焕发新的机会。</p><img src=\"/images/loginbg.svg\" alt=\"logo\"/>");
 
             var roleId = 1000000000000001030L;
@@ -174,22 +164,31 @@ namespace Com.Scm.Nas
             config.PrepareCreate(1000000000000001030L);
             _SqlClient.Insertable(config).ExecuteCommand();
 
-            // 表格处理
-            InitTable(Assembly.GetExecutingAssembly());
-
-            return true;
+            var ddlFile = Path.Combine(_SqlDir, "nas-init.sql");
+            ExecuteSql(ddlFile, verDao.ver);
         }
 
-        protected override void InitDml(ScmVerDao verDao)
+        protected override void UpgradeDdl(ScmVerDao verDao)
         {
-            // 版本较新，不执行DML
-            if (verDao.ver >= VER)
+            // 版本较新，不执行DDL
+            if (verDao.ver < VER)
             {
-                return;
+                var ddlFile = Path.Combine(_SqlDir, "nas-ddl.sql");
+                ExecuteSql(ddlFile, verDao.ver);
             }
 
-            var dmlFile = Path.Combine(_SqlDir, "dml-nas.sql");
-            ExecuteSql(dmlFile, verDao.ver);
+            // 表格处理
+            InitTable(Assembly.GetExecutingAssembly());
+        }
+
+        protected override void UpgradeDml(ScmVerDao verDao)
+        {
+            // 版本较新，不执行DML
+            if (verDao.ver < VER)
+            {
+                var dmlFile = Path.Combine(_SqlDir, "nas-dml.sql");
+                ExecuteSql(dmlFile, verDao.ver);
+            }
         }
     }
 }

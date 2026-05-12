@@ -5,8 +5,16 @@ namespace Com.Scm.Samples
 {
     public class SamplesDbHelper : ScmDbHelper
     {
-        private const int VER = 10;
-        private const string RELEASE_DATE = "2026-01-01";
+        private const string KEY = "Samples.Net";
+        /// <summary>
+        /// 数据版本
+        /// </summary>
+        private const int VER = 5;
+        /// <summary>
+        /// 发行日期
+        /// </summary>
+        private const string DATE = "2026-05-12";
+
 
         public SamplesDbHelper()
         {
@@ -20,7 +28,7 @@ namespace Com.Scm.Samples
 
         public override bool InitDb()
         {
-            var key = "scm.samples";
+            var key = KEY;
 
             var verDao = ReadDbVer(key);
             if (verDao == null)
@@ -28,32 +36,60 @@ namespace Com.Scm.Samples
                 verDao = new ScmVerDao();
                 verDao.key = key;
                 verDao.create_time = TimeUtils.GetUnixTime();
+
+                InitDdl(verDao);
+
+                InitDml(verDao);
             }
-
-            InitTable(Assembly.GetExecutingAssembly());
-
-            if (verDao.ver == 0)
+            else
             {
-                InitDml();
+                // DDL处理
+                UpgradeDdl(verDao);
+
+                // DML处理
+                UpgradeDml(verDao);
             }
-
-            var ddlFile = Path.Combine(_SqlDir, "ddl-samples.sql");
-            ExecuteSql(ddlFile, verDao.ver);
-
-            var dmlFile = Path.Combine(_SqlDir, "dml-samples.sql");
-            ExecuteSql(dmlFile, verDao.ver);
 
             verDao.ver = VER;
-            verDao.date = RELEASE_DATE;
+            verDao.date = DATE;
             verDao.update_time = TimeUtils.GetUnixTime();
             SaveDbVer(verDao);
             return true;
         }
 
-        private void InitDml()
+        protected override void InitDdl(ScmVerDao verDao)
+        {
+            // 表格处理
+            InitTable(Assembly.GetExecutingAssembly());
+        }
+
+        protected override void InitDml(ScmVerDao verDao)
         {
             CreateUid(1000000000000002001, "samples_book", 1, "", "");
             CreateUid(1000000000000002002, "samples_po_header", 10, "PO", "");
+        }
+
+        protected override void UpgradeDdl(ScmVerDao verDao)
+        {
+            // 版本较新，不执行DDL
+            if (verDao.ver < VER)
+            {
+                var ddlFile = Path.Combine(_SqlDir, "samples-ddl.sql");
+                ExecuteSql(ddlFile, verDao.ver);
+            }
+
+            // 表格处理
+            InitTable(Assembly.GetExecutingAssembly());
+        }
+
+        protected override void UpgradeDml(ScmVerDao verDao)
+        {
+            // 版本较新，不执行DML
+            if (verDao.ver < VER)
+            {
+                var dmlFile = Path.Combine(_SqlDir, "samples-dml.sql");
+                ExecuteSql(dmlFile, verDao.ver);
+            }
         }
     }
 }

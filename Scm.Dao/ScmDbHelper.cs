@@ -71,16 +71,19 @@ namespace Com.Scm
                 verDao = new ScmVerDao();
                 verDao.key = key;
                 verDao.create_time = TimeUtils.GetUnixTime();
+
+                InitDdl(verDao);
+
+                InitDml(verDao);
             }
+            else
+            {
+                // DDL处理
+                UpgradeDdl(verDao);
 
-            // DDL处理
-            InitDdl(verDao);
-
-            // 权限处理
-            InitData(verDao);
-
-            // DML处理
-            InitDml(verDao);
+                // DML处理
+                UpgradeDml(verDao);
+            }
 
             verDao.ver = VER;
             verDao.date = DATE;
@@ -381,34 +384,21 @@ namespace Com.Scm
         }
 
         /// <summary>
-        /// 数据库操作
+        /// 表格初始化
         /// </summary>
+        /// <param name="verDao"></param>
         protected virtual void InitDdl(ScmVerDao verDao)
         {
-            // 版本较新，不执行DDL
-            if (verDao.ver >= VER)
-            {
-                return;
-            }
-
-            var ddlFile = Path.Combine(_SqlDir, "ddl.sql");
-            ExecuteSql(ddlFile, verDao.ver);
+            // 表格处理
+            InitTable(Assembly.GetExecutingAssembly());
         }
 
         /// <summary>
         /// 数据初始化
         /// </summary>
         /// <returns></returns>
-        protected virtual bool InitData(ScmVerDao verDao)
+        protected virtual void InitDml(ScmVerDao verDao)
         {
-            // 表格处理
-            InitTable(Assembly.GetExecutingAssembly());
-
-            if (verDao.ver != 0)
-            {
-                return true;
-            }
-
             CreateUid(ScmEnv.DEFAULT_ID, "scm", 0, "", "");
             CreateUid(1000000000000000002, "test", 0, "", "");
             CreateUid(1000000000000000011, "scm_sys_uom", 5, "UOM", "");
@@ -697,22 +687,38 @@ namespace Com.Scm
             SaveDao(userRoleDao);
 
             CreateTheme(1, "Default", "{\"page\":{\"backgroundImage\":\"url('/data/bg/bg01.jpg')\",\"backgroundColor\":\"\",\"backgroundSize\":\"cover\",\"backgroundPosition\":\"center center\",\"backgroundRepeat\":\"no-repeat\"},\"mask\":{\"backgroundColor\":\"rgba(0,0,0,0.5)\"}}");
-            return true;
+
+            var dmlFile = Path.Combine(_SqlDir, "scm-init.sql");
+            ExecuteSql(dmlFile, verDao.ver);
         }
 
         /// <summary>
         /// 数据库操作
         /// </summary>
-        protected virtual void InitDml(ScmVerDao verDao)
+        protected virtual void UpgradeDdl(ScmVerDao verDao)
         {
-            // 版本较新，不执行DML
-            if (verDao.ver >= VER)
+            // 版本较新，不执行DDL
+            if (verDao.ver < VER)
             {
-                return;
+                var ddlFile = Path.Combine(_SqlDir, "scm-ddl.sql");
+                ExecuteSql(ddlFile, verDao.ver);
             }
 
-            var dmlFile = Path.Combine(_SqlDir, "dml.sql");
-            ExecuteSql(dmlFile, verDao.ver);
+            // 表格处理
+            InitTable(Assembly.GetExecutingAssembly());
+        }
+
+        /// <summary>
+        /// 数据库操作
+        /// </summary>
+        protected virtual void UpgradeDml(ScmVerDao verDao)
+        {
+            // 版本较新，不执行DML
+            if (verDao.ver < VER)
+            {
+                var dmlFile = Path.Combine(_SqlDir, "scm-dml.sql");
+                ExecuteSql(dmlFile, verDao.ver);
+            }
         }
 
         #region 具体数据操作

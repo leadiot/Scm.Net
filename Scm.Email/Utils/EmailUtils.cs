@@ -1,4 +1,5 @@
-﻿using Com.Scm.Email.Config;
+﻿using Com.Scm.Email;
+using Com.Scm.Email.Config;
 using MailKit.Net.Smtp;
 using MimeKit;
 using MimeKit.Text;
@@ -9,7 +10,7 @@ namespace Com.Scm.Utils
     /// 发送邮箱
     /// </summary>
     [Serializable]
-    public static class EmailHelper
+    public static class EmailUtils
     {
         /// <summary>
         /// 
@@ -115,20 +116,6 @@ namespace Com.Scm.Utils
             }
 
             return true;
-        }
-    }
-
-    public class EmailAddress
-    {
-        public string Name { get; set; }
-        public string Address { get; set; }
-
-        public void Trim()
-        {
-            if (string.IsNullOrWhiteSpace(Name))
-            {
-                Name = Address;
-            }
         }
     }
 }

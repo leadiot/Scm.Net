@@ -1,5 +1,5 @@
-using Com.Scm.Generator.Dvo;
-using Com.Scm.Utils;
+using Com.Scm.Generator.Dto;
+using Com.Scm.Helper;
 using SqlSugar;
 
 namespace Com.Scm.Generator

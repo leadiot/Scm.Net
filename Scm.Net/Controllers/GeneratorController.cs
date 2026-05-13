@@ -1,7 +1,7 @@
 using Com.Scm.Filters;
 using Com.Scm.Generator;
 using Com.Scm.Generator.Config;
-using Com.Scm.Generator.Dvo;
+using Com.Scm.Generator.Dto;
 using Microsoft.AspNetCore.Mvc;
 using SqlSugar;
 

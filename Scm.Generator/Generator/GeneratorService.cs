@@ -1,5 +1,6 @@
 ﻿using Com.Scm.Generator.Config;
-using Com.Scm.Generator.Dvo;
+using Com.Scm.Generator.Dto;
+using Com.Scm.Helper;
 using Com.Scm.Utils;
 using SqlSugar;
 

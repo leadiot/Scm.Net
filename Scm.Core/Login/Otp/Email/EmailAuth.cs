@@ -438,7 +438,7 @@ namespace Com.Scm.Login.Otp.Email
             bodyText = _EmailConfig.GetText(file, headText, bodyText, footText);
 
             var receiver = new EmailAddress { Name = logOtpDao.code, Address = logOtpDao.code };
-            return EmailHelper.SendEmail(_EmailConfig, headText, bodyText, receiver);
+            return EmailUtils.SendEmail(_EmailConfig, headText, bodyText, receiver);
         }
 
         /// <summary>
@@ -492,7 +492,7 @@ namespace Com.Scm.Login.Otp.Email
             bodyText = _EmailConfig.GetText(file, headText, bodyText, footText);
 
             var receiver = new EmailAddress { Name = logOtpDao.code, Address = logOtpDao.code };
-            return await EmailHelper.SendEmailAsync(_EmailConfig, headText, bodyText, receiver);
+            return await EmailUtils.SendEmailAsync(_EmailConfig, headText, bodyText, receiver);
         }
     }
 }

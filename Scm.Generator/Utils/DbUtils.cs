@@ -1,6 +1,4 @@
-using Com.Scm.Utils;
-
-namespace Com.Scm.Generator
+namespace Com.Scm.Utils
 {
     public static class DbUtils
     {

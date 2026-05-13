@@ -1,7 +1,7 @@
 ﻿using Com.Scm.Generator.Config;
 using System.IO.Compression;
 
-namespace Com.Scm.Utils
+namespace Com.Scm.Helper
 {
     public class ZipHelper : GenHelper
     {

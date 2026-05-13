@@ -1,6 +1,6 @@
 ﻿using Com.Scm.Generator.Config;
 
-namespace Com.Scm.Utils
+namespace Com.Scm.Helper
 {
     public abstract class GenHelper
     {

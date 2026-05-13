@@ -2,7 +2,7 @@
 
 namespace Com.Scm.Utils
 {
-    public class PhoneHelper
+    public class PhoneUtils
     {
         public static AlibabaCloud.SDK.Dysmsapi20170525.Client CreateClient(PhoneConfig config)
         {

@@ -2,13 +2,21 @@
 # 此文件由项目作者创建，您可以根据需要进行增删调整。
 ################################################################################
 
+# IDE相关文件
+.git
+.gitcode
+.gitee
+.github
+.qoder
+.vs
+.vscode
+
 # Vue 项目文件
 dist/
 node_modules/
 webpack/
 
 # Visual Studio 项目文件
-.vs/
 [Bb]in/
 [Oo]bj/
 [Ll]ogs/
@@ -22,12 +30,3 @@ PublishProfiles/
 [Gg]enerated/
 
 # 需要特殊处理的文件
-/net/Scm.Api/data/scm.db
-/net/Scm.Api/data/scm.uid
-/net/Scm.Api/dev/
-/net/Scm.Api/logs/
-/net/Scm.Api/quartz/settings/logs/
-/net/Scm.Api/Properties/PublishProfiles/
-
-
-/release/Scm.Api/dev

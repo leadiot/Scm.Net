@@ -25,6 +25,9 @@
         /// </summary>
         public const long DEFAULT_ID = 1000000000000000001L;
 
+        public const long MAX_FILE_SIZE = 10L * 1024 * 1024 * 1024;
+        public const long MAX_CHUNK_SIZE = 1024 * 1024; // 1MB
+
         /// <summary>
         /// 默认密码
         /// </summary>

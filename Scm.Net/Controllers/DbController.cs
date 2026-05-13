@@ -1,6 +1,5 @@
 ﻿using Com.Scm.Config;
 using Com.Scm.Filters;
-using Com.Scm.Nas;
 using Com.Scm.Response;
 using Com.Scm.Samples;
 using Com.Scm.Utils;
@@ -228,10 +227,6 @@ namespace Com.Scm.Controllers
                 helper.Init(_SqlClient, baseDir);
                 helper.DropDb();
 
-                helper = new NasDbHelper();
-                helper.Init(_SqlClient, baseDir);
-                helper.DropDb();
-
                 response.SetSuccess();
             }
             catch (Exception ex)
@@ -257,10 +252,6 @@ namespace Com.Scm.Controllers
                 helper.InitDb();
 
                 helper = new SamplesDbHelper();
-                helper.Init(_SqlClient, baseDir);
-                helper.InitDb();
-
-                helper = new NasDbHelper();
                 helper.Init(_SqlClient, baseDir);
                 helper.InitDb();
 

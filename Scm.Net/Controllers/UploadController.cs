@@ -1,6 +1,4 @@
 ﻿using Com.Scm.Config;
-using Com.Scm.Controllers;
-using Com.Scm.Nas;
 using Com.Scm.Utils;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -36,7 +34,7 @@ namespace Com.Scm.Controllers
                 return response;
             }
 
-            if (file.Length > NasEnv.MAX_CHUNK_SIZE)
+            if (file.Length > ScmEnv.MAX_FILE_SIZE)
             {
                 LogUtils.Debug("无效的内容过大！");
                 response.SetFailure("无效的内容过大！");
@@ -67,41 +65,6 @@ namespace Com.Scm.Controllers
             LogUtils.Debug("上传文件成功：" + name);
             response.SetSuccess($"文件上传成功！");
             return response;
-        }
-        #endregion
-
-        #region 大文件上传
-        /// <summary>
-        /// 分块上传
-        /// </summary>
-        /// <param name="request"></param>
-        /// <returns></returns>
-        [HttpPost("chunk")]
-        public async Task<ScmUploadResponse> UploadChunkAsync(ScmUploadRequest request)
-        {
-            return null;
-        }
-
-        /// <summary>
-        /// 上传校验
-        /// </summary>
-        /// <param name="request"></param>
-        /// <returns></returns>
-        [HttpPost("check")]
-        public async Task<ScmUploadResponse> UploadCheckAsync(ScmUploadRequest request)
-        {
-            return null;
-        }
-
-        /// <summary>
-        /// 文件合并
-        /// </summary>
-        /// <param name="request"></param>
-        /// <returns></returns>
-        [HttpPost("merge")]
-        public async Task<ScmUploadResponse> UploadMergeAsync(ScmUploadRequest request)
-        {
-            return null;
         }
         #endregion
     }

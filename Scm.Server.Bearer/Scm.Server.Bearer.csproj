@@ -8,18 +8,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="Jwt\**" />
-    <EmbeddedResource Remove="Jwt\**" />
-    <None Remove="Jwt\**" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Compile Remove="JwtAuthService.cs" />
-    <Compile Remove="JwtMiddleware.cs" />
-    <Compile Remove="JwtStrapperIoC.cs" />
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="10.0.7" />
   </ItemGroup>
 

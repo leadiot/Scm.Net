@@ -11,7 +11,6 @@ using Com.Scm.Hubs;
 using Com.Scm.Image.ImageSharp;
 using Com.Scm.Login.Otp;
 using Com.Scm.Mapper;
-using Com.Scm.Nas;
 using Com.Scm.Phone.Config;
 using Com.Scm.Quartz;
 using Com.Scm.Quartz.Config;
@@ -340,10 +339,6 @@ namespace Com.Scm
             dbHelper.InitDb();
 
             dbHelper = new SamplesDbHelper();
-            dbHelper.Init(sugarScope, sqlDir);
-            dbHelper.InitDb();
-
-            dbHelper = new NasDbHelper();
             dbHelper.Init(sugarScope, sqlDir);
             dbHelper.InitDb();
 

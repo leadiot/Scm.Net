@@ -1,9 +1,6 @@
 ﻿using Com.Scm.Config;
-using Com.Scm.Controllers;
 using Com.Scm.Filters;
 using Com.Scm.Http;
-using Com.Scm.Nas.Sync;
-using Com.Scm.Ur;
 using Com.Scm.Utils;
 using Microsoft.AspNetCore.Mvc;
 using SqlSugar;
@@ -27,29 +24,13 @@ namespace Com.Scm.Controllers
         /// <param name="path">要下载的文件名（含扩展名）</param>
         /// <returns>文件流</returns>
         [NoJsonResult]
-        [HttpGet("ds/{id}")]
-        public async Task<IActionResult> DownloadSmallFile(long id)
+        [HttpGet]
+        public async Task<IActionResult> DownloadFile(string path)
         {
-            LogUtils.Debug("小文件下载：" + id);
-
-            var docDao = await _SqlClient.Queryable<SyncResFileDao>()
-                .Where(a => a.id == id)
-                .FirstAsync();
-            if (docDao == null)
-            {
-                return Empty;
-            }
-
-            var userDao = await _SqlClient.Queryable<UserDao>()
-                .Where(a => a.id == docDao.user_id)
-                .FirstAsync();
-            if (userDao == null)
-            {
-                return Empty;
-            }
+            LogUtils.Debug("文件下载：" + path);
 
             // 1. 定义文件存储的根路径
-            var filePath = _EnvConfig.GetDataPath($"/Nas/{userDao.codes}" + docDao.path);
+            var filePath = _EnvConfig.GetTempPath(path);
 
             // 2. 校验文件是否存在
             if (!System.IO.File.Exists(filePath))

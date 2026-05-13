@@ -95,7 +95,7 @@ Products built on this framework include: **OMS** (Order Management), **WMS** (W
 ### 2. Clone the Repository
 
 ```bash
-git clone https://gitee.com/openscm/scm.net.git
+git clone https://gitee.com/leadiot/scm.net.git
 ```
 
 ### 3. Configure Database
@@ -130,7 +130,7 @@ npm install
 npm run dev
 ```
 
-For detailed setup instructions, see the [Environment Setup Guide](https://gitee.com/openscm/scm.net/wikis/%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA%E6%95%99%E7%A8%8B).
+For detailed setup instructions, see the [Environment Setup Guide](https://gitee.com/leadiot/scm.net/wikis/%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA%E6%95%99%E7%A8%8B).
 
 ## Demo
 
@@ -157,7 +157,7 @@ All modern browsers are supported (IE is **not** supported):
 
 ## FAQ
 
-[View FAQ](https://gitee.com/openscm/scm.net/wikis/%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98)
+[View FAQ](https://gitee.com/leadiot/scm.net/wikis/%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98)
 
 ## Contributing
 

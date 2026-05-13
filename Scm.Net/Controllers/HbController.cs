@@ -1,5 +1,4 @@
-﻿using Com.Scm.Controllers;
-using Com.Scm.Dsa;
+﻿using Com.Scm.Dsa;
 using Com.Scm.Filters;
 using Com.Scm.Log;
 using Com.Scm.Utils;
@@ -55,46 +54,6 @@ namespace Com.Scm.Controllers
         {
             var dao = new LogHbDao();
             dao.type = LogHbDto.TYPE_1;
-            dao.iip = ip;
-            dao.oip = GetClientIP(Request);
-            dao.mac = ma;
-            dao.host = hn;
-            dao.os = os;
-            dao.clr = rv;
-            dao.user = un;
-            dao.time = dt;
-            dao.create_time = TimeUtils.GetUnixTime();
-
-            await _ThisRepository.InsertAsync(dao);
-
-            //var response = new ScmResponse();
-            //response.SetSuccess();
-            //return response;
-            return true;
-        }
-
-        /// <summary>
-        /// 三方服务心跳
-        /// </summary>
-        /// <param name="ip">主机地址</param>
-        /// <param name="ma">网卡地址(Mac Address)</param>
-        /// <param name="hn">主机名称(Host Name)</param>
-        /// <param name="os">操作系统</param>
-        /// <param name="rv">运行环境(Runtime Version)</param>
-        /// <param name="un">登录用户(User Name)</param>
-        /// <param name="dt">执行时间(Datetime)</param>
-        /// <returns></returns>
-        [HttpPost("ts"), AllowAnonymous, NoAuditLog]
-        public async Task<bool> TsAsync([FromForm] string ip,
-            [FromForm] string ma,
-            [FromForm] string hn,
-            [FromForm] string os,
-            [FromForm] string rv,
-            [FromForm] string un,
-            [FromForm] long dt)
-        {
-            var dao = new LogHbDao();
-            dao.type = LogHbDto.TYPE_2;
             dao.iip = ip;
             dao.oip = GetClientIP(Request);
             dao.mac = ma;

@@ -1,4 +1,5 @@
 ﻿using Com.Scm.Enums;
+using Com.Scm.Files;
 using System;
 using System.Collections.Generic;
 using System.Globalization;

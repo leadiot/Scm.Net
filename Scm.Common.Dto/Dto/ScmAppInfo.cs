@@ -1,6 +1,4 @@
-﻿using Com.Scm.Dto;
-
-namespace Com.Scm
+﻿namespace Com.Scm.Dto
 {
     public class ScmAppInfo : ScmDto
     {

@@ -1,8 +1,7 @@
-﻿using Com.Scm.Dto;
-using Com.Scm.Enums;
+﻿using Com.Scm.Enums;
 using System.Text.RegularExpressions;
 
-namespace Com.Scm
+namespace Com.Scm.Dto
 {
     public class ScmVerInfo : ScmDto
     {

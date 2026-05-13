@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace Com.Scm.Utils
+namespace Com.Scm.Files
 {
     /// <summary>
     /// 目录信息

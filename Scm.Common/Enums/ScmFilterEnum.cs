@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel;
 
-namespace Com.Scm
+namespace Com.Scm.Enums
 {
     /// <summary>
     /// 过滤枚举

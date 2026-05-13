@@ -1,7 +1,7 @@
 ﻿using Com.Scm.Enums;
 using System;
 
-namespace Com.Scm.Utils
+namespace Com.Scm.Files
 {
     /// <summary>
     /// 文档信息

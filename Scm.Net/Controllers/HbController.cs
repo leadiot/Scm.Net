@@ -10,6 +10,7 @@ namespace Com.Scm.Controllers
     /// <summary>
     /// 心跳服务
     /// </summary>
+    [AllowAnonymous]
     [ApiExplorerSettings(GroupName = "Scm")]
     public class HbController : ApiController
     {
@@ -26,7 +27,6 @@ namespace Com.Scm.Controllers
         /// <param name="msg"></param>
         /// <returns></returns>
         [HttpGet("Echo")]
-        [AllowAnonymous]
         public string GetEcho(string msg)
         {
             return msg;
@@ -43,7 +43,8 @@ namespace Com.Scm.Controllers
         /// <param name="un">登录用户(User Name)</param>
         /// <param name="dt">心跳时间(Datetime)</param>
         /// <returns></returns>
-        [HttpPost("hd"), AllowAnonymous, NoAuditLog]
+        [HttpPost("hd")]
+        [NoAuditLog]
         public async Task<bool> HdAsync([FromForm] string ip,
             [FromForm] string ma,
             [FromForm] string hn,

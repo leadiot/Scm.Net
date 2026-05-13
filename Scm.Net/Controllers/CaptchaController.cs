@@ -10,6 +10,7 @@ namespace Com.Scm.Controllers
     /// <summary>
     /// Captcha
     /// </summary>
+    [AllowAnonymous]
     [ApiExplorerSettings(GroupName = "Scm")]
     public class CaptchaController : ApiController
     {
@@ -25,7 +26,9 @@ namespace Com.Scm.Controllers
         /// </summary>
         /// <param name="identify">标识符</param>
         /// <returns>图片对象</returns>
-        [HttpGet("cha/{identify}"), AllowAnonymous, NoJsonResult, NoAuditLog]
+        [HttpGet("cha/{identify}")]
+        [NoJsonResult]
+        [NoAuditLog]
         public IActionResult Get(string identify)
         {
             if (string.IsNullOrEmpty(identify))
@@ -43,7 +46,9 @@ namespace Com.Scm.Controllers
         /// </summary>
         /// <param name="identify"></param>
         /// <returns></returns>
-        [HttpGet("key/{identify}"), AllowAnonymous, NoJsonResult, NoAuditLog]
+        [HttpGet("key/{identify}")]
+        [NoJsonResult]
+        [NoAuditLog]
         public IActionResult GetKey(string identify)
         {
             if (string.IsNullOrEmpty(identify))

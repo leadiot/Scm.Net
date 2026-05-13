@@ -1,4 +1,3 @@
-using Com.Scm.Controllers;
 using Com.Scm.Filters;
 using Com.Scm.Generator;
 using Com.Scm.Generator.Config;

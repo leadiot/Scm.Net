@@ -20,7 +20,6 @@ namespace Com.Scm.Controllers
             _EnvConfig = envConfig;
         }
 
-        #region 小文件上传
         [HttpPost("file")]
         public async Task<ScmUploadResponse> UploadFileAsync(ScmUploadRequest request)
         {
@@ -66,6 +65,5 @@ namespace Com.Scm.Controllers
             response.SetSuccess($"文件上传成功！");
             return response;
         }
-        #endregion
     }
 }

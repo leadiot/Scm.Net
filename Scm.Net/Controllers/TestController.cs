@@ -1,11 +1,12 @@
-﻿using Com.Scm.Controllers;
-using Com.Scm.Request;
+﻿using Com.Scm.Request;
 using Com.Scm.Response;
 using Com.Scm.Token;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Com.Scm.Controllers
 {
+    [AllowAnonymous]
     [ApiExplorerSettings(GroupName = "Scm")]
     public class TestController : ApiController
     {

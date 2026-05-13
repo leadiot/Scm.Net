@@ -2,20 +2,20 @@
 using Com.Scm.Filters;
 using Com.Scm.Http;
 using Com.Scm.Utils;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using SqlSugar;
 
 namespace Com.Scm.Controllers
 {
+    [AllowAnonymous]
+    [ApiExplorerSettings(GroupName = "Scm")]
     public class DownloadController : ApiController
     {
         private EnvConfig _EnvConfig;
-        private ISqlSugarClient _SqlClient;
 
-        public DownloadController(EnvConfig envConfig, ISqlSugarClient sqlClient)
+        public DownloadController(EnvConfig envConfig)
         {
             _EnvConfig = envConfig;
-            _SqlClient = sqlClient;
         }
 
         /// <summary>

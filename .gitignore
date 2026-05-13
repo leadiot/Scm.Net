@@ -3,13 +3,13 @@
 ################################################################################
 
 # IDE相关文件
-.git
-.gitcode
-.gitee
-.github
-.qoder
-.vs
-.vscode
+.git/
+.gitcode/
+.gitee/
+.github/
+.qoder/
+.vs/
+.vscode/
 
 # Vue 项目文件
 dist/

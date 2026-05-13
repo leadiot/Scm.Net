@@ -14,7 +14,7 @@ namespace Com.Scm.Server
 
             services.AddCors(options =>
             {
-                options.AddPolicy(name: ScmEnv.SCM_CORS, policy =>
+                options.AddPolicy(name: ScmEnv.CORS_NAME, policy =>
                 {
                     if (corsConfig.AllowAnyOrigin)
                     {

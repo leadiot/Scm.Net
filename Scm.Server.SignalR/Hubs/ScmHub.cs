@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.SignalR;
 
 namespace Com.Scm.Hubs
 {
-    [EnableCors(ScmEnv.SCM_CORS)]
+    [EnableCors(ScmEnv.CORS_NAME)]
     public class ScmHub : Hub
     {
         private readonly IHttpContextAccessor _accessor;

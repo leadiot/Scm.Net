@@ -208,7 +208,7 @@ namespace Com.Scm
             {
                 if (corsConfig.GlobalCors)
                 {
-                    app.UseCors(ScmEnv.SCM_CORS);
+                    app.UseCors(ScmEnv.CORS_NAME);
                 }
                 else
                 {

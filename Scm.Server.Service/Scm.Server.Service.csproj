@@ -9,7 +9,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Scm.Cache\Scm.Cache.csproj" />
-    <ProjectReference Include="..\Scm.Common.Time\Scm.Common.Time.csproj" />
     <ProjectReference Include="..\Scm.Dao\Scm.Dao.csproj" />
     <ProjectReference Include="..\Scm.Dsa.Dba.Sugar\Scm.Dsa.Dba.Sugar.csproj" />
     <ProjectReference Include="..\Scm.Dto\Scm.Dto.csproj" />

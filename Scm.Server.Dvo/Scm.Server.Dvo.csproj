@@ -9,7 +9,12 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Scm.Common\Scm.Common.csproj" />
-    <ProjectReference Include="..\Scm.Common.Time\Scm.Common.Time.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="Scm.Common.Time">
+      <HintPath>..\Libs\netstandard2.0\Scm.Common.Time.dll</HintPath>
+    </Reference>
   </ItemGroup>
 
 </Project>

@@ -11,4 +11,10 @@
     <ProjectReference Include="..\Scm.Server\Scm.Server.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Reference Include="Scm.Cache">
+      <HintPath>..\Libs\netstandard2.0\Scm.Cache.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
 </Project>

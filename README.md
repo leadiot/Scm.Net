@@ -237,7 +237,7 @@ npm run dev
 
 [![QQ Group](https://img.shields.io/badge/QQ%20群-415872667-12B7F5.svg?logo=tencentqq)](https://qm.qq.com)
 
-<img src="qq.jpg" width="200"/>
+<img src="qqq.jpg" width="200"/>
 
 **赞赏支持**
 

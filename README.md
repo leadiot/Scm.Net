@@ -57,11 +57,6 @@
 | `Scm.Server.Quartz` | Quartz 定时任务调度 |
 | `Scm.Server.Swagger` | Swagger 文档扩展 |
 | `Scm.Generator` | 代码生成器（支持自定义模板） |
-| `Scm.Plugin` | 插件扩展基础框架 |
-| `Scm.Plugin.Image` | 图像处理插件（条码、水印、验证码等） |
-| `Scm.Plugin.Audio` | 音频解析插件 |
-| `Scm.Plugin.Video` | 视频转码插件 |
-| `Scm.Addon` | 插件加载机制 |
 | `Samples.*` | 使用示例工程 |
 
 ## 设计原则
@@ -112,7 +107,6 @@
 | --- | --- | --- |
 | .NET SDK | ≥ 10.0 | [官网](https://dotnet.microsoft.com) |
 | Visual Studio | ≥ 2026 | [官网](https://visualstudio.microsoft.com) |
-| MariaDB / MySQL | ≥ 10.3 | [官网](https://mariadb.org) |
 
 ### 2. 获取代码
 
@@ -135,7 +129,7 @@ git clone https://gitee.com/leadiot/scm.net.git
 
 系统会默认进行数据库初始化处理。
 
-### 4. 启动后端
+### 4. 启动服务
 
 ```bash
 cd Scm.Net
@@ -145,25 +139,17 @@ dotnet run
 
 访问 `http://localhost:5000/swagger` 确认接口正常。
 
-### 5. 启动前端
-
-```bash
-cd Scm.Vue   # 前端项目目录
-npm install
-npm run dev
-```
-
 详细说明请参考：[环境搭建教程](https://gitee.com/leadiot/scm.net/wikis/%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA%E6%95%99%E7%A8%8B) | [数据库配置说明](https://gitee.com/leadiot/scm.net/wikis/%E6%95%B0%E6%8D%AE%E5%BA%93%E9%85%8D%E7%BD%AE)
 
 ## 演示地址
 
-【登录地址】[点击访问](http://www.c-scm.net)
-【登录用户】admin
-【登录口令】123456
+【登录地址】[点击访问](http://www.c-scm.net) 
+【登录用户】admin 
+【登录口令】123456 
 
 ## 浏览器支持
 
-支持所有现代浏览器（不支持 IE）：
+支持所有现代浏览器：
 
 ![chrome](https://img.shields.io/badge/Chrome-≥88-success.svg?logo=googlechrome&logoColor=white)
 ![firefox](https://img.shields.io/badge/Firefox-≥78-success.svg?logo=firefox&logoColor=white)
@@ -184,10 +170,6 @@ npm run dev
 | -------       | :--------: | :--------: | :-----------------: |
 | **iOS**       | ✅         | ✅         | N/A                 |
 | **Android**   | ✅         | N/A        | Android 5.0+ ✅     |
-
-## 常见问题
-
-[查看常见问题](https://gitee.com/leadiot/scm.net/wikis/%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98)
 
 ## 开源协议
 

@@ -1,7 +1,8 @@
 ﻿using Com.Scm.Config;
 using Com.Scm.Filters;
+using Com.Scm.Helper;
 using Com.Scm.Response;
-using Com.Scm.Samples;
+using Com.Scm.Samples.Helper;
 using Com.Scm.Utils;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;

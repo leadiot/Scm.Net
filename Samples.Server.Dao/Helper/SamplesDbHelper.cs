@@ -1,7 +1,8 @@
-﻿using Com.Scm.Utils;
+﻿using Com.Scm.Helper;
+using Com.Scm.Utils;
 using System.Reflection;
 
-namespace Com.Scm.Samples
+namespace Com.Scm.Samples.Helper
 {
     public class SamplesDbHelper : ScmDbHelper
     {

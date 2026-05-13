@@ -2,7 +2,7 @@
 using SqlSugar;
 using System.ComponentModel.DataAnnotations;
 
-namespace Com.Scm
+namespace Com.Scm.Test
 {
     [SugarTable("scm_test")]
     public class ScmTestDao : ScmDao

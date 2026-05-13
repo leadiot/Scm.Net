@@ -1,7 +1,7 @@
 ﻿using Com.Scm.Samples.Book;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Com.Scm.Samples
+namespace Com.Scm.Samples.Utils
 {
     public static class SamplesServerUtils
     {

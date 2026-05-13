@@ -1,6 +1,6 @@
 ﻿using System.Text.RegularExpressions;
 
-namespace Com.Scm.Samples
+namespace Com.Scm.Samples.Utils
 {
     public class SamplesUtils
     {

@@ -11,7 +11,7 @@ using SqlSugar;
 using System.Reflection;
 using System.Text.RegularExpressions;
 
-namespace Com.Scm
+namespace Com.Scm.Helper
 {
     public class ScmDbHelper : IModelHelper
     {

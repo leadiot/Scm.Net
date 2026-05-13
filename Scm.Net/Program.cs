@@ -346,7 +346,6 @@ namespace Com.Scm
             dbHelper = new NasDbHelper();
             dbHelper.Init(sugarScope, sqlDir);
             dbHelper.InitDb();
-            //LogUtils.Info("数据库初始化完成！");
 
             // 单例注册SqlSugar
             services.AddSingleton<ISqlSugarClient>(sugarScope);

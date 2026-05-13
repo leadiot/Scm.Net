@@ -5,7 +5,7 @@
 [![.NET](https://img.shields.io/badge/.NET-10.0-512BD4.svg?logo=dotnet)](https://dotnet.microsoft.com)
 [![Vue](https://img.shields.io/badge/Vue-3.0-4FC08D.svg?logo=vuedotjs)](https://vuejs.org)
 [![Platform](https://img.shields.io/badge/platform-Windows%20%7C%20macOS%20%7C%20Linux-lightgrey.svg)](https://github.com)
-[![QQ Group](https://img.shields.io/badge/QQ-415872667-12B7F5.svg?logo=tencentqq)](https://qm.qq.com)
+[![QQ Group](https://img.shields.io/badge/QQ%20群-415872667-12B7F5.svg?logo=tencentqq)](https://qm.qq.com/cgi-bin/qm/qr?k=415872667)
 
 ## 项目介绍
 
@@ -217,7 +217,7 @@ dotnet run
 
 **QQ 交流群**
 
-[![QQ Group](https://img.shields.io/badge/QQ%20群-415872667-12B7F5.svg?logo=tencentqq)](https://qm.qq.com)
+[![QQ Group](https://img.shields.io/badge/QQ%20群-415872667-12B7F5.svg?logo=tencentqq)](https://qm.qq.com/cgi-bin/qm/qr?k=415872667)
 
 <img src="qqq.jpg" width="200"/>
 

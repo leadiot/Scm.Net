@@ -74,8 +74,8 @@
 ## 主要功能
 
 1. 首页自定义风格；
-2. 支持多种**登录方式**（账户、手机、邮件、三方 OAuth 等）；
-3. 支持多种**数据引擎**（[MySQL](https://www.mysql.com/)、[SQL Server](https://www.microsoft.com/zh-cn/sql-server/)、[Oracle](https://www.oracle.com/)、[SQLite](https://sqlite.org/)、[MariaDB](https://mariadb.org/)、[PostgreSQL](https://www.postgresql.org/)、[Firebird](https://firebirdsql.org/)、[MongoDB](https://www.mongodb.com/) 等）；
+2. 支持多种**登录方式**（账户、手机、邮件、OAuth、OTP 等）；
+3. 支持多种**数据引擎**（[SQLite](https://sqlite.org/)、[MySQL](https://www.mysql.com/)、[MariaDB](https://mariadb.org/)、[PostgreSQL](https://www.postgresql.org/)、[SQL Server](https://www.microsoft.com/zh-cn/sql-server/)、[Oracle](https://www.oracle.com/)、[Firebird](https://firebirdsql.org/)、[MongoDB](https://www.mongodb.com/) 等）；
 4. 支持多种**缓存机制**（MemoryCache、Map、Redis 等）；
 5. 支持**登录日志**与**操作日志**，并记录用户终端信息（登录主机、操作系统、浏览器、终端代码等）；
 6. 支持集成多种**大语言模型**（[DeepSeek](https://www.deepseek.com/)、[华为盘古](https://pangu.huaweicloud.com/)、[阿里通义千问](https://www.tongyi.com/)、[腾讯元宝](https://yuanbao.tencent.com/)、[百度文心一言](https://yiyan.baidu.com/)、[豆包](https://www.doubao.com/)、[ChatGPT](https://chatgpt.com/)）；

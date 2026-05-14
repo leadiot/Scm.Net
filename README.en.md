@@ -1,216 +1,426 @@
-# Scm.Net
+<p align="center">
+  <img src="Scm.Net/Resources/logo.png" alt="Scm.Net Logo" width="120" />
+</p>
 
-[![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
-[![.NET](https://img.shields.io/badge/.NET-10.0-512BD4.svg?logo=dotnet)](https://dotnet.microsoft.com)
-[![Vue](https://img.shields.io/badge/Vue-3.0-4FC08D.svg?logo=vuedotjs)](https://vuejs.org)
-[![Platform](https://img.shields.io/badge/platform-Windows%20%7C%20macOS%20%7C%20Linux-lightgrey.svg)](https://github.com)
+<h1 align="center">Scm.Net</h1>
 
-## Overview
+<p align="center">
+  <a href="https://gitee.com/leadiot/scm.net">
+    <img src="https://gitee.com/leadiot/scm.net/badge/star.svg?theme=dark" alt="Gitee Stars" />
+  </a>
+  <a href="https://dotnet.microsoft.com">
+    <img src="https://img.shields.io/badge/.NET-10.0-512BD4?logo=dotnet" alt=".NET 10" />
+  </a>
+  <a href="https://vuejs.org/">
+    <img src="https://img.shields.io/badge/Vue-3.0-4FC08D?logo=vue.js" alt="Vue 3" />
+  </a>
+  <a href="https://element-plus.org/">
+    <img src="https://img.shields.io/badge/Element%20Plus-2.13-409EFF?logo=element" alt="Element Plus" />
+  </a>
+  <img src="https://img.shields.io/badge/license-MIT-green" alt="MIT License" />
+  <img src="https://img.shields.io/badge/platform-Windows%20%7C%20macOS%20%7C%20Linux-lightgrey" alt="Cross Platform" />
+</p>
 
-**Scm.Net** is a rapid enterprise back-office development framework built on **.NET 10.0** and **Vue 3.0**. It is designed for supply chain management systems and general enterprise information systems, supporting heterogeneous application scenarios.
+<p align="center">
+  <b>Enterprise-Grade Admin Rapid Development Framework</b> — Built on .NET 10.0 + Vue 3.0 with a front-end/back-end separation architecture.
+</p>
 
-Products built on this framework include: **OMS** (Order Management), **WMS** (Warehouse Management), **TMS** (Transportation Management), **DMS** (Delivery Management), **BMS** (Billing Management), **YMS** (Yard Management), **EAM** (Asset Management), **IOT** (IoT Management), and more.
+<p align="center">
+  Frontend: <a href="https://gitee.com/leadiot/scm.vue">Scm.Vue</a> ｜
+  <a href="http://www.c-scm.net">Live Demo</a> ｜
+  <a href="https://gitee.com/leadiot/scm.net/wikis/%E9%A1%B9%E7%9B%AE%E4%BB%8B%E7%BB%8D">Online Docs</a>
+</p>
 
-## Architecture
+---
 
-1. Frontend/backend separation architecture;
-2. Backend based on **.NET 10.0**, compatible with .NET 6/7/8/9/10 runtimes;
-3. Frontend based on **[Vue 3.0](https://vuejs.org)** + **[Element Plus](https://element-plus.org)**, with i18n support;
-4. Cross-platform: **Windows**, **macOS**, **Linux**, **HarmonyOS**;
-5. Responsive layout supporting **Desktop**, **Tablet**, and **Mobile**.
+## 📖 Introduction
+
+**Scm.Net** is an enterprise-grade admin system rapid development framework. It adopts a front-end/back-end separation architecture and comes with built-in enterprise core capabilities including permission management, code generation, workflow engine, real-time messaging, and data visualization.
+
+The author has years of experience developing supply chain systems and enterprise information systems, often dealing with heterogeneous application scenarios. This project was built by consolidating experience from multiple projects, aiming to help developers quickly set up a complete, extensible development framework.
+
+Products already built on this framework include:
+
+| Product | Description |
+| --- | --- |
+| **OMS** | Order Management System |
+| **WMS** | Warehouse Management System |
+| **TMS** | Transportation Management System |
+| **DMS** | Distribution Management System |
+| **BMS** | Billing Management System |
+| **YMS** | Yard Management System |
+| **EAM** | Enterprise Asset Management |
+| **IOT** | IoT Management System |
+
+> The project is still being actively improved. Contributions and discussions are welcome.
+
+---
+
+## ✨ Key Features
+
+### Authentication & Security
+
+- **Multiple Login Methods** — Account, phone, email, OAuth, OIDC, SAML, and other third-party federated login
+- **Biometrics** — Face recognition, fingerprint recognition, voiceprint recognition interfaces reserved
+- **Two-Factor Authentication** — TOTP-based OTP one-time passwords
+- **Data Encryption** — AES/DES parameter encryption and signing between front-end and back-end
+- **JWT Authentication** — Bearer Token-based authentication with auto-refresh
+- **Permission Control** — Six-level permission system: Company / Department / Position / Group / User / Role
+
+### System & Framework
+
+- **Multi-Database Support** — SQLite, MySQL, MariaDB, PostgreSQL, SQL Server, Oracle, Firebird, MongoDB
+- **Multi-Cache Mechanism** — MemoryCache, Dictionary, Redis
+- **Dynamic API** — Automatic service registration as Web APIs — no manual Controller coding needed
+- **Code Generator** — Auto-generates entities, DAOs, DTOs/VOs with custom template support
+- **Workflow Engine** — Visual process designer, node configuration, form binding, online approval
+- **Scheduled Tasks** — Quartz.NET integration with dynamic task management
+- **Real-Time Communication** — SignalR WebSocket-based real-time push and online chat
+
+### Business Capabilities
+
+- **MQTT Communication** — Lightweight IoT communication protocol with built-in Broker support
+- **RabbitMQ Message Queue** — Publisher/Consumer pattern integration
+- **AI Large Language Models** — Integration with DeepSeek, Huawei Pangu, Tongyi Qianwen, Tencent Yuanbao, Baidu ERNIE, Doubao, ChatGPT
+- **Image Processing** — Barcode generation/recognition, image watermarking, CAPTCHA, avatar cropping
+- **Data Visualization** — ECharts charting integration, dashboard layout
+- **File Management** — File upload, import/export, online preview
+- **ID Generator** — Snowflake ID, Sequence ID, Formatted ID, and more
+- **Plugin System** — Plugin/Addon dynamic loading mechanism
+
+### Platform Compatibility
+
+- **Cross-Platform** — Supports Windows, macOS, Linux, HarmonyOS
+- **Responsive Layout** — Desktop, tablet, and mobile device support
+- **Multi-Tenant Architecture** — Extensible to multi-tenant, multi-organization applications
+
+---
+
+## 🛠 Technology Stack
 
 ### Backend Core Dependencies
 
-| Library | Purpose |
-| --- | --- |
-| [SqlSugarCore](https://www.donet5.com/Home/Doc) | ORM / Data Access |
-| [Newtonsoft.Json](https://www.newtonsoft.com/json) | JSON Serialization |
-| [ImageSharp](https://github.com/SixLabors/ImageSharp) | Cross-platform Image Processing |
-| [MQTTnet](https://github.com/dotnet/MQTTnet) | MQTT Communication (Client + Built-in Broker) |
-| [RabbitMQ.Client](https://www.rabbitmq.com) | RabbitMQ Message Queue |
-| [Quartz.NET](https://www.quartz-scheduler.net) | Job Scheduling |
-| SignalR | Real-time Communication |
-
-## Project Structure
-
-| Project | Description |
-| --- | --- |
-| `Scm.Net` | Web API Entry Point |
-| `Scm.Core` | Core Business Logic |
-| `Scm.Dao` | Data Access Layer |
-| `Scm.Dto` | Data Transfer Objects |
-| `Scm.Common` | Common Enums & Utilities |
-| `Scm.Dsa.Dba.Sugar` | SqlSugar Repository Base |
-| `Scm.Server.Bearer` | JWT Bearer Auth Extension |
-| `Scm.Server.Cache` | Cache Extension (MemoryCache / Redis) |
-| `Scm.Server.MQTT` | MQTT Communication (Client + Built-in Broker) |
-| `Scm.Server.RabbitMQ` | RabbitMQ Integration |
-| `Scm.Server.SignalR` | SignalR Real-time Communication |
-| `Scm.Server.Quartz` | Quartz Job Scheduler |
-| `Scm.Server.Swagger` | Swagger Documentation Extension |
-| `Scm.Generator` | Code Generator (Custom Templates) |
-| `Scm.Plugin.Image` | Image Plugin (Barcode, Watermark, CAPTCHA) |
-| `Scm.Plugin.Audio` | Audio Processing Plugin |
-| `Scm.Plugin.Video` | Video Transcoding Plugin |
-| `Scm.Addon` | Dynamic Plugin Loader |
-
-## Design Principles
-
-1. The database is used **only for data storage**. No database-specific features beyond CRUD are used, enabling seamless migration to any standard SQL engine.
-2. **Single-table operations** only (max two tables per operation); some data redundancy is allowed to improve query performance.
-3. **JSON-based** multi-platform data exchange for extensibility and low noise.
-4. DTOs uniformly use **snake_case** naming to support heterogeneous integrations.
-
-## Key Features
-
-1. Customizable dashboard layout;
-2. Multiple **login methods**: account, phone, email, OAuth (third-party);
-3. Multiple **database engines**: MySQL, SQL Server, Oracle, SQLite, MariaDB, PostgreSQL, Firebird, MongoDB;
-4. Multiple **cache mechanisms**: MemoryCache, Map, Redis;
-5. **Login & operation audit logs** with terminal info (host, OS, browser, device);
-6. Integration with multiple **AI LLMs**: DeepSeek, Huawei Pangu, Alibaba Qwen, Tencent Yuanbao, Baidu ERNIE, Doubao, ChatGPT;
-7. **Code generator** with custom template support (Entity, DAO, DTO/VO);
-8. Built-in **ID Generator**: Snowflake ID, Sequence ID, Format ID;
-9. **Multi-level permission management**: Company → Department → Position → Role → User;
-10. **Global data dictionary** and **global config parameters**;
-11. **User messaging** and real-time feedback;
-12. **Custom approval workflow** (definition, nodes, form binding, online approval);
-13. **MQTT** lightweight communication (pub/sub client + built-in Broker, IoT-ready);
-14. **RabbitMQ** message queue (producer/consumer pattern);
-15. **SignalR** real-time push notifications;
-16. **Quartz.NET** job scheduling;
-17. **Image processing plugins** (barcode generation/recognition, watermark, CAPTCHA, avatar crop);
-18. **Dynamic plugin extension** mechanism (Addon loader).
-
-## Quick Start
-
-### 1. Prerequisites
-
-| Tool | Version | Download |
+| Technology | Version | Description |
 | --- | --- | --- |
-| .NET SDK | ≥ 10.0 | [Download](https://dotnet.microsoft.com) |
-| Visual Studio | ≥ 2026 | [Download](https://visualstudio.microsoft.com) |
-| MariaDB / MySQL | ≥ 10.3 | [Download](https://mariadb.org) |
+| [.NET](https://dotnet.microsoft.com) | 10.0 | Cross-platform runtime, compatible with .NET 6/7/8/9/10 |
+| [SqlSugarCore](https://www.donet5.com/Home/Doc) | - | ORM data access framework |
+| [ImageSharp](https://github.com/SixLabors/ImageSharp) | ^3.1.12 | Cross-platform image processing |
+| [MQTTnet](https://github.com/dotnet/MQTTnet) | - | MQTT communication (client + built-in Broker) |
+| [RabbitMQ.Client](https://www.rabbitmq.com) | - | RabbitMQ message queue |
+| [Quartz.NET](https://www.quartz-scheduler.net) | - | Scheduled task scheduling |
+| [SignalR](https://learn.microsoft.com/en-us/aspnet/core/signalr) | - | Real-time Web communication |
+| [Mapster](https://mapster.dev/) | 10.0.7 | Object mapping |
+| [Serilog](https://serilog.net/) | 4.3.1 | Structured logging |
+| [Newtonsoft.Json](https://www.newtonsoft.com/json) | - | JSON serialization |
+| [JWT Bearer](https://github.com/aspnet/AspNetCore) | 10.0.8 | Authentication & authorization |
 
-### 2. Clone the Repository
+### Frontend (Scm.Vue)
+
+| Technology | Version | Description |
+| --- | --- | --- |
+| [Vue](https://vuejs.org/) | ^3.5.32 | Progressive JavaScript framework |
+| [Vite](https://vitejs.dev/) | ^8.0.3 | Next-gen frontend build tool |
+| [Element Plus](https://element-plus.org/) | ^2.13.6 | Vue 3 desktop UI library |
+| [Pinia](https://pinia.vuejs.org/) | ^3.0.0 | State management |
+| [ECharts](https://echarts.apache.org/) | ^6.0.0 | Data visualization |
+| [Axios](https://axios-http.com/) | ^1.7.0 | HTTP client |
+
+---
+
+## 🔧 System Requirements
+
+| Tool | Minimum Version | Download |
+| --- | --- | --- |
+| .NET SDK | ≥ 10.0 | [https://dotnet.microsoft.com](https://dotnet.microsoft.com) |
+| Visual Studio | ≥ 2026 | [https://visualstudio.microsoft.com](https://visualstudio.microsoft.com) |
+| Node.js | ≥ 18.0.0 | [https://nodejs.org](https://nodejs.org) |
+
+---
+
+## 🚀 Quick Start
+
+### 1. Clone the Repository
 
 ```bash
 git clone https://gitee.com/leadiot/scm.net.git
 ```
 
-### 3. Configure Database
+### 2. Configure the Database
 
-Edit `Scm.Net/appsettings.json`:
+Edit `Scm.Net/appsettings.json` to set your database connection string:
 
 ```json
 {
   "Sql": {
     "Type": "Sqlite",
-    "Text": "Data Source=D:/data/scm.db;"
-  },
+    "Text": "Data Source=data/scm.db;"
+  }
 }
 ```
 
-Import the initialization scripts from the `data/` directory.
+> The database is initialized automatically on first run.
 
-### 4. Run Backend
+### 3. Start the Backend
 
 ```bash
 cd Scm.Net
 dotnet run
 ```
 
-Verify at `http://localhost:5000/swagger`.
-
-### 5. Run Frontend
+### 4. Start the Frontend (requires Scm.Vue)
 
 ```bash
+git clone https://gitee.com/leadiot/scm.vue.git
 cd Scm.Vue
 npm install
 npm run dev
 ```
 
-For detailed setup instructions, see the [Environment Setup Guide](https://gitee.com/leadiot/scm.net/wikis/%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA%E6%95%99%E7%A8%8B).
+Visit `http://localhost:5000/swagger` to verify the backend APIs, and `http://localhost:2800` to access the frontend.
 
-## Demo
+> Detailed guides: [Environment Setup](https://gitee.com/leadiot/scm.net/wikis/%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA%E6%95%99%E7%A8%8B) | [Database Configuration](https://gitee.com/leadiot/scm.net/wikis/%E6%95%B0%E6%8D%AE%E5%BA%93%E9%85%8D%E7%BD%AE)
 
-[Live Demo](http://www.c-scm.net)
+---
 
-> For demo credentials, please visit the [demo instructions page](https://gitee.com/leadiot/scm.net/wikis/%E6%BC%94%E7%A4%BA%E8%AF%B4%E6%98%8E).
+## 🌐 Configuration
 
-## Browser Support
+### appsettings.json Key Sections
 
-All modern browsers are supported (IE is **not** supported):
+| Section | Description |
+| --- | --- |
+| `Sql` | Database connection (Type supports Sqlite, MySQL, PostgreSQL, SqlServer, Oracle, etc.) |
+| `Cache` | Cache configuration (Type supports MemoryCache, Dictionary, Redis) |
+| `Uid` | ID generator configuration |
+| `Jwt` | JWT authentication (Security Key, Issuer, Audience, Expires) |
+| `Kestrel` | HTTP listening endpoint (default port 9999) |
+| `Cors` | Cross-origin resource sharing configuration |
+| `Quartz` | Scheduled task scheduling configuration |
+| `Email` | Email service (SMTP) |
+| `Oidc` | Third-party federated login configuration |
+| `Otp` | One-time password (TOTP) configuration |
+| `Generator` | Code generator configuration |
+| `Serilog` | Structured logging configuration |
 
-![chrome](https://img.shields.io/badge/Chrome-≥88-success.svg?logo=googlechrome&logoColor=white)
-![firefox](https://img.shields.io/badge/Firefox-≥78-success.svg?logo=firefox&logoColor=white)
-![edge](https://img.shields.io/badge/Edge-≥88-success.svg?logo=microsoftedge&logoColor=white)
-![safari](https://img.shields.io/badge/Safari-≥14-success.svg?logo=safari&logoColor=white)
+---
 
-|               | Chrome ≥88 | Firefox ≥78 | Edge ≥88 | Safari ≥14 |
-| ---           | :---:      | :---:       | :---:    | :---:      |
-| **Windows**   | ✅         | ✅          | ✅       | ✅         |
-| **macOS**     | ✅         | ✅          | ✅       | ✅         |
-| **Linux**     | ✅         | ✅          | ✅       | N/A        |
-| **iOS**       | ✅         | ✅          | ✅       | ✅         |
-| **Android**   | ✅         | ✅          | ✅       | N/A        |
+## 📁 Project Structure
 
-## FAQ
+| Project | Description |
+| --- | --- |
+| `Scm.Net` | Web API entry point (Program.cs, Controllers) |
+| `Scm.Core` | Core business logic layer |
+| `Scm.Dao` | Data access layer (DAO) |
+| `Scm.Dto` | Data transfer objects (DTO) |
+| `Scm.Common` | Common enums, utility classes |
+| `Scm.Common.Dto` | Shared DTO definitions |
+| `Scm.Common.Excel` | Excel import/export |
+| `Scm.Common.Log` | Logging |
+| `Scm.Common.Os` | OS-related utilities |
+| `Scm.Dsa.Dba.Sugar` | SqlSugar repository base class wrapper |
+| `Scm.Dsa.Dfa.Json` | JSON data format conversion |
+| `Scm.Server` | Server core (interface definitions + base services) |
+| `Scm.Server.Api` | Dynamic API registration |
+| `Scm.Server.Bearer` | JWT Bearer authentication extension |
+| `Scm.Server.Cache` | Cache extension (MemoryCache / Dictionary / Redis) |
+| `Scm.Server.Dao` | Server-side DAO extension |
+| `Scm.Server.Dvo` | Server-side DTO/VO mapping |
+| `Scm.Server.MQTT` | MQTT communication (client + built-in Broker) |
+| `Scm.Server.RabbitMQ` | RabbitMQ message queue integration |
+| `Scm.Server.SignalR` | SignalR real-time communication |
+| `Scm.Server.Quartz` | Quartz scheduled task scheduling |
+| `Scm.Server.Swagger` | Swagger documentation extension |
+| `Scm.Server.Aiml` | AI large language model integration |
+| `Scm.Server.Service` | Business service extension registration |
+| `Scm.Email` | Email sending service |
+| `Scm.Phone` | SMS sending service |
+| `Scm.Generator` | Code generator (supports custom templates) |
+| `Scm.Plugin.Image` | Image processing plugin (barcode, watermark, CAPTCHA) |
+| `Samples.*` | Usage example projects |
+| `Test` | Test projects |
 
-[View FAQ](https://gitee.com/leadiot/scm.net/wikis/%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98)
+### Directory Layout
 
-## Contributing
+```
+Scm.Net/
+├── Scm.Net/                     # Web API main project
+│   ├── Controllers/             #   - API controllers
+│   ├── Resources/               #   - Resources (logo, fonts)
+│   ├── data/                    #   - Data files (SQLite DB, uploads)
+│   ├── Program.cs               #   - Application entry and startup config
+│   └── appsettings.json         #   - Application configuration
+├── Scm.Core/                    # Core business logic
+├── Scm.Dao/                     # Data access layer
+├── Scm.Dto/                     # Data transfer objects
+├── Scm.Common/                  # Common utility classes
+├── Scm.Common.Dto/              # Shared DTOs
+├── Scm.Common.Excel/            # Excel processing
+├── Scm.Common.Log/              # Logging
+├── Scm.Common.Os/               # OS utilities
+├── Scm.Dsa.Dba.Sugar/           # SqlSugar repository base
+├── Scm.Dsa.Dfa.Json/            # JSON format processing
+├── Scm.Server/                  # Server core
+├── Scm.Server.*/                # Server extension modules
+├── Scm.Email/                   # Email service
+├── Scm.Phone/                   # SMS service
+├── Scm.Generator/               # Code generator
+├── Samples.*/                   # Sample projects
+├── Libs/                        # Pre-compiled libraries
+├── Test/                        # Test projects
+├── Scm.Net.sln                  # Solution file
+└── LICENSE                      # MIT License
+```
 
-1. Fork the repository
-2. Create your feature branch: `git checkout -b feature/your-feature`
-3. Commit your changes: `git commit -m 'feat: add your feature'`
-4. Push to the branch: `git push origin feature/your-feature`
-5. Open a Pull Request
+---
 
-## License
+## 📄 API Endpoints
 
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+| Controller | Function |
+| --- | --- |
+| `DbController` | Data query operations |
+| `CaptchaController` | CAPTCHA image generation |
+| `UploadController` | File upload |
+| `DownloadController` | File download |
+| `GeneratorController` | Code generation |
+| `QuartzController` | Scheduled task management |
+| `HbController` | Heartbeat check |
+| `OnLineController` | Online user management |
+| `TestController` | Test endpoints |
 
-This project is licensed under the **MIT License**. See [LICENSE](LICENSE) for details.
+> Visit `http://localhost:5000/swagger` after startup for the full API documentation.
 
-## Screenshots
+---
 
-**Dashboard Mode**
+## 📐 Design Principles
 
-![Dashboard](screenshots/web-02-home.png)
-![User Management](screenshots/web-03-user.png)
-![File Management](screenshots/web-04-file.png)
-![Calendar](screenshots/web-05-calendar.png)
-![Email](screenshots/web-06-email.png)
-![System Monitor](screenshots/web-07-monitor.png)
-![Online Docs](screenshots/web-08-docs.png)
+1. **Database for Storage Only** — No database-specific features are used beyond CRUD; the system can be smoothly migrated to any standard SQL engine
+2. **Single-Table Operations** — In principle, only single-table operations are allowed (at most two tables); query efficiency is improved through data redundancy design
+3. **JSON Data Exchange** — All multi-end data exchange is based on JSON format, keeping overhead low while maximizing extensibility
+4. **Snake Case DTOs** — DTOs consistently use snake_case naming to adapt to heterogeneous application scenarios
 
-**Cloud Desktop Mode**
+---
 
-![Desktop](screenshots/wos-02-desktop-default.png)
-![Cloud Files](screenshots/wos-09-cloud.png)
-![Notepad](screenshots/wos-10-notepad.png)
-![Image Viewer](screenshots/wos-11-image.png)
-![Audio Player](screenshots/wos-12-audio.png)
-![Todo](screenshots/wos-13-gtd.png)
-![Terminal](screenshots/wos-14-terminal.png)
+## 🎨 Screenshots (Frontend Scm.Vue)
 
-**Mobile**
+### Workspace Mode
 
-![Login](screenshots/mp-login.jpg)
-![Home](screenshots/mp-home.jpg)
-![Menu](screenshots/mp-menu.jpg)
+| Feature | Screenshot |
+| --- | --- |
+| Dashboard | ![Dashboard](screenshots/web-02-home.png) |
+| User Management | ![User Management](screenshots/web-03-user.png) |
+| File Management | ![File Management](screenshots/web-04-file.png) |
+| Calendar | ![Calendar](screenshots/web-05-calendar.png) |
+| Email | ![Email](screenshots/web-06-email.png) |
+| System Monitor | ![System Monitor](screenshots/web-07-monitor.png) |
+| Online Docs | ![Online Docs](screenshots/web-08-docs.png) |
 
-## Acknowledgements
+### Cloud Desktop Mode
 
-1. ORM Framework: **[SqlSugar](https://gitee.com/dotnetchina/SqlSugar)**
-2. Dynamic API inspired by **[Panda.DynamicWebApi](https://gitee.com/mirrors/Panda.DynamicWebApi)**
-3. Thanks to all community contributors who submitted Issues and PRs.
+| Feature | Screenshot |
+| --- | --- |
+| Desktop Home | ![Desktop Home](screenshots/wos-02-desktop-default.png) |
+| Cloud File Manager | ![Cloud File Manager](screenshots/wos-09-cloud.png) |
+| Notepad | ![Notepad](screenshots/wos-10-notepad.png) |
+| Image Viewer | ![Image Viewer](screenshots/wos-11-image.png) |
+| Audio Player | ![Audio Player](screenshots/wos-12-audio.png) |
+| To-Do List | ![To-Do](screenshots/wos-13-gtd.png) |
+| Terminal | ![Terminal](screenshots/wos-14-terminal.png) |
 
-## Community
+### Mobile
 
-**QQ Group**
+![Login](screenshots/mp-login.jpg) | ![Home](screenshots/mp-home.jpg) | ![Menu](screenshots/mp-menu.jpg)
 
-[![QQ Group](https://img.shields.io/badge/QQ%20Group-415872667-12B7F5.svg?logo=tencentqq)](https://qm.qq.com)
+> More screenshots can be found in the [project documentation](https://gitee.com/leadiot/scm.net/wikis).
 
-<img src="qqq.jpg" width="200"/>
+---
+
+## 🧪 Demo Account
+
+| Role | Username | Password |
+| --- | --- | --- |
+| Admin | `admin` | `123456` |
+
+> Demo site: http://www.c-scm.net
+
+---
+
+## 🌍 Browser Support
+
+| Browser | Minimum Version |
+| --- | --- |
+| ![Chrome](https://img.shields.io/badge/Chrome->=88-success?logo=google-chrome) | Chrome >= 88 |
+| ![Firefox](https://img.shields.io/badge/Firefox->=78-success?logo=firefox) | Firefox >= 78 |
+| ![Safari](https://img.shields.io/badge/Safari->=14-success?logo=safari) | Safari >= 14 |
+| ![Edge](https://img.shields.io/badge/Edge->=88-success?logo=microsoft-edge) | Edge >= 88 |
+
+Desktop:
+
+| | **Chrome ≥88** | **Firefox ≥78** | **Edge ≥88** | **Safari ≥14** |
+| --- | :---: | :---: | :---: | :---: |
+| **Windows** | ✅ | ✅ | ✅ | ✅ |
+| **macOS** | ✅ | ✅ | ✅ | ✅ |
+| **Linux** | ✅ | ✅ | ✅ | N/A |
+
+Mobile:
+
+| | **Chrome** | **Safari** | **Android WebView** |
+| --- | :---: | :---: | :---: |
+| **iOS** | ✅ | ✅ | N/A |
+| **Android** | ✅ | N/A | Android 5.0+ ✅ |
+
+> IE 11 and below are not supported.
+
+---
+
+## 📦 Build & Deploy
+
+```bash
+# Publish backend
+cd Scm.Net
+dotnet publish -c Release -o ./Publish
+
+# Build frontend (requires Scm.Vue)
+cd ../Scm.Vue
+npm run build
+
+# Deploy the dist/ folder to the backend's wwwroot or serve via Nginx/IIS independently
+```
+
+> **Note**: For production, properly configure the `Kestrel` listen address and `Cors` cross-origin settings in `appsettings.json`.
+
+---
+
+## 🔗 Related Links
+
+- [Frontend Project Scm.Vue](https://gitee.com/leadiot/scm.vue) — Vue 3 + Vite + Element Plus frontend framework
+- [Online Documentation](https://gitee.com/leadiot/scm.net/wikis/%E9%A1%B9%E7%9B%AE%E4%BB%8B%E7%BB%8D) — Complete development docs
+- [Environment Setup Guide](https://gitee.com/leadiot/scm.net/wikis/%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA%E6%95%99%E7%A8%8B) — Set up the development environment from scratch
+- [Database Configuration Guide](https://gitee.com/leadiot/scm.net/wikis/%E6%95%B0%E6%8D%AE%E5%BA%93%E9%85%8D%E7%BD%AE) — Multi-database engine configuration guide
+- [Live Demo](http://www.c-scm.net) — Experience the system
+
+---
+
+## 📄 License
+
+This project is open-sourced under the [MIT License](LICENSE). Free use, modification, and distribution are permitted. Commercial use must retain the original copyright notice.
+
+---
+
+## 💬 Community
+
+### QQ Group
+
+[![QQ Group](https://img.shields.io/badge/QQ%20Group-415872667-12B7F5.svg?logo=tencentqq)](https://qm.qq.com/cgi-bin/qm/qr?k=415872667)
+
+<img src="qqq.jpg" width="300" alt="QQ Group QR Code" />
+
+### Special Thanks
+
+1. ORM Framework **[SqlSugar](https://gitee.com/dotnetchina/SqlSugar)**
+2. Dynamic API inspiration from **[Panda.DynamicWebApi](https://gitee.com/mirrors/Panda.DynamicWebApi)**
+3. Thanks to all community contributors who submitted Issues and PRs
+
+### Support
+
+If this project helps you, feel free to support the author's continued maintenance:
+
+<img src="wepay.jpg" width="300" alt="Support QR Code" />

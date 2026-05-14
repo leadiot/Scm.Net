@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="Scm.Net/Resources/logo.png" alt="Scm.Net Logo" width="120" />
+  <img src="http://www.c-scm.net/logo.png" alt="Scm.Net Logo" width="120" />
 </p>
 
 <h1 align="center">Scm.Net</h1>

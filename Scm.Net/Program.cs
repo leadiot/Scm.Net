@@ -153,6 +153,10 @@ namespace Com.Scm
                 options.SuppressImplicitRequiredAttributeForNonNullableReferenceTypes = true;
             }).NewtonJsonSetup();
 
+            // 统一响应和异常处理
+            //services.AddUnifiedResponse();
+            //services.AddApiBehavior();
+
             // 接口配置
             var apiConfig = AppUtils.GetConfig<DllConfig>(DllConfig.NAME);
             apiConfig.Prepare(builder.Environment);
@@ -227,7 +231,10 @@ namespace Com.Scm
             // 授权
             app.UseAuthorization();
 
-            // 中间件异常处理
+            // 统一响应中间件（包装所有 API 响应）
+            //app.UseUnifiedResponse();
+
+            // 中间件异常处理（保留作为后备）
             app.UseMiddleware<ExceptionMiddleware>();
             // Jwt中间件处理
             app.UseMiddleware<JwtMiddleware>();

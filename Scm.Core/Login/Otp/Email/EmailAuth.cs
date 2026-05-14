@@ -1,4 +1,5 @@
-﻿using Com.Scm.Email.Config;
+﻿using Com.Scm.Email;
+using Com.Scm.Email.Config;
 using Com.Scm.Enums;
 using Com.Scm.Exceptions;
 using Com.Scm.Log;

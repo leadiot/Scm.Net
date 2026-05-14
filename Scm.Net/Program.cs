@@ -164,6 +164,9 @@ namespace Com.Scm
             // 跨域访问
             services.CorsSetup(corsConfig);
 
+            // Http上下文访问器
+            services.AddHttpContextAccessor();
+
             // SignalR
             services.AddSignalR();
             //// NAS 消息服务
@@ -175,6 +178,10 @@ namespace Com.Scm
             var app = builder.Build();
 
             AppUtils.ServiceProvider = app.Services;
+
+            // 初始化 ServerUtils（注入 IHttpContextAccessor）
+            var httpContextAccessor = app.Services.GetRequiredService<IHttpContextAccessor>();
+            ServerUtils.Configure(httpContextAccessor);
 
             if (app.Environment.IsDevelopment())
             {

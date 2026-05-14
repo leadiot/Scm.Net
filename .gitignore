@@ -1,4 +1,4 @@
-﻿################################################################################
+################################################################################
 # 此文件由项目作者创建，您可以根据需要进行增删调整。
 ################################################################################
 
@@ -30,3 +30,28 @@ PublishProfiles/
 [Gg]enerated/
 
 # 需要特殊处理的文件
+
+# 敏感配置文件
+.env
+.env.local
+.env.*.local
+appsettings.local.json
+appsettings.development.json
+appsettings.production.json
+
+# User Secrets
+**/secrets.json
+**/appsettings.secrets.json
+
+# 数据目录
+data/
+upload/
+images/
+
+# 日志目录
+logs/
+
+# 临时文件
+*.tmp
+*.temp
+*.bak

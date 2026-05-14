@@ -1,6 +1,7 @@
 using Com.Scm.Config;
 using Com.Scm.Configure.Filters;
 using Com.Scm.Configure.Middleware;
+using Com.Scm.Configure.Security;
 using Com.Scm.Dsa;
 using Com.Scm.Dsa.Dba.Sugar.UnitOfWork.Filters;
 using Com.Scm.Email.Config;
@@ -156,6 +157,9 @@ namespace Com.Scm
             // 统一响应和异常处理
             //services.AddUnifiedResponse();
             //services.AddApiBehavior();
+
+            // 安全配置服务（支持环境变量和 User Secrets）
+            services.AddSecureConfiguration();
 
             // 接口配置
             var apiConfig = AppUtils.GetConfig<DllConfig>(DllConfig.NAME);

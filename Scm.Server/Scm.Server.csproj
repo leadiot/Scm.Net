@@ -28,9 +28,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Reference Include="Scm.Cache">
-      <HintPath>..\Libs\netstandard2.0\Scm.Cache.dll</HintPath>
-    </Reference>
+	  <Reference Include="Scm.Cache">
+		  <HintPath>..\Libs\net10.0\Scm.Cache.dll</HintPath>
+	  </Reference>
     <Reference Include="Scm.Common.Http">
       <HintPath>..\Libs\netstandard2.0\Scm.Common.Http.dll</HintPath>
     </Reference>

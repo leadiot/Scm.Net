@@ -13,7 +13,7 @@
 
   <ItemGroup>
     <Reference Include="Scm.Cache">
-      <HintPath>..\Libs\netstandard2.0\Scm.Cache.dll</HintPath>
+      <HintPath>..\Libs\net10.0\Scm.Cache.dll</HintPath>
     </Reference>
   </ItemGroup>
 

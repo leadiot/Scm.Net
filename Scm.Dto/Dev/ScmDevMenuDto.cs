@@ -2,9 +2,9 @@
 using Com.Scm.Enums;
 using System.ComponentModel.DataAnnotations;
 
-namespace Com.Scm.Adm.Menu
+namespace Com.Scm.Dev
 {
-    public class AdmMenuDto : ScmDataDto
+    public class ScmDevMenuDto : ScmDataDto
     {
         public const long HOME_ID = 1000000000000000010L;
         public const long FAV_ID = 1000000000000000020L;
@@ -86,12 +86,12 @@ namespace Com.Scm.Adm.Menu
         public int od { get; set; } = 1;
 
         /// <summary>
-        /// 是否可用
+        /// 是否可见
         /// </summary>
         public bool visible { get; set; }
 
         /// <summary>
-        /// 是否使能
+        /// 是否可用
         /// </summary>
         public bool enabled { get; set; }
 
@@ -107,7 +107,39 @@ namespace Com.Scm.Adm.Menu
         /// <summary>
         /// 布局
         /// </summary>
-        public string layout { get; set; }
+        public ScmLayoutEnum layout { get; set; }
+
+        /// <summary>
+        /// 默认宽度
+        /// </summary>
+        public int width { get; set; }
+
+        /// <summary>
+        /// 默认高度
+        /// </summary>
+        public int height { get; set; }
+
+        /// <summary>
+        /// 是否可调整大小
+        /// </summary>
+        public bool resizable { get; set; }
+
+        /// <summary>
+        /// 居中显示
+        /// </summary>
+        public bool center { get; set; }
+
+        /// <summary>
+        /// 指示该项是否在桌面界面中可见。
+        /// </summary>
+        /// <remarks>用于控制桌面视图中的可见性，通常用于在不同平台或视图模式下切换显示。</remarks>
+        public bool showInDesktop { get; set; }
+
+        /// <summary>
+        /// 指示窗口是否显示在任务栏中。
+        /// </summary>
+        /// <remarks>仅对顶级窗口有效；对非顶级窗口或某些平台可能被忽略。</remarks>
+        public bool showInTaskbar { get; set; }
 
         /// <summary>
         /// 接口权限

@@ -1,12 +1,12 @@
 ﻿using Com.Scm.Dvo;
 using Com.Scm.Enums;
 
-namespace Com.Scm.Adm.Menu.Dvo
+namespace Com.Scm.Dev.Menu.Dvo
 {
     /// <summary>
     /// 
     /// </summary>
-    public class AdmMenuDvo : ScmDataDvo
+    public class DevMenuDvo : ScmDataDvo
     {
         /// <summary>
         /// 菜单类型
@@ -77,6 +77,11 @@ namespace Com.Scm.Adm.Menu.Dvo
         /// 是否显示
         /// </summary>
         public bool visible { get; set; }
+
+        /// <summary>
+        /// 是否可用
+        /// </summary>
+        public bool enabled { get; set; }
         /// <summary>
         /// 是否全屏
         /// </summary>
@@ -89,7 +94,39 @@ namespace Com.Scm.Adm.Menu.Dvo
         /// <summary>
         /// 布局
         /// </summary>
-        public string layout { get; set; }
+        public ScmLayoutEnum layout { get; set; }
+
+        /// <summary>
+        /// 默认宽度
+        /// </summary>
+        public int width { get; set; }
+
+        /// <summary>
+        /// 默认高度
+        /// </summary>
+        public int height { get; set; }
+
+        /// <summary>
+        /// 是否可调整大小
+        /// </summary>
+        public bool resizable { get; set; }
+
+        /// <summary>
+        /// 居中显示
+        /// </summary>
+        public bool center { get; set; }
+
+        /// <summary>
+        /// 指示该项是否在桌面界面中可见。
+        /// </summary>
+        /// <remarks>用于控制桌面视图中的可见性，通常用于在不同平台或视图模式下切换显示。</remarks>
+        public bool showInDesktop { get; set; }
+
+        /// <summary>
+        /// 指示窗口是否显示在任务栏中。
+        /// </summary>
+        /// <remarks>仅对顶级窗口有效；对非顶级窗口或某些平台可能被忽略。</remarks>
+        public bool showInTaskbar { get; set; }
 
         /// <summary>
         /// 接口权限

@@ -1,4 +1,4 @@
-using Com.Scm.Adm.Menu.Dvo;
+using Com.Scm.Dev.Menu.Dvo;
 using Com.Scm.Dsa;
 using Com.Scm.Dvo;
 using Com.Scm.Enums;
@@ -7,22 +7,22 @@ using Com.Scm.Token;
 using Com.Scm.Utils;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Com.Scm.Adm.Menu
+namespace Com.Scm.Dev.Menu
 {
     /// <summary>
     /// 服务接口
     /// </summary>
-    [ApiExplorerSettings(GroupName = "Adm")]
-    public class ScmAdmMenuService : IApiService
+    [ApiExplorerSettings(GroupName = "Dev")]
+    public class ScmDevMenuService : IApiService
     {
-        private readonly SugarRepository<AdmMenuDao> _thisRepository;
+        private readonly SugarRepository<ScmDevMenuDao> _thisRepository;
         private readonly ScmContextHolder _jwtContextHolder;
 
         /// <summary>
         /// 
         /// </summary>
         /// <param name="thisRepository"></param>
-        public ScmAdmMenuService(SugarRepository<AdmMenuDao> thisRepository, ScmContextHolder jwtContextHolder)
+        public ScmDevMenuService(SugarRepository<ScmDevMenuDao> thisRepository, ScmContextHolder jwtContextHolder)
         {
             _thisRepository = thisRepository;
             _jwtContextHolder = jwtContextHolder;
@@ -33,11 +33,11 @@ namespace Com.Scm.Adm.Menu
         /// </summary>
         /// <param name="param"></param>
         /// <returns></returns>
-        public async Task<ScmSearchPageResponse<AdmMenuDvo>> GetPagesAsync(ScmSearchPageRequest param)
+        public async Task<ScmSearchPageResponse<DevMenuDvo>> GetPagesAsync(ScmSearchPageRequest param)
         {
             var query = await _thisRepository.AsQueryable()
                 .WhereIF(!string.IsNullOrEmpty(param.key), m => m.namec.Contains(param.key))
-                .Select<AdmMenuDvo>()
+                .Select<DevMenuDvo>()
                 .ToPageAsync(param.page, param.limit);
             return query;
         }
@@ -46,7 +46,7 @@ namespace Com.Scm.Adm.Menu
         /// 查询所有
         /// </summary>
         /// <returns></returns>
-        public async Task<List<AdmMenuDvo>> GetListAsync(ScmSearchPageRequest param)
+        public async Task<List<DevMenuDvo>> GetListAsync(ScmSearchPageRequest param)
         {
             var token = _jwtContextHolder.GetToken();
 
@@ -54,7 +54,7 @@ namespace Com.Scm.Adm.Menu
                 .Where(a => a.row_status == ScmRowStatusEnum.Enabled)
                 .WhereIF(!string.IsNullOrEmpty(param.key), m => m.namec.Contains(param.key))
                 .OrderBy(a => a.od)
-                .Select<AdmMenuDvo>()
+                .Select<DevMenuDvo>()
                 .ToListAsync();
             return list;
         }
@@ -78,12 +78,12 @@ namespace Com.Scm.Adm.Menu
         /// <param name="id"></param>
         /// <returns></returns>
         [HttpGet("{id}")]
-        public async Task<AdmMenuDto> GetAsync(long id)
+        public async Task<ScmDevMenuDto> GetAsync(long id)
         {
             var model = await _thisRepository
                 .AsQueryable()
                 .Where(a => a.id == id)
-                .Select<AdmMenuDto>()
+                .Select<ScmDevMenuDto>()
                 .FirstAsync();
             return model;
         }
@@ -93,9 +93,9 @@ namespace Com.Scm.Adm.Menu
         /// </summary>
         /// <param name="model"></param>
         /// <returns></returns>
-        public async Task<bool> AddAsync(AdmMenuDto model)
+        public async Task<bool> AddAsync(ScmDevMenuDto model)
         {
-            var dao = model.Adapt<AdmMenuDao>();
+            var dao = model.Adapt<ScmDevMenuDao>();
             var prevDao = await _thisRepository.GetFirstAsync(a => a.pid == model.pid, a => a.od, OrderByEnum.Desc);
             dao.od = prevDao != null ? prevDao.od + 1 : 1;
 
@@ -107,13 +107,13 @@ namespace Com.Scm.Adm.Menu
         /// </summary>
         /// <returns></returns>
         [HttpPost]
-        public async Task<AdmMenuDto> AddTempAsync(CreateRequest param)
+        public async Task<ScmDevMenuDto> AddTempAsync(CreateRequest param)
         {
             var qty = await _thisRepository
                 .AsQueryable()
                 .CountAsync();
 
-            var dao = new AdmMenuDao()
+            var dao = new ScmDevMenuDao()
             {
                 pid = param.pid,
                 od = qty,
@@ -122,12 +122,14 @@ namespace Com.Scm.Adm.Menu
                 codec = "menu-code",
                 namec = param.name,
                 types = ScmMenuTypesEnum.Menu,
-                uri = "/"
+                uri = "/",
+                layout = ScmLayoutEnum.Console,
+                resizable = true,
             };
 
             await _thisRepository.InsertAsync(dao);
 
-            return dao.Clone<AdmMenuDto>();
+            return dao.Clone<ScmDevMenuDto>();
         }
 
         /// <summary>
@@ -135,7 +137,7 @@ namespace Com.Scm.Adm.Menu
         /// </summary>
         /// <param name="model"></param>
         /// <returns></returns>
-        public async Task UpdateAsync(AdmMenuDto model)
+        public async Task UpdateAsync(ScmDevMenuDto model)
         {
             var dao = await _thisRepository.GetByIdAsync(model.id);
             if (dao == null)
@@ -176,7 +178,7 @@ namespace Com.Scm.Adm.Menu
                 throw new BusinessException("无效的目的节点");
             }
 
-            List<AdmMenuDao> list;
+            List<ScmDevMenuDao> list;
             var idx = 1;
             if (request.SortType == "before")
             {

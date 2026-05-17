@@ -19,7 +19,7 @@ namespace Com.Scm.Helper
         /// <summary>
         /// 数据版本
         /// </summary>
-        private const int VER = 5;
+        private const int VER = 6;
         /// <summary>
         /// 发行日期
         /// </summary>
@@ -516,11 +516,11 @@ namespace Com.Scm.Helper
             var homeDao = CreateMenu(1000000000000001000, "home", "主页", rootDao.id, 1, 1, "/home", "home", "sc-home-4-line");
             roleAdminList.Add(new RoleAuthDao { role_id = roleAdminDao.id, auth_id = homeDao.id, types = ScmRoleAuthTypesEnum.RoleMenu });
             // 工作台
-            var homeConsoleDao = CreateMenu(1000000000000001101, "console", "工作台", homeDao.id, 2, 1, "/console", "home/console", "ms-dashboard", "console");
+            var homeConsoleDao = CreateMenu(1000000000000001101, "console", "工作台", homeDao.id, 2, 1, "/console", "home/console", "ms-dashboard", ScmLayoutEnum.Console);
             roleAdminList.Add(new RoleAuthDao { role_id = roleAdminDao.id, auth_id = homeConsoleDao.id, types = ScmRoleAuthTypesEnum.RoleMenu });
-            var homeDesktopDao = CreateMenu(1000000000000001102, "desktop", "云桌面", homeDao.id, 2, 2, "/desktop", "home/desktop", "ms-computer", "desktop");
+            var homeDesktopDao = CreateMenu(1000000000000001102, "desktop", "云桌面", homeDao.id, 2, 2, "/desktop", "home/desktop", "ms-computer", ScmLayoutEnum.Desktop);
             roleAdminList.Add(new RoleAuthDao { role_id = roleAdminDao.id, auth_id = homeDesktopDao.id, types = ScmRoleAuthTypesEnum.RoleMenu });
-            var homeMonitorDao = CreateMenu(1000000000000001103, "monitor", "大屏幕", homeDao.id, 2, 3, "/monitor", "home/monitor", "ms-monitor", "monitor");
+            var homeMonitorDao = CreateMenu(1000000000000001103, "monitor", "大屏幕", homeDao.id, 2, 3, "/monitor", "home/monitor", "ms-monitor", ScmLayoutEnum.Monitor);
             roleAdminList.Add(new RoleAuthDao { role_id = roleAdminDao.id, auth_id = homeMonitorDao.id, types = ScmRoleAuthTypesEnum.RoleMenu });
             // 我的收藏
             var homeFavoritesDao = CreateMenu(1000000000000001200, "favorites", "我的收藏", homeDao.id, 2, 4, "/favorites", "home/console/favorites", "sc-heart-3-line");
@@ -810,7 +810,7 @@ namespace Com.Scm.Helper
             string uri,
             string view,
             string icon,
-            string layout = "console",
+            ScmLayoutEnum layout = ScmLayoutEnum.Console,
             ScmRowStatusEnum status = ScmRowStatusEnum.Enabled)
         {
             var menuDao = new MenuDao();

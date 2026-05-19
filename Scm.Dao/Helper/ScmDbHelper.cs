@@ -23,7 +23,7 @@ namespace Com.Scm.Helper
         /// <summary>
         /// 发行日期
         /// </summary>
-        private const string DATE = "2026-05-12";
+        private const string DATE = "2026-05-20";
 
         /// <summary>
         /// 

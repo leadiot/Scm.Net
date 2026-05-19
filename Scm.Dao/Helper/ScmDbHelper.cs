@@ -256,7 +256,7 @@ namespace Com.Scm.Helper
                     {
                         if (!needRun)
                         {
-                            needRun = ver < GetSqlVer(sql);
+                            needRun = ver <= GetSqlVer(sql);
                         }
 
                         if (sql.EndsWith("*/"))

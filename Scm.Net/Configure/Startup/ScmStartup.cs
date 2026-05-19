@@ -1,9 +1,7 @@
 using Com.Scm.Config;
 using Com.Scm.Configure.Filters;
 using Com.Scm.Configure.Middleware;
-using Com.Scm.Configure.Security;
 using Com.Scm.Dsa;
-using Com.Scm.Dsa.Dba.Sugar;
 using Com.Scm.Dsa.Dba.Sugar.UnitOfWork.Filters;
 using Com.Scm.Email.Config;
 using Com.Scm.Extensions;
@@ -26,7 +24,6 @@ using Com.Scm.Utils;
 using Microsoft.Extensions.FileProviders;
 using Serilog;
 using SqlSugar;
-using System.IO;
 
 namespace Com.Scm.Configure.Startup
 {
@@ -315,15 +312,104 @@ namespace Com.Scm.Configure.Startup
                             p.IsNullable = true;
                         }
 
-                        if (dbType == DbType.Sqlite)
+                        if (dbType == DbType.MySql)
+                        {
+                            if (c.PropertyType.IsEnum)
+                            {
+                                p.DataType = "TINYINT";
+                                p.IsNullable = false;
+                                p.DefaultValue = "0";
+                            }
+                            else if (c.PropertyType == typeof(bool))
+                            {
+                                p.DataType = "TINYINT(1)";
+                                p.IsNullable = false;
+                                p.DefaultValue = "0";
+                            }
+                            else if (c.PropertyType == typeof(int))
+                            {
+                                p.DataType = "INT";
+                                p.IsNullable = false;
+                                p.DefaultValue = "0";
+                            }
+                            else if (c.PropertyType == typeof(long))
+                            {
+                                p.DataType = "BIGINT";
+                                p.IsNullable = false;
+                                p.DefaultValue = "0";
+                            }
+                        }
+                        else if (dbType == DbType.Sqlite)
                         {
                             if (c.PropertyType.IsEnum)
                             {
                                 p.DataType = "INTEGER";
+                                p.IsNullable = false;
+                                p.DefaultValue = "0";
+                            }
+                            else if (c.PropertyType == typeof(bool))
+                            {
+                                p.DataType = "INTEGER";
+                                p.IsNullable = false;
+                                p.DefaultValue = "0";
+                            }
+                            else if (c.PropertyType == typeof(int))
+                            {
+                                p.DataType = "INTEGER";
+                                p.IsNullable = false;
+                                p.DefaultValue = "0";
                             }
                             else if (c.PropertyType == typeof(long))
                             {
                                 p.DataType = "INTEGER";
+                                p.IsNullable = false;
+                                p.DefaultValue = "0";
+                            }
+                        }
+                        else if (dbType == DbType.PostgreSQL)
+                        {
+                            if (c.PropertyType.IsEnum)
+                            {
+                                p.DataType = "INT";
+                                p.IsNullable = false;
+                            }
+                            else if (c.PropertyType == typeof(bool))
+                            {
+                                p.DataType = "BOOLEAN";
+                                p.IsNullable = false;
+                            }
+                            else if (c.PropertyType == typeof(int))
+                            {
+                                p.DataType = "INT";
+                                p.IsNullable = false;
+                            }
+                            else if (c.PropertyType == typeof(long))
+                            {
+                                p.DataType = "BIGINT";
+                                p.IsNullable = false;
+                            }
+                        }
+                        else if (dbType == DbType.Oracle)
+                        {
+                            if (c.PropertyType.IsEnum)
+                            {
+                                p.DataType = "Number";
+                                p.IsNullable = false;
+                            }
+                            else if (c.PropertyType == typeof(bool))
+                            {
+                                p.DataType = "Number(1)";
+                                p.IsNullable = false;
+                            }
+                            else if (c.PropertyType == typeof(int))
+                            {
+                                p.DataType = "Number(10)";
+                                p.IsNullable = false;
+                            }
+                            else if (c.PropertyType == typeof(long))
+                            {
+                                p.DataType = "Number(19)";
+                                p.IsNullable = false;
                             }
                         }
                         else
@@ -331,6 +417,22 @@ namespace Com.Scm.Configure.Startup
                             if (c.PropertyType.IsEnum)
                             {
                                 p.DataType = "TINYINT";
+                                p.IsNullable = false;
+                            }
+                            else if (c.PropertyType == typeof(bool))
+                            {
+                                p.DataType = "TINYINT(1)";
+                                p.IsNullable = false;
+                            }
+                            else if (c.PropertyType == typeof(int))
+                            {
+                                p.DataType = "INT";
+                                p.IsNullable = false;
+                            }
+                            else if (c.PropertyType == typeof(long))
+                            {
+                                p.DataType = "BIGINT";
+                                p.IsNullable = false;
                             }
                         }
                     }

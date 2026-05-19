@@ -1333,7 +1333,7 @@ public class OperatorService : ApiService
     /// <param name="client">客户端</param>
     /// <param name="lang">语言：形如zh-CN、en等。</param>
     /// <returns></returns>
-    public async Task<List<MenuDto>> GetAuthorityMenuAsync(ScmClientTypeEnum client, string lang)
+    public async Task<List<MenuDto>> GetAuthorityMenuAsync(ScmClientTypeEnum client, ScmLayoutEnum layout, string lang)
     {
         var user = _jwtContextHolder.GetToken();
 
@@ -1373,6 +1373,7 @@ public class OperatorService : ApiService
         var menuList = await _SqlClient.Queryable<ScmDevMenuDao>()
             .Where(a => menuIds.Contains(a.id) && a.row_status == ScmRowStatusEnum.Enabled)
             .WhereIF(client != ScmClientTypeEnum.None, a => a.client == client)
+            .WhereIF(layout != ScmLayoutEnum.None, a => a.layout == layout)
             .WhereIF(!string.IsNullOrWhiteSpace(lang), a => a.lang == lang)
             .OrderBy(a => a.od)
             .Select<MenuDto>()

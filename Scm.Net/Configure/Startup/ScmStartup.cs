@@ -31,8 +31,6 @@ namespace Com.Scm.Configure.Startup
     {
         public static WebApplicationBuilder ConfigureServices(this WebApplicationBuilder builder)
         {
-            var services = builder.Services;
-
             AppUtils.Init(builder.Configuration);
 
             // LOG配置
@@ -42,6 +40,9 @@ namespace Com.Scm.Configure.Startup
 
             LogUtils.Info("正在启动系统...");
 
+            var services = builder.Services;
+
+            // 环境变量
             LogUtils.Info("正在进行环境配置...");
             var envConfig = AppUtils.GetConfig<EnvConfig>(EnvConfig.NAME) ?? new EnvConfig();
             envConfig.Prepare(builder);
@@ -297,6 +298,7 @@ namespace Com.Scm.Configure.Startup
             {
                 ConnectionString = sqlConfig.Text,
                 DbType = dbType,
+                InitKeyType = InitKeyType.Attribute,
                 IsAutoCloseConnection = true,
                 ConfigureExternalServices = new ConfigureExternalServices
                 {
@@ -339,6 +341,20 @@ namespace Com.Scm.Configure.Startup
                             if (c.PropertyType.IsEnum)
                             {
                                 p.DataType = "INTEGER";
+                                p.IsNullable = false;
+                                p.DefaultValue = "0";
+                            }
+                            else if (c.PropertyType == typeof(bool))
+                            {
+                                p.DataType = "INTEGER";
+                                p.IsNullable = false;
+                                p.DefaultValue = "0";
+                            }
+                            else if (c.PropertyType == typeof(int))
+                            {
+                                p.DataType = "INTEGER";
+                                p.IsNullable = false;
+                                p.DefaultValue = "0";
                             }
                             else if (c.PropertyType == typeof(long))
                             {

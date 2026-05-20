@@ -286,7 +286,7 @@ namespace Com.Scm.Configure.Startup
                 return;
             }
 
-            File.Move(srcFile, dstFile);
+            File.Copy(srcFile, dstFile);
         }
 
         private static void SqlSetup(IServiceCollection services, EnvConfig envConfig, SqlConfig sqlConfig)

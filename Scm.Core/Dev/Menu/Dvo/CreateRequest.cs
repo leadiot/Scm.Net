@@ -1,6 +1,6 @@
 using Com.Scm.Enums;
 
-namespace Com.Scm.Adm.Menu.Dvo;
+namespace Com.Scm.Dev.Menu.Dvo;
 
 /// <summary>
 /// 
@@ -26,4 +26,9 @@ public class CreateRequest : ScmUpdateRequest
     /// 菜单名称
     /// </summary>
     public string name { get; set; }
+
+    /// <summary>
+    /// 界面布局
+    /// </summary>
+    public ScmLayoutEnum layout { get; set; }
 }

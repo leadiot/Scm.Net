@@ -1,4 +1,5 @@
 ﻿using Com.Scm.Config;
+using Com.Scm.Exceptions;
 using Com.Scm.Files;
 using Com.Scm.Filters;
 using Com.Scm.Image.ImageSharp;
@@ -39,6 +40,52 @@ public class ScmSysFileService : IApiService
         _contextHolder = contextHolder;
         _safetyService = safetyService;
         _httpContextAccessor = httpContextAccessor;
+    }
+
+    /// <summary>
+    /// 添加目录
+    /// </summary>
+    /// <param name="request"></param>
+    /// <returns></returns>
+    public bool AddFolder(AddFileRequest request)
+    {
+        var basePath = _envConfig.GetDataPath(request.path);
+        if (FileUtils.ExistsDir(basePath))
+        {
+            throw new BusinessException($"路径不存在：{request.path}");
+        }
+        var file = Path.Combine(basePath, request.name);
+        if (FileUtils.ExistsDir(file))
+        {
+            throw new BusinessException($"目录已存在：{request.name}");
+        }
+
+        FileUtils.CreateDir(file);
+
+        return true;
+    }
+
+    /// <summary>
+    /// 添加文件
+    /// </summary>
+    /// <param name="request"></param>
+    /// <returns></returns>
+    public bool AddFile(AddFileRequest request)
+    {
+        var basePath = _envConfig.GetDataPath(request.path);
+        if (FileUtils.ExistsDir(basePath))
+        {
+            throw new BusinessException($"路径不存在：{request.path}");
+        }
+        var file = Path.Combine(basePath, request.name);
+        if (FileUtils.ExistsDoc(file))
+        {
+            throw new BusinessException($"文件已存在：{request.name}");
+        }
+
+        FileUtils.CreateDoc(file);
+
+        return true;
     }
 
     /// <summary>

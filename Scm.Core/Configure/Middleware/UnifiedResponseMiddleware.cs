@@ -1,14 +1,10 @@
 using Com.Scm.Enums;
 using Com.Scm.Exceptions;
 using Com.Scm.Response;
-using Com.Scm.Utils;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
-using System;
-using System.IO;
 using System.Net;
 using System.Text.Json;
-using System.Threading.Tasks;
 
 namespace Com.Scm.Configure.Middleware
 {

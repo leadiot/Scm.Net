@@ -2,6 +2,7 @@ using Com.Scm.Cfg;
 using Com.Scm.Cfg.DateTheme;
 using Com.Scm.Cfg.UserTheme;
 using Com.Scm.Config;
+using Com.Scm.Dev;
 using Com.Scm.DynamicWebApi.Attributes;
 using Com.Scm.Enums;
 using Com.Scm.Exceptions;
@@ -1332,7 +1333,7 @@ public class OperatorService : ApiService
     /// <param name="client">客户端</param>
     /// <param name="lang">语言：形如zh-CN、en等。</param>
     /// <returns></returns>
-    public async Task<List<MenuDto>> GetAuthorityMenuAsync(ScmClientTypeEnum client, string lang)
+    public async Task<List<MenuDto>> GetAuthorityMenuAsync(ScmClientTypeEnum client, ScmLayoutEnum layout, string lang)
     {
         var user = _jwtContextHolder.GetToken();
 
@@ -1369,9 +1370,10 @@ public class OperatorService : ApiService
         var menuIds = roleAuthList.Select(m => m.auth_id).ToList();
 
         //根据菜单ID查询菜单详细
-        var menuList = await _SqlClient.Queryable<Adm.Menu.AdmMenuDao>()
+        var menuList = await _SqlClient.Queryable<ScmDevMenuDao>()
             .Where(a => menuIds.Contains(a.id) && a.row_status == ScmRowStatusEnum.Enabled)
             .WhereIF(client != ScmClientTypeEnum.None, a => a.client == client)
+            .WhereIF(layout != ScmLayoutEnum.None, a => a.layout == layout)
             .WhereIF(!string.IsNullOrWhiteSpace(lang), a => a.lang == lang)
             .OrderBy(a => a.od)
             .Select<MenuDto>()
@@ -1417,7 +1419,7 @@ public class OperatorService : ApiService
     /// <param name="menuList"></param>
     /// <param name="pId"></param>
     /// <returns></returns>
-    private List<AuthorityDvo> RecursiveModuleSc(List<Adm.Menu.AdmMenuDao> menuList, long pId)
+    private List<AuthorityDvo> RecursiveModuleSc(List<ScmDevMenuDao> menuList, long pId)
     {
         var result = new List<AuthorityDvo>();
         foreach (var item in menuList.Where(m => m.pid == pId).OrderBy(m => m.od))

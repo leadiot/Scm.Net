@@ -1,4 +1,4 @@
-﻿using Com.Scm.Token;
+using Com.Scm.Token;
 
 public class Program
 {

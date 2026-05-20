@@ -79,11 +79,6 @@ namespace Com.Scm.Sys.Menu
         public string color { get; set; }
 
         /// <summary>
-        /// 界面布局
-        /// </summary>
-        public string layout { get; set; }
-
-        /// <summary>
         /// 菜单层级
         /// </summary>
         public int layer { get; set; } = 1;
@@ -112,6 +107,43 @@ namespace Com.Scm.Sys.Menu
         /// 是否缓存
         /// </summary>
         public bool keepAlive { get; set; }
+
+        /// <summary>
+        /// 界面布局
+        /// </summary>
+        public ScmLayoutEnum layout { get; set; }
+
+        /// <summary>
+        /// 默认宽度
+        /// </summary>
+        public int width { get; set; }
+
+        /// <summary>
+        /// 默认高度
+        /// </summary>
+        public int height { get; set; }
+
+        /// <summary>
+        /// 是否可调整大小
+        /// </summary>
+        public bool resizable { get; set; } = true;
+
+        /// <summary>
+        /// 居中显示
+        /// </summary>
+        public bool center { get; set; }
+
+        /// <summary>
+        /// 指示该项是否在桌面界面中可见。
+        /// </summary>
+        /// <remarks>用于控制桌面视图中的可见性，通常用于在不同平台或视图模式下切换显示。</remarks>
+        public bool showInDesktop { get; set; }
+
+        /// <summary>
+        /// 指示窗口是否显示在任务栏中。
+        /// </summary>
+        /// <remarks>仅对顶级窗口有效；对非顶级窗口或某些平台可能被忽略。</remarks>
+        public bool showInTaskbar { get; set; }
 
         /// <summary>
         /// 接口权限

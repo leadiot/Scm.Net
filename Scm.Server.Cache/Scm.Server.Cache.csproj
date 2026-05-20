@@ -1,23 +1,23 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <TargetFramework>net10.0</TargetFramework>
-    <ImplicitUsings>enable</ImplicitUsings>
-    <Nullable>disable</Nullable>
-    <RootNamespace>Com.Scm</RootNamespace>
-  </PropertyGroup>
+	<PropertyGroup>
+		<TargetFramework>net10.0</TargetFramework>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<Nullable>disable</Nullable>
+		<RootNamespace>Com.Scm</RootNamespace>
+	</PropertyGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\Scm.Server\Scm.Server.csproj" />
-  </ItemGroup>
+	<ItemGroup>
+		<ProjectReference Include="..\Scm.Server\Scm.Server.csproj" />
+	</ItemGroup>
 
-  <ItemGroup>
-    <Reference Include="Scm.Cache">
-      <HintPath>..\Libs\netstandard2.0\Scm.Cache.dll</HintPath>
-    </Reference>
-    <Reference Include="Scm.Cache.Dictionary">
-      <HintPath>..\Libs\netstandard2.0\Scm.Cache.Dictionary.dll</HintPath>
-    </Reference>
-  </ItemGroup>
+	<ItemGroup>
+		<Reference Include="Scm.Cache">
+			<HintPath>..\Libs\net10.0\Scm.Cache.dll</HintPath>
+		</Reference>
+		<Reference Include="Scm.Cache.Dictionary">
+			<HintPath>..\Libs\net10.0\Scm.Cache.Dictionary.dll</HintPath>
+		</Reference>
+	</ItemGroup>
 
 </Project>

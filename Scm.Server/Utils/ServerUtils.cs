@@ -6,6 +6,16 @@ namespace Com.Scm.Utils
 {
     public class ServerUtils
     {
+        private static IHttpContextAccessor _httpContextAccessor;
+
+        /// <summary>
+        /// 初始化（在应用启动时调用，注入 IHttpContextAccessor）
+        /// </summary>
+        public static void Configure(IHttpContextAccessor httpContextAccessor)
+        {
+            _httpContextAccessor = httpContextAccessor;
+        }
+
         #region 获得IP地址
         /// <summary>
         /// 获得IP地址
@@ -13,70 +23,71 @@ namespace Com.Scm.Utils
         /// <returns>字符串数组</returns>
         public static string GetIp()
         {
-            HttpContextAccessor _context = new HttpContextAccessor();
+            var context = _httpContextAccessor?.HttpContext;
+            if (context == null) return string.Empty;
+
             var ip = string.Empty;
-            if (_context.HttpContext.Request.Headers.ContainsKey("X-Real-IP"))
+            if (context.Request.Headers.ContainsKey("X-Real-IP"))
             {
-                ip = _context.HttpContext.Request.Headers["X-Real-IP"].ToString();
+                ip = context.Request.Headers["X-Real-IP"].ToString();
             }
-            if (_context.HttpContext.Request.Headers.ContainsKey("X-Forwarded-For"))
+            if (context.Request.Headers.ContainsKey("X-Forwarded-For"))
             {
-                ip = _context.HttpContext.Request.Headers["X-Forwarded-For"].ToString();
+                ip = context.Request.Headers["X-Forwarded-For"].ToString();
             }
             if (string.IsNullOrEmpty(ip))
             {
-                ip = _context.HttpContext.Connection.RemoteIpAddress.ToString();
+                ip = context.Connection.RemoteIpAddress?.ToString();
             }
-            return ip;
+            return ip ?? string.Empty;
         }
         #endregion
 
         #region 获得浏览器信息
         public static string GetUserAgent()
         {
-            var context = new HttpContextAccessor();
-            return context.HttpContext.Request.Headers["User-Agent"].ToString();
+            var context = _httpContextAccessor?.HttpContext;
+            if (context == null) return string.Empty;
+
+            return context.Request.Headers["User-Agent"].ToString();
         }
         /// <summary>
-        /// 获得IP地址
+        /// 解析浏览器名称
         /// </summary>
-        /// <returns>字符串数组</returns>
+        /// <param name="browserAgent">User-Agent 字符串</param>
+        /// <returns>浏览器名称</returns>
         public static string GetBrowser(string browserAgent)
         {
-            string res;
+            if (string.IsNullOrEmpty(browserAgent))
+            {
+                return string.Empty;
+            }
+
             if (browserAgent.Contains("Chrome"))
             {
-                res = "Chrome";
+                return "Chrome";
             }
-            else if (browserAgent.Contains("Safari"))
+            if (browserAgent.Contains("Firefox"))
             {
-                res = "Safari";
+                return "Firefox";
             }
-            else if (browserAgent.Contains("Firefox"))
+            if (browserAgent.Contains("Edg"))
             {
-                res = "Firefox";
+                return "Microsoft Edge";
             }
-            else if (browserAgent.Contains("Firefox"))
+            if (browserAgent.Contains("Safari"))
             {
-                res = "Firefox";
+                return "Safari";
             }
-            else if (browserAgent.Contains("Edg"))
+            if (browserAgent.Contains("Opera"))
             {
-                res = "Microsoft Edge";
+                return "Opera";
             }
-            else if (browserAgent.Contains("Opera"))
+            if (browserAgent.Contains("MSIE"))
             {
-                res = "Opera";
+                return "IE";
             }
-            else if (browserAgent.Contains("MSIE"))
-            {
-                res = "IE";
-            }
-            else
-            {
-                res = browserAgent;
-            }
-            return res;
+            return browserAgent;
         }
         #endregion
 

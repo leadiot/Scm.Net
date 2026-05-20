@@ -1,4 +1,4 @@
-﻿namespace Com.Scm.Adm.Menu.Dvo;
+﻿namespace Com.Scm.Dev.Menu.Dvo;
 
 /// <summary>
 /// 

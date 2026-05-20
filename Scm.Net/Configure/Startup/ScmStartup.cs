@@ -34,6 +34,8 @@ namespace Com.Scm.Configure.Startup
     {
         public static WebApplicationBuilder ConfigureServices(this WebApplicationBuilder builder)
         {
+            var services = builder.Services;
+
             AppUtils.Init(builder.Configuration);
 
             // LOG配置
@@ -43,9 +45,6 @@ namespace Com.Scm.Configure.Startup
 
             LogUtils.Info("正在启动系统...");
 
-            var services = builder.Services;
-
-            // 环境变量
             LogUtils.Info("正在进行环境配置...");
             var envConfig = AppUtils.GetConfig<EnvConfig>(EnvConfig.NAME) ?? new EnvConfig();
             envConfig.Prepare(builder);
@@ -199,10 +198,7 @@ namespace Com.Scm.Configure.Startup
             app.UseHttpsRedirection();
             app.UseDefaultFiles(new DefaultFilesOptions
             {
-                DefaultFileNames = new List<string>
-                {
-                    "index.html"
-                }
+                DefaultFileNames = new List<string> { "index.html" }
             });
             app.UseStaticFiles();
 
@@ -258,7 +254,7 @@ namespace Com.Scm.Configure.Startup
             var kestrelConfig = AppUtils.GetConfig<KestrelConfig>(KestrelConfig.NAME);
             if (kestrelConfig != null)
             {
-                var url = kestrelConfig?.Endpoints?.Http?.Url;
+                var url = kestrelConfig.Endpoints?.Http?.Url;
                 if (url == null)
                 {
                     url = "http://*:9999";
@@ -300,11 +296,10 @@ namespace Com.Scm.Configure.Startup
             //LogUtils.Info("正在初始化数据库...");
 
             var dbType = SqlSugarUtils.GetDbType(sqlConfig.Type);
-            SqlSugarScope sugarScope = new SqlSugarScope(new ConnectionConfig()
+            var sugarScope = new SqlSugarScope(new ConnectionConfig()
             {
-                DbType = dbType,
                 ConnectionString = sqlConfig.Text,
-                InitKeyType = InitKeyType.Attribute,
+                DbType = dbType,
                 IsAutoCloseConnection = true,
                 ConfigureExternalServices = new ConfigureExternalServices
                 {
@@ -320,7 +315,7 @@ namespace Com.Scm.Configure.Startup
                             if (c.PropertyType.IsEnum)
                             {
                                 p.DataType = "INTEGER";
-                            }
+                }
                             else if (c.PropertyType == typeof(long))
                             {
                                 p.DataType = "INTEGER";

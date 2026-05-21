@@ -3,7 +3,7 @@ namespace Com.Scm.MQTT
     /// <summary>
     /// MQTT 配置
     /// </summary>
-    public class MqttConfig
+    public class ClientConfig
     {
         /// <summary>
         /// Broker 服务器地址
@@ -44,18 +44,5 @@ namespace Com.Scm.MQTT
         /// 断线后自动重连间隔（秒，默认 5，设为 0 表示不重连）
         /// </summary>
         public int ReconnectDelay { get; set; } = 5;
-
-        /// <summary>
-        /// 默认配置
-        /// </summary>
-        public static MqttConfig Default => new MqttConfig
-        {
-            Host = "localhost",
-            Port = 1883,
-            ClientId = $"scm-{Guid.NewGuid():N}",
-            CleanSession = true,
-            KeepAlivePeriod = 60,
-            ReconnectDelay = 5
-        };
     }
 }

@@ -40,6 +40,7 @@
     <ProjectReference Include="..\Scm.Email\Scm.Email.csproj" />
     <ProjectReference Include="..\Scm.Generator\Scm.Generator.csproj" />
     <ProjectReference Include="..\Scm.Server.Cache\Scm.Server.Cache.csproj" />
+    <ProjectReference Include="..\Scm.Server.MQTT\Scm.Server.MQTT.csproj" />
     <ProjectReference Include="..\Scm.Server.Quartz\Scm.Server.Quartz.csproj" />
     <ProjectReference Include="..\Scm.Server.Service\Scm.Server.Service.csproj" />
     <ProjectReference Include="..\Scm.Server.SignalR\Scm.Server.SignalR.csproj" />

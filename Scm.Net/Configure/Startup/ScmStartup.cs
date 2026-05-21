@@ -12,6 +12,7 @@ using Com.Scm.Hubs;
 using Com.Scm.Image.ImageSharp;
 using Com.Scm.Login.Otp;
 using Com.Scm.Mapper;
+using Com.Scm.MQTT;
 using Com.Scm.Phone.Config;
 using Com.Scm.Quartz;
 using Com.Scm.Quartz.Config;
@@ -95,6 +96,18 @@ namespace Com.Scm.Configure.Startup
             var quartzConfig = AppUtils.GetConfig<QuartzConfig>(QuartzConfig.NAME) ?? new QuartzConfig();
             quartzConfig.Prepare(envConfig);
             services.QuartzSetup(quartzConfig);
+            services.AddQuartzClassJobs();
+
+            // MQTT Broker
+            var mqttBrokerConfig = AppUtils.GetConfig<MqttBrokerConfig>(MqttBrokerConfig.NAME) ?? new MqttBrokerConfig();
+            mqttBrokerConfig.Prepare(envConfig);
+            services.SetupMqtt(mqttBrokerConfig);
+            services.AddQuartzClassJobs();
+
+            // MQTT Client
+            var mqttClientConfig = AppUtils.GetConfig<MqttClientConfig>(MqttClientConfig.NAME) ?? new MqttClientConfig();
+            mqttClientConfig.Prepare(envConfig);
+            services.SetupMqtt(mqttBrokerConfig, mqttClientConfig);
             services.AddQuartzClassJobs();
 
             // EMail

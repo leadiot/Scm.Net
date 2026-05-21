@@ -1,7 +1,7 @@
-using Com.Scm.MQTT.Impl;
+using Com.Scm.Mqtt.Impl;
 using MQTTnet.Protocol;
 
-namespace Com.Scm.MQTT
+namespace Com.Scm.Mqtt
 {
     /// <summary>
     /// MQTT 综合服务（封装客户端，统一管理连接、发布、订阅）
@@ -11,7 +11,7 @@ namespace Com.Scm.MQTT
         private readonly MqttClientService _clientService;
         private bool _disposed;
 
-        public MqttService(MqttConfig config)
+        public MqttService(MqttClientConfig config)
         {
             _clientService = new MqttClientService(config);
         }

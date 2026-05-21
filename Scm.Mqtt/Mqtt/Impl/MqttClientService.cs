@@ -1,20 +1,21 @@
+using Com.Scm.Mqtt;
 using MQTTnet;
 using MQTTnet.Protocol;
 using System.Text;
 
-namespace Com.Scm.MQTT.Impl
+namespace Com.Scm.Mqtt.Impl
 {
     /// <summary>
     /// MQTT 客户端服务实现（发布 + 订阅）
     /// </summary>
     public class MqttClientService : IMqttPublisher, IMqttSubscriber, IDisposable
     {
-        private readonly MqttConfig _config;
+        private readonly MqttClientConfig _config;
         private readonly IMqttClient _client;
         private MqttMessageReceivedCallback _messageCallback;
         private bool _disposed;
 
-        public MqttClientService(MqttConfig config)
+        public MqttClientService(MqttClientConfig config)
         {
             _config = config ?? throw new ArgumentNullException(nameof(config));
             _client = new MqttClientFactory().CreateMqttClient();

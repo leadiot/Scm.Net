@@ -2,7 +2,7 @@ using Microsoft.Extensions.Hosting;
 using MQTTnet;
 using MQTTnet.Server;
 
-namespace Com.Scm.MQTT.Impl
+namespace Com.Scm.Mqtt.Impl
 {
     /// <summary>
     /// MQTT Broker（内置服务端）

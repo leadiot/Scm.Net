@@ -1,4 +1,5 @@
-using Com.Scm.MQTT.Impl;
+using Com.Scm.Mqtt;
+using Com.Scm.Mqtt.Impl;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
@@ -14,7 +15,7 @@ namespace Com.Scm.MQTT
         /// </summary>
         /// <param name="services">服务容器</param>
         /// <param name="config">客户端配置</param>
-        public static IServiceCollection SetupMqttClient(this IServiceCollection services, MqttConfig config)
+        public static IServiceCollection SetupMqttClient(this IServiceCollection services, MqttClientConfig config)
         {
             if (config == null) throw new ArgumentNullException(nameof(config));
 
@@ -48,10 +49,10 @@ namespace Com.Scm.MQTT
         /// </summary>
         public static IServiceCollection SetupMqtt(this IServiceCollection services,
             MqttBrokerConfig brokerConfig = null,
-            MqttConfig clientConfig = null)
+            MqttClientConfig clientConfig = null)
         {
             brokerConfig ??= MqttBrokerConfig.Default;
-            clientConfig ??= MqttConfig.Default;
+            clientConfig ??= MqttClientConfig.Default;
             // 客户端自动连接本地 Broker
             clientConfig.Host = "localhost";
             clientConfig.Port = brokerConfig.Port;

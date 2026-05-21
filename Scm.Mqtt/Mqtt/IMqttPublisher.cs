@@ -1,6 +1,6 @@
 using MQTTnet.Protocol;
 
-namespace Com.Scm.MQTT
+namespace Com.Scm.Mqtt
 {
     /// <summary>
     /// MQTT 发布者接口

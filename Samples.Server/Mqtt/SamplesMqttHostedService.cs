@@ -1,6 +1,7 @@
 using Com.Scm.Mqtt;
 using Com.Scm.Mqtt.Impl;
 using Com.Scm.Samples.Mqtt.Dvo;
+using Com.Scm.Utils;
 using Microsoft.Extensions.Hosting;
 using MQTTnet.Protocol;
 using Newtonsoft.Json;
@@ -33,7 +34,7 @@ namespace Com.Scm.Samples.Mqtt
         /// </summary>
         public async Task StartAsync(CancellationToken cancellationToken)
         {
-            Console.WriteLine("[MQTT Hosted Service] 正在初始化...");
+            LogUtils.Debug("[MQTT Hosted Service] 正在初始化...");
             await InitializeMqttSubscriptions(cancellationToken);
         }
 
@@ -42,7 +43,7 @@ namespace Com.Scm.Samples.Mqtt
         /// </summary>
         public async Task StopAsync(CancellationToken cancellationToken)
         {
-            Console.WriteLine("[MQTT Hosted Service] 正在停止...");
+            LogUtils.Debug("[MQTT Hosted Service] 正在停止...");
             
             if (_mqttSubscriber is MqttClientService clientService)
             {
@@ -62,12 +63,12 @@ namespace Com.Scm.Samples.Mqtt
                 {
                     // 首先连接到 Broker
                     await clientService.ConnectAsync(cancellationToken);
-                    Console.WriteLine("[MQTT] 客户端连接成功");
+                    LogUtils.Debug("[MQTT] 客户端连接成功");
                 }
 
                 // 订阅温度主题
                 await _mqttSubscriber.SubscribeAsync("sensors/temperature/#", MqttQualityOfServiceLevel.AtLeastOnce);
-                Console.WriteLine("[MQTT] 已订阅主题：sensors/temperature/#");
+                LogUtils.Debug("[MQTT] 已订阅主题：sensors/temperature/#");
                 
                 // 注册消息接收回调
                 _mqttSubscriber.OnMessageReceived(async (topic, payload, qos) =>
@@ -75,11 +76,11 @@ namespace Com.Scm.Samples.Mqtt
                     await HandleMessageAsync(topic, payload, qos);
                 });
 
-                Console.WriteLine("[MQTT Hosted Service] 初始化完成");
+                LogUtils.Debug("[MQTT Hosted Service] 初始化完成");
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"[MQTT] 初始化失败: {ex.Message}");
+                LogUtils.Debug($"[MQTT] 初始化失败: {ex.Message}");
             }
         }
 
@@ -90,7 +91,7 @@ namespace Com.Scm.Samples.Mqtt
         {
             try
             {
-                Console.WriteLine($"[MQTT] 收到消息：Topic={topic}, Payload={payload}");
+                LogUtils.Debug($"[MQTT] 收到消息：Topic={topic}, Payload={payload}");
                 
                 // 解析温度数据
                 var temperatureData = JsonConvert.DeserializeObject<TemperatureDataDvo>(payload);
@@ -99,7 +100,7 @@ namespace Com.Scm.Samples.Mqtt
                     // 保存数据
                     _temperatureData[temperatureData.device_id] = temperatureData;
                     
-                    Console.WriteLine($"[MQTT] 接收到温度数据: 设备={temperatureData.device_id}, 温度={temperatureData.temperature}°C");
+                    LogUtils.Debug($"[MQTT] 接收到温度数据: 设备={temperatureData.device_id}, 温度={temperatureData.temperature}°C");
                     
                     // 发送响应消息
                     await SendResponseAsync(temperatureData);
@@ -107,7 +108,7 @@ namespace Com.Scm.Samples.Mqtt
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"[MQTT] 处理消息异常: {ex.Message}");
+                LogUtils.Debug($"[MQTT] 处理消息异常: {ex.Message}");
             }
         }
 
@@ -133,11 +134,11 @@ namespace Com.Scm.Samples.Mqtt
             try
             {
                 await _mqttPublisher.PublishAsync(responseTopic, responsePayload, MqttQualityOfServiceLevel.AtLeastOnce);
-                Console.WriteLine($"[MQTT] 已发送响应：Topic={responseTopic}");
+                LogUtils.Debug($"[MQTT] 已发送响应：Topic={responseTopic}");
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"[MQTT] 发送响应失败: {ex.Message}");
+                LogUtils.Debug($"[MQTT] 发送响应失败: {ex.Message}");
             }
         }
 

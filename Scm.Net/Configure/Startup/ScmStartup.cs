@@ -93,25 +93,6 @@ namespace Com.Scm.Configure.Startup
             genConfig.Prepare(envConfig);
             services.GeneratorSetup(genConfig);
 
-            // Quartz
-            LogUtils.Info("正在进行Quartz配置...");
-            var quartzConfig = AppUtils.GetConfig<QuartzConfig>(QuartzConfig.NAME) ?? new QuartzConfig();
-            quartzConfig.Prepare(envConfig);
-            services.QuartzSetup(quartzConfig);
-            services.AddQuartzClassJobs();
-
-            // MQTT Broker
-            LogUtils.Info("正在进行MQTT配置...");
-            var mqttBrokerConfig = AppUtils.GetConfig<MqttBrokerConfig>(MqttBrokerConfig.NAME) ?? new MqttBrokerConfig();
-            mqttBrokerConfig.Prepare(envConfig);
-
-            // MQTT Client
-            var mqttClientConfig = AppUtils.GetConfig<MqttClientConfig>(MqttClientConfig.NAME) ?? new MqttClientConfig();
-            mqttClientConfig.Prepare(envConfig);
-
-            // 注册 MQTT 服务
-            services.SetupMqtt(mqttBrokerConfig, mqttClientConfig);
-
             // EMail
             LogUtils.Info("正在进行Email配置...");
             var emailConfig = AppUtils.GetConfig<EmailConfig>(EmailConfig.NAME) ?? new EmailConfig();
@@ -193,6 +174,21 @@ namespace Com.Scm.Configure.Startup
 
             //// NAS 消息服务
             //services.AddNasMessageService();
+
+            // MQTT
+            LogUtils.Info("正在进行MQTT配置...");
+            var mqttBrokerConfig = AppUtils.GetConfig<MqttBrokerConfig>(MqttBrokerConfig.NAME) ?? new MqttBrokerConfig();
+            mqttBrokerConfig.Prepare(envConfig);
+            var mqttClientConfig = AppUtils.GetConfig<MqttClientConfig>(MqttClientConfig.NAME) ?? new MqttClientConfig();
+            mqttClientConfig.Prepare(envConfig);
+            services.SetupMqtt(mqttBrokerConfig, mqttClientConfig);
+
+            // Quartz
+            LogUtils.Info("正在进行Quartz配置...");
+            var quartzConfig = AppUtils.GetConfig<QuartzConfig>(QuartzConfig.NAME) ?? new QuartzConfig();
+            quartzConfig.Prepare(envConfig);
+            services.QuartzSetup(quartzConfig);
+            services.AddQuartzClassJobs();
 
             // Mapper
             services.AddMapperProfile();

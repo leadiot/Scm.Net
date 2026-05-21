@@ -1,4 +1,4 @@
-namespace Com.Scm.MQTT
+namespace Com.Scm.Mqtt
 {
     /// <summary>
     /// MQTT 配置

@@ -1,6 +1,6 @@
 ﻿using Com.Scm.Config;
 
-namespace Com.Scm.MQTT
+namespace Com.Scm.Mqtt
 {
     public class MqttClientConfig : ClientConfig
     {

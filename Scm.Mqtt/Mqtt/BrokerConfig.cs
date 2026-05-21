@@ -1,4 +1,4 @@
-namespace Com.Scm.MQTT
+namespace Com.Scm.Mqtt
 {
     /// <summary>
     /// MQTT 内置 Broker 配置

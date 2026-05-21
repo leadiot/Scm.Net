@@ -10,7 +10,7 @@ namespace Com.Scm.Mqtt.Impl
     /// </summary>
     public class MqttBrokerService : IHostedService, IDisposable
     {
-        private readonly MqttBrokerConfig _config;
+        private readonly BrokerConfig _config;
         private MqttServer _server;
         private bool _disposed;
 
@@ -29,7 +29,7 @@ namespace Com.Scm.Mqtt.Impl
         /// </summary>
         public event Func<string, string, string, Task<bool>> MessageIntercepted;
 
-        public MqttBrokerService(MqttBrokerConfig config)
+        public MqttBrokerService(BrokerConfig config)
         {
             _config = config ?? throw new ArgumentNullException(nameof(config));
         }

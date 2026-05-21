@@ -1,9 +1,8 @@
-using Com.Scm.Mqtt;
 using Com.Scm.Mqtt.Impl;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
-namespace Com.Scm.MQTT
+namespace Com.Scm.Mqtt
 {
     /// <summary>
     /// MQTT 依赖注入扩展方法

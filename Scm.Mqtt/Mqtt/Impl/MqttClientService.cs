@@ -1,4 +1,3 @@
-using Com.Scm.Mqtt;
 using MQTTnet;
 using MQTTnet.Protocol;
 using System.Text;
@@ -10,12 +9,12 @@ namespace Com.Scm.Mqtt.Impl
     /// </summary>
     public class MqttClientService : IMqttPublisher, IMqttSubscriber, IDisposable
     {
-        private readonly MqttClientConfig _config;
+        private readonly ClientConfig _config;
         private readonly IMqttClient _client;
         private MqttMessageReceivedCallback _messageCallback;
         private bool _disposed;
 
-        public MqttClientService(MqttClientConfig config)
+        public MqttClientService(ClientConfig config)
         {
             _config = config ?? throw new ArgumentNullException(nameof(config));
             _client = new MqttClientFactory().CreateMqttClient();

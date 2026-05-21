@@ -11,7 +11,7 @@ namespace Com.Scm.Mqtt
         private readonly MqttClientService _clientService;
         private bool _disposed;
 
-        public MqttService(MqttClientConfig config)
+        public MqttService(ClientConfig config)
         {
             _clientService = new MqttClientService(config);
         }

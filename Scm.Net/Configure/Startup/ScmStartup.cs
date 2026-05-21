@@ -12,7 +12,7 @@ using Com.Scm.Hubs;
 using Com.Scm.Image.ImageSharp;
 using Com.Scm.Login.Otp;
 using Com.Scm.Mapper;
-using Com.Scm.MQTT;
+using Com.Scm.Mqtt;
 using Com.Scm.Phone.Config;
 using Com.Scm.Quartz;
 using Com.Scm.Quartz.Config;
@@ -88,58 +88,67 @@ namespace Com.Scm.Configure.Startup
             services.AddSingleton(secConfig);
 
             // 代码生成
+            LogUtils.Info("正在进行代码生成配置...");
             var genConfig = AppUtils.GetConfig<GeneratorConfig>(GeneratorConfig.NAME);
             genConfig.Prepare(envConfig);
             services.GeneratorSetup(genConfig);
 
             // Quartz
+            LogUtils.Info("正在进行Quartz配置...");
             var quartzConfig = AppUtils.GetConfig<QuartzConfig>(QuartzConfig.NAME) ?? new QuartzConfig();
             quartzConfig.Prepare(envConfig);
             services.QuartzSetup(quartzConfig);
             services.AddQuartzClassJobs();
 
             // MQTT Broker
+            LogUtils.Info("正在进行MQTT配置...");
             var mqttBrokerConfig = AppUtils.GetConfig<MqttBrokerConfig>(MqttBrokerConfig.NAME) ?? new MqttBrokerConfig();
             mqttBrokerConfig.Prepare(envConfig);
-            services.SetupMqtt(mqttBrokerConfig);
-            services.AddQuartzClassJobs();
 
             // MQTT Client
             var mqttClientConfig = AppUtils.GetConfig<MqttClientConfig>(MqttClientConfig.NAME) ?? new MqttClientConfig();
             mqttClientConfig.Prepare(envConfig);
+
+            // 注册 MQTT 服务
             services.SetupMqtt(mqttBrokerConfig, mqttClientConfig);
-            services.AddQuartzClassJobs();
 
             // EMail
+            LogUtils.Info("正在进行Email配置...");
             var emailConfig = AppUtils.GetConfig<EmailConfig>(EmailConfig.NAME) ?? new EmailConfig();
             emailConfig.Prepare(envConfig);
             services.AddSingleton(emailConfig);
 
             // Phone
+            LogUtils.Info("正在进行Phone配置...");
             var phoneConfig = AppUtils.GetConfig<PhoneConfig>(PhoneConfig.NAME) ?? new PhoneConfig();
             phoneConfig.Prepare(envConfig);
             services.AddSingleton(phoneConfig);
 
             // Aiml
+            LogUtils.Info("正在进行AIML配置...");
             var aimlConfig = AppUtils.GetConfig<AimlConfig>(AimlConfig.NAME) ?? new AimlConfig();
             aimlConfig.Prepare(envConfig);
             services.AddSingleton(aimlConfig);
 
             // Oidc
+            LogUtils.Info("正在进行OIDC配置...");
             var oidcConfig = AppUtils.GetConfig<OidcConfig>(OidcConfig.NAME) ?? new OidcConfig();
             oidcConfig.Prepare(envConfig);
             services.AddSingleton(oidcConfig);
 
             // Otp
+            LogUtils.Info("正在进行OTP配置...");
             var otpConfig = AppUtils.GetConfig<OtpConfig>(OtpConfig.NAME) ?? new OtpConfig();
             otpConfig.Prepare(envConfig);
             services.AddSingleton(otpConfig);
 
             // Cors
+            LogUtils.Info("正在进行CORS配置...");
             var corsConfig = AppUtils.GetConfig<CorsConfig>(CorsConfig.NAME);
             if (corsConfig != null)
             {
                 corsConfig.Prepare(envConfig);
+                services.CorsSetup(corsConfig);
             }
 
             LogUtils.Info("正在进行服务配置...");
@@ -179,11 +188,9 @@ namespace Com.Scm.Configure.Startup
             // Jwt Config
             services.SetupJwt(envConfig);
 
-            // 跨域访问
-            services.CorsSetup(corsConfig);
-
             // SignalR
             services.AddSignalR();
+
             //// NAS 消息服务
             //services.AddNasMessageService();
 

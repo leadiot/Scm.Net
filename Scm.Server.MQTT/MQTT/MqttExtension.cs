@@ -14,7 +14,7 @@ namespace Com.Scm.Mqtt
         /// </summary>
         /// <param name="services">服务容器</param>
         /// <param name="config">客户端配置</param>
-        public static IServiceCollection SetupMqttClient(this IServiceCollection services, MqttClientConfig config)
+        public static IServiceCollection SetupMqttClient(this IServiceCollection services, ClientConfig config)
         {
             if (config == null) throw new ArgumentNullException(nameof(config));
 
@@ -32,7 +32,7 @@ namespace Com.Scm.Mqtt
         /// </summary>
         /// <param name="services">服务容器</param>
         /// <param name="config">Broker 配置</param>
-        public static IServiceCollection SetupMqttBroker(this IServiceCollection services, MqttBrokerConfig config)
+        public static IServiceCollection SetupMqttBroker(this IServiceCollection services, BrokerConfig config)
         {
             if (config == null) throw new ArgumentNullException(nameof(config));
 

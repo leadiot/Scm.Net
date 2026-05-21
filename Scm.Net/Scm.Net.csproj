@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
     <TargetFramework>net10.0</TargetFramework>
@@ -39,6 +39,7 @@
     <ProjectReference Include="..\Scm.Core\Scm.Core.csproj" />
     <ProjectReference Include="..\Scm.Email\Scm.Email.csproj" />
     <ProjectReference Include="..\Scm.Generator\Scm.Generator.csproj" />
+    <ProjectReference Include="..\Scm.Mqtt\Scm.Mqtt.csproj" />
     <ProjectReference Include="..\Scm.Server.Cache\Scm.Server.Cache.csproj" />
     <ProjectReference Include="..\Scm.Server.MQTT\Scm.Server.MQTT.csproj" />
     <ProjectReference Include="..\Scm.Server.Quartz\Scm.Server.Quartz.csproj" />

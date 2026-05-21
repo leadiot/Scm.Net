@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>net10.0</TargetFramework>
@@ -10,6 +10,7 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Core" Version="2.3.10" />
     <PackageReference Include="MiniExcel" Version="1.44.0" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
     <PackageReference Include="SqlSugarCore" Version="5.1.4.214" />
   </ItemGroup>
 
@@ -17,6 +18,7 @@
     <ProjectReference Include="..\Samples.Common.Dto\Samples.Common.Dto.csproj" />
     <ProjectReference Include="..\Samples.Common\Samples.Common.csproj" />
     <ProjectReference Include="..\Samples.Server.Dao\Samples.Server.Dao.csproj" />
+    <ProjectReference Include="..\Scm.Mqtt\Scm.Mqtt.csproj" />
     <ProjectReference Include="..\Scm.Server\Scm.Server.csproj" />
   </ItemGroup>
 

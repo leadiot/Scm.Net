@@ -209,10 +209,7 @@ namespace Com.Scm.Configure.Startup
             app.UseHttpsRedirection();
             app.UseDefaultFiles(new DefaultFilesOptions
             {
-                DefaultFileNames = new List<string>
-                {
-                    "index.html"
-                }
+                DefaultFileNames = new List<string> { "index.html" }
             });
             app.UseStaticFiles();
 
@@ -268,7 +265,7 @@ namespace Com.Scm.Configure.Startup
             var kestrelConfig = AppUtils.GetConfig<KestrelConfig>(KestrelConfig.NAME);
             if (kestrelConfig != null)
             {
-                var url = kestrelConfig?.Endpoints?.Http?.Url;
+                var url = kestrelConfig.Endpoints?.Http?.Url;
                 if (url == null)
                 {
                     url = "http://*:9999";
@@ -302,7 +299,7 @@ namespace Com.Scm.Configure.Startup
                 return;
             }
 
-            File.Move(srcFile, dstFile);
+            File.Copy(srcFile, dstFile);
         }
 
         private static void SqlSetup(IServiceCollection services, EnvConfig envConfig, SqlConfig sqlConfig)
@@ -310,10 +307,10 @@ namespace Com.Scm.Configure.Startup
             //LogUtils.Info("正在初始化数据库...");
 
             var dbType = SqlSugarUtils.GetDbType(sqlConfig.Type);
-            SqlSugarScope sugarScope = new SqlSugarScope(new ConnectionConfig()
+            var sugarScope = new SqlSugarScope(new ConnectionConfig()
             {
-                DbType = dbType,
                 ConnectionString = sqlConfig.Text,
+                DbType = dbType,
                 InitKeyType = InitKeyType.Attribute,
                 IsAutoCloseConnection = true,
                 ConfigureExternalServices = new ConfigureExternalServices

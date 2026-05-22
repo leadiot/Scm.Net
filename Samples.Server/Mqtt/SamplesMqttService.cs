@@ -1,4 +1,4 @@
-using Com.Scm.Samples.Mqtt.Dvo;
+using Com.Scm.Dsa;
 using Com.Scm.Service;
 using Microsoft.AspNetCore.Mvc;
 
@@ -10,13 +10,15 @@ namespace Com.Scm.Samples.Mqtt
     [ApiExplorerSettings(GroupName = "Samples")]
     public class SamplesMqttService : AppService
     {
+        private readonly SugarRepository<TemperatureDataDao> _thisRepository;
         private readonly SamplesMqttHostedService _mqttHostedService;
 
         /// <summary>
         /// 构造函数
         /// </summary>
-        public SamplesMqttService(SamplesMqttHostedService mqttHostedService)
+        public SamplesMqttService(SugarRepository<TemperatureDataDao> thisRepository, SamplesMqttHostedService mqttHostedService)
         {
+            _thisRepository = thisRepository;
             _mqttHostedService = mqttHostedService;
         }
 
@@ -24,18 +26,26 @@ namespace Com.Scm.Samples.Mqtt
         /// 获取所有设备的最新温度数据
         /// </summary>
         [HttpGet]
-        public List<TemperatureDataDvo> GetAllTemperatureData()
+        public async Task<List<TemperatureDataDto>> GetAllTemperatureData()
         {
-            return _mqttHostedService.GetAllTemperatureData();
+            return await _thisRepository.AsQueryable()
+                .OrderBy(a => a.id, SqlSugar.OrderByType.Desc)
+                .Take(100)
+                .Select<TemperatureDataDto>()
+                .ToListAsync();
         }
 
         /// <summary>
         /// 获取指定设备的最新温度数据
         /// </summary>
         [HttpGet("{deviceId}")]
-        public TemperatureDataDvo GetTemperatureData(string deviceId)
+        public async Task<TemperatureDataDto> GetTemperatureData(string deviceId)
         {
-            return _mqttHostedService.GetTemperatureData(deviceId);
+            return await _thisRepository.AsQueryable()
+                .Where(a => a.device_id == deviceId)
+                .OrderBy(a => a.id, SqlSugar.OrderByType.Desc)
+                .Select<TemperatureDataDto>()
+                .FirstAsync();
         }
 
         /// <summary>

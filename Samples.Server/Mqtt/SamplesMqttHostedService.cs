@@ -1,11 +1,10 @@
+using Com.Scm.Dsa;
 using Com.Scm.Mqtt;
 using Com.Scm.Mqtt.Impl;
-using Com.Scm.Samples.Mqtt.Dvo;
 using Com.Scm.Utils;
 using Microsoft.Extensions.Hosting;
 using MQTTnet.Protocol;
 using Newtonsoft.Json;
-using System.Collections.Concurrent;
 
 namespace Com.Scm.Samples.Mqtt
 {
@@ -14,19 +13,19 @@ namespace Com.Scm.Samples.Mqtt
     /// </summary>
     public class SamplesMqttHostedService : IHostedService, IDisposable
     {
+        private readonly SugarRepository<TemperatureDataDao> _thisRepository;
         private readonly IMqttPublisher _mqttPublisher;
         private readonly IMqttSubscriber _mqttSubscriber;
-        private readonly ConcurrentDictionary<string, TemperatureDataDvo> _temperatureData;
         private bool _disposed;
 
         /// <summary>
         /// 构造函数
         /// </summary>
-        public SamplesMqttHostedService(IMqttPublisher mqttPublisher, IMqttSubscriber mqttSubscriber)
+        public SamplesMqttHostedService(SugarRepository<TemperatureDataDao> thisRepository, IMqttPublisher mqttPublisher, IMqttSubscriber mqttSubscriber)
         {
+            _thisRepository = thisRepository;
             _mqttPublisher = mqttPublisher;
             _mqttSubscriber = mqttSubscriber;
-            _temperatureData = new ConcurrentDictionary<string, TemperatureDataDvo>();
         }
 
         /// <summary>
@@ -44,7 +43,7 @@ namespace Com.Scm.Samples.Mqtt
         public async Task StopAsync(CancellationToken cancellationToken)
         {
             LogUtils.Debug("[MQTT Hosted Service] 正在停止...");
-            
+
             if (_mqttSubscriber is MqttClientService clientService)
             {
                 await clientService.DisconnectAsync(cancellationToken);
@@ -69,12 +68,9 @@ namespace Com.Scm.Samples.Mqtt
                 // 订阅温度主题
                 await _mqttSubscriber.SubscribeAsync("sensors/temperature/#", MqttQualityOfServiceLevel.AtLeastOnce);
                 LogUtils.Debug("[MQTT] 已订阅主题：sensors/temperature/#");
-                
+
                 // 注册消息接收回调
-                _mqttSubscriber.OnMessageReceived(async (topic, payload, qos) =>
-                {
-                    await HandleMessageAsync(topic, payload, qos);
-                });
+                _mqttSubscriber.OnMessageReceived(HandleMessageAsync);
 
                 LogUtils.Debug("[MQTT Hosted Service] 初始化完成");
             }
@@ -92,16 +88,16 @@ namespace Com.Scm.Samples.Mqtt
             try
             {
                 LogUtils.Debug($"[MQTT] 收到消息：Topic={topic}, Payload={payload}");
-                
+
                 // 解析温度数据
-                var temperatureData = JsonConvert.DeserializeObject<TemperatureDataDvo>(payload);
+                var temperatureData = JsonConvert.DeserializeObject<TemperatureDataDto>(payload);
                 if (temperatureData != null)
                 {
-                    // 保存数据
-                    _temperatureData[temperatureData.device_id] = temperatureData;
-                    
+                    var dao = temperatureData.Adapt<TemperatureDataDao>();
+                    await _thisRepository.InsertAsync(dao); // 异步保存到数据库
+
                     LogUtils.Debug($"[MQTT] 接收到温度数据: 设备={temperatureData.device_id}, 温度={temperatureData.temperature}°C");
-                    
+
                     // 发送响应消息
                     await SendResponseAsync(temperatureData);
                 }
@@ -115,11 +111,11 @@ namespace Com.Scm.Samples.Mqtt
         /// <summary>
         /// 发送响应消息
         /// </summary>
-        private async Task SendResponseAsync(TemperatureDataDvo data)
+        private async Task SendResponseAsync(TemperatureDataDto data)
         {
             // 检查温度是否在正常范围内 (示例: 0-40°C)
             bool isNormal = data.temperature >= 0 && data.temperature <= 40;
-            
+
             var response = new
             {
                 device_id = data.device_id,
@@ -127,10 +123,10 @@ namespace Com.Scm.Samples.Mqtt
                 message = isNormal ? "温度正常" : "温度异常",
                 timestamp = DateTime.Now
             };
-            
+
             string responseTopic = $"sensors/temperature/{data.device_id}/response";
             string responsePayload = JsonConvert.SerializeObject(response);
-            
+
             try
             {
                 await _mqttPublisher.PublishAsync(responseTopic, responsePayload, MqttQualityOfServiceLevel.AtLeastOnce);
@@ -140,23 +136,6 @@ namespace Com.Scm.Samples.Mqtt
             {
                 LogUtils.Debug($"[MQTT] 发送响应失败: {ex.Message}");
             }
-        }
-
-        /// <summary>
-        /// 获取所有设备的最新温度数据
-        /// </summary>
-        public List<TemperatureDataDvo> GetAllTemperatureData()
-        {
-            return _temperatureData.Values.ToList();
-        }
-
-        /// <summary>
-        /// 获取指定设备的最新温度数据
-        /// </summary>
-        public TemperatureDataDvo GetTemperatureData(string deviceId)
-        {
-            _temperatureData.TryGetValue(deviceId, out var data);
-            return data;
         }
 
         /// <summary>

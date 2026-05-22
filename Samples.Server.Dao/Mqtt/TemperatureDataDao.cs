@@ -1,9 +1,11 @@
-namespace Com.Scm.Samples.Mqtt.Dvo
+using Com.Scm.Dao;
+
+namespace Com.Scm.Samples.Mqtt
 {
     /// <summary>
-    /// 温度数据 DTO
+    /// 温度数据 DAO
     /// </summary>
-    public class TemperatureDataDvo
+    public class TemperatureDataDao : ScmDao
     {
         /// <summary>
         /// 设备 ID
@@ -18,6 +20,6 @@ namespace Com.Scm.Samples.Mqtt.Dvo
         /// <summary>
         /// 记录时间
         /// </summary>
-        public DateTime timestamp { get; set; }
+        public long timestamp { get; set; }
     }
 }

@@ -1,6 +1,8 @@
-﻿namespace Com.Scm.Response
+﻿using System;
+
+namespace Com.Scm.Response
 {
-    public class ScmApiResponse : ScmResponse
+    public class ScmAppResponse : ScmResponse
     {
         /// <summary>
         /// 处理结果
@@ -18,13 +20,20 @@
         public string Message { get { return _rm; } set { _rm = value; } }
 
         /// <summary>
-        /// 请求路径
-        /// </summary>
-        public string Path { get; set; }
-
-        /// <summary>
         /// 响应时间
         /// </summary>
         public long Time { get; set; }
+
+        public static ScmAppResponse SetSuccess<T>(T obj) where T : class
+        {
+            return new ScmAppDataResponse<T>
+            {
+                Data = obj,
+                Success = true,
+                Code = 0,
+                Message = "success",
+                Time = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds()
+            };
+        }
     }
 }

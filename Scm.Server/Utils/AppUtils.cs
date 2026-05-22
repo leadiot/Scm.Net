@@ -40,6 +40,13 @@ public static class AppUtils
     /// <returns></returns>
     public static T GetService<T>() where T : class
     {
-        return ServiceProvider?.GetService<IHttpContextAccessor>()?.HttpContext.RequestServices.GetService<T>();
+        // 优先从 HttpContext.RequestServices 获取（HTTP 请求上下文）
+        var httpContext = ServiceProvider?.GetService<IHttpContextAccessor>()?.HttpContext;
+        if (httpContext != null)
+        {
+            return httpContext.RequestServices.GetService<T>();
+        }
+        // 后台服务场景（无 HttpContext）直接从 ServiceProvider 获取
+        return ServiceProvider?.GetService<T>();
     }
 }

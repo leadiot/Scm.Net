@@ -26,12 +26,12 @@ namespace Com.Scm.Samples.Mqtt
         /// 获取所有设备的最新温度数据
         /// </summary>
         [HttpGet]
-        public async Task<List<TemperatureDataDto>> GetAllTemperatureData()
+        public async Task<List<TemperatureRequest>> GetAllTemperatureData()
         {
             return await _thisRepository.AsQueryable()
                 .OrderBy(a => a.id, SqlSugar.OrderByType.Desc)
                 .Take(100)
-                .Select<TemperatureDataDto>()
+                .Select<TemperatureRequest>()
                 .ToListAsync();
         }
 
@@ -39,12 +39,12 @@ namespace Com.Scm.Samples.Mqtt
         /// 获取指定设备的最新温度数据
         /// </summary>
         [HttpGet("{deviceId}")]
-        public async Task<TemperatureDataDto> GetTemperatureData(string deviceId)
+        public async Task<TemperatureRequest> GetTemperatureData(string deviceId)
         {
             return await _thisRepository.AsQueryable()
                 .Where(a => a.device_id == deviceId)
                 .OrderBy(a => a.id, SqlSugar.OrderByType.Desc)
-                .Select<TemperatureDataDto>()
+                .Select<TemperatureRequest>()
                 .FirstAsync();
         }
 

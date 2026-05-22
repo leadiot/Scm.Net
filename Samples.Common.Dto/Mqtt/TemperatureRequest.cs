@@ -1,11 +1,11 @@
-using Com.Scm.Dto;
+using Com.Scm.Request;
 
 namespace Com.Scm.Samples.Mqtt
 {
     /// <summary>
     /// 温度数据 DTO
     /// </summary>
-    public class TemperatureDataDto : ScmDto
+    public class TemperatureRequest : ScmRequest
     {
         /// <summary>
         /// 设备 ID

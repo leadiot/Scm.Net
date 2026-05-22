@@ -155,7 +155,26 @@ namespace Com.Scm.Configure.Startup
             // 自定义服务
             SamplesServerUtils.Setup(services);
 
-            // 全局过滤
+            //// NAS 消息服务
+            //services.AddNasMessageService();
+
+            // Quartz
+            LogUtils.Info("正在进行Quartz配置...");
+            var quartzConfig = AppUtils.GetConfig<QuartzConfig>(QuartzConfig.NAME) ?? new QuartzConfig();
+            quartzConfig.Prepare(envConfig);
+            services.QuartzSetup(quartzConfig);
+            services.AddQuartzClassJobs();
+
+            // Mapper
+            services.AddMapperProfile();
+
+            // SignalR
+            services.AddSignalR();
+
+            // Jwt Config（必须先注册，Filters 和 Service 依赖 ScmContextHolder）
+            services.SetupJwt(envConfig);
+
+            // 全局过滤（依赖 ScmContextHolder，必须在 SetupJwt 之后）
             services.AddControllers(options =>
             {
                 options.Filters.Add<AopActionFilter>();
@@ -171,29 +190,10 @@ namespace Com.Scm.Configure.Startup
             // 安全配置服务（支持环境变量和 User Secrets）
             services.AddSecureConfiguration();
 
-            // 接口配置
+            // 接口配置（依赖 AddControllers，必须在 MVC 注册之后）
             var apiConfig = AppUtils.GetConfig<DllConfig>(DllConfig.NAME);
             apiConfig.Prepare(builder.Environment);
             services.RegisterServices(apiConfig);
-
-            // Jwt Config
-            services.SetupJwt(envConfig);
-
-            // SignalR
-            services.AddSignalR();
-
-            //// NAS 消息服务
-            //services.AddNasMessageService();
-
-            // Quartz
-            LogUtils.Info("正在进行Quartz配置...");
-            var quartzConfig = AppUtils.GetConfig<QuartzConfig>(QuartzConfig.NAME) ?? new QuartzConfig();
-            quartzConfig.Prepare(envConfig);
-            services.QuartzSetup(quartzConfig);
-            services.AddQuartzClassJobs();
-
-            // Mapper
-            services.AddMapperProfile();
 
             return builder;
         }

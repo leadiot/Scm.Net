@@ -1,10 +1,12 @@
-using Com.Scm.Dsa;
 using Com.Scm.Mqtt;
 using Com.Scm.Mqtt.Impl;
+using Com.Scm.Response;
+using Com.Scm.Ur;
 using Com.Scm.Utils;
 using Microsoft.Extensions.Hosting;
 using MQTTnet.Protocol;
 using Newtonsoft.Json;
+using SqlSugar;
 
 namespace Com.Scm.Samples.Mqtt
 {
@@ -13,7 +15,7 @@ namespace Com.Scm.Samples.Mqtt
     /// </summary>
     public class SamplesMqttHostedService : IHostedService, IDisposable
     {
-        private readonly SugarRepository<TemperatureDataDao> _thisRepository;
+        private readonly ISqlSugarClient _sqlClient;
         private readonly IMqttPublisher _mqttPublisher;
         private readonly IMqttSubscriber _mqttSubscriber;
         private bool _disposed;
@@ -21,9 +23,9 @@ namespace Com.Scm.Samples.Mqtt
         /// <summary>
         /// 构造函数
         /// </summary>
-        public SamplesMqttHostedService(SugarRepository<TemperatureDataDao> thisRepository, IMqttPublisher mqttPublisher, IMqttSubscriber mqttSubscriber)
+        public SamplesMqttHostedService(ISqlSugarClient sqlClient, IMqttPublisher mqttPublisher, IMqttSubscriber mqttSubscriber)
         {
-            _thisRepository = thisRepository;
+            _sqlClient = sqlClient;
             _mqttPublisher = mqttPublisher;
             _mqttSubscriber = mqttSubscriber;
         }
@@ -60,6 +62,9 @@ namespace Com.Scm.Samples.Mqtt
                 // 尝试转换为具体实现类型，以便调用 ConnectAsync
                 if (_mqttSubscriber is MqttClientService clientService)
                 {
+                    // 短暂等待 Broker 完全就绪（HostedService 按顺序启动，但端口绑定可能需要时间）
+                    await Task.Delay(100, cancellationToken);
+
                     // 首先连接到 Broker
                     await clientService.ConnectAsync(cancellationToken);
                     LogUtils.Debug("[MQTT] 客户端连接成功");
@@ -90,11 +95,12 @@ namespace Com.Scm.Samples.Mqtt
                 LogUtils.Debug($"[MQTT] 收到消息：Topic={topic}, Payload={payload}");
 
                 // 解析温度数据
-                var temperatureData = JsonConvert.DeserializeObject<TemperatureDataDto>(payload);
+                var temperatureData = JsonConvert.DeserializeObject<TemperatureRequest>(payload);
                 if (temperatureData != null)
                 {
                     var dao = temperatureData.Adapt<TemperatureDataDao>();
-                    await _thisRepository.InsertAsync(dao); // 异步保存到数据库
+                    dao.PrepareCreate(UserDto.SYS_ID);
+                    await _sqlClient.InsertAsync(dao);
 
                     LogUtils.Debug($"[MQTT] 接收到温度数据: 设备={temperatureData.device_id}, 温度={temperatureData.temperature}°C");
 
@@ -111,21 +117,21 @@ namespace Com.Scm.Samples.Mqtt
         /// <summary>
         /// 发送响应消息
         /// </summary>
-        private async Task SendResponseAsync(TemperatureDataDto data)
+        private async Task SendResponseAsync(TemperatureRequest data)
         {
             // 检查温度是否在正常范围内 (示例: 0-40°C)
             bool isNormal = data.temperature >= 0 && data.temperature <= 40;
 
-            var response = new
+            var result = new TemperatureResult
             {
                 device_id = data.device_id,
-                status = isNormal ? "ok" : "warning",
-                message = isNormal ? "温度正常" : "温度异常",
-                timestamp = DateTime.Now
+                status = isNormal ? 0 : 1,
+                message = isNormal ? "温度正常" : "温度异常"
             };
+            var response = ScmAppResponse.SetSuccess(result);
 
             string responseTopic = $"sensors/temperature/{data.device_id}/response";
-            string responsePayload = JsonConvert.SerializeObject(response);
+            string responsePayload = TextUtils.ToJsonString(response);
 
             try
             {

@@ -13,4 +13,8 @@
 		<PackageReference Include="MQTTnet.Server" Version="5.1.0.1559" />
 	</ItemGroup>
 
+	<ItemGroup>
+		<ProjectReference Include="..\Scm.Common.Log\Scm.Common.Log.csproj" />
+	</ItemGroup>
+
 </Project>

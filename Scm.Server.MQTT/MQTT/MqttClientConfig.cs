@@ -8,6 +8,15 @@ namespace Com.Scm.Mqtt
 
         public void Prepare(EnvConfig envConfig)
         {
+            // 从配置文件读取设置，如果没有则使用默认值
+            if (string.IsNullOrWhiteSpace(Host))
+            {
+                Host = "localhost";
+            }
+            if (Port <= 0)
+            {
+                Port = 1883;
+            }
         }
 
         /// <summary>

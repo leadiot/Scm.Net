@@ -18,6 +18,17 @@ namespace Com.Scm.Samples.Mqtt
         private readonly ISqlSugarClient _sqlClient;
         private readonly IMqttPublisher _mqttPublisher;
         private readonly IMqttSubscriber _mqttSubscriber;
+
+        /// <summary>
+        /// MQTT 主题常量
+        /// </summary>
+        private const string TemperatureTopic = "sensors/temperature/device";
+        /// <summary>
+        /// 用于温度传感器响应消息的主题格式字符串。
+        /// </summary>
+        /// <remarks>使用时将 {0} 替换为传感器标识符（例如 ID 或名称）。</remarks>
+        private const string ResponseTopicFormat = "sensors/temperature/{0}/response";
+
         private bool _disposed;
 
         /// <summary>
@@ -71,8 +82,8 @@ namespace Com.Scm.Samples.Mqtt
                 }
 
                 // 订阅温度主题
-                await _mqttSubscriber.SubscribeAsync("sensors/temperature/#", MqttQualityOfServiceLevel.AtLeastOnce);
-                LogUtils.Debug("[MQTT] 已订阅主题：sensors/temperature/#");
+                await _mqttSubscriber.SubscribeAsync(TemperatureTopic, MqttQualityOfServiceLevel.ExactlyOnce);
+                LogUtils.Debug("[MQTT] 已订阅主题：" + TemperatureTopic);
 
                 // 注册消息接收回调
                 _mqttSubscriber.OnMessageReceived(HandleMessageAsync);
@@ -130,7 +141,7 @@ namespace Com.Scm.Samples.Mqtt
             };
             var response = ScmAppResponse.SetSuccess(result);
 
-            string responseTopic = $"sensors/temperature/{data.device_id}/response";
+            string responseTopic = string.Format(ResponseTopicFormat, data.device_id);
             string responsePayload = TextUtils.ToJsonString(response);
 
             try
@@ -149,7 +160,7 @@ namespace Com.Scm.Samples.Mqtt
         /// </summary>
         public async Task<bool> SendTestMessageAsync(string topic, string message)
         {
-            await _mqttPublisher.PublishAsync(topic, message, MqttQualityOfServiceLevel.AtLeastOnce);
+            await _mqttPublisher.PublishAsync(topic, message, MqttQualityOfServiceLevel.ExactlyOnce);
             return true;
         }
 

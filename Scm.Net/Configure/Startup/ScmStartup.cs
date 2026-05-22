@@ -142,6 +142,16 @@ namespace Com.Scm.Configure.Startup
             services.AddScoped<ITagService, ScmTagService>();
             services.AddScoped<IFlowService, ScmFlowService>();
 
+            // MQTT Broker（必须在 SamplesServerUtils.Setup 之前，确保 Broker 先启动）
+            LogUtils.Info("正在进行MQTT配置...");
+            var mqttBrokerConfig = AppUtils.GetConfig<MqttBrokerConfig>(MqttBrokerConfig.NAME) ?? new MqttBrokerConfig();
+            mqttBrokerConfig.Prepare(envConfig);
+
+            // MQTT Client（依赖于 MQTT Broker 配置）
+            var mqttClientConfig = AppUtils.GetConfig<MqttClientConfig>(MqttClientConfig.NAME) ?? new MqttClientConfig();
+            mqttClientConfig.Prepare(envConfig);
+            services.SetupMqtt(mqttBrokerConfig, mqttClientConfig);
+
             // 自定义服务
             SamplesServerUtils.Setup(services);
 
@@ -174,14 +184,6 @@ namespace Com.Scm.Configure.Startup
 
             //// NAS 消息服务
             //services.AddNasMessageService();
-
-            // MQTT
-            LogUtils.Info("正在进行MQTT配置...");
-            var mqttBrokerConfig = AppUtils.GetConfig<MqttBrokerConfig>(MqttBrokerConfig.NAME) ?? new MqttBrokerConfig();
-            mqttBrokerConfig.Prepare(envConfig);
-            var mqttClientConfig = AppUtils.GetConfig<MqttClientConfig>(MqttClientConfig.NAME) ?? new MqttClientConfig();
-            mqttClientConfig.Prepare(envConfig);
-            services.SetupMqtt(mqttBrokerConfig, mqttClientConfig);
 
             // Quartz
             LogUtils.Info("正在进行Quartz配置...");

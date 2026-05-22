@@ -6,6 +6,11 @@ namespace Com.Scm.Mqtt
     {
         public const string NAME = "MqttBroker";
 
+        /// <summary>
+        /// 是否启用内置 Broker（默认 true）
+        /// 设为 false 时仅使用客户端连接外部 Broker
+        /// </summary>
+        public bool Enabled { get; set; } = true;
 
         public void Prepare(EnvConfig envConfig)
         {
@@ -16,6 +21,7 @@ namespace Com.Scm.Mqtt
         /// </summary>
         public static MqttBrokerConfig Default => new MqttBrokerConfig
         {
+            Enabled = true,
             Port = 1883,
             RequireAuthentication = false
         };

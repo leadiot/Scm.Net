@@ -10,35 +10,38 @@ namespace Com.Scm.Mqtt
     public static class MqttExtension
     {
         /// <summary>
-        /// 注册 MQTT 客户端服务（发布 + 订阅）
+        /// 注册 MQTT 内置 Broker 服务
         /// </summary>
         /// <param name="services">服务容器</param>
-        /// <param name="config">客户端配置</param>
-        public static IServiceCollection SetupMqttClient(this IServiceCollection services, ClientConfig config)
+        /// <param name="config">Broker 配置</param>
+        public static IServiceCollection SetupMqttBroker(this IServiceCollection services, MqttBrokerConfig config)
         {
             if (config == null) throw new ArgumentNullException(nameof(config));
 
-            services.AddSingleton(config);
-            services.AddSingleton<MqttClientService>();
-            services.AddSingleton<IMqttPublisher>(sp => sp.GetRequiredService<MqttClientService>());
-            services.AddSingleton<IMqttSubscriber>(sp => sp.GetRequiredService<MqttClientService>());
-            services.AddSingleton<MqttService>();
+            if (config.Enabled)
+            {
+                services.AddSingleton<BrokerConfig>(config);
+                services.AddSingleton<MqttBrokerService>();
+                services.AddSingleton<IHostedService>(sp => sp.GetRequiredService<MqttBrokerService>());
+            }
 
             return services;
         }
 
         /// <summary>
-        /// 注册 MQTT 内置 Broker 服务
+        /// 注册 MQTT 客户端服务（发布 + 订阅）
         /// </summary>
         /// <param name="services">服务容器</param>
-        /// <param name="config">Broker 配置</param>
-        public static IServiceCollection SetupMqttBroker(this IServiceCollection services, BrokerConfig config)
+        /// <param name="config">客户端配置</param>
+        public static IServiceCollection SetupMqttClient(this IServiceCollection services, MqttClientConfig config)
         {
             if (config == null) throw new ArgumentNullException(nameof(config));
 
-            services.AddSingleton(config);
-            services.AddSingleton<MqttBrokerService>();
-            services.AddSingleton<IHostedService>(sp => sp.GetRequiredService<MqttBrokerService>());
+            services.AddSingleton<ClientConfig>(config);
+            services.AddSingleton<MqttClientService>();
+            services.AddSingleton<IMqttPublisher>(sp => sp.GetRequiredService<MqttClientService>());
+            services.AddSingleton<IMqttSubscriber>(sp => sp.GetRequiredService<MqttClientService>());
+            services.AddSingleton<MqttService>();
 
             return services;
         }
@@ -52,11 +55,16 @@ namespace Com.Scm.Mqtt
         {
             brokerConfig ??= MqttBrokerConfig.Default;
             clientConfig ??= MqttClientConfig.Default;
-            // 客户端自动连接本地 Broker
-            clientConfig.Host = "localhost";
-            clientConfig.Port = brokerConfig.Port;
 
-            services.SetupMqttBroker(brokerConfig);
+            // 根据配置决定是否启动内置 Broker
+            if (brokerConfig.Enabled)
+            {
+                // 客户端自动连接本地 Broker
+                clientConfig.Host = "localhost";
+                clientConfig.Port = brokerConfig.Port;
+                services.SetupMqttBroker(brokerConfig);
+            }
+
             services.SetupMqttClient(clientConfig);
 
             return services;

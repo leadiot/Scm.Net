@@ -1,4 +1,4 @@
-﻿using Com.Scm.Config;
+using Com.Scm.Config;
 
 namespace Com.Scm.Mqtt
 {

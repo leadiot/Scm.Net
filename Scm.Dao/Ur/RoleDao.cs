@@ -16,7 +16,7 @@ public class RoleDao : ScmDataDao, ISortableDao, ISystemDao, IDeleteDao
     /// </summary>
     [Required]
     [StringLength(32)]
-    [SugarColumn(Length = 32)]
+    [SugarColumn(Length = 32, IsNullable = true)]
     public string codec { get; set; }
 
     /// <summary>

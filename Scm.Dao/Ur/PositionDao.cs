@@ -73,5 +73,10 @@ public class PositionDao : ScmDataDao, IDeleteDao
 
         row_delete = ScmRowDeleteEnum.No;
         codes = UidUtils.NextCodes("scm_ur_position");
+
+        if (string.IsNullOrWhiteSpace(names))
+        {
+            names = namec;
+        }
     }
 }

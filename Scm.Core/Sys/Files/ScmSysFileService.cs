@@ -50,7 +50,7 @@ public class ScmSysFileService : IApiService
     public bool AddFolder(AddFileRequest request)
     {
         var basePath = _envConfig.GetDataPath(request.path);
-        if (FileUtils.ExistsDir(basePath))
+        if (!FileUtils.ExistsDir(basePath))
         {
             throw new BusinessException($"路径不存在：{request.path}");
         }
@@ -95,14 +95,19 @@ public class ScmSysFileService : IApiService
     /// <returns></returns>
     public List<ScmDirInfo> GetFolders(ListFileRequest request)
     {
-        var token = _contextHolder.GetToken();
+        //var token = _contextHolder.GetToken();
 
-        var root = new ScmDirInfo() { Name = "根目录", Uri = "/" };
+        if (string.IsNullOrWhiteSpace(request.path))
+        {
+            request.path = "/";
+        }
+
+        //var root = new ScmDirInfo() { Name = "根目录", Uri = request.path };
 
         var basePath = _envConfig.GetDataPath(request.path);
-        root.Children = ScmUtils.GetFolders(basePath);
+        //root.Children = ScmUtils.GetFolders(basePath);
 
-        return new List<ScmDirInfo> { root };
+        return ScmUtils.GetFolders(basePath);
     }
 
     /// <summary>

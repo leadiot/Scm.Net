@@ -1,3 +1,4 @@
+using Com.Scm.Utils;
 using Microsoft.Extensions.Hosting;
 using MQTTnet;
 using MQTTnet.Server;
@@ -61,7 +62,7 @@ namespace Com.Scm.Mqtt.Impl
             }
 
             await _server.StartAsync();
-            Console.WriteLine($"[MQTT Broker] 启动成功，端口：{_config.Port}");
+            LogUtils.Info($"[MQTT Broker] 启动成功，端口：{_config.Port}");
         }
 
         /// <summary>
@@ -72,7 +73,7 @@ namespace Com.Scm.Mqtt.Impl
             if (_server != null)
             {
                 await _server.StopAsync();
-                Console.WriteLine("[MQTT Broker] 已停止");
+                LogUtils.Info("[MQTT Broker] 已停止");
             }
         }
 
@@ -106,19 +107,19 @@ namespace Com.Scm.Mqtt.Impl
 
         private Task OnClientConnectedAsync(ClientConnectedEventArgs e)
         {
-            Console.WriteLine($"[MQTT Broker] 客户端已连接: {e.ClientId}");
+            LogUtils.Debug($"[MQTT Broker] 客户端已连接: {e.ClientId}");
             return ClientConnected?.Invoke(e.ClientId) ?? Task.CompletedTask;
         }
 
         private Task OnClientDisconnectedAsync(ClientDisconnectedEventArgs e)
         {
-            Console.WriteLine($"[MQTT Broker] 客户端已断开: {e.ClientId}，原因: {e.DisconnectType}");
+            LogUtils.Debug($"[MQTT Broker] 客户端已断开: {e.ClientId}，原因: {e.DisconnectType}");
             return ClientDisconnected?.Invoke(e.ClientId) ?? Task.CompletedTask;
         }
 
         private async Task OnInterceptingPublishAsync(InterceptingPublishEventArgs e)
         {
-            Console.WriteLine($"[MQTT Broker] 消息 [{e.ClientId}] -> Topic={e.ApplicationMessage.Topic}");
+            LogUtils.Debug($"[MQTT Broker] 消息 [{e.ClientId}] -> Topic={e.ApplicationMessage.Topic}");
             if (MessageIntercepted != null)
             {
                 var payload = e.ApplicationMessage.ConvertPayloadToString() ?? string.Empty;

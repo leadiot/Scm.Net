@@ -1,5 +1,4 @@
 using Com.Scm.Dto;
-using Newtonsoft.Json;
 using System.ComponentModel.DataAnnotations;
 
 namespace Com.Scm.Sys.SysAdvColumn.Dto;

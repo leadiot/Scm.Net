@@ -69,7 +69,7 @@ public class JwtUtils
         }
         catch (Exception e)
         {
-            Console.WriteLine(e);
+            LogUtils.Error($"JWT解析异常: {e.Message}");
             throw;
         }
 

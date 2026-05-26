@@ -5,7 +5,6 @@ using Com.Scm.Ur;
 using Com.Scm.Utils;
 using Microsoft.Extensions.Hosting;
 using MQTTnet.Protocol;
-using Newtonsoft.Json;
 using SqlSugar;
 
 namespace Com.Scm.Samples.Mqtt
@@ -106,7 +105,7 @@ namespace Com.Scm.Samples.Mqtt
                 LogUtils.Debug($"[MQTT] 收到消息：Topic={topic}, Payload={payload}");
 
                 // 解析温度数据
-                var temperatureData = JsonConvert.DeserializeObject<TemperatureRequest>(payload);
+                var temperatureData = payload.AsJsonObject<TemperatureRequest>();
                 if (temperatureData != null)
                 {
                     var dao = temperatureData.Adapt<TemperatureDataDao>();

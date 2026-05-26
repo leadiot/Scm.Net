@@ -1,3 +1,4 @@
+using Com.Scm.Utils;
 using MQTTnet;
 using MQTTnet.Protocol;
 using System.Text;
@@ -133,13 +134,13 @@ namespace Com.Scm.Mqtt.Impl
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"[MQTT] 消息处理异常 Topic={topic}: {ex.Message}");
+                LogUtils.Error($"[MQTT] 消息处理异常 Topic={topic}: {ex.Message}");
             }
         }
 
         private async Task OnDisconnectedAsync(MqttClientDisconnectedEventArgs e)
         {
-            Console.WriteLine($"[MQTT] 连接断开: {e.Reason}");
+            LogUtils.Debug($"[MQTT] 连接断开: {e.Reason}");
 
             if (_config.ReconnectDelay <= 0 || _disposed) return;
 
@@ -148,11 +149,11 @@ namespace Com.Scm.Mqtt.Impl
             try
             {
                 await ConnectAsync();
-                Console.WriteLine("[MQTT] 重连成功");
+                LogUtils.Info("[MQTT] 重连成功");
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"[MQTT] 重连失败: {ex.Message}");
+                LogUtils.Error($"[MQTT] 重连失败: {ex.Message}");
             }
         }
 

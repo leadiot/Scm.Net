@@ -1,4 +1,5 @@
-﻿using RabbitMQ.Client;
+﻿using Com.Scm.Utils;
+using RabbitMQ.Client;
 using System.Text;
 using System.Text.Json;
 
@@ -19,7 +20,7 @@ namespace Com.Scm.RabbitMQ.Impl
             {
                 using var channel = await _connection.CreateChannelAsync();
                 var mesjson = JsonSerializer.Serialize(message);
-                Console.WriteLine("发送消息：" + mesjson);
+                LogUtils.Debug("发送消息：" + mesjson);
                 var body = Encoding.UTF8.GetBytes(mesjson);
                 var properties = new BasicProperties
                 {
@@ -30,12 +31,12 @@ namespace Com.Scm.RabbitMQ.Impl
             }
             catch (OperationCanceledException ex)
             {
-                Console.WriteLine($"Operation was canceled: {ex.Message}");
+                LogUtils.Warn($"RabbitMQ操作取消: {ex.Message}");
                 //throw; // Re-throw if you want to propagate the cancellation
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"An error occurred: {ex.Message}");
+                LogUtils.Error($"RabbitMQ发送异常: {ex.Message}");
                 //throw; // Re-throw if you want to propagate the error
             }
         }

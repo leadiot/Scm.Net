@@ -6,31 +6,31 @@
         /// 发行日期
         /// TODO: （必需修改）发行版本，发布前需要修改此处
         /// </summary>
-        public const string VER_DATE = "2026-05-26";
+        public const string VER_DATE = "2026-05-29";
 
         /// <summary>
         /// 构建版本
         /// TODO: （必需修改）构建版本，发布前需要修改此处，格式为 YYYYMMDDXX，其中 XX 是当天的第几次构建
         /// </summary>
-        public const string VER_CODE = "2026052601";
+        public const string VER_CODE = "2026052901";
 
         /// <summary>
         /// 构建版本
         /// TODO: （必需修改）构建版本，发布前需要修改此处，格式为 X，其中 X 是一个整数，表示构建版本号，通常在每次构建时增加，即使没有功能更新或错误修复
         /// </summary>
-        public const int BUILD = 55;
+        public const int BUILD = 56;
 
         /// <summary>
         /// 修正版本
         /// TODO: （可选修改）修正版本，发布前需要修改此处，格式为 X，其中 X 是一个整数，表示修正版本号，通常在有错误修复但没有新功能添加时增加
         /// </summary>
-        public const int PATCH = 33;
+        public const int PATCH = 34;
 
         /// <summary>
         /// 次要版本
         /// TODO: （可选修改）次要版本，发布前需要修改此处，格式为 X，其中 X 是一个整数，表示次要版本号，通常在有新功能添加但保持向后兼容时增加
         /// </summary>
-        public const int MINOR = 14;
+        public const int MINOR = 15;
 
         /// <summary>
         /// 主要版本

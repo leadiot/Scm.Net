@@ -272,7 +272,7 @@ namespace Com.Scm.Helper
                         continue;
                     }
 
-                    _SqlClient.Ado.ExecuteCommand(line);
+                    _SqlClient.Ado.ExecuteCommand(_SqlClient.EscapeSql(line));
                 }
             });
         }

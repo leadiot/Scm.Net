@@ -29,15 +29,15 @@ namespace Com.Scm.Dev.Icon
         /// 键
         /// </summary>
         [Required]
-        [StringLength(32)]
-        [SugarColumn(Length = 32)]
+        [StringLength(64)]
+        [SugarColumn(Length = 64)]
         public string key { get; set; }
 
         /// <summary>
         /// 
         /// </summary>
-        [StringLength(32)]
-        [SugarColumn(Length = 32, IsNullable = true)]
+        [StringLength(64)]
+        [SugarColumn(Length = 64, IsNullable = true)]
         public string code { get; set; }
 
         /// <summary>

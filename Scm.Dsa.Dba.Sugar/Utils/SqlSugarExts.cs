@@ -122,5 +122,11 @@ namespace Com.Scm.Utils
         {
             return client.Deleteable<T>().Where(whereExpression).ExecuteCommand();
         }
+
+        public static string EscapeSql(this ISqlSugarClient client, string sql)
+        {
+            var dbType = client.CurrentConnectionConfig.DbType;
+            return SqlSugarUtils.EscapeSql(dbType, sql);
+        }
     }
 }

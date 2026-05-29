@@ -1,7 +1,7 @@
 /** Ver:5 */
- alter table scm_sys_menu add column layout1 int;
- update scm_sys_menu set layout1 = 1 where layout='console';
- update scm_sys_menu set layout1 = 2 where layout='desktop';
- update scm_sys_menu set layout1 = 3 where layout='monitor';
- alter table scm_sys_menu drop column layout;
- ALTER TABLE scm_sys_menu rename COLUMN layout1 to layout;
+ ALTER TABLE [scm_sys_menu] ADD COLUMN [layout1] INT;
+ UPDATE [scm_sys_menu] SET [layout1]=1 WHERE [layout]='console';
+ UPDATE [scm_sys_menu] SET [layout1]=2 WHERE [layout]='desktop';
+ UPDATE [scm_sys_menu] SET [layout1]=3 WHERE [layout]='monitor';
+ ALTER TABLE [scm_sys_menu] DROP COLUMN [layout];
+ ALTER TABLE [scm_sys_menu] RENAME COLUMN [layout1] TO [layout];

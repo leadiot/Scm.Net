@@ -32,7 +32,7 @@ namespace Com.Scm.RabbitMQ
             }
             catch (OperationCanceledException ex)
             {
-                LogUtils.Warn($"RabbitMQ操作取消: {ex.Message}");
+                LogUtils.Error($"RabbitMQ操作取消: {ex.Message}");
                 //throw; // Re-throw if you want to propagate the cancellation
             }
             catch (Exception ex)

@@ -393,12 +393,12 @@ namespace Com.Scm.Login.Otp.Phone
         /// <returns></returns>
         private bool SendSmsByPhone(LogOtpDao logSmsDao, string templateCode)
         {
-            return PhoneUtils.SendPhone(_PhoneConfig, logSmsDao.code, logSmsDao.pass);
+            return PhoneHelper.SendPhone(_PhoneConfig, logSmsDao.code, logSmsDao.pass);
         }
 
         private async Task<bool> SendSmsByPhoneAsync(LogOtpDao logSmsDao, string templateCode)
         {
-            return await PhoneUtils.SendPhoneAsync(_PhoneConfig, logSmsDao.code, logSmsDao.pass);
+            return await PhoneHelper.SendPhoneAsync(_PhoneConfig, logSmsDao.code, logSmsDao.pass);
         }
     }
 }

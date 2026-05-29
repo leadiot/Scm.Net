@@ -10,7 +10,7 @@ namespace Com.Scm.Utils
     /// 发送邮箱
     /// </summary>
     [Serializable]
-    public static class EmailUtils
+    public static class EmailHelper
     {
         /// <summary>
         /// 

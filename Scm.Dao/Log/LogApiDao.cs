@@ -121,4 +121,39 @@ public class LogApiDao : ScmDao
     /// </summary>
     [Required]
     public int status { get; set; } = 1;
+
+    public override void PrepareCreate(long userId)
+    {
+        if (parameters.Length > 2048)
+        {
+            parameters = "";
+        }
+        if (message.Length > 2048)
+        {
+            message = "";
+        }
+        if (content.Length > 2048)
+        {
+            content = "";
+        }
+        base.PrepareCreate(userId);
+    }
+
+    public override void PrepareUpdate(long userId)
+    {
+        if (parameters.Length > 2048)
+        {
+            parameters = "";
+        }
+        if (message.Length > 2048)
+        {
+            message = "";
+        }
+        if (content.Length > 2048)
+        {
+            content = "";
+        }
+
+        base.PrepareUpdate(userId);
+    }
 }

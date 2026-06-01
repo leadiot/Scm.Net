@@ -78,14 +78,17 @@ namespace Com.Scm.Helper
             }
             else if (verDao.ver == VER)
             {
+                // 版本相同，不执行任何操作
                 return true;
             }
+            else
+            {
+                // DDL处理
+                UpgradeDdl(verDao);
 
-            // DDL处理
-            UpgradeDdl(verDao);
-
-            // DML处理
-            UpgradeDml(verDao);
+                // DML处理
+                UpgradeDml(verDao);
+            }
 
             verDao.ver = VER;
             verDao.date = DATE;

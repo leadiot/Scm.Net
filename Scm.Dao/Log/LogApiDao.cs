@@ -124,15 +124,15 @@ public class LogApiDao : ScmDao
 
     public override void PrepareCreate(long userId)
     {
-        if (parameters.Length > 2048)
+        if (parameters != null && parameters.Length > 2048)
         {
             parameters = "";
         }
-        if (message.Length > 2048)
+        if (message != null && message.Length > 2048)
         {
             message = "";
         }
-        if (content.Length > 2048)
+        if (content != null && content.Length > 2048)
         {
             content = "";
         }
@@ -141,15 +141,15 @@ public class LogApiDao : ScmDao
 
     public override void PrepareUpdate(long userId)
     {
-        if (parameters.Length > 2048)
+        if (parameters != null && parameters.Length > 2048)
         {
             parameters = "";
         }
-        if (message.Length > 2048)
+        if (message != null && message.Length > 2048)
         {
             message = "";
         }
-        if (content.Length > 2048)
+        if (content != null && content.Length > 2048)
         {
             content = "";
         }

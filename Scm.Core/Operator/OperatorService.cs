@@ -1256,19 +1256,20 @@ public class OperatorService : ApiService
     /// <returns></returns>
     public async Task UpdateUserPassAsync(UserPassRequest model)
     {
-        var oldPass = SecUtils.Sha256(model.OldPass);
-        var userDao = await _SqlClient.Queryable<UserDao>().Where(a => a.id == model.id).FirstAsync();
+        var userId = _jwtContextHolder.GetToken().user_id;
+
+        var userDao = await _SqlClient.Queryable<UserDao>().Where(a => a.id == userId).FirstAsync();
         if (userDao == null)
         {
             throw new BusinessException("原密码输入错误~");
         }
         userDao.DecodePass();
-        if (userDao.pass != oldPass)
+        if (userDao.pass != model.OldPass)
         {
             throw new BusinessException("原密码输入错误~");
         }
 
-        userDao.pass = SecUtils.Sha256(model.NewPass);
+        userDao.pass = model.NewPass;
         userDao.EncodePass();
         userDao.PrepareUpdate(userDao.id);
 

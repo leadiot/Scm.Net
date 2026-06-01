@@ -76,14 +76,16 @@ namespace Com.Scm.Helper
 
                 InitDml(verDao);
             }
-            else
+            else if (verDao.ver == VER)
             {
-                // DDL处理
-                UpgradeDdl(verDao);
-
-                // DML处理
-                UpgradeDml(verDao);
+                return true;
             }
+
+            // DDL处理
+            UpgradeDdl(verDao);
+
+            // DML处理
+            UpgradeDml(verDao);
 
             verDao.ver = VER;
             verDao.date = DATE;

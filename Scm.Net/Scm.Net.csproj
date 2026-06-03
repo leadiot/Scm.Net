@@ -14,23 +14,12 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Remove="dev\**" />
     <Compile Remove="logs\**" />
     <Compile Remove="Publish\**" />
-    <Content Remove="dev\**" />
     <Content Remove="logs\**" />
     <Content Remove="Publish\**" />
-    <None Remove="dev\**" />
     <None Remove="logs\**" />
     <None Remove="Publish\**" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Remove="Resources\DejaVuSans.ttf" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Resource Include="data\fonts\DejaVuSans.ttf" />
   </ItemGroup>
 
   <ItemGroup>

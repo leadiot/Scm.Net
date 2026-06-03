@@ -143,7 +143,7 @@ namespace Com.Scm.Sys.Notes
         /// </summary>
         /// <param name="model"></param>
         /// <returns></returns>
-        public async Task<bool> AddAsync(NotesDto model)
+        public async Task<NotesDvo> AddAsync(NotesDto model)
         {
             var dao = model.Adapt<NotesDao>();
             if (IsValidId(dao.cat_id))
@@ -159,7 +159,7 @@ namespace Com.Scm.Sys.Notes
 
             SaveFile(dao, model);
 
-            return qty;
+            return dao.Clone<NotesDvo>();
         }
 
         /// <summary>

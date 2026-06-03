@@ -8,8 +8,8 @@ namespace Com.Scm.Sys.Notes
     /// <summary>
     /// 记事功能
     /// </summary>
-    [SugarTable("scm_sys_note")]
-    public class NoteDao : ScmUserDataDao
+    [SugarTable("scm_sys_notes")]
+    public class NotesDao : ScmUserDataDao
     {
         /// <summary>
         /// 显示排序
@@ -87,7 +87,6 @@ namespace Com.Scm.Sys.Notes
         /// <summary>
         /// 内容
         /// </summary>
-        [Required]
         [StringLength(2048)]
         [SugarColumn(Length = 2048)]
         public string content { get; set; }

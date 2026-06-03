@@ -6,7 +6,7 @@ namespace Com.Scm.Sys.Notes.Dvo
     /// <summary>
     /// 
     /// </summary>
-    public class NoteDvo : ScmDataDvo
+    public class NotesDvo : ScmDataDvo
     {
         /// <summary>
         /// 键

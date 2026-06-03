@@ -5,3 +5,6 @@
  UPDATE [scm_sys_menu] SET [layout1]=3 WHERE [layout]='monitor';
  ALTER TABLE [scm_sys_menu] DROP COLUMN [layout];
  ALTER TABLE [scm_sys_menu] RENAME COLUMN [layout1] TO [layout];
+
+ /** Ver:6 */
+ ALTER TABLE [scm_sys_notes] RENAME TO [scm_sys_notes];

@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Com.Scm.Sys.Notes
 {
-    public class NoteDto : ScmDataDto
+    public class NotesDto : ScmDataDto
     {
         public const long SYS_ID = 1000000000000000001;
         /// <summary>
@@ -74,7 +74,6 @@ namespace Com.Scm.Sys.Notes
         /// <summary>
         /// 
         /// </summary>
-        [Required]
         public string content { get; set; }
 
         /// <summary>
@@ -85,15 +84,15 @@ namespace Com.Scm.Sys.Notes
         public bool IsTooLong()
         {
             var tmp = this.content ?? "";
-            return tmp.Length > NoteDto.CONTENT_SIZE;
+            return tmp.Length > NotesDto.CONTENT_SIZE;
         }
 
         public string ToDbSummary()
         {
             var tmp = this.content ?? "";
-            if (tmp.Length > NoteDto.SUMMARY_SIZE)
+            if (tmp.Length > NotesDto.SUMMARY_SIZE)
             {
-                tmp = tmp.Substring(0, NoteDto.SUMMARY_SIZE);
+                tmp = tmp.Substring(0, NotesDto.SUMMARY_SIZE);
             }
             return tmp;
         }
@@ -101,9 +100,9 @@ namespace Com.Scm.Sys.Notes
         public string ToDbContent()
         {
             var tmp = this.content ?? "";
-            if (tmp.Length > NoteDto.CONTENT_SIZE)
+            if (tmp.Length > NotesDto.CONTENT_SIZE)
             {
-                tmp = tmp.Substring(0, NoteDto.CONTENT_SIZE);
+                tmp = tmp.Substring(0, NotesDto.CONTENT_SIZE);
             }
             return tmp;
         }

@@ -15,9 +15,9 @@ namespace Com.Scm.Sys.Notes
     /// 记事
     /// </summary>
     [ApiExplorerSettings(GroupName = "Sys")]
-    public class ScmSysNoteService : ApiService
+    public class ScmSysNotesService : ApiService
     {
-        private readonly SugarRepository<NoteDao> _thisRepository;
+        private readonly SugarRepository<NotesDao> _thisRepository;
 
         /// <summary>
         /// 
@@ -25,7 +25,7 @@ namespace Com.Scm.Sys.Notes
         /// <param name="thisRepository"></param>
         /// <param name="resHolder"></param>
         /// <param name="config"></param>
-        public ScmSysNoteService(SugarRepository<NoteDao> thisRepository,
+        public ScmSysNotesService(SugarRepository<NotesDao> thisRepository,
             IResHolder resHolder,
             EnvConfig config)
         {
@@ -80,9 +80,9 @@ namespace Com.Scm.Sys.Notes
         /// <param name="id"></param>
         /// <returns></returns>
         [HttpGet("{id}")]
-        public async Task<NoteDvo> GetAsync(long id)
+        public async Task<NotesDvo> GetAsync(long id)
         {
-            var dvo = new NoteDvo();
+            var dvo = new NotesDvo();
 
             var dao = await _thisRepository
                 .AsQueryable()
@@ -99,7 +99,7 @@ namespace Com.Scm.Sys.Notes
 
                 if (dao.files > 0)
                 {
-                    var content = _EnvConfig.ReadFile(NoteDto.FOLDER_NAME, dao.GetFileName());
+                    var content = _EnvConfig.ReadFile(NotesDto.FOLDER_NAME, dao.GetFileName());
                     if (!string.IsNullOrWhiteSpace(content))
                     {
                         dvo.content = content;
@@ -116,11 +116,11 @@ namespace Com.Scm.Sys.Notes
         /// <param name="id"></param>
         /// <returns></returns>
         [HttpGet("{id}")]
-        public async Task<NoteDto> GetEditAsync(long id)
+        public async Task<NotesDto> GetEditAsync(long id)
         {
             return await _thisRepository
                 .AsQueryable()
-                .Select<NoteDto>()
+                .Select<NotesDto>()
                 .FirstAsync(m => m.id == id);
         }
 
@@ -130,11 +130,11 @@ namespace Com.Scm.Sys.Notes
         /// <param name="id"></param>
         /// <returns></returns>
         [HttpGet("{id}")]
-        public async Task<NoteDvo> GetViewAsync(long id)
+        public async Task<NotesDvo> GetViewAsync(long id)
         {
             return await _thisRepository
                 .AsQueryable()
-                .Select<NoteDvo>()
+                .Select<NotesDvo>()
                 .FirstAsync(m => m.id == id);
         }
 
@@ -143,9 +143,9 @@ namespace Com.Scm.Sys.Notes
         /// </summary>
         /// <param name="model"></param>
         /// <returns></returns>
-        public async Task<bool> AddAsync(NoteDto model)
+        public async Task<bool> AddAsync(NotesDto model)
         {
-            var dao = model.Adapt<NoteDao>();
+            var dao = model.Adapt<NotesDao>();
             if (IsValidId(dao.cat_id))
             {
                 dao.cat_id = ScmResCatDto.SYS_ID;
@@ -167,9 +167,9 @@ namespace Com.Scm.Sys.Notes
         /// </summary>
         /// <param name="model"></param>
         /// <returns></returns>
-        public async Task<NoteDto> SaveAsync(NoteDto model)
+        public async Task<NotesDto> SaveAsync(NotesDto model)
         {
-            NoteDao dao = null;
+            NotesDao dao = null;
             var tooLong = model.IsTooLong();
 
             if (IsNormalId(model.id))
@@ -179,7 +179,7 @@ namespace Com.Scm.Sys.Notes
 
             if (dao == null)
             {
-                dao = new NoteDao();
+                dao = new NotesDao();
                 dao.id = model.id;
                 dao.types = model.types;
                 dao.title = model.title;
@@ -214,7 +214,7 @@ namespace Com.Scm.Sys.Notes
         /// </summary>
         /// <param name="model"></param>
         /// <returns></returns>
-        public async Task UpdateAsync(NoteDto model)
+        public async Task UpdateAsync(NotesDto model)
         {
             var dao = await _thisRepository.GetByIdAsync(model.id);
             if (dao == null)
@@ -293,11 +293,11 @@ namespace Com.Scm.Sys.Notes
             return response;
         }
 
-        private void SaveFile(NoteDao dao, NoteDto dto)
+        private void SaveFile(NotesDao dao, NotesDto dto)
         {
             if (dto.IsTooLong())
             {
-                _EnvConfig.SaveFile(NoteDto.FOLDER_NAME, dao.GetFileName(), dto.content);
+                _EnvConfig.SaveFile(NotesDto.FOLDER_NAME, dao.GetFileName(), dto.content);
             }
         }
     }

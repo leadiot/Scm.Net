@@ -93,7 +93,10 @@ INSERT INTO [scm_ur_role_auth]([role_id],[od],[auth_id],[api],[types],[row_statu
 INSERT INTO [scm_ur_role_auth]([role_id],[od],[auth_id],[api],[types],[row_status],[create_time],[create_user],[update_time],[update_user]) VALUES (1000000000000001030,0,2056337666613579776,'[]',1,1,1779098813961,1000000000000001030,1779098813961,1000000000000001030);
 INSERT INTO [scm_ur_role_auth]([role_id],[od],[auth_id],[api],[types],[row_status],[create_time],[create_user],[update_time],[update_user]) VALUES (1000000000000001030,0,2056337821358231552,'[]',1,1,1779098813962,1000000000000001030,1779098813962,1000000000000001030);
 
-/** Ver:6 **/
+/*
+ * Ver:6
+ * Date: 2026-06-03
+ */
 INSERT INTO [scm_sys_menu]([id],[client],[types],[lang],[codec],[namec],[icon],[pid],[uri],[layer],[od],[visible],[enabled],[fullpage],[keepAlive],[active],[redirect],[view],[color],[layout],[width],[height],[resizable],[center],[showInDesktop],[showInTaskbar],[row_delete],[row_status],[create_time],[create_user],[update_time],[update_user]) VALUES (2062186352392409088,10,1,N'zh-cn',N'app-notes',N'便签',N'ms-sticky_note_2',2055915357742436352,N'/Notes',1,165,1,1,0,1,NULL,NULL,N'Notes',NULL,2,0,0,1,0,1,0,1,1,1780498514637,1000000000000001030,1780498563313,1000000000000001030);
 UPDATE [scm_sys_menu] SET [namec]='记事本', [showinDesktop]=0 WHERE [id]='2055915623686475776';
 UPDATE [scm_sys_menu] SET [view]='Gtd' WHERE [id]='2055915753743454208';

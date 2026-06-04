@@ -81,6 +81,26 @@ namespace Com.Scm.Sys.Notes
         /// </summary>
         public int ver { get; set; }
 
+        /// <summary>
+        /// 便签颜色
+        /// </summary>
+        public int color { get; set; }
+
+        /// <summary>
+        /// Android系统参数
+        /// </summary>
+        public Dictionary<string, string> aos { get; set; }
+
+        /// <summary>
+        /// IOS系统参数
+        /// </summary>
+        public Dictionary<string, string> ios { get; set; }
+
+        /// <summary>
+        /// HarmonyOS系统参数
+        /// </summary>
+        public Dictionary<string, string> hos { get; set; }
+
         public bool IsTooLong()
         {
             var tmp = this.content ?? "";

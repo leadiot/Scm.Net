@@ -103,6 +103,29 @@ namespace Com.Scm.Sys.Notes
         public int ver { get; set; }
 
         /// <summary>
+        /// 便签颜色
+        /// </summary>
+        public int color { get; set; }
+
+        /// <summary>
+        /// Android系统参数
+        /// </summary>
+        [SugarColumn(Length = 1024, IsNullable = true, IsJson = true)]
+        public Dictionary<string, string> aos { get; set; }
+
+        /// <summary>
+        /// IOS系统参数
+        /// </summary>
+        [SugarColumn(Length = 1024, IsNullable = true, IsJson = true)]
+        public Dictionary<string, string> ios { get; set; }
+
+        /// <summary>
+        /// HarmonyOS系统参数
+        /// </summary>
+        [SugarColumn(Length = 1024, IsNullable = true, IsJson = true)]
+        public Dictionary<string, string> hos { get; set; }
+
+        /// <summary>
         /// 
         /// </summary>
         /// <param name="userId"></param>

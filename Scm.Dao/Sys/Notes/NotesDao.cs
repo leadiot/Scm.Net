@@ -33,6 +33,11 @@ namespace Com.Scm.Sys.Notes
         public string salt { get; set; }
 
         /// <summary>
+        /// 来源平台
+        /// </summary>
+        public ScmClientTypeEnum client { get; set; }
+
+        /// <summary>
         /// 文章类型
         /// </summary>
         public NoteTypesEnum types { get; set; }

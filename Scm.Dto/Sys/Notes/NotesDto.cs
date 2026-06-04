@@ -22,7 +22,12 @@ namespace Com.Scm.Sys.Notes
         public string key { get; set; }
 
         /// <summary>
-        /// 类型
+        /// 来源平台
+        /// </summary>
+        public ScmClientTypeEnum client { get; set; }
+
+        /// <summary>
+        /// 便签类型
         /// </summary>
         [Required]
         public NoteTypesEnum types { get; set; }

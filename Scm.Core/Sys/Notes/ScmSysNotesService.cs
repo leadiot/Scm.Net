@@ -154,6 +154,7 @@ namespace Com.Scm.Sys.Notes
             dao.files = model.IsTooLong() ? 1 : 0;
             dao.summary = model.ToDbSummary();
             dao.content = model.ToDbContent();
+            dao.client = ScmClientTypeEnum.Web;
 
             var qty = await _thisRepository.InsertAsync(dao);
 

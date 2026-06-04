@@ -92,19 +92,9 @@ namespace Com.Scm.Sys.Notes
         public int color { get; set; }
 
         /// <summary>
-        /// Android系统参数
+        /// 操作系统相关参数
         /// </summary>
-        public Dictionary<string, string> aos { get; set; }
-
-        /// <summary>
-        /// IOS系统参数
-        /// </summary>
-        public Dictionary<string, string> ios { get; set; }
-
-        /// <summary>
-        /// HarmonyOS系统参数
-        /// </summary>
-        public Dictionary<string, string> hos { get; set; }
+        public Dictionary<string, string> os_params { get; set; }
 
         public bool IsTooLong()
         {

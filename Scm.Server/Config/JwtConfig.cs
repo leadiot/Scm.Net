@@ -27,16 +27,16 @@ public class JwtConfig
 
     public void Prepare(EnvConfig envConfig)
     {
-        if (!string.IsNullOrWhiteSpace(Security))
+        if (string.IsNullOrWhiteSpace(Security))
         {
             // Md5("c-scm.net");
             Security = "a89f374d796890b0a05c6da2478e2569";
         }
-        if (!string.IsNullOrWhiteSpace(Issuer))
+        if (string.IsNullOrWhiteSpace(Issuer))
         {
             Issuer = ScmEnv.ISSUER;
         }
-        if (!string.IsNullOrWhiteSpace(Audience))
+        if (string.IsNullOrWhiteSpace(Audience))
         {
             Audience = ScmEnv.AUDIENCE;
         }

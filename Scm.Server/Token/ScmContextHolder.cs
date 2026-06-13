@@ -40,6 +40,6 @@ public class ScmContextHolder : IScmHolder
     /// </summary>
     public void Clear()
     {
-        _threadLocalTenant.Dispose();
+        _threadLocalTenant.Value = null;
     }
 }

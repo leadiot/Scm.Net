@@ -1,7 +1,7 @@
+using Com.Scm.Config;
 using Com.Scm.Token;
 using Com.Scm.Utils;
 using Microsoft.AspNetCore.Http;
-using System.Text;
 
 namespace Com.Scm.Configure.Middleware
 {
@@ -39,7 +39,7 @@ namespace Com.Scm.Configure.Middleware
             return false;
         }
 
-        public Task Invoke(HttpContext context)
+        public async Task Invoke(HttpContext context)
         {
             ScmContextHolder holder = null;
 
@@ -47,48 +47,57 @@ namespace Com.Scm.Configure.Middleware
             {
                 if (context.Request.Method.ToUpper() == "OPTIONS")
                 {
-                    return _next(context);
+                    await _next(context);
+                    return;
                 }
 
                 //过滤，不要验证token的url
                 var path = context.Request.Path.Value?.ToLower();
                 if (IsIgnoreApi(path))
                 {
-                    return _next(context);
+                    await _next(context);
+                    return;
                 }
 
                 holder = AppUtils.GetService<ScmContextHolder>();
 
-                //自动刷新token
                 var headers = context.Request.Headers;
+
+                // 优先级1：AppToken 请求头（适用于设备/应用绑定登录）
                 string appToken = headers[ScmToken.AppToken];
                 if (!string.IsNullOrEmpty(appToken))
                 {
-                    return AppToken(context, holder, appToken);
+                    await AppToken(context, holder, appToken);
+                    return;
                 }
 
+                // 优先级2：ApiToken 请求头（适用于网页/Api，JWT 口令登录）
                 string apiToken = headers[ScmToken.ApiToken];
                 if (!string.IsNullOrEmpty(apiToken))
                 {
-                    return ApiToken(context, holder, apiToken);
+                    await ApiToken(context, holder, apiToken);
+                    return;
                 }
 
+                // 优先级3：ScmToken 请求头（兼容旧格式，自动识别类型）
                 string scmToken = headers[ScmToken.TokenName];
                 if (!string.IsNullOrEmpty(scmToken))
                 {
-                    if (apiToken.StartsWith(ScmToken.PRE_APP))
+                    if (scmToken.StartsWith(ScmToken.PRE_APP))
                     {
-                        return AppToken(context, holder, apiToken);
+                        await AppToken(context, holder, scmToken);
+                        return;
                     }
 
-                    if (apiToken.StartsWith(ScmToken.PRE_API))
+                    if (scmToken.StartsWith(ScmToken.PRE_API))
                     {
-                        return ApiToken(context, holder, apiToken);
+                        await ApiToken(context, holder, scmToken);
+                        return;
                     }
                 }
 
                 holder.SetToken(new ScmToken());
-                return _next(context);
+                await _next(context);
             }
             finally
             {
@@ -103,7 +112,7 @@ namespace Com.Scm.Configure.Middleware
         /// <param name="holder"></param>
         /// <param name="token"></param>
         /// <returns></returns>
-        private Task ApiToken(HttpContext context, ScmContextHolder holder, string token)
+        private async Task ApiToken(HttpContext context, ScmContextHolder holder, string token)
         {
             if (token.StartsWith(ScmToken.PRE_API))
             {
@@ -114,13 +123,19 @@ namespace Com.Scm.Configure.Middleware
             holder.SetToken(jwtToken);
 
             var now = TimeUtils.GetUnixTime(true);
-            // 未超时
-            if (now - jwtToken.time <= 60 * 30 * 1000)
+
+            // 从配置读取刷新阈值（单位：毫秒）
+            var jwtConfig = AppUtils.GetConfig<JwtConfig>(JwtConfig.Name);
+            var refreshThreshold = (jwtConfig?.Expires ?? 60) * 60 * 1000L;
+
+            // 未超过刷新阈值，直接放行
+            if (now - jwtToken.time <= refreshThreshold)
             {
-                return _next(context);
+                await _next(context);
+                return;
             }
 
-            // Session过期
+            // 超过刷新阈值，签发新 Token 通过响应头返回（无感续期）
             var newToken = JwtUtils.IssueJwt(new ScmToken()
             {
                 id = jwtToken.id,
@@ -134,47 +149,22 @@ namespace Com.Scm.Configure.Middleware
             });
             context.Response.Headers.Append("X-Refresh-Token", newToken);
 
-            return _next(context);
+            await _next(context);
         }
 
         /// <summary>
-        /// 适用于应用，使用绑定登录
+        /// 适用于应用，使用绑定登录（统一调用 ScmToken.FromAppToken 解析）
         /// </summary>
         /// <param name="context"></param>
         /// <param name="holder"></param>
         /// <param name="token"></param>
         /// <returns></returns>
-        private Task AppToken(HttpContext context, ScmContextHolder holder, string token)
+        private async Task AppToken(HttpContext context, ScmContextHolder holder, string token)
         {
-            if (token.StartsWith(ScmToken.PRE_APP))
-            {
-                token = token.Substring(ScmToken.PRE_APP.Length);
-            }
-
-            var bytes = Convert.FromBase64String(token);
-            token = Encoding.UTF8.GetString(bytes);
-
-            var arr = token.Split(":");
-            var scmToken = new ScmToken();
-            if (arr.Length == 3)
-            {
-                var tmp = arr[0];
-                if (TextUtils.IsLong(tmp))
-                {
-                    scmToken.terminal_id = long.Parse(tmp);
-                }
-
-                tmp = arr[1];
-                if (TextUtils.IsLong(tmp))
-                {
-                    scmToken.time = long.Parse(tmp);
-                }
-
-                scmToken.digest = arr[2];
-            }
+            var scmToken = ScmToken.FromAppToken(token);
             holder.SetToken(scmToken);
 
-            return _next(context);
+            await _next(context);
         }
     }
 }

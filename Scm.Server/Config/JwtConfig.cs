@@ -42,7 +42,7 @@ public class JwtConfig
         }
         if (Expires < 1)
         {
-            Expires = 60;
+            Expires = 30;
         }
     }
 }

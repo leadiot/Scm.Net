@@ -157,11 +157,11 @@ namespace Com.Scm.Configure.Filters
     {
         readonly IWebHostEnvironment _hostEnvironment;
         private ILogService _logService;
-        private ScmContextHolder _jwtHolder;
+        private IScmHolder _jwtHolder;
 
         public GlobalExceptionFilter(IWebHostEnvironment hostEnvironment
             , ILogService logService
-            , ScmContextHolder jwtHolder)
+            , IScmHolder jwtHolder)
         {
             _hostEnvironment = hostEnvironment;
             _logService = logService;

@@ -12,13 +12,13 @@ namespace Com.Scm.Sys.FlowData
     [ApiExplorerSettings(GroupName = "Sys")]
     public class ScmSysFlowDataService : ApiService
     {
-        private readonly ScmContextHolder _jwtHolder;
+        private readonly IScmHolder _jwtHolder;
 
         /// <summary>
         /// 
         /// </summary>
         /// <param name="sqlClient"></param>
-        public ScmSysFlowDataService(ISqlSugarClient sqlClient, IResHolder resHolder, ScmContextHolder jwtHolder)
+        public ScmSysFlowDataService(ISqlSugarClient sqlClient, IResHolder resHolder, IScmHolder jwtHolder)
         {
             _SqlClient = sqlClient;
             _ResHolder = resHolder;

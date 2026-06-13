@@ -29,7 +29,7 @@ namespace Com.Scm.Dsa
                 return;
             }
 
-            var contextHolder = AppUtils.GetService<ScmContextHolder>();
+            var contextHolder = AppUtils.GetService<IScmHolder>();
             var token = contextHolder.GetToken();
 
             #region 处理数据过滤

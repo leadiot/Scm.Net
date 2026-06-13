@@ -19,7 +19,7 @@ namespace Com.Scm.Ur.UserOidc
     [ApiExplorerSettings(GroupName = "Ur")]
     public class ScmUrUserOidcService : ApiService
     {
-        private readonly ScmContextHolder _contextHolder;
+        private readonly IScmHolder _contextHolder;
         private readonly SugarRepository<UserOidcDao> _thisRepository;
         private readonly SugarRepository<UserDao> _userRepository;
         private readonly SugarRepository<LogOidcDao> _logOidcRepository;
@@ -33,7 +33,7 @@ namespace Com.Scm.Ur.UserOidc
         /// <param name="userRepository"></param>
         /// <param name="oidcRepository"></param>
         /// <returns></returns>
-        public ScmUrUserOidcService(ScmContextHolder contextHolder,
+        public ScmUrUserOidcService(IScmHolder contextHolder,
             SugarRepository<UserOidcDao> thisRepository, SugarRepository<UserDao> userRepository,
             SugarRepository<LogOidcDao> oidcRepository, OidcConfig oidcConfig)
         {

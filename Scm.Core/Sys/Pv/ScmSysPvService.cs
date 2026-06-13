@@ -16,14 +16,14 @@ namespace Com.Scm.Sys.Pv
     {
         private readonly SugarRepository<PvHeaderDao> _headerRepository;
         private readonly SugarRepository<PvDetailDao> _detailRepository;
-        private readonly ScmContextHolder _jwtContextHolder;
+        private readonly IScmHolder _jwtContextHolder;
 
         /// <summary>
         /// 
         /// </summary>
         public ScmSysPvService(SugarRepository<PvHeaderDao> headerRepository,
             SugarRepository<PvDetailDao> detailRepository,
-            ScmContextHolder contextHolder)
+            IScmHolder contextHolder)
         {
             _headerRepository = headerRepository;
             _detailRepository = detailRepository;

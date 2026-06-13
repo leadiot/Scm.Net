@@ -52,7 +52,7 @@ public class OperatorService : ApiService
     /// </summary>
     private const string CFG_TEMPLATE_USER_DATA = "template_user_data";
 
-    private readonly ScmContextHolder _jwtContextHolder;
+    private readonly IScmHolder _jwtContextHolder;
     private readonly ILogService _logService;
     private readonly OidcConfig _oidcConfig;
     private readonly OtpConfig _otpConfig;
@@ -69,7 +69,7 @@ public class OperatorService : ApiService
     public OperatorService(ISqlSugarClient sqlClient
         , EnvConfig envConfig
         , Cache.ICacheService cacheService
-        , ScmContextHolder jwtContextHolder
+        , IScmHolder jwtContextHolder
         , ILogService logService
         , OidcConfig oidcConfig
         , OtpConfig otpConfig)

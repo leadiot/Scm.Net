@@ -14,7 +14,7 @@ namespace Com.Scm.Sys.Table
     [ApiExplorerSettings(GroupName = "v1")]
     public class ScmSysTableService : ApiService
     {
-        private readonly ScmContextHolder _contextHolder;
+        private readonly IScmHolder _contextHolder;
         private readonly SugarRepository<SysTableHeaderDao> _headerRepository;
         private readonly SugarRepository<SysTableDetailDao> _detailRepository;
 
@@ -25,7 +25,7 @@ namespace Com.Scm.Sys.Table
         /// <param name="headerRepository"></param>
         /// <param name="detailRepository"></param>
         /// <returns></returns>
-        public ScmSysTableService(ScmContextHolder contextHolder,
+        public ScmSysTableService(IScmHolder contextHolder,
             SugarRepository<SysTableHeaderDao> headerRepository,
             SugarRepository<SysTableDetailDao> detailRepository)
         {

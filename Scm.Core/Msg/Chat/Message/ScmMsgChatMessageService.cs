@@ -25,7 +25,7 @@ namespace Com.Scm.Msg.Chat.Message
         private readonly SugarRepository<ChatMsgHeaderDao> _headerRepository;
         private readonly SugarRepository<ChatMsgDetailDao> _detailRepository;
         private readonly SugarRepository<ChatGroupUserDao> _groupUserRepository;
-        private readonly ScmContextHolder _contextHolder;
+        private readonly IScmHolder _contextHolder;
         private readonly IHubContext<ScmHub> _hubContext;
         private readonly AimlConfig _aimlConfig;
 
@@ -46,7 +46,7 @@ namespace Com.Scm.Msg.Chat.Message
             SugarRepository<ChatMsgDetailDao> detailRepository,
             SugarRepository<ChatGroupUserDao> groupUserRepository,
             IResHolder resHolder,
-            ScmContextHolder contextHolder,
+            IScmHolder contextHolder,
             Cache.ICacheService cacheService,
             IHubContext<ScmHub> hubContext,
             EnvConfig envConfig,

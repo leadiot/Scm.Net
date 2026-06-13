@@ -10,13 +10,13 @@ namespace Com.Scm.Token;
 /// 从 Authorization: App &lt;base64&gt; 读取令牌并解析终端绑定信息。
 /// 与 Bearer（标准 JWT）和 Api（Web 前端 JWT）三者通过 scheme 前缀区分。
 /// </summary>
-public class AppTokenHandler : AuthHandlerBase
+public class ScmTerminalHandler : ScmHandler
 {
-    public const string SchemeName = "AppToken";
+    public const string SchemeName = "Terminal";
 
-    protected override string ExpectedScheme => ScmToken.SCHEME_APP;
+    protected override string ExpectedScheme => ScmToken.SCHEME_TERMINAL;
 
-    public AppTokenHandler(
+    public ScmTerminalHandler(
         IOptionsMonitor<AuthenticationSchemeOptions> options,
         ILoggerFactory logger,
         UrlEncoder encoder)
@@ -27,7 +27,7 @@ public class AppTokenHandler : AuthHandlerBase
     protected override Task<AuthenticateResult> ValidateTokenAsync(string credentials)
     {
         // 复用 ScmToken.FromAppToken 统一解析 Base64 设备令牌
-        var scmToken = ScmToken.FromAppToken(credentials);
+        var scmToken = ScmToken.FromTerminalToken(credentials);
 
         var identity = new System.Security.Claims.ClaimsIdentity(SchemeName);
         var principal = new System.Security.Claims.ClaimsPrincipal(identity);

@@ -13,7 +13,7 @@ namespace Com.Scm.Samples.PoHeader
     [ApiExplorerSettings(GroupName = "Samples")]
     public class SamplesPoFlowService : ApiFlowService
     {
-        public SamplesPoFlowService(ISqlSugarClient sqlClient, EnvConfig envConfig, ScmContextHolder jwtHolder)
+        public SamplesPoFlowService(ISqlSugarClient sqlClient, EnvConfig envConfig, IScmHolder jwtHolder)
         {
             _SqlClient = sqlClient;
             _EnvConfig = envConfig;

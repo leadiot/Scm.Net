@@ -10,20 +10,8 @@ public class ScmToken
     // ── Authorization Scheme 前缀（RFC 7235 标准）──
     // 格式：Authorization: <scheme> <credentials>
     public const string SCHEME_BEARER = "Bearer";
-    public const string SCHEME_API = "Api";
-    public const string SCHEME_APP = "App";
-
-    // ── 兼容旧常量（保留以避免编译错误，后续可逐步移除）──
-    [Obsolete("统一使用 Authorization 头，请使用 SCHEME_API")]
-    public const string PRE_API = "Api ";
-    [Obsolete("统一使用 Authorization 头，请使用 SCHEME_APP")]
-    public const string PRE_APP = "App ";
-    [Obsolete("统一使用 Authorization 头")]
-    public const string TokenName = "ScmToken";
-    [Obsolete("统一使用 Authorization 头")]
-    public const string ApiToken = "ApiToken";
-    [Obsolete("统一使用 Authorization 头")]
-    public const string AppToken = "AppToken";
+    public const string SCHEME_OPERATOR = "Operator";
+    public const string SCHEME_TERMINAL = "Terminal";
 
     /// <summary>
     /// 会话ID
@@ -106,10 +94,10 @@ public class ScmToken
     /// <summary>
     /// 解析 App 设备令牌（Base64 编码的 terminal_id:time:digest 三元组）
     /// </summary>
-    public static ScmToken FromAppToken(string token)
+    public static ScmToken FromTerminalToken(string token)
     {
         // 兼容旧格式：如果带 "App " 前缀则剥离
-        var prefix = SCHEME_APP + " ";
+        var prefix = SCHEME_TERMINAL + " ";
         if (token.StartsWith(prefix))
         {
             token = token[prefix.Length..];

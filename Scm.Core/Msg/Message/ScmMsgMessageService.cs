@@ -24,7 +24,7 @@ public class ScmMsgMessageService : ApiService
 
     private readonly SugarRepository<MessageDao> _thisRepository;
     private readonly SugarRepository<MessageTagDao> _tagRepository;
-    private readonly ScmContextHolder _jwtHolder;
+    private readonly IScmHolder _jwtHolder;
     private readonly ITagService _tagService;
     private readonly IHubContext<ScmHub> _hubContext;
 
@@ -39,7 +39,7 @@ public class ScmMsgMessageService : ApiService
     /// <param name="hubContext"></param>
     public ScmMsgMessageService(SugarRepository<MessageDao> thisRepository,
         SugarRepository<MessageTagDao> tagRepository,
-        ScmContextHolder jwtHolder,
+        IScmHolder jwtHolder,
         ITagService tagService,
         Cache.ICacheService cacheService,
         IHubContext<ScmHub> hubContext)

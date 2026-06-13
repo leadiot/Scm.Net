@@ -18,7 +18,7 @@ namespace Com.Scm.Ur.User
     [ApiExplorerSettings(GroupName = "Ur")]
     public class ScmUrUserService : ApiService
     {
-        private readonly ScmContextHolder _jwtContextHolder;
+        private readonly IScmHolder _jwtContextHolder;
         private readonly SugarRepository<UserDao> _thisRepository;
 
         /// <summary>
@@ -31,7 +31,7 @@ namespace Com.Scm.Ur.User
         public ScmUrUserService(
             EnvConfig envConfig,
             ISqlSugarClient sqlClient,
-            ScmContextHolder jwtContextHolder,
+            IScmHolder jwtContextHolder,
             SugarRepository<UserDao> thisRepository,
             IResHolder resHolder)
         {

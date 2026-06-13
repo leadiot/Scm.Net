@@ -15,13 +15,13 @@ namespace Com.Scm.Cfg.Menu
     public class ScmScmCfgMenuService : ApiService
     {
         private readonly SugarRepository<CfgMenuDao> _thisRepository;
-        private readonly ScmContextHolder _JwtHolder;
+        private readonly IScmHolder _JwtHolder;
 
         /// <summary>
         /// 
         /// </summary>
         /// <param name="thisRepository"></param>
-        public ScmScmCfgMenuService(SugarRepository<CfgMenuDao> thisRepository, ScmContextHolder jwtHolder)
+        public ScmScmCfgMenuService(SugarRepository<CfgMenuDao> thisRepository, IScmHolder jwtHolder)
         {
             _thisRepository = thisRepository;
             _JwtHolder = jwtHolder;

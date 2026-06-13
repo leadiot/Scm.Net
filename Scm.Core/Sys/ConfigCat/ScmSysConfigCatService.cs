@@ -16,14 +16,14 @@ namespace Com.Scm.Sys.ConfigCat
     public class ScmSysConfigCatService : ApiService
     {
         private readonly SugarRepository<ConfigCatDao> _thisRepository;
-        private readonly ScmContextHolder _jwtHolder;
+        private readonly IScmHolder _jwtHolder;
 
         /// <summary>
         /// 
         /// </summary>
         /// <param name="thisRepository"></param>
         /// <param name="jwtHolder"></param>
-        public ScmSysConfigCatService(SugarRepository<ConfigCatDao> thisRepository, ScmContextHolder jwtHolder)
+        public ScmSysConfigCatService(SugarRepository<ConfigCatDao> thisRepository, IScmHolder jwtHolder)
         {
             _thisRepository = thisRepository;
             _jwtHolder = jwtHolder;

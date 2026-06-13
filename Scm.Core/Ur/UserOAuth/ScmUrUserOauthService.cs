@@ -19,7 +19,7 @@ namespace Com.Scm.Ur.UserOAuth
     [ApiExplorerSettings(GroupName = "Ur")]
     public class ScmUrUserOauthService : ApiService
     {
-        private readonly ScmContextHolder _contextHolder;
+        private readonly IScmHolder _contextHolder;
         private readonly SugarRepository<UserOAuthDao> _thisRepository;
         private readonly SugarRepository<UserDao> _userRepository;
         private readonly SugarRepository<LogOidcDao> _logOAuthRepository;
@@ -33,7 +33,7 @@ namespace Com.Scm.Ur.UserOAuth
         /// <param name="userRepository"></param>
         /// <param name="oauthRepository"></param>
         /// <returns></returns>
-        public ScmUrUserOauthService(ScmContextHolder contextHolder,
+        public ScmUrUserOauthService(IScmHolder contextHolder,
             SugarRepository<UserOAuthDao> thisRepository, SugarRepository<UserDao> userRepository,
             SugarRepository<LogOidcDao> oauthRepository, OidcConfig oidcConfig)
         {

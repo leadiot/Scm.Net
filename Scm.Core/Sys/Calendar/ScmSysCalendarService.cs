@@ -17,7 +17,7 @@ namespace Com.Scm.Sys.Calendar;
 public class ScmSysCalendarService : IApiService
 {
     private readonly SugarRepository<CalendarDao> _thisRepository;
-    private readonly ScmContextHolder _jwtContextHolder;
+    private readonly IScmHolder _jwtContextHolder;
     private readonly ISqlSugarClient _Client;
 
     /// <summary>
@@ -26,7 +26,7 @@ public class ScmSysCalendarService : IApiService
     /// <param name="thisRepository"></param>
     /// <param name="jwtContextHolder"></param>
     /// <param name="client"></param>
-    public ScmSysCalendarService(SugarRepository<CalendarDao> thisRepository, ScmContextHolder jwtContextHolder, ISqlSugarClient client)
+    public ScmSysCalendarService(SugarRepository<CalendarDao> thisRepository, IScmHolder jwtContextHolder, ISqlSugarClient client)
     {
         _thisRepository = thisRepository;
         _jwtContextHolder = jwtContextHolder;

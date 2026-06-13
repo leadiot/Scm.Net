@@ -16,7 +16,7 @@ namespace Com.Scm.Service
     {
         protected EnvConfig _EnvConfig;
         protected ISqlSugarClient _SqlClient;
-        protected ScmContextHolder _JwtHolder;
+        protected IScmHolder _JwtHolder;
 
         /// <summary>
         /// 创建一个流程

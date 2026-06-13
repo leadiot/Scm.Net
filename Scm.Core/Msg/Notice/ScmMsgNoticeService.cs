@@ -24,7 +24,7 @@ public class ScmMsgNoticeService : ApiService
     private readonly SugarRepository<NoticeAttachmentDao> _attachmentRepository;
     private readonly SugarRepository<NoticeReaderDao> _readerRepository;
     private readonly SugarRepository<NoticeSenderDao> _senderRepository;
-    private readonly ScmContextHolder _jwtHolder;
+    private readonly IScmHolder _jwtHolder;
 
     /// <summary>
     /// 
@@ -43,7 +43,7 @@ public class ScmMsgNoticeService : ApiService
         , SugarRepository<NoticeAttachmentDao> attachmentRepository
         , SugarRepository<NoticeReaderDao> readerRepository
         , SugarRepository<NoticeSenderDao> senderRepository
-        , ScmContextHolder jwtHolder
+        , IScmHolder jwtHolder
         , IResHolder resHolder)
     {
         _thisRepository = thisRepository;

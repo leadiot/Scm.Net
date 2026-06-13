@@ -29,17 +29,17 @@ namespace Com.Scm.Configure.Filters
 
         private readonly SecurityConfig _Config;
         private readonly ILogService _logService;
-        private readonly ScmContextHolder _jwtContextHolder;
+        private readonly IScmHolder _scmHolder;
         private readonly Cache.ICacheService _cacheService;
 
         public AopActionFilter(SecurityConfig config,
             ILogService logService,
-            ScmContextHolder jwtContextHolder,
+            IScmHolder jwtContextHolder,
             Cache.ICacheService cacheService)
         {
             _Config = config;
             _logService = logService;
-            _jwtContextHolder = jwtContextHolder;
+            _scmHolder = jwtContextHolder;
             _cacheService = cacheService;
         }
 
@@ -60,7 +60,7 @@ namespace Com.Scm.Configure.Filters
 
         public async Task OnActionExecutionAsync(ActionExecutingContext context, ActionExecutionDelegate next)
         {
-            var user = _jwtContextHolder.GetToken();
+            var user = _scmHolder.GetToken();
 
             var request = context.HttpContext.Request;
 

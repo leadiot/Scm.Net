@@ -17,14 +17,14 @@ namespace Com.Scm.Adm.Config
     public class ScmAdmConfigService : ApiService
     {
         private readonly SugarRepository<AdmConfigDao> _thisRepository;
-        private readonly ScmContextHolder _jwtHolder;
+        private readonly IScmHolder _jwtHolder;
 
         /// <summary>
         /// 
         /// </summary>
         /// <param name="thisRepository"></param>
         /// <param name="jwtHolder"></param>
-        public ScmAdmConfigService(SugarRepository<AdmConfigDao> thisRepository, ScmContextHolder jwtHolder)
+        public ScmAdmConfigService(SugarRepository<AdmConfigDao> thisRepository, IScmHolder jwtHolder)
         {
             _thisRepository = thisRepository;
             _jwtHolder = jwtHolder;

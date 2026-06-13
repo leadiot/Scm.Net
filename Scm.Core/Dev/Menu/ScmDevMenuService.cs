@@ -16,13 +16,13 @@ namespace Com.Scm.Dev.Menu
     public class ScmDevMenuService : IApiService
     {
         private readonly SugarRepository<ScmDevMenuDao> _thisRepository;
-        private readonly ScmContextHolder _jwtContextHolder;
+        private readonly IScmHolder _jwtContextHolder;
 
         /// <summary>
         /// 
         /// </summary>
         /// <param name="thisRepository"></param>
-        public ScmDevMenuService(SugarRepository<ScmDevMenuDao> thisRepository, ScmContextHolder jwtContextHolder)
+        public ScmDevMenuService(SugarRepository<ScmDevMenuDao> thisRepository, IScmHolder jwtContextHolder)
         {
             _thisRepository = thisRepository;
             _jwtContextHolder = jwtContextHolder;

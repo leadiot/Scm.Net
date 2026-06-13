@@ -15,7 +15,7 @@ namespace Com.Scm.Log.User
     public class ScmLogUserService : ApiService
     {
         private readonly SugarRepository<LogUserDao> _thisRepository;
-        private readonly ScmContextHolder _Holder;
+        private readonly IScmHolder _Holder;
         private readonly IDicService _DicService;
 
         /// <summary>
@@ -24,7 +24,7 @@ namespace Com.Scm.Log.User
         /// <param name="thisRepository"></param>
         /// <param name="resHolder"></param>
         /// <returns></returns>
-        public ScmLogUserService(SugarRepository<LogUserDao> thisRepository, ScmContextHolder holder, IDicService dicService)
+        public ScmLogUserService(SugarRepository<LogUserDao> thisRepository, IScmHolder holder, IDicService dicService)
         {
             _thisRepository = thisRepository;
             _Holder = holder;

@@ -16,7 +16,7 @@ namespace Com.Scm.Ur.UserOtp
     [ApiExplorerSettings(GroupName = "Ur")]
     public class ScmUrUserOtpService : ApiService
     {
-        private readonly ScmContextHolder _contextHolder;
+        private readonly IScmHolder _contextHolder;
         private readonly SugarRepository<UserDao> _thisRepository;
         private readonly OtpConfig _otpConfig;
 
@@ -25,7 +25,7 @@ namespace Com.Scm.Ur.UserOtp
         /// </summary>
         /// <param name="userRepository"></param>
         /// <returns></returns>
-        public ScmUrUserOtpService(ScmContextHolder contextHolder,
+        public ScmUrUserOtpService(IScmHolder contextHolder,
             SugarRepository<UserDao> userRepository,
             OtpConfig otpConfig)
         {

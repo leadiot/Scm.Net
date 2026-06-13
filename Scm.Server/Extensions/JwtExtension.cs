@@ -35,25 +35,26 @@ namespace Com.Scm
                 RequireExpirationTime = true,
             };
 
+            // 三种方案统一使用 Authorization 请求头，通过 scheme 前缀区分（RFC 7235）
+            // Authorization: Bearer <jwt>  → 方案1（标准 JWT，第三方集成 / OpenAPI）
+            // Authorization: Api <jwt>     → 方案2（自定义 JWT，Web 前端）
+            // Authorization: App <base64>  → 方案3（设备绑定令牌，IoT / 移动端）
+            // 认证链按 Bearer → Api → App 顺序依次尝试，任一成功即放行
             services.AddAuthentication(x =>
             {
-                // 默认认证方案：标准 JwtBearer（Authorization: Bearer xxx）
                 x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
                 x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
             })
-            // ── 方案 1: Bearer（标准 JWT，适用于第三方集成 / OpenAPI / 标准客户端）──
-            // 从 Authorization: Bearer xxx 请求头读取，ASP.NET Core 默认行为
+            // ── 方案 1: Bearer — ASP.NET Core 内置 JwtBearerHandler，天然识别 "Bearer" scheme ──
             .AddJwtBearer(x =>
             {
                 x.RequireHttpsMetadata = false;
                 x.SaveToken = true;
                 x.TokenValidationParameters = tokenValidationParameters;
             })
-            // ── 方案 2: ApiToken（自定义 JWT，适用于 Web 前端）──
-            // 从 ApiToken: Api xxx 请求头读取，自动剥离前缀后验证签名
+            // ── 方案 2: Api — 自定义 Handler，识别 "Api" scheme ──
             .AddScheme<AuthenticationSchemeOptions, ApiTokenHandler>(ApiTokenHandler.SchemeName, null)
-            // ── 方案 3: AppToken（设备绑定令牌，适用于 IoT / 移动端）──
-            // 从 AppToken: App base64(...) 请求头读取，解析终端绑定信息
+            // ── 方案 3: App — 自定义 Handler，识别 "App" scheme ──
             .AddScheme<AuthenticationSchemeOptions, AppTokenHandler>(AppTokenHandler.SchemeName, null);
 
             services.AddAuthorization(options =>

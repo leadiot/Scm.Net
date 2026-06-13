@@ -6,13 +6,15 @@ using System.Text.Encodings.Web;
 namespace Com.Scm.Token;
 
 /// <summary>
-/// 设备令牌认证处理器（适用于 IoT/移动端 AppToken 请求）
-/// 当请求携带 AppToken 请求头时，解析设备绑定令牌并完成认证。
-/// 与 JwtBearer 方案并行工作，由 JwtMiddleware 统一调度上下文。
+/// App 方案认证处理器 — 适用于 IoT / 移动端设备绑定登录。
+/// 从 Authorization: App &lt;base64&gt; 读取令牌并解析终端绑定信息。
+/// 与 Bearer（标准 JWT）和 Api（Web 前端 JWT）三者通过 scheme 前缀区分。
 /// </summary>
-public class AppTokenHandler : AuthenticationHandler<AuthenticationSchemeOptions>
+public class AppTokenHandler : AuthHandlerBase
 {
     public const string SchemeName = "AppToken";
+
+    protected override string ExpectedScheme => ScmToken.SCHEME_APP;
 
     public AppTokenHandler(
         IOptionsMonitor<AuthenticationSchemeOptions> options,
@@ -22,34 +24,15 @@ public class AppTokenHandler : AuthenticationHandler<AuthenticationSchemeOptions
     {
     }
 
-    protected override Task<AuthenticateResult> HandleAuthenticateAsync()
+    protected override Task<AuthenticateResult> ValidateTokenAsync(string credentials)
     {
-        // 仅处理携带 AppToken 请求头的请求
-        if (!Request.Headers.ContainsKey(ScmToken.AppToken))
-        {
-            return Task.FromResult(AuthenticateResult.NoResult());
-        }
+        // 复用 ScmToken.FromAppToken 统一解析 Base64 设备令牌
+        var scmToken = ScmToken.FromAppToken(credentials);
 
-        try
-        {
-            var tokenValue = Request.Headers[ScmToken.AppToken].FirstOrDefault();
-            if (string.IsNullOrEmpty(tokenValue))
-            {
-                return Task.FromResult(AuthenticateResult.NoResult());
-            }
+        var identity = new System.Security.Claims.ClaimsIdentity(SchemeName);
+        var principal = new System.Security.Claims.ClaimsPrincipal(identity);
+        var ticket = new AuthenticationTicket(principal, SchemeName);
 
-            // 复用 ScmToken.FromAppToken 统一解析
-            var scmToken = ScmToken.FromAppToken(tokenValue);
-
-            var identity = new System.Security.Claims.ClaimsIdentity(SchemeName);
-            var principal = new System.Security.Claims.ClaimsPrincipal(identity);
-            var ticket = new AuthenticationTicket(principal, SchemeName);
-
-            return Task.FromResult(AuthenticateResult.Success(ticket));
-        }
-        catch (Exception ex)
-        {
-            return Task.FromResult(AuthenticateResult.Fail($"AppToken 解析失败: {ex.Message}"));
-        }
+        return Task.FromResult(AuthenticateResult.Success(ticket));
     }
 }

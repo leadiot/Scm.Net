@@ -15,13 +15,13 @@ namespace Com.Scm.Token;
 /// 从 Authorization: Api &lt;jwt&gt; 读取令牌并验证签名和有效期。
 /// 与 Bearer（标准 JWT）和 App（设备令牌）三者通过 scheme 前缀区分。
 /// </summary>
-public class ScmOperatorHandler : ScmHandler
+public class ScmAuthOperatorHandler : ScmAuthHandler
 {
     public const string SchemeName = "Operator";
 
     protected override string ExpectedScheme => ScmToken.SCHEME_OPERATOR;
 
-    public ScmOperatorHandler(
+    public ScmAuthOperatorHandler(
         IOptionsMonitor<AuthenticationSchemeOptions> options,
         ILoggerFactory logger,
         UrlEncoder encoder)

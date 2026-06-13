@@ -15,7 +15,7 @@ namespace Com.Scm
     {
         public static void SetupJwt(this IServiceCollection services, EnvConfig envConfig)
         {
-            services.AddScoped<IScmHolder, ScmContextHolder>();
+            services.AddScoped<IScmTokenHolder, ScmTokenHolder>();
 
             var section = AppUtils.GetConfig(JwtConfig.Name);
             services.Configure<JwtConfig>(section);
@@ -49,9 +49,9 @@ namespace Com.Scm
                 x.TokenValidationParameters = tokenValidationParameters;
             })
             // ── 方案 2: Operator — 自定义 Handler，识别 "Operator" scheme ──
-            .AddScheme<AuthenticationSchemeOptions, ScmOperatorHandler>(ScmOperatorHandler.SchemeName, null)
+            .AddScheme<AuthenticationSchemeOptions, ScmAuthOperatorHandler>(ScmAuthOperatorHandler.SchemeName, null)
             // ── 方案 3: Terminal — 自定义 Handler，识别 "Terminal" scheme ──
-            .AddScheme<AuthenticationSchemeOptions, ScmTerminalHandler>(ScmTerminalHandler.SchemeName, null);
+            .AddScheme<AuthenticationSchemeOptions, ScmAuthTerminalHandler>(ScmAuthTerminalHandler.SchemeName, null);
 
             services.AddAuthorization(options =>
             {
@@ -60,8 +60,8 @@ namespace Com.Scm
                 options.DefaultPolicy = new AuthorizationPolicyBuilder()
                     .AddAuthenticationSchemes(
                         JwtBearerDefaults.AuthenticationScheme,
-                        ScmOperatorHandler.SchemeName,
-                        ScmTerminalHandler.SchemeName)
+                        ScmAuthOperatorHandler.SchemeName,
+                        ScmAuthTerminalHandler.SchemeName)
                     .RequireAuthenticatedUser()
                     .Build();
 

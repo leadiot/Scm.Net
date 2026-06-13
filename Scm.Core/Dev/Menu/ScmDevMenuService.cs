@@ -16,16 +16,16 @@ namespace Com.Scm.Dev.Menu
     public class ScmDevMenuService : IApiService
     {
         private readonly SugarRepository<ScmDevMenuDao> _thisRepository;
-        private readonly IScmHolder _jwtContextHolder;
+        private readonly IScmTokenHolder _scmHolder;
 
         /// <summary>
         /// 
         /// </summary>
         /// <param name="thisRepository"></param>
-        public ScmDevMenuService(SugarRepository<ScmDevMenuDao> thisRepository, IScmHolder jwtContextHolder)
+        public ScmDevMenuService(SugarRepository<ScmDevMenuDao> thisRepository, IScmTokenHolder scmHolder)
         {
             _thisRepository = thisRepository;
-            _jwtContextHolder = jwtContextHolder;
+            _scmHolder = scmHolder;
         }
 
         /// <summary>
@@ -48,7 +48,7 @@ namespace Com.Scm.Dev.Menu
         /// <returns></returns>
         public async Task<List<DevMenuDvo>> GetListAsync(ScmSearchPageRequest param)
         {
-            var token = _jwtContextHolder.GetToken();
+            var token = _scmHolder.GetToken();
 
             var list = await _thisRepository.AsQueryable()
                 .Where(a => a.row_status == ScmRowStatusEnum.Enabled)

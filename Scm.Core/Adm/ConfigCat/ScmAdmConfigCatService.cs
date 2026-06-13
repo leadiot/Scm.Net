@@ -16,17 +16,17 @@ namespace Com.Scm.Adm.ConfigCat
     public class ScmAdmConfigCatService : ApiService
     {
         private readonly SugarRepository<AdmConfigCatDao> _thisRepository;
-        private readonly IScmHolder _jwtHolder;
+        private readonly IScmTokenHolder _scmHolder;
 
         /// <summary>
         /// 
         /// </summary>
         /// <param name="thisRepository"></param>
-        /// <param name="jwtHolder"></param>
-        public ScmAdmConfigCatService(SugarRepository<AdmConfigCatDao> thisRepository, IScmHolder jwtHolder)
+        /// <param name="scmHolder"></param>
+        public ScmAdmConfigCatService(SugarRepository<AdmConfigCatDao> thisRepository, IScmTokenHolder scmHolder)
         {
             _thisRepository = thisRepository;
-            _jwtHolder = jwtHolder;
+            _scmHolder = scmHolder;
         }
 
         /// <summary>

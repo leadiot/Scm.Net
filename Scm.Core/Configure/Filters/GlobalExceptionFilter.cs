@@ -157,15 +157,15 @@ namespace Com.Scm.Configure.Filters
     {
         readonly IWebHostEnvironment _hostEnvironment;
         private ILogService _logService;
-        private IScmHolder _jwtHolder;
+        private IScmTokenHolder _scmHolder;
 
         public GlobalExceptionFilter(IWebHostEnvironment hostEnvironment
             , ILogService logService
-            , IScmHolder jwtHolder)
+            , IScmTokenHolder scmHolder)
         {
             _hostEnvironment = hostEnvironment;
             _logService = logService;
-            _jwtHolder = jwtHolder;
+            _scmHolder = scmHolder;
         }
 
         public async Task OnExceptionAsync(ExceptionContext context)
@@ -175,7 +175,7 @@ namespace Com.Scm.Configure.Filters
                 return;
             }
 
-            var token = _jwtHolder.GetToken();
+            var token = _scmHolder.GetToken();
 
             #region 保存异常日志
             var type = (context.ActionDescriptor as ControllerActionDescriptor)?.ControllerTypeInfo.AsType();

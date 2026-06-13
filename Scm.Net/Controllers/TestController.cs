@@ -10,9 +10,9 @@ namespace Com.Scm.Controllers
     [ApiExplorerSettings(GroupName = "Scm")]
     public class TestController : ApiController
     {
-        private IScmHolder _ScmHolder;
+        private IScmTokenHolder _ScmHolder;
 
-        public TestController(IScmHolder scmHolder)
+        public TestController(IScmTokenHolder scmHolder)
         {
             _ScmHolder = scmHolder;
         }

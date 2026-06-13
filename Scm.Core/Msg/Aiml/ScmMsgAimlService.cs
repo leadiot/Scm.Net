@@ -16,7 +16,7 @@ namespace Com.Scm.Msg.Aiml
     [ApiExplorerSettings(GroupName = "Msg")]
     public class ScmMsgAimlService : ApiService
     {
-        private readonly IScmHolder _scmHolder;
+        private readonly IScmTokenHolder _scmHolder;
         private readonly IHubContext<ScmHub> _hubContext;
         private readonly EnvConfig _envConfig;
 
@@ -27,7 +27,7 @@ namespace Com.Scm.Msg.Aiml
         /// <param name="hubContext"></param>
         /// <param name="envConfig"></param>
         /// <returns></returns>
-        public ScmMsgAimlService(IScmHolder scmHolder,
+        public ScmMsgAimlService(IScmTokenHolder scmHolder,
             IHubContext<ScmHub> hubContext,
             EnvConfig envConfig)
         {

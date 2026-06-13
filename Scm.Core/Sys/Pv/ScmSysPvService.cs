@@ -16,18 +16,18 @@ namespace Com.Scm.Sys.Pv
     {
         private readonly SugarRepository<PvHeaderDao> _headerRepository;
         private readonly SugarRepository<PvDetailDao> _detailRepository;
-        private readonly IScmHolder _jwtContextHolder;
+        private readonly IScmTokenHolder _scmHolder;
 
         /// <summary>
         /// 
         /// </summary>
         public ScmSysPvService(SugarRepository<PvHeaderDao> headerRepository,
             SugarRepository<PvDetailDao> detailRepository,
-            IScmHolder contextHolder)
+            IScmTokenHolder scmHolder)
         {
             _headerRepository = headerRepository;
             _detailRepository = detailRepository;
-            _jwtContextHolder = contextHolder;
+            _scmHolder = scmHolder;
         }
 
         /// <summary>
@@ -38,7 +38,7 @@ namespace Com.Scm.Sys.Pv
         [NoAuditLog]
         public async Task AddAsync(PvRequest request)
         {
-            var token = _jwtContextHolder.GetToken();
+            var token = _scmHolder.GetToken();
 
             var now = DateTime.Now;
             var date = now.ToString(ScmEnv.FORMAT_DATE);

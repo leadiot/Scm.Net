@@ -249,18 +249,18 @@ namespace Com.Scm.Configure.Startup
                 await next(context);
             });
 
-            // 认证
+            // 异常处理：放在认证/授权之前，确保能捕获整个业务管道的异常
+            app.UseMiddleware<ExceptionMiddleware>();
+
+            // 认证：验证 Authorization 头的令牌（Bearer / Api / App 三种方案）
             app.UseAuthentication();
-            // 授权
+            // Jwt 中间件：解析 Claims 注入 ScmContextHolder，必须在 UseAuthentication 之后
+            app.UseMiddleware<JwtMiddleware>();
+            // 授权：基于已认证用户检查权限策略
             app.UseAuthorization();
 
             // 统一响应中间件（包装所有 API 响应）
             //app.UseUnifiedResponse();
-
-            // 中间件异常处理（保留作为后备）
-            app.UseMiddleware<ExceptionMiddleware>();
-            // Jwt中间件处理
-            app.UseMiddleware<JwtMiddleware>();
 
             app.UseQuartz();
 

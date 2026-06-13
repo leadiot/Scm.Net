@@ -29,17 +29,17 @@ namespace Com.Scm.Configure.Filters
 
         private readonly SecurityConfig _Config;
         private readonly ILogService _logService;
-        private readonly IScmHolder _scmHolder;
+        private readonly IScmTokenHolder _scmHolder;
         private readonly Cache.ICacheService _cacheService;
 
         public AopActionFilter(SecurityConfig config,
             ILogService logService,
-            IScmHolder jwtContextHolder,
+            IScmTokenHolder scmHolder,
             Cache.ICacheService cacheService)
         {
             _Config = config;
             _logService = logService;
-            _scmHolder = jwtContextHolder;
+            _scmHolder = scmHolder;
             _cacheService = cacheService;
         }
 

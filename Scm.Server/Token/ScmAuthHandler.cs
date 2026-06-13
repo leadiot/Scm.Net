@@ -10,14 +10,14 @@ namespace Com.Scm.Token;
 /// 子类只需指定期望的 scheme 名称并实现 ValidateToken 方法。
 /// 遵循 RFC 7235：Authorization: &lt;scheme&gt; &lt;credentials&gt;
 /// </summary>
-public abstract class ScmHandler : AuthenticationHandler<AuthenticationSchemeOptions>
+public abstract class ScmAuthHandler : AuthenticationHandler<AuthenticationSchemeOptions>
 {
     /// <summary>
     /// 此处理器期望的 Authorization scheme 前缀（如 "Operator"、"Terminal"）
     /// </summary>
     protected abstract string ExpectedScheme { get; }
 
-    protected ScmHandler(
+    protected ScmAuthHandler(
         IOptionsMonitor<AuthenticationSchemeOptions> options,
         ILoggerFactory logger,
         UrlEncoder encoder)

@@ -46,7 +46,7 @@ namespace Com.Scm.Configure.Middleware
 
         public async Task Invoke(HttpContext context)
         {
-            IScmHolder holder = null;
+            IScmTokenHolder holder = null;
 
             try
             {
@@ -64,7 +64,7 @@ namespace Com.Scm.Configure.Middleware
                     return;
                 }
 
-                holder = AppUtils.GetService<IScmHolder>();
+                holder = AppUtils.GetService<IScmTokenHolder>();
 
                 // 统一从 Authorization 请求头读取令牌
                 var authHeader = context.Request.Headers.Authorization.FirstOrDefault();
@@ -111,7 +111,7 @@ namespace Com.Scm.Configure.Middleware
         /// <summary>
         /// 处理 Bearer 方案令牌（标准 JWT，解析 Claims 注入上下文）
         /// </summary>
-        private async Task HandleBearerToken(HttpContext context, IScmHolder holder, string token)
+        private async Task HandleBearerToken(HttpContext context, IScmTokenHolder holder, string token)
         {
             var jwtToken = JwtUtils.SerializeJwt(token);
             holder.SetToken(jwtToken);
@@ -121,7 +121,7 @@ namespace Com.Scm.Configure.Middleware
         /// <summary>
         /// 处理 Api 方案令牌（自定义 JWT，含无感续期逻辑）
         /// </summary>
-        private async Task HandleOperatorToken(HttpContext context, IScmHolder holder, string token)
+        private async Task HandleOperatorToken(HttpContext context, IScmTokenHolder holder, string token)
         {
             var jwtToken = JwtUtils.SerializeJwt(token);
             holder.SetToken(jwtToken);
@@ -157,7 +157,7 @@ namespace Com.Scm.Configure.Middleware
         /// <summary>
         /// 处理 App 方案令牌（设备绑定令牌，解析终端信息注入上下文）
         /// </summary>
-        private async Task HandleTerminalToken(HttpContext context, IScmHolder holder, string token)
+        private async Task HandleTerminalToken(HttpContext context, IScmTokenHolder holder, string token)
         {
             var scmToken = ScmToken.FromTerminalToken(token);
             holder.SetToken(scmToken);

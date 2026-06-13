@@ -25,7 +25,7 @@ namespace Com.Scm.Msg.Chat.Message
         private readonly SugarRepository<ChatMsgHeaderDao> _headerRepository;
         private readonly SugarRepository<ChatMsgDetailDao> _detailRepository;
         private readonly SugarRepository<ChatGroupUserDao> _groupUserRepository;
-        private readonly IScmHolder _contextHolder;
+        private readonly IScmTokenHolder _scmHolder;
         private readonly IHubContext<ScmHub> _hubContext;
         private readonly AimlConfig _aimlConfig;
 
@@ -36,7 +36,7 @@ namespace Com.Scm.Msg.Chat.Message
         /// <param name="detailRepository"></param>
         /// <param name="groupUserRepository"></param>
         /// <param name="resHolder"></param>
-        /// <param name="contextHolder"></param>
+        /// <param name="scmHolder"></param>
         /// <param name="cacheService"></param>
         /// <param name="hubContext"></param>
         /// <param name="envConfig"></param>
@@ -46,7 +46,7 @@ namespace Com.Scm.Msg.Chat.Message
             SugarRepository<ChatMsgDetailDao> detailRepository,
             SugarRepository<ChatGroupUserDao> groupUserRepository,
             IResHolder resHolder,
-            IScmHolder contextHolder,
+            IScmTokenHolder scmHolder,
             Cache.ICacheService cacheService,
             IHubContext<ScmHub> hubContext,
             EnvConfig envConfig,
@@ -56,7 +56,7 @@ namespace Com.Scm.Msg.Chat.Message
             _detailRepository = detailRepository;
             _groupUserRepository = groupUserRepository;
             _ResHolder = resHolder;
-            _contextHolder = contextHolder;
+            _scmHolder = scmHolder;
             _CacheService = cacheService;
             _hubContext = hubContext;
             _EnvConfig = envConfig;
@@ -168,7 +168,7 @@ namespace Com.Scm.Msg.Chat.Message
         [HttpPost]
         public async Task<ChatMsgHeaderDto> CreateAsync(CreateRequest request)
         {
-            var token = _contextHolder.GetToken();
+            var token = _scmHolder.GetToken();
 
             var users = request.users ?? new List<long>();
             users.Insert(0, token.user_id);
@@ -286,7 +286,7 @@ namespace Com.Scm.Msg.Chat.Message
         [HttpPost]
         public async Task<ChatDetailDvo> ChatAsync(ChatRequest request)
         {
-            var token = _contextHolder.GetToken();
+            var token = _scmHolder.GetToken();
 
             var headerDao = await _headerRepository.GetByIdAsync(request.id);
             if (headerDao == null)

@@ -19,7 +19,7 @@ namespace Com.Scm.Ur.UserOAuth
     [ApiExplorerSettings(GroupName = "Ur")]
     public class ScmUrUserOauthService : ApiService
     {
-        private readonly IScmHolder _contextHolder;
+        private readonly IScmTokenHolder _scmHolder;
         private readonly SugarRepository<UserOAuthDao> _thisRepository;
         private readonly SugarRepository<UserDao> _userRepository;
         private readonly SugarRepository<LogOidcDao> _logOAuthRepository;
@@ -28,16 +28,16 @@ namespace Com.Scm.Ur.UserOAuth
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="contextHolder"></param>
+        /// <param name="scmHolder"></param>
         /// <param name="thisRepository"></param>
         /// <param name="userRepository"></param>
         /// <param name="oauthRepository"></param>
         /// <returns></returns>
-        public ScmUrUserOauthService(IScmHolder contextHolder,
+        public ScmUrUserOauthService(IScmTokenHolder scmHolder,
             SugarRepository<UserOAuthDao> thisRepository, SugarRepository<UserDao> userRepository,
             SugarRepository<LogOidcDao> oauthRepository, OidcConfig oidcConfig)
         {
-            _contextHolder = contextHolder;
+            _scmHolder = scmHolder;
             _thisRepository = thisRepository;
             _userRepository = userRepository;
             _logOAuthRepository = oauthRepository;
@@ -70,7 +70,7 @@ namespace Com.Scm.Ur.UserOAuth
         /// <returns></returns>
         public async Task<List<UserOAuthDvo>> GetListAsync(ScmSearchRequest request)
         {
-            var token = _contextHolder.GetToken();
+            var token = _scmHolder.GetToken();
 
             var result = await _thisRepository.AsQueryable()
                 .Where(a => a.user_id == token.user_id && a.row_status == ScmRowStatusEnum.Enabled)
@@ -177,7 +177,7 @@ namespace Com.Scm.Ur.UserOAuth
         /// <returns></returns>
         public async Task<BindResponse> DoBindAsync(BindRequest request)
         {
-            var token = _contextHolder.GetToken();
+            var token = _scmHolder.GetToken();
             var response = new BindResponse();
 
             if (string.IsNullOrWhiteSpace(request.code))
@@ -276,7 +276,7 @@ namespace Com.Scm.Ur.UserOAuth
         /// <returns></returns>
         public async Task<BindResponse> UnBindAsync(BindRequest request)
         {
-            var token = _contextHolder.GetToken();
+            var token = _scmHolder.GetToken();
 
             var response = new BindResponse();
 

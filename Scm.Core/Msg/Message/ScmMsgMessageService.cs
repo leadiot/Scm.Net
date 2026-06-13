@@ -24,7 +24,7 @@ public class ScmMsgMessageService : ApiService
 
     private readonly SugarRepository<MessageDao> _thisRepository;
     private readonly SugarRepository<MessageTagDao> _tagRepository;
-    private readonly IScmHolder _jwtHolder;
+    private readonly IScmTokenHolder _scmHolder;
     private readonly ITagService _tagService;
     private readonly IHubContext<ScmHub> _hubContext;
 
@@ -39,14 +39,14 @@ public class ScmMsgMessageService : ApiService
     /// <param name="hubContext"></param>
     public ScmMsgMessageService(SugarRepository<MessageDao> thisRepository,
         SugarRepository<MessageTagDao> tagRepository,
-        IScmHolder jwtHolder,
+        IScmTokenHolder scmHolder,
         ITagService tagService,
         Cache.ICacheService cacheService,
         IHubContext<ScmHub> hubContext)
     {
         _thisRepository = thisRepository;
         _tagRepository = tagRepository;
-        _jwtHolder = jwtHolder;
+        _scmHolder = scmHolder;
         _tagService = tagService;
         _CacheService = cacheService;
         _hubContext = hubContext;
@@ -59,7 +59,7 @@ public class ScmMsgMessageService : ApiService
     /// <returns></returns>
     public async Task<ScmSearchPageResponse<MessageDvo>> GetPagesAsync(SearchRequest param)
     {
-        var token = _jwtHolder.GetToken();
+        var token = _scmHolder.GetToken();
 
         var query = _thisRepository.AsQueryable()
             .Where(m => m.user_id == token.user_id)
@@ -105,7 +105,7 @@ public class ScmMsgMessageService : ApiService
     /// <returns></returns>
     public async Task<List<MessageDvo>> GetUnreadAsync(SearchRequest param)
     {
-        var token = _jwtHolder.GetToken();
+        var token = _scmHolder.GetToken();
 
         return await _thisRepository.AsQueryable()
             .Where(m => m.user_id == token.user_id)
@@ -123,7 +123,7 @@ public class ScmMsgMessageService : ApiService
     [HttpGet]
     public async Task<MessageSummaryDvo> GetTotalAsync()
     {
-        var user = _jwtHolder.GetToken();
+        var user = _scmHolder.GetToken();
 
         var allCount = await _thisRepository.CountAsync(m => m.user_id == user.user_id);
         var unReadCount = await _thisRepository.CountAsync(m => !m.isread && m.user_id == user.user_id);
@@ -182,7 +182,7 @@ public class ScmMsgMessageService : ApiService
     [HttpGet("{id}")]
     public async Task<MessageDvo> GetReadAsync(long id)
     {
-        var user = _jwtHolder.GetToken();
+        var user = _scmHolder.GetToken();
 
         var dao = await _thisRepository.GetByIdAsync(id);
         if (dao.user_id == user.user_id)
@@ -311,7 +311,7 @@ public class ScmMsgMessageService : ApiService
     [HttpPut]
     public async Task<bool> ReadAllAsync()
     {
-        var user = _jwtHolder.GetToken();
+        var user = _scmHolder.GetToken();
 
         return await _thisRepository.UpdateAsync(m => new MessageDao() { isread = true }, m => m.user_id == user.user_id);
     }

@@ -17,17 +17,17 @@ namespace Com.Scm.Adm.Config
     public class ScmAdmConfigService : ApiService
     {
         private readonly SugarRepository<AdmConfigDao> _thisRepository;
-        private readonly IScmHolder _jwtHolder;
+        private readonly IScmTokenHolder _scmHolder;
 
         /// <summary>
         /// 
         /// </summary>
         /// <param name="thisRepository"></param>
-        /// <param name="jwtHolder"></param>
-        public ScmAdmConfigService(SugarRepository<AdmConfigDao> thisRepository, IScmHolder jwtHolder)
+        /// <param name="scmHolder"></param>
+        public ScmAdmConfigService(SugarRepository<AdmConfigDao> thisRepository, IScmTokenHolder scmHolder)
         {
             _thisRepository = thisRepository;
-            _jwtHolder = jwtHolder;
+            _scmHolder = scmHolder;
         }
 
         /// <summary>
@@ -38,7 +38,7 @@ namespace Com.Scm.Adm.Config
         [HttpGet]
         public async Task<ScmSearchPageResponse<AdmConfigDto>> GetPagesAsync(SearchRequest request)
         {
-            var user = _jwtHolder.GetToken();
+            var user = _scmHolder.GetToken();
 
             return await _thisRepository
                 .AsQueryable()
@@ -57,7 +57,7 @@ namespace Com.Scm.Adm.Config
         [HttpGet]
         public async Task<List<AdmConfigDto>> GetListAsync(SearchRequest request)
         {
-            var user = _jwtHolder.GetToken();
+            var user = _scmHolder.GetToken();
 
             return await _thisRepository
                 .AsQueryable()

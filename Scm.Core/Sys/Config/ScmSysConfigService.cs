@@ -15,17 +15,17 @@ namespace Com.Scm.Sys.Config
     public class ScmSysConfigService : ApiService
     {
         private readonly SugarRepository<ConfigDao> _thisRepository;
-        private readonly IScmHolder _jwtHolder;
+        private readonly IScmTokenHolder _scmHolder;
 
         /// <summary>
         /// 
         /// </summary>
         /// <param name="thisRepository"></param>
-        /// <param name="jwtHolder"></param>
-        public ScmSysConfigService(SugarRepository<ConfigDao> thisRepository, IScmHolder jwtHolder)
+        /// <param name="scmHolder"></param>
+        public ScmSysConfigService(SugarRepository<ConfigDao> thisRepository, IScmTokenHolder scmHolder)
         {
             _thisRepository = thisRepository;
-            _jwtHolder = jwtHolder;
+            _scmHolder = scmHolder;
         }
 
         /// <summary>
@@ -36,7 +36,7 @@ namespace Com.Scm.Sys.Config
         [HttpGet]
         public async Task<List<ConfigDto>> GetListAsync(SearchRequest request)
         {
-            var user = _jwtHolder.GetToken();
+            var user = _scmHolder.GetToken();
 
             return await _thisRepository
                 .AsQueryable()
@@ -54,7 +54,7 @@ namespace Com.Scm.Sys.Config
         [HttpGet("{key}")]
         public async Task<ConfigDto> GetAsync(string key)
         {
-            var token = _jwtHolder.GetToken();
+            var token = _scmHolder.GetToken();
             var userId = token.user_id;
 
             return await _thisRepository.AsQueryable()
@@ -73,7 +73,7 @@ namespace Com.Scm.Sys.Config
         [HttpPost]
         public async Task<bool> PostAsync(List<ConfigDto> items)
         {
-            var user = _jwtHolder.GetToken();
+            var user = _scmHolder.GetToken();
 
             foreach (var item in items)
             {

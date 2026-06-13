@@ -16,17 +16,17 @@ namespace Com.Scm.Sys.ConfigKey
     public class ScmSysConfigKeyService : ApiService
     {
         private readonly SugarRepository<ConfigKeyDao> _thisRepository;
-        private readonly IScmHolder _jwtHolder;
+        private readonly IScmTokenHolder _scmHolder;
 
         /// <summary>
         /// 
         /// </summary>
         /// <param name="thisRepository"></param>
-        /// <param name="jwtHolder"></param>
-        public ScmSysConfigKeyService(SugarRepository<ConfigKeyDao> thisRepository, IScmHolder jwtHolder)
+        /// <param name="scmHolder"></param>
+        public ScmSysConfigKeyService(SugarRepository<ConfigKeyDao> thisRepository, IScmTokenHolder scmHolder)
         {
             _thisRepository = thisRepository;
-            _jwtHolder = jwtHolder;
+            _scmHolder = scmHolder;
         }
 
         /// <summary>

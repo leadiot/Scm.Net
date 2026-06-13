@@ -29,8 +29,8 @@ namespace Com.Scm.Dsa
                 return;
             }
 
-            var contextHolder = AppUtils.GetService<IScmHolder>();
-            var token = contextHolder.GetToken();
+            var holder = AppUtils.GetService<IScmTokenHolder>();
+            var token = holder.GetToken();
 
             #region 处理数据过滤
             //if (Context.SugarActionType == SugarActionType.Query)

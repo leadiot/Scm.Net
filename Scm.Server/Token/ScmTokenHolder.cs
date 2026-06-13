@@ -3,7 +3,7 @@ namespace Com.Scm.Token;
 /// <summary>
 /// 上下文
 /// </summary>
-public class ScmContextHolder : IScmHolder
+public class ScmTokenHolder : IScmTokenHolder
 {
     /// <summary>
     /// 支持父子线程数据传递

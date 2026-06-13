@@ -12,17 +12,17 @@ namespace Com.Scm.Sys.FlowData
     [ApiExplorerSettings(GroupName = "Sys")]
     public class ScmSysFlowDataService : ApiService
     {
-        private readonly IScmHolder _jwtHolder;
+        private readonly IScmTokenHolder _scmHolder;
 
         /// <summary>
         /// 
         /// </summary>
         /// <param name="sqlClient"></param>
-        public ScmSysFlowDataService(ISqlSugarClient sqlClient, IResHolder resHolder, IScmHolder jwtHolder)
+        public ScmSysFlowDataService(ISqlSugarClient sqlClient, IResHolder resHolder, IScmTokenHolder scmHolder)
         {
             _SqlClient = sqlClient;
             _ResHolder = resHolder;
-            _jwtHolder = jwtHolder;
+            _scmHolder = scmHolder;
         }
 
         /// <summary>
@@ -32,7 +32,7 @@ namespace Com.Scm.Sys.FlowData
         /// <returns></returns>
         public async Task<ScmSearchPageResponse<ScmFlowDataDvo>> GetPageAsync(SearchRequest request)
         {
-            var token = _jwtHolder.GetToken();
+            var token = _scmHolder.GetToken();
             var userId = token.user_id;
 
             var result = await _SqlClient.Queryable<ScmFlowDataHeaderDao>()

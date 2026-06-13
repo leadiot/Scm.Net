@@ -24,7 +24,7 @@ public class ScmMsgNoticeService : ApiService
     private readonly SugarRepository<NoticeAttachmentDao> _attachmentRepository;
     private readonly SugarRepository<NoticeReaderDao> _readerRepository;
     private readonly SugarRepository<NoticeSenderDao> _senderRepository;
-    private readonly IScmHolder _jwtHolder;
+    private readonly IScmTokenHolder _scmHolder;
 
     /// <summary>
     /// 
@@ -35,7 +35,7 @@ public class ScmMsgNoticeService : ApiService
     /// <param name="attachmentRepository"></param>
     /// <param name="readerRepository"></param>
     /// <param name="senderRepository"></param>
-    /// <param name="jwtHolder"></param>
+    /// <param name="scmHolder"></param>
     /// <param name="resHolder"></param>
     public ScmMsgNoticeService(SugarRepository<NoticeDao> thisRepository
         , SugarRepository<NoticeSummaryDao> summaryRepository
@@ -43,14 +43,14 @@ public class ScmMsgNoticeService : ApiService
         , SugarRepository<NoticeAttachmentDao> attachmentRepository
         , SugarRepository<NoticeReaderDao> readerRepository
         , SugarRepository<NoticeSenderDao> senderRepository
-        , IScmHolder jwtHolder
+        , IScmTokenHolder scmHolder
         , IResHolder resHolder)
     {
         _thisRepository = thisRepository;
         _summaryRepository = summaryRepository;
         _recipientRepository = recipientRepository;
         _attachmentRepository = attachmentRepository;
-        _jwtHolder = jwtHolder;
+        _scmHolder = scmHolder;
         _readerRepository = readerRepository;
         _senderRepository = senderRepository;
         _ResHolder = resHolder;
@@ -132,7 +132,7 @@ public class ScmMsgNoticeService : ApiService
     /// <returns></returns>
     public async Task<ScmSearchPageResponse<NoticeDvo>> SearchSjAsync(SearchRequest param)
     {
-        var userId = _jwtHolder.GetToken().user_id;
+        var userId = _scmHolder.GetToken().user_id;
 
         var result = await _readerRepository.AsQueryable()
             .Where(a => a.user_id == userId)
@@ -178,7 +178,7 @@ public class ScmMsgNoticeService : ApiService
     /// <returns></returns>
     public async Task<ScmSearchPageResponse<NoticeDvo>> SearchFjAsync(SearchRequest param)
     {
-        var userId = _jwtHolder.GetToken().user_id;
+        var userId = _scmHolder.GetToken().user_id;
 
         var result = await _senderRepository.AsQueryable()
             .Where(a => a.user_id == userId && a.handle == ScmHandleEnum.Done)
@@ -219,7 +219,7 @@ public class ScmMsgNoticeService : ApiService
     /// <returns></returns>
     public async Task<ScmSearchPageResponse<NoticeDvo>> SearchCgAsync(SearchRequest param)
     {
-        var userId = _jwtHolder.GetToken().user_id;
+        var userId = _scmHolder.GetToken().user_id;
 
         var result = await _senderRepository.AsQueryable()
             .Where(a => a.user_id == userId && a.handle == ScmHandleEnum.Todo)
@@ -259,7 +259,7 @@ public class ScmMsgNoticeService : ApiService
     /// <returns></returns>
     public async Task<NoticeSummaryDto> GetSummaryAsync()
     {
-        var userId = _jwtHolder.GetToken().user_id;
+        var userId = _scmHolder.GetToken().user_id;
 
         var summaryDao = await _summaryRepository.GetByIdAsync(userId);
         if (summaryDao == null)
@@ -287,7 +287,7 @@ public class ScmMsgNoticeService : ApiService
     [HttpGet("{id}")]
     public async Task<ReadViewResponse> GetViewAsync(long id)
     {
-        var userId = _jwtHolder.GetToken().user_id;
+        var userId = _scmHolder.GetToken().user_id;
 
         var readerDao = await _readerRepository.GetFirstAsync(a => a.id == id && a.user_id == userId);
         if (readerDao == null)
@@ -349,7 +349,7 @@ public class ScmMsgNoticeService : ApiService
     [HttpGet("{id}")]
     public async Task<ReadEditResponse> GetEditAsync(long id)
     {
-        var userId = _jwtHolder.GetToken().user_id;
+        var userId = _scmHolder.GetToken().user_id;
 
         var senderDao = await _senderRepository.GetFirstAsync(a => a.id == id && a.user_id == userId);
         if (senderDao == null)
@@ -389,7 +389,7 @@ public class ScmMsgNoticeService : ApiService
     /// <returns></returns>
     public async Task AddAsync(NoticeUpdateRequest request)
     {
-        var sendId = _jwtHolder.GetToken().user_id;
+        var sendId = _scmHolder.GetToken().user_id;
         if (sendId == 0)
         {
             throw new BusinessException("发件人不能为空");
@@ -448,7 +448,7 @@ public class ScmMsgNoticeService : ApiService
     /// <returns></returns>
     public async Task UpdateAsync(NoticeUpdateRequest dto)
     {
-        var sendId = _jwtHolder.GetToken().user_id;
+        var sendId = _scmHolder.GetToken().user_id;
         if (sendId == 0)
         {
             throw new BusinessException("发件人不能为空");
@@ -560,7 +560,7 @@ public class ScmMsgNoticeService : ApiService
     /// <returns></returns>
     public async Task<int> ChangeArchiveAsync([FromBody] List<long> ids)
     {
-        var userId = _jwtHolder.GetToken().user_id;
+        var userId = _scmHolder.GetToken().user_id;
 
         var qty = await _readerRepository.AsUpdateable()
                  .SetColumns(a => new NoticeReaderDao { read_qty = a.read_qty + 1, is_arc = true, update_time = TimeUtils.GetUnixTime(), update_user = userId })
@@ -579,7 +579,7 @@ public class ScmMsgNoticeService : ApiService
     /// <returns></returns>
     public async Task<int> CancelArchiveAsync([FromBody] List<long> ids)
     {
-        var userId = _jwtHolder.GetToken().user_id;
+        var userId = _scmHolder.GetToken().user_id;
 
         var qty = await _readerRepository.AsUpdateable()
                  .SetColumns(a => new NoticeReaderDao { read_qty = a.read_qty + 1, is_arc = false, update_time = TimeUtils.GetUnixTime(), update_user = userId })
@@ -599,7 +599,7 @@ public class ScmMsgNoticeService : ApiService
     [HttpPut]
     public async Task<int> ChangeReadedAsync([FromBody] List<long> ids)
     {
-        var userId = _jwtHolder.GetToken().user_id;
+        var userId = _scmHolder.GetToken().user_id;
 
         var qty = await _readerRepository.AsUpdateable()
                  .SetColumns(a => new NoticeReaderDao { read_qty = a.read_qty + 1, unread = false, update_time = TimeUtils.GetUnixTime(), update_user = userId })
@@ -619,7 +619,7 @@ public class ScmMsgNoticeService : ApiService
     [HttpPut]
     public async Task<int> ChangeUnreadAsync([FromBody] List<long> ids)
     {
-        var userId = _jwtHolder.GetToken().user_id;
+        var userId = _scmHolder.GetToken().user_id;
 
         var qty = await _readerRepository.AsUpdateable()
                  .SetColumns(a => new NoticeReaderDao { read_qty = a.read_qty + 1, unread = true, update_time = TimeUtils.GetUnixTime(), update_user = userId })
@@ -638,7 +638,7 @@ public class ScmMsgNoticeService : ApiService
     [HttpPut]
     public async Task ChangeAsync([FromBody] List<long> ids)
     {
-        var userId = _jwtHolder.GetToken().user_id;
+        var userId = _scmHolder.GetToken().user_id;
 
         await _readerRepository.DeleteAsync(m => ids.Contains(m.notice_id) && m.user_id == userId);
     }

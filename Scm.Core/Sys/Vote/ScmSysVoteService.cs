@@ -14,16 +14,16 @@ namespace Com.Scm.Sys.Vote;
 [ApiExplorerSettings(GroupName = "Sys")]
 public class ScmSysVoteService : ApiService
 {
-    private readonly IScmHolder _JwtHolder;
+    private readonly IScmTokenHolder _scmHolder;
 
     /// <summary>
     /// 
     /// </summary>
     /// <param name="sqlClient"></param>
-    public ScmSysVoteService(ISqlSugarClient sqlClient, IScmHolder jwtHolder)
+    public ScmSysVoteService(ISqlSugarClient sqlClient, IScmTokenHolder scmHolder)
     {
         _SqlClient = sqlClient;
-        _JwtHolder = jwtHolder;
+        _scmHolder = scmHolder;
     }
 
     /// <summary>

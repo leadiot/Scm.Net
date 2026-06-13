@@ -5,6 +5,11 @@ using Microsoft.AspNetCore.Http;
 
 namespace Com.Scm.Configure.Middleware
 {
+    /// <summary>
+    /// JWT 中间件 — 从 Authorization 请求头按 scheme 前缀分发，
+    /// 解析令牌并注入 ScmContextHolder 供业务层使用。
+    /// 同时负责 Api 方案的无感续期逻辑。
+    /// </summary>
     public class JwtMiddleware
     {
         private readonly List<string> _ignoreUrl = new()
@@ -61,37 +66,35 @@ namespace Com.Scm.Configure.Middleware
 
                 holder = AppUtils.GetService<ScmContextHolder>();
 
-                var headers = context.Request.Headers;
+                // 统一从 Authorization 请求头读取令牌
+                var authHeader = context.Request.Headers.Authorization.FirstOrDefault();
 
-                // 优先级1：AppToken 请求头（适用于设备/应用绑定登录）
-                string appToken = headers[ScmToken.AppToken];
-                if (!string.IsNullOrEmpty(appToken))
+                if (!string.IsNullOrEmpty(authHeader))
                 {
-                    await AppToken(context, holder, appToken);
-                    return;
-                }
+                    var scheme = ScmToken.GetScheme(authHeader);
 
-                // 优先级2：ApiToken 请求头（适用于网页/Api，JWT 口令登录）
-                string apiToken = headers[ScmToken.ApiToken];
-                if (!string.IsNullOrEmpty(apiToken))
-                {
-                    await ApiToken(context, holder, apiToken);
-                    return;
-                }
-
-                // 优先级3：ScmToken 请求头（兼容旧格式，自动识别类型）
-                string scmToken = headers[ScmToken.TokenName];
-                if (!string.IsNullOrEmpty(scmToken))
-                {
-                    if (scmToken.StartsWith(ScmToken.PRE_APP))
+                    if (string.Equals(scheme, ScmToken.SCHEME_API, StringComparison.OrdinalIgnoreCase))
                     {
-                        await AppToken(context, holder, scmToken);
+                        // Api 方案：Authorization: Api <jwt>
+                        var credentials = ScmToken.GetCredentials(authHeader, ScmToken.SCHEME_API);
+                        await HandleApiToken(context, holder, credentials);
                         return;
                     }
 
-                    if (scmToken.StartsWith(ScmToken.PRE_API))
+                    if (string.Equals(scheme, ScmToken.SCHEME_APP, StringComparison.OrdinalIgnoreCase))
                     {
-                        await ApiToken(context, holder, scmToken);
+                        // App 方案：Authorization: App <base64>
+                        var credentials = ScmToken.GetCredentials(authHeader, ScmToken.SCHEME_APP);
+                        await HandleAppToken(context, holder, credentials);
+                        return;
+                    }
+
+                    // Bearer 方案：Authorization: Bearer <jwt>
+                    // JwtBearerHandler 已完成签名验证，此处仅需解析 Claims 注入上下文
+                    if (string.Equals(scheme, ScmToken.SCHEME_BEARER, StringComparison.OrdinalIgnoreCase))
+                    {
+                        var credentials = ScmToken.GetCredentials(authHeader, ScmToken.SCHEME_BEARER);
+                        await HandleBearerToken(context, holder, credentials);
                         return;
                     }
                 }
@@ -106,19 +109,20 @@ namespace Com.Scm.Configure.Middleware
         }
 
         /// <summary>
-        /// 适用于网页，使用口令登录
+        /// 处理 Bearer 方案令牌（标准 JWT，解析 Claims 注入上下文）
         /// </summary>
-        /// <param name="context"></param>
-        /// <param name="holder"></param>
-        /// <param name="token"></param>
-        /// <returns></returns>
-        private async Task ApiToken(HttpContext context, ScmContextHolder holder, string token)
+        private async Task HandleBearerToken(HttpContext context, ScmContextHolder holder, string token)
         {
-            if (token.StartsWith(ScmToken.PRE_API))
-            {
-                token = token.Substring(ScmToken.PRE_API.Length);
-            }
+            var jwtToken = JwtUtils.SerializeJwt(token);
+            holder.SetToken(jwtToken);
+            await _next(context);
+        }
 
+        /// <summary>
+        /// 处理 Api 方案令牌（自定义 JWT，含无感续期逻辑）
+        /// </summary>
+        private async Task HandleApiToken(HttpContext context, ScmContextHolder holder, string token)
+        {
             var jwtToken = JwtUtils.SerializeJwt(token);
             holder.SetToken(jwtToken);
 
@@ -126,7 +130,7 @@ namespace Com.Scm.Configure.Middleware
 
             // 从配置读取刷新阈值（单位：毫秒）
             var jwtConfig = AppUtils.GetConfig<JwtConfig>(JwtConfig.Name);
-            var refreshThreshold = (jwtConfig?.Expires ?? 60) * 60 * 1000L;
+            var refreshThreshold = (jwtConfig?.Expires ?? 30) * 60 * 1000L;
 
             // 未超过刷新阈值，直接放行
             if (now - jwtToken.time <= refreshThreshold)
@@ -142,8 +146,6 @@ namespace Com.Scm.Configure.Middleware
                 user_id = jwtToken.user_id,
                 user_codes = jwtToken.user_codes,
                 user_name = jwtToken.user_name,
-                //Role = "Admin",
-                //RoleArray = jwtToken.RoleArray,
                 time = now,
                 data = jwtToken.data,
             });
@@ -153,13 +155,9 @@ namespace Com.Scm.Configure.Middleware
         }
 
         /// <summary>
-        /// 适用于应用，使用绑定登录（统一调用 ScmToken.FromAppToken 解析）
+        /// 处理 App 方案令牌（设备绑定令牌，解析终端信息注入上下文）
         /// </summary>
-        /// <param name="context"></param>
-        /// <param name="holder"></param>
-        /// <param name="token"></param>
-        /// <returns></returns>
-        private async Task AppToken(HttpContext context, ScmContextHolder holder, string token)
+        private async Task HandleAppToken(HttpContext context, ScmContextHolder holder, string token)
         {
             var scmToken = ScmToken.FromAppToken(token);
             holder.SetToken(scmToken);

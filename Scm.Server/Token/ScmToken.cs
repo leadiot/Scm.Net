@@ -106,23 +106,34 @@ public class ScmToken
         var bytes = Convert.FromBase64String(token);
         token = Encoding.UTF8.GetString(bytes);
 
+        // 解析格式：terminal_id:user_id:time:digest
         var arr = token.Split(":");
         var nasToken = new ScmToken();
-        if (arr.Length == 3)
+        if (arr.Length == 4)
         {
+            // 终端ID
             var tmp = arr[0];
             if (TextUtils.IsLong(tmp))
             {
                 nasToken.terminal_id = long.Parse(tmp);
             }
 
+            // 用户ID
             tmp = arr[1];
+            if (TextUtils.IsLong(tmp))
+            {
+                nasToken.user_id = long.Parse(tmp);
+            }
+
+            // 时间戳
+            tmp = arr[2];
             if (TextUtils.IsLong(tmp))
             {
                 nasToken.time = long.Parse(tmp);
             }
 
-            nasToken.digest = arr[2];
+            // 摘要
+            nasToken.digest = arr[3];
         }
 
         return nasToken;

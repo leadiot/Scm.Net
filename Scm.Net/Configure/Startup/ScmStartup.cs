@@ -65,16 +65,18 @@ namespace Com.Scm.Configure.Startup
             sqlConfig.Prepare(envConfig);
             SqlSetup(services, envConfig, sqlConfig);
 
+            // Swagger配置
+            LogUtils.Info("正在进行Swagger配置...");
+            var swaggerConfig = AppUtils.GetConfig<SwaggerConfig>(SwaggerConfig.NAME);
+            services.SwaggerSetup(swaggerConfig);
+
             // 字体配置
             LogUtils.Info("正在进行字体配置...");
             FontSetup(services, envConfig);
 
             // 缓存配置
+            LogUtils.Info("正在进行缓存配置...");
             services.CacheSetup(envConfig);
-
-            // Swagger配置
-            var swaggerConfig = AppUtils.GetConfig<SwaggerConfig>(SwaggerConfig.NAME);
-            services.SwaggerSetup(swaggerConfig);
 
             // 数据配置
             //var dataConfig = AppUtils.GetConfig<DataConfig>(DataConfig.NAME) ?? new DataConfig();
@@ -166,13 +168,20 @@ namespace Com.Scm.Configure.Startup
             services.AddQuartzClassJobs();
 
             // Mapper
+            LogUtils.Info("正在进行Mapper配置...");
             services.AddMapperProfile();
 
             // SignalR
+            LogUtils.Info("正在进行SignalR配置...");
             services.AddSignalR();
 
             // Jwt Config（必须先注册，Filters 和 Service 依赖 ScmContextHolder）
+            LogUtils.Info("正在进行身份认证配置...");
             services.SetupJwt(envConfig);
+
+            // 安全配置服务（支持环境变量和 User Secrets）
+            LogUtils.Info("正在进行安全认证配置...");
+            services.AddSecureConfiguration();
 
             // 全局过滤（依赖 ScmContextHolder，必须在 SetupJwt 之后）
             services.AddControllers(options =>
@@ -187,10 +196,8 @@ namespace Com.Scm.Configure.Startup
             //services.AddUnifiedResponse();
             //services.AddApiBehavior();
 
-            // 安全配置服务（支持环境变量和 User Secrets）
-            services.AddSecureConfiguration();
-
             // 接口配置（依赖 AddControllers，必须在 MVC 注册之后）
+            LogUtils.Info("正在进行接口配置...");
             var apiConfig = AppUtils.GetConfig<DllConfig>(DllConfig.NAME);
             apiConfig.Prepare(builder.Environment);
             services.RegisterServices(apiConfig);
@@ -211,6 +218,7 @@ namespace Com.Scm.Configure.Startup
                 app.UseSwaggerSetup(swaggerConfig);
             }
 
+            LogUtils.Info("正在进行静态文件设置...");
             app.UseHttpsRedirection();
             app.UseDefaultFiles(new DefaultFilesOptions
             {
@@ -267,6 +275,7 @@ namespace Com.Scm.Configure.Startup
             app.MapControllers().RequireAuthorization();
             app.MapHub<ScmHub>("/scmhub");
 
+            LogUtils.Info("正在进行启动服务...");
             var kestrelConfig = AppUtils.GetConfig<KestrelConfig>(KestrelConfig.NAME);
             if (kestrelConfig != null)
             {

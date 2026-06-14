@@ -106,9 +106,10 @@ public class ScmToken
         var bytes = Convert.FromBase64String(token);
         token = Encoding.UTF8.GetString(bytes);
 
+        var nasToken = new ScmToken();
+
         // 解析格式：terminal_id:user_id:time:digest
         var arr = token.Split(":");
-        var nasToken = new ScmToken();
         if (arr.Length == 4)
         {
             // 终端ID

@@ -29,7 +29,7 @@ namespace Com.Scm.Dsa
                 return;
             }
 
-            var holder = AppUtils.GetService<IScmTokenHolder>();
+            var holder = AppUtils.GetService<IJwtTokenHolder>();
             var token = holder.GetToken();
 
             #region 处理数据过滤

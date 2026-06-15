@@ -16,22 +16,22 @@ namespace Com.Scm.Msg.Aiml
     [ApiExplorerSettings(GroupName = "Msg")]
     public class ScmMsgAimlService : ApiService
     {
-        private readonly IScmTokenHolder _scmHolder;
+        private readonly IJwtTokenHolder _jwtHolder;
         private readonly IHubContext<ScmHub> _hubContext;
         private readonly EnvConfig _envConfig;
 
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="scmHolder"></param>
+        /// <param name="jwtHolder"></param>
         /// <param name="hubContext"></param>
         /// <param name="envConfig"></param>
         /// <returns></returns>
-        public ScmMsgAimlService(IScmTokenHolder scmHolder,
+        public ScmMsgAimlService(IJwtTokenHolder jwtHolder,
             IHubContext<ScmHub> hubContext,
             EnvConfig envConfig)
         {
-            _scmHolder = scmHolder;
+            _jwtHolder = jwtHolder;
             _hubContext = hubContext;
             _envConfig = envConfig;
         }
@@ -45,7 +45,7 @@ namespace Com.Scm.Msg.Aiml
         [HttpPost]
         public AimlChatResponse ChatAsync(AimlChatRequest request)
         {
-            var token = _scmHolder.GetToken();
+            var token = _jwtHolder.GetToken();
 
             var bot = GetRobot(token);
             var man = GetHuman(token, bot);

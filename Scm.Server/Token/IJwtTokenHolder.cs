@@ -1,6 +1,6 @@
 ﻿namespace Com.Scm.Token
 {
-    public interface IScmTokenHolder
+    public interface IJwtTokenHolder
     {
         void SetToken(ScmToken token);
 

@@ -1,9 +1,11 @@
+using Com.Scm.Utils;
+
 namespace Com.Scm.Token;
 
 /// <summary>
 /// 上下文
 /// </summary>
-public class ScmTokenHolder : IScmTokenHolder
+public class ScmJwtTokenHolder : IJwtTokenHolder
 {
     /// <summary>
     /// 支持父子线程数据传递
@@ -16,6 +18,7 @@ public class ScmTokenHolder : IScmTokenHolder
     /// <param name="token"></param>
     public void SetToken(ScmToken token)
     {
+        LogUtils.Debug("SetToken: " + token.ToJsonString());
         _threadLocalTenant.Value = token;
     }
 
@@ -36,10 +39,14 @@ public class ScmTokenHolder : IScmTokenHolder
     }
 
     /// <summary>
-    /// 清除
+    /// 清除上下文
     /// </summary>
     public void Clear()
     {
-        _threadLocalTenant.Value = null;
+        // 正确做法：清除值但不释放对象
+        if (_threadLocalTenant.IsValueCreated)
+        {
+            _threadLocalTenant.Value = null;
+        }
     }
 }

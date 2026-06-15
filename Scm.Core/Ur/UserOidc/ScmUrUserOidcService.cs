@@ -19,7 +19,7 @@ namespace Com.Scm.Ur.UserOidc
     [ApiExplorerSettings(GroupName = "Ur")]
     public class ScmUrUserOidcService : ApiService
     {
-        private readonly IScmTokenHolder _scmHolder;
+        private readonly IJwtTokenHolder _jwtHolder;
         private readonly SugarRepository<UserOidcDao> _thisRepository;
         private readonly SugarRepository<UserDao> _userRepository;
         private readonly SugarRepository<LogOidcDao> _logOidcRepository;
@@ -28,16 +28,16 @@ namespace Com.Scm.Ur.UserOidc
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="scmHolder"></param>
+        /// <param name="jwtHolder"></param>
         /// <param name="thisRepository"></param>
         /// <param name="userRepository"></param>
         /// <param name="oidcRepository"></param>
         /// <returns></returns>
-        public ScmUrUserOidcService(IScmTokenHolder scmHolder,
+        public ScmUrUserOidcService(IJwtTokenHolder jwtHolder,
             SugarRepository<UserOidcDao> thisRepository, SugarRepository<UserDao> userRepository,
             SugarRepository<LogOidcDao> oidcRepository, OidcConfig oidcConfig)
         {
-            _scmHolder = scmHolder;
+            _jwtHolder = jwtHolder;
             _thisRepository = thisRepository;
             _userRepository = userRepository;
             _logOidcRepository = oidcRepository;
@@ -70,7 +70,7 @@ namespace Com.Scm.Ur.UserOidc
         /// <returns></returns>
         public async Task<List<UserOidcDvo>> GetListAsync(ScmSearchRequest request)
         {
-            var token = _scmHolder.GetToken();
+            var token = _jwtHolder.GetToken();
 
             var result = await _thisRepository.AsQueryable()
                 .Where(a => a.user_id == token.user_id && a.row_status == ScmRowStatusEnum.Enabled)
@@ -177,7 +177,7 @@ namespace Com.Scm.Ur.UserOidc
         /// <returns></returns>
         public async Task<BindResponse> DoBindAsync(BindRequest request)
         {
-            var token = _scmHolder.GetToken();
+            var token = _jwtHolder.GetToken();
             var response = new BindResponse();
 
             if (string.IsNullOrWhiteSpace(request.code))
@@ -276,7 +276,7 @@ namespace Com.Scm.Ur.UserOidc
         /// <returns></returns>
         public async Task<BindResponse> UnBindAsync(BindRequest request)
         {
-            var token = _scmHolder.GetToken();
+            var token = _jwtHolder.GetToken();
 
             var response = new BindResponse();
 

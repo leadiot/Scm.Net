@@ -12,7 +12,7 @@ namespace Com.Scm
     [ApiExplorerSettings(GroupName = "Scm")]
     public class ScmTestService : AppService
     {
-        private IScmTokenHolder _ScmHolder;
+        private IJwtTokenHolder _JwtHolder;
 
         /// <summary>
         /// 构造函数
@@ -22,19 +22,19 @@ namespace Com.Scm
         /// <param name="resHolder"></param>
         public ScmTestService(ISqlSugarClient sqlClient,
             EnvConfig envConfig,
-            IScmTokenHolder scmHolder,
+            IJwtTokenHolder jwtHolder,
             IResHolder resHolder)
         {
             _SqlClient = sqlClient;
             _EnvConfig = envConfig;
-            _ScmHolder = scmHolder;
+            _JwtHolder = jwtHolder;
             _ResHolder = resHolder;
             //_MessageService = messageService;
         }
 
         public string PostTestAsync()
         {
-            var token = _ScmHolder.GetToken();
+            var token = _JwtHolder.GetToken();
             LogUtils.Info("PostSync", "TOKEN", token.ToJsonString());
 
             return token.ToJsonString();

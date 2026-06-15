@@ -15,16 +15,16 @@ namespace Com.Scm.Cfg.Menu
     public class ScmScmCfgMenuService : ApiService
     {
         private readonly SugarRepository<CfgMenuDao> _thisRepository;
-        private readonly IScmTokenHolder _scmHolder;
+        private readonly IJwtTokenHolder _jwtHolder;
 
         /// <summary>
         /// 
         /// </summary>
         /// <param name="thisRepository"></param>
-        public ScmScmCfgMenuService(SugarRepository<CfgMenuDao> thisRepository, IScmTokenHolder scmHolder)
+        public ScmScmCfgMenuService(SugarRepository<CfgMenuDao> thisRepository, IJwtTokenHolder jwtHolder)
         {
             _thisRepository = thisRepository;
-            _scmHolder = scmHolder;
+            _jwtHolder = jwtHolder;
         }
 
         /// <summary>
@@ -151,7 +151,7 @@ namespace Com.Scm.Cfg.Menu
         /// <exception cref="BusinessException"></exception>
         public async Task<bool> SaveAsync(ScmUpdateRequest request)
         {
-            var token = _scmHolder.GetToken();
+            var token = _jwtHolder.GetToken();
 
             var id = request.id;
 

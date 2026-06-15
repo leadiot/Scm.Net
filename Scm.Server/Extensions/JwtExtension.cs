@@ -15,7 +15,7 @@ namespace Com.Scm
     {
         public static void SetupJwt(this IServiceCollection services, EnvConfig envConfig)
         {
-            services.AddScoped<IScmTokenHolder, ScmTokenHolder>();
+            services.AddScoped<IJwtTokenHolder, ScmJwtTokenHolder>();
 
             var section = AppUtils.GetConfig(JwtConfig.Name);
             services.Configure<JwtConfig>(section);

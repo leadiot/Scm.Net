@@ -17,19 +17,19 @@ namespace Com.Scm.Sys.Calendar;
 public class ScmSysCalendarService : IApiService
 {
     private readonly SugarRepository<CalendarDao> _thisRepository;
-    private readonly IScmTokenHolder _scmHolder;
+    private readonly IJwtTokenHolder _jwtHolder;
     private readonly ISqlSugarClient _Client;
 
     /// <summary>
     /// 
     /// </summary>
     /// <param name="thisRepository"></param>
-    /// <param name="scmHolder"></param>
+    /// <param name="jwtHolder"></param>
     /// <param name="client"></param>
-    public ScmSysCalendarService(SugarRepository<CalendarDao> thisRepository, IScmTokenHolder scmHolder, ISqlSugarClient client)
+    public ScmSysCalendarService(SugarRepository<CalendarDao> thisRepository, IJwtTokenHolder jwtHolder, ISqlSugarClient client)
     {
         _thisRepository = thisRepository;
-        _scmHolder = scmHolder;
+        _jwtHolder = jwtHolder;
         _Client = client;
     }
 
@@ -43,7 +43,7 @@ public class ScmSysCalendarService : IApiService
         var userId = request.user_id;
         if (!ScmUtils.IsValidId(userId))
         {
-            userId = _scmHolder.GetToken().user_id;
+            userId = _jwtHolder.GetToken().user_id;
         }
 
         var timef = 0L;

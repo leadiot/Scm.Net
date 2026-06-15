@@ -16,7 +16,7 @@ namespace Com.Scm.Ur.UserOtp
     [ApiExplorerSettings(GroupName = "Ur")]
     public class ScmUrUserOtpService : ApiService
     {
-        private readonly IScmTokenHolder _scmHolder;
+        private readonly IJwtTokenHolder _jwtHolder;
         private readonly SugarRepository<UserDao> _thisRepository;
         private readonly OtpConfig _otpConfig;
 
@@ -25,11 +25,11 @@ namespace Com.Scm.Ur.UserOtp
         /// </summary>
         /// <param name="userRepository"></param>
         /// <returns></returns>
-        public ScmUrUserOtpService(IScmTokenHolder scmHolder,
+        public ScmUrUserOtpService(IJwtTokenHolder jwtHolder,
             SugarRepository<UserDao> userRepository,
             OtpConfig otpConfig)
         {
-            _scmHolder = scmHolder;
+            _jwtHolder = jwtHolder;
             _thisRepository = userRepository;
             _otpConfig = otpConfig;
         }
@@ -42,7 +42,7 @@ namespace Com.Scm.Ur.UserOtp
         [HttpGet]
         public async Task<UserOtpDvo> GetAsync()
         {
-            var token = _scmHolder.GetToken();
+            var token = _jwtHolder.GetToken();
 
             var userDao = await _thisRepository.GetByIdAsync(token.user_id);
 
@@ -56,7 +56,7 @@ namespace Com.Scm.Ur.UserOtp
         [HttpGet]
         public async Task<UserOtpDvo> GetViewAsync()
         {
-            var token = _scmHolder.GetToken();
+            var token = _jwtHolder.GetToken();
 
             var userDao = await _thisRepository.GetByIdAsync(token.user_id);
             return ConvertToDvo(userDao);
@@ -69,7 +69,7 @@ namespace Com.Scm.Ur.UserOtp
         /// <returns></returns>
         public async Task<UserOtpDvo> UpdateAsync()
         {
-            var token = _scmHolder.GetToken();
+            var token = _jwtHolder.GetToken();
 
             var userDao = await _thisRepository.GetByIdAsync(token.user_id);
             userDao.GenerateSecret();
@@ -139,7 +139,7 @@ namespace Com.Scm.Ur.UserOtp
                 throw new BusinessException("无效的口令格式！");
             }
 
-            var token = _scmHolder.GetToken();
+            var token = _jwtHolder.GetToken();
 
             var userDao = await _thisRepository.GetByIdAsync(token.user_id);
             var secret = userDao.DecodeSecret();
@@ -157,7 +157,7 @@ namespace Com.Scm.Ur.UserOtp
         /// <returns></returns>
         public async Task<UserOtpDvo> StatusAsync(ScmChangeStatusRequest param)
         {
-            var token = _scmHolder.GetToken();
+            var token = _jwtHolder.GetToken();
 
             var otpDvo = new UserOtpDvo();
 

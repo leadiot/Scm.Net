@@ -14,22 +14,22 @@ namespace Com.Scm.Sys.Table
     [ApiExplorerSettings(GroupName = "v1")]
     public class ScmSysTableService : ApiService
     {
-        private readonly IScmTokenHolder _scmHolder;
+        private readonly IJwtTokenHolder _jwtHolder;
         private readonly SugarRepository<SysTableHeaderDao> _headerRepository;
         private readonly SugarRepository<SysTableDetailDao> _detailRepository;
 
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="scmHolder"></param>
+        /// <param name="jwtHolder"></param>
         /// <param name="headerRepository"></param>
         /// <param name="detailRepository"></param>
         /// <returns></returns>
-        public ScmSysTableService(IScmTokenHolder scmHolder,
+        public ScmSysTableService(IJwtTokenHolder jwtHolder,
             SugarRepository<SysTableHeaderDao> headerRepository,
             SugarRepository<SysTableDetailDao> detailRepository)
         {
-            _scmHolder = scmHolder;
+            _jwtHolder = jwtHolder;
             _headerRepository = headerRepository;
             _detailRepository = detailRepository;
         }
@@ -42,7 +42,7 @@ namespace Com.Scm.Sys.Table
         [HttpGet("{codec}")]
         public async Task<SysTableHeaderDto> GetAsync(string codec)
         {
-            var token = _scmHolder.GetToken();
+            var token = _jwtHolder.GetToken();
 
             var dto = await _headerRepository.AsQueryable()
                 .Where(a => a.codec == codec && a.user_id == token.user_id)

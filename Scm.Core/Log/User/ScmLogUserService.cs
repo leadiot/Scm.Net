@@ -15,7 +15,7 @@ namespace Com.Scm.Log.User
     public class ScmLogUserService : ApiService
     {
         private readonly SugarRepository<LogUserDao> _thisRepository;
-        private readonly IScmTokenHolder _scmHolder;
+        private readonly IJwtTokenHolder _jwtHolder;
         private readonly IDicService _DicService;
 
         /// <summary>
@@ -24,10 +24,10 @@ namespace Com.Scm.Log.User
         /// <param name="thisRepository"></param>
         /// <param name="resHolder"></param>
         /// <returns></returns>
-        public ScmLogUserService(SugarRepository<LogUserDao> thisRepository, IScmTokenHolder scmHolder, IDicService dicService)
+        public ScmLogUserService(SugarRepository<LogUserDao> thisRepository, IJwtTokenHolder jwtHolder, IDicService dicService)
         {
             _thisRepository = thisRepository;
-            _scmHolder = scmHolder;
+            _jwtHolder = jwtHolder;
             _DicService = dicService;
         }
 
@@ -38,7 +38,7 @@ namespace Com.Scm.Log.User
         /// <returns></returns>
         public async Task<ScmSearchPageResponse<LogUserDvo>> GetPagesAsync(SearchRequest request)
         {
-            var userId = _scmHolder.GetToken().user_id;
+            var userId = _jwtHolder.GetToken().user_id;
 
             var date = DateTime.Now;
             if (!TextUtils.IsDate(request.datef ?? ""))
@@ -78,7 +78,7 @@ namespace Com.Scm.Log.User
         /// <returns></returns>
         public async Task<List<LogUserDvo>> GetListAsync(SearchRequest request)
         {
-            var userId = _scmHolder.GetToken().user_id;
+            var userId = _jwtHolder.GetToken().user_id;
 
             var date = DateTime.Now;
             if (!TextUtils.IsDate(request.datef))

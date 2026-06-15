@@ -20,7 +20,7 @@ namespace Com.Scm.Sys.Files;
 public class ScmSysFileService : IApiService
 {
     private readonly EnvConfig _envConfig;
-    private readonly IScmTokenHolder _scmHolder;
+    private readonly IJwtTokenHolder _jwtHolder;
     private readonly ScmSysSafetyService _safetyService;
     private readonly IHttpContextAccessor _httpContextAccessor;
 
@@ -28,16 +28,16 @@ public class ScmSysFileService : IApiService
     /// 
     /// </summary>
     /// <param name="envConfig"></param>
-    /// <param name="scmHolder"></param>
+    /// <param name="jwtHolder"></param>
     /// <param name="safetyService"></param>
     /// <param name="httpContextAccessor"></param>
     public ScmSysFileService(EnvConfig envConfig,
-        IScmTokenHolder scmHolder,
+        IJwtTokenHolder jwtHolder,
         ScmSysSafetyService safetyService,
         IHttpContextAccessor httpContextAccessor)
     {
         _envConfig = envConfig;
-        _scmHolder = scmHolder;
+        _jwtHolder = jwtHolder;
         _safetyService = safetyService;
         _httpContextAccessor = httpContextAccessor;
     }

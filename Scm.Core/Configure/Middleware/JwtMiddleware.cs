@@ -44,27 +44,23 @@ namespace Com.Scm.Configure.Middleware
             return false;
         }
 
-        public async Task Invoke(HttpContext context)
+        public Task Invoke(HttpContext context)
         {
-            IScmTokenHolder holder = null;
+            IJwtTokenHolder holder = AppUtils.GetService<IJwtTokenHolder>();
 
             try
             {
                 if (context.Request.Method.ToUpper() == "OPTIONS")
                 {
-                    await _next(context);
-                    return;
+                    return _next(context);
                 }
 
                 //过滤，不要验证token的url
                 var path = context.Request.Path.Value?.ToLower();
                 if (IsIgnoreApi(path))
                 {
-                    await _next(context);
-                    return;
+                    return _next(context);
                 }
-
-                holder = AppUtils.GetService<IScmTokenHolder>();
 
                 // 统一从 Authorization 请求头读取令牌
                 var authHeader = context.Request.Headers.Authorization.FirstOrDefault();
@@ -73,20 +69,18 @@ namespace Com.Scm.Configure.Middleware
                 {
                     var scheme = ScmToken.GetScheme(authHeader);
 
-                    if (string.Equals(scheme, ScmToken.SCHEME_OPERATOR, StringComparison.OrdinalIgnoreCase))
-                    {
-                        // Api 方案：Authorization: Api <jwt>
-                        var credentials = ScmToken.GetCredentials(authHeader, ScmToken.SCHEME_OPERATOR);
-                        await HandleOperatorToken(context, holder, credentials);
-                        return;
-                    }
-
                     if (string.Equals(scheme, ScmToken.SCHEME_TERMINAL, StringComparison.OrdinalIgnoreCase))
                     {
-                        // App 方案：Authorization: App <base64>
+                        // App 方案：Authorization: Terminal <base64>
                         var credentials = ScmToken.GetCredentials(authHeader, ScmToken.SCHEME_TERMINAL);
-                        await HandleTerminalToken(context, holder, credentials);
-                        return;
+                        return HandleTerminalToken(context, holder, credentials);
+                    }
+
+                    if (string.Equals(scheme, ScmToken.SCHEME_OPERATOR, StringComparison.OrdinalIgnoreCase))
+                    {
+                        // Api 方案：Authorization: Operator <jwt>
+                        var credentials = ScmToken.GetCredentials(authHeader, ScmToken.SCHEME_OPERATOR);
+                        return HandleOperatorToken(context, holder, credentials);
                     }
 
                     // Bearer 方案：Authorization: Bearer <jwt>
@@ -94,13 +88,13 @@ namespace Com.Scm.Configure.Middleware
                     if (string.Equals(scheme, ScmToken.SCHEME_BEARER, StringComparison.OrdinalIgnoreCase))
                     {
                         var credentials = ScmToken.GetCredentials(authHeader, ScmToken.SCHEME_BEARER);
-                        await HandleBearerToken(context, holder, credentials);
-                        return;
+                        return HandleBearerToken(context, holder, credentials);
                     }
                 }
 
+                LogUtils.Debug("No valid Authorization header found, proceeding without token.");
                 holder.SetToken(new ScmToken());
-                await _next(context);
+                return _next(context);
             }
             finally
             {
@@ -111,18 +105,22 @@ namespace Com.Scm.Configure.Middleware
         /// <summary>
         /// 处理 Bearer 方案令牌（标准 JWT，解析 Claims 注入上下文）
         /// </summary>
-        private async Task HandleBearerToken(HttpContext context, IScmTokenHolder holder, string token)
+        private Task HandleBearerToken(HttpContext context, IJwtTokenHolder holder, string token)
         {
+            LogUtils.Debug("Handling Bearer token: " + token);
+
             var jwtToken = JwtUtils.SerializeJwt(token);
             holder.SetToken(jwtToken);
-            await _next(context);
+            return _next(context);
         }
 
         /// <summary>
         /// 处理 Api 方案令牌（自定义 JWT，含无感续期逻辑）
         /// </summary>
-        private async Task HandleOperatorToken(HttpContext context, IScmTokenHolder holder, string token)
+        private Task HandleOperatorToken(HttpContext context, IJwtTokenHolder holder, string token)
         {
+            LogUtils.Debug("Handling Operator token: " + token);
+
             var jwtToken = JwtUtils.SerializeJwt(token);
             holder.SetToken(jwtToken);
 
@@ -132,37 +130,35 @@ namespace Com.Scm.Configure.Middleware
             var jwtConfig = AppUtils.GetConfig<JwtConfig>(JwtConfig.Name);
             var refreshThreshold = (jwtConfig?.Expires ?? 30) * 60 * 1000L;
 
-            // 未超过刷新阈值，直接放行
-            if (now - jwtToken.time <= refreshThreshold)
+            if (now - jwtToken.time > refreshThreshold)
             {
-                await _next(context);
-                return;
+                // 超过刷新阈值，签发新 Token 通过响应头返回（无感续期）
+                var newToken = JwtUtils.IssueJwt(new ScmToken()
+                {
+                    id = jwtToken.id,
+                    user_id = jwtToken.user_id,
+                    user_codes = jwtToken.user_codes,
+                    user_name = jwtToken.user_name,
+                    time = now,
+                    data = jwtToken.data,
+                });
+                context.Response.Headers.Append("X-Refresh-Token", newToken);
             }
 
-            // 超过刷新阈值，签发新 Token 通过响应头返回（无感续期）
-            var newToken = JwtUtils.IssueJwt(new ScmToken()
-            {
-                id = jwtToken.id,
-                user_id = jwtToken.user_id,
-                user_codes = jwtToken.user_codes,
-                user_name = jwtToken.user_name,
-                time = now,
-                data = jwtToken.data,
-            });
-            context.Response.Headers.Append("X-Refresh-Token", newToken);
-
-            await _next(context);
+            return _next(context);
         }
 
         /// <summary>
         /// 处理 App 方案令牌（设备绑定令牌，解析终端信息注入上下文）
         /// </summary>
-        private async Task HandleTerminalToken(HttpContext context, IScmTokenHolder holder, string token)
+        private Task HandleTerminalToken(HttpContext context, IJwtTokenHolder holder, string token)
         {
+            LogUtils.Debug("Handling Terminal token: " + token);
+
             var scmToken = ScmToken.FromTerminalToken(token);
             holder.SetToken(scmToken);
 
-            await _next(context);
+            return _next(context);
         }
     }
 }

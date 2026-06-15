@@ -16,7 +16,7 @@ namespace Com.Scm.Service
     {
         protected EnvConfig _EnvConfig;
         protected ISqlSugarClient _SqlClient;
-        protected IScmTokenHolder _ScmHolder;
+        protected IJwtTokenHolder _JwtHolder;
 
         /// <summary>
         /// 创建一个流程
@@ -115,7 +115,7 @@ namespace Com.Scm.Service
         /// <returns></returns>
         public async Task<bool> AcceptAsync(ScmApproveRequest request)
         {
-            var token = _ScmHolder.GetToken();
+            var token = _JwtHolder.GetToken();
             var userId = token.user_id;
 
             // 获取流程单据

@@ -18,7 +18,7 @@ namespace Com.Scm.Ur.User
     [ApiExplorerSettings(GroupName = "Ur")]
     public class ScmUrUserService : ApiService
     {
-        private readonly IScmTokenHolder _scmHolder;
+        private readonly IJwtTokenHolder _jwtHolder;
         private readonly SugarRepository<UserDao> _thisRepository;
 
         /// <summary>
@@ -26,18 +26,18 @@ namespace Com.Scm.Ur.User
         /// </summary>
         /// <param name="envConfig"></param>
         /// <param name="sqlClient"></param>
-        /// <param name="scmHolder"></param>
+        /// <param name="jwtHolder"></param>
         /// <param name="thisRepository"></param>
         public ScmUrUserService(
             EnvConfig envConfig,
             ISqlSugarClient sqlClient,
-            IScmTokenHolder scmHolder,
+            IJwtTokenHolder jwtHolder,
             SugarRepository<UserDao> thisRepository,
             IResHolder resHolder)
         {
             _EnvConfig = envConfig;
             _SqlClient = sqlClient;
-            _scmHolder = scmHolder;
+            _jwtHolder = jwtHolder;
             _thisRepository = thisRepository;
             _ResHolder = resHolder;
         }
@@ -49,7 +49,7 @@ namespace Com.Scm.Ur.User
         /// <returns></returns>
         public async Task<ScmSearchPageResponse<BasicUserDvo>> GetPagesAsync(SearchUserRequest request)
         {
-            var token = _scmHolder.GetToken();
+            var token = _jwtHolder.GetToken();
             SaveSearch(token.user_id, request);
 
             var result = await _thisRepository.AsQueryable()
@@ -214,7 +214,7 @@ namespace Com.Scm.Ur.User
         /// <returns></returns>
         public async Task AddAsync(UserDto model)
         {
-            var token = _scmHolder.GetToken();
+            var token = _jwtHolder.GetToken();
 
             var userDao = await _thisRepository.GetFirstAsync(a => a.codec == model.codec);
             if (userDao != null)
@@ -299,7 +299,7 @@ namespace Com.Scm.Ur.User
         /// <returns></returns>
         public async Task UpdateAsync(UserDto model)
         {
-            var token = _scmHolder.GetToken();
+            var token = _jwtHolder.GetToken();
 
             var userDao = await _thisRepository.GetFirstAsync(a => a.codec == model.codec && a.id != model.id);
             if (userDao != null)
@@ -517,7 +517,7 @@ namespace Com.Scm.Ur.User
         [HttpGet]
         public async Task<ScmExportResponse> ExportAllAsync()
         {
-            var token = _scmHolder.GetToken();
+            var token = _jwtHolder.GetToken();
 
             var response = new ScmExportResponse();
 

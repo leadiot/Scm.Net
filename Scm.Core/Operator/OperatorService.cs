@@ -52,7 +52,7 @@ public class OperatorService : ApiService
     /// </summary>
     private const string CFG_TEMPLATE_USER_DATA = "template_user_data";
 
-    private readonly IScmTokenHolder _scmHolder;
+    private readonly IJwtTokenHolder _jwtHolder;
     private readonly ILogService _logService;
     private readonly OidcConfig _oidcConfig;
     private readonly OtpConfig _otpConfig;
@@ -63,13 +63,13 @@ public class OperatorService : ApiService
     /// <param name="sqlClient"></param>
     /// <param name="envConfig"></param>
     /// <param name="cacheService"></param>
-    /// <param name="scmHolder"></param>
+    /// <param name="jwtHolder"></param>
     /// <param name="logService"></param>
     /// <param name="smsService"></param>
     public OperatorService(ISqlSugarClient sqlClient
         , EnvConfig envConfig
         , Cache.ICacheService cacheService
-        , IScmTokenHolder scmHolder
+        , IJwtTokenHolder jwtHolder
         , ILogService logService
         , OidcConfig oidcConfig
         , OtpConfig otpConfig)
@@ -78,7 +78,7 @@ public class OperatorService : ApiService
         _EnvConfig = envConfig;
         _CacheService = cacheService;
 
-        _scmHolder = scmHolder;
+        _jwtHolder = jwtHolder;
         _logService = logService;
         _oidcConfig = oidcConfig;
         _otpConfig = otpConfig;
@@ -585,7 +585,7 @@ public class OperatorService : ApiService
     [HttpGet]
     public ScmApiResponse Logout()
     {
-        _scmHolder.Clear();
+        _jwtHolder.Clear();
         return ServerUtils.Success();
     }
     #endregion
@@ -661,7 +661,7 @@ public class OperatorService : ApiService
     /// <returns></returns>
     public async Task<UserThemeDto> GetUserThemeAsync()
     {
-        var userId = _scmHolder.GetToken().user_id;
+        var userId = _jwtHolder.GetToken().user_id;
 
         var themeDto = await _SqlClient.Queryable<UserThemeDao>()
             .Where(a => a.user_id == userId && a.row_status == ScmRowStatusEnum.Enabled)
@@ -683,7 +683,7 @@ public class OperatorService : ApiService
         //{
         //    return new OperatorUserDvo();
         //}
-        var token = _scmHolder.GetToken();
+        var token = _jwtHolder.GetToken();
         var userDao = await _SqlClient.Queryable<UserDao>().Where(a => a.id == token.user_id).FirstAsync();
         return new OperatorInfo()
         {
@@ -701,7 +701,7 @@ public class OperatorService : ApiService
     [HttpGet]
     public async Task<OperatorUserWorkResponse> GetUserWorkAsync()
     {
-        var token = _scmHolder.GetToken();
+        var token = _jwtHolder.GetToken();
         if (token.IsEmpty())
         {
             return new OperatorUserWorkResponse();
@@ -1236,7 +1236,7 @@ public class OperatorService : ApiService
     /// <returns></returns>
     public async Task UpdateUserThemeAsync(UserThemeRequest model)
     {
-        var userId = _scmHolder.GetToken().user_id;
+        var userId = _jwtHolder.GetToken().user_id;
 
         var dao = await _SqlClient.Queryable<UserThemeDao>().Where(a => a.user_id == userId).FirstAsync();
         if (dao == null)
@@ -1256,7 +1256,7 @@ public class OperatorService : ApiService
     /// <returns></returns>
     public async Task UpdateUserPassAsync(UserPassRequest model)
     {
-        var userId = _scmHolder.GetToken().user_id;
+        var userId = _jwtHolder.GetToken().user_id;
 
         var userDao = await _SqlClient.Queryable<UserDao>().Where(a => a.id == userId).FirstAsync();
         if (userDao == null)
@@ -1336,7 +1336,7 @@ public class OperatorService : ApiService
     /// <returns></returns>
     public async Task<List<MenuDto>> GetAuthorityMenuAsync(ScmClientTypeEnum client, ScmLayoutEnum layout, string lang)
     {
-        var user = _scmHolder.GetToken();
+        var user = _jwtHolder.GetToken();
 
         if (string.IsNullOrWhiteSpace(lang))
         {

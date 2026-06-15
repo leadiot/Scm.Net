@@ -262,10 +262,11 @@ namespace Com.Scm.Configure.Startup
 
             // 认证：验证 Authorization 头的令牌（Bearer / Api / App 三种方案）
             app.UseAuthentication();
-            // Jwt 中间件：解析 Claims 注入 ScmContextHolder，必须在 UseAuthentication 之后
-            app.UseMiddleware<JwtMiddleware>();
             // 授权：基于已认证用户检查权限策略
             app.UseAuthorization();
+
+            // Jwt 中间件：解析 Claims 注入 ScmContextHolder，必须在 UseAuthentication 之后
+            app.UseMiddleware<JwtMiddleware>();
 
             // 统一响应中间件（包装所有 API 响应）
             //app.UseUnifiedResponse();

@@ -2,6 +2,7 @@
 using Com.Scm.Filters;
 using Com.Scm.Service;
 using Com.Scm.Token;
+using Com.Scm.Ur;
 using Com.Scm.Utils;
 using Microsoft.AspNetCore.Mvc;
 using SqlSugar;
@@ -32,7 +33,7 @@ namespace Com.Scm
             //_MessageService = messageService;
         }
 
-        public string PostTestAsync()
+        public string PostTestAsync(GroupDto model)
         {
             var token = _JwtHolder.GetToken();
             LogUtils.Info("PostSync", "TOKEN", token.ToJsonString());

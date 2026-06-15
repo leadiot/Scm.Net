@@ -7,7 +7,7 @@ namespace Com.Scm.Configure.Middleware
 {
     /// <summary>
     /// JWT 中间件 — 从 Authorization 请求头按 scheme 前缀分发，
-    /// 解析令牌并注入 ScmContextHolder 供业务层使用。
+    /// 解析令牌并注入 ScmJwtContextHolder 供业务层使用。
     /// 同时负责 Api 方案的无感续期逻辑。
     /// </summary>
     public class JwtMiddleware
@@ -92,7 +92,6 @@ namespace Com.Scm.Configure.Middleware
                     }
                 }
 
-                LogUtils.Debug("No valid Authorization header found, proceeding without token.");
                 holder.SetToken(new ScmToken());
                 return _next(context);
             }
@@ -102,28 +101,8 @@ namespace Com.Scm.Configure.Middleware
             }
         }
 
-        /// <summary>
-        /// 处理 Bearer 方案令牌（标准 JWT，解析 Claims 注入上下文）
-        /// </summary>
-        private Task HandleBearerToken(HttpContext context, IJwtTokenHolder holder, string token)
+        private void HandleRefreshToken(HttpContext context, ScmToken jwtToken)
         {
-            LogUtils.Debug("Handling Bearer token: " + token);
-
-            var jwtToken = JwtUtils.SerializeJwt(token);
-            holder.SetToken(jwtToken);
-            return _next(context);
-        }
-
-        /// <summary>
-        /// 处理 Api 方案令牌（自定义 JWT，含无感续期逻辑）
-        /// </summary>
-        private Task HandleOperatorToken(HttpContext context, IJwtTokenHolder holder, string token)
-        {
-            LogUtils.Debug("Handling Operator token: " + token);
-
-            var jwtToken = JwtUtils.SerializeJwt(token);
-            holder.SetToken(jwtToken);
-
             var now = TimeUtils.GetUnixTime(true);
 
             // 从配置读取刷新阈值（单位：毫秒）
@@ -144,6 +123,30 @@ namespace Com.Scm.Configure.Middleware
                 });
                 context.Response.Headers.Append("X-Refresh-Token", newToken);
             }
+        }
+
+        /// <summary>
+        /// 处理 Bearer 方案令牌（标准 JWT，解析 Claims 注入上下文）
+        /// </summary>
+        private Task HandleBearerToken(HttpContext context, IJwtTokenHolder holder, string token)
+        {
+            var jwtToken = JwtUtils.SerializeJwt(token);
+            holder.SetToken(jwtToken);
+
+            HandleRefreshToken(context, jwtToken);
+
+            return _next(context);
+        }
+
+        /// <summary>
+        /// 处理 Api 方案令牌（自定义 JWT，含无感续期逻辑）
+        /// </summary>
+        private Task HandleOperatorToken(HttpContext context, IJwtTokenHolder holder, string token)
+        {
+            var jwtToken = JwtUtils.SerializeJwt(token);
+            holder.SetToken(jwtToken);
+
+            HandleRefreshToken(context, jwtToken);
 
             return _next(context);
         }
@@ -153,8 +156,6 @@ namespace Com.Scm.Configure.Middleware
         /// </summary>
         private Task HandleTerminalToken(HttpContext context, IJwtTokenHolder holder, string token)
         {
-            LogUtils.Debug("Handling Terminal token: " + token);
-
             var scmToken = ScmToken.FromTerminalToken(token);
             holder.SetToken(scmToken);
 

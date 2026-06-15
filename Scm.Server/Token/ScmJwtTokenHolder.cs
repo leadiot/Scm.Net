@@ -1,5 +1,3 @@
-using Com.Scm.Utils;
-
 namespace Com.Scm.Token;
 
 /// <summary>
@@ -8,9 +6,9 @@ namespace Com.Scm.Token;
 public class ScmJwtTokenHolder : IJwtTokenHolder
 {
     /// <summary>
-    /// 支持父子线程数据传递
+    /// 支持异步上下文数据传递（跨 await 边界）
     /// </summary>
-    private readonly ThreadLocal<ScmToken> _threadLocalTenant = new();
+    private readonly AsyncLocal<ScmToken> _asyncLocal = new();
 
     /// <summary>
     /// 设置租户ID
@@ -18,8 +16,7 @@ public class ScmJwtTokenHolder : IJwtTokenHolder
     /// <param name="token"></param>
     public void SetToken(ScmToken token)
     {
-        LogUtils.Debug("SetToken: " + token.ToJsonString());
-        _threadLocalTenant.Value = token;
+        _asyncLocal.Value = token;
     }
 
     /// <summary>
@@ -30,7 +27,7 @@ public class ScmJwtTokenHolder : IJwtTokenHolder
     {
         try
         {
-            return _threadLocalTenant.Value ?? new ScmToken();
+            return _asyncLocal.Value ?? new ScmToken();
         }
         catch
         {
@@ -43,10 +40,7 @@ public class ScmJwtTokenHolder : IJwtTokenHolder
     /// </summary>
     public void Clear()
     {
-        // 正确做法：清除值但不释放对象
-        if (_threadLocalTenant.IsValueCreated)
-        {
-            _threadLocalTenant.Value = null;
-        }
+        // AsyncLocal 不需要 Dispose，直接清除值即可
+        _asyncLocal.Value = null;
     }
 }

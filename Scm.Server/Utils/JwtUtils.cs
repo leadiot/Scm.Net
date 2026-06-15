@@ -12,7 +12,7 @@ public class JwtUtils
 {
     public static string IssueJwt(ScmToken token)
     {
-        var jwtModel = AppUtils.GetConfig<JwtConfig>(JwtConfig.Name);
+        var jwtConfig = AppUtils.GetConfig<JwtConfig>(JwtConfig.Name);
 
         var claims = new List<Claim>();
         //每次登陆动态刷新
@@ -27,13 +27,13 @@ public class JwtUtils
             //new Claim (ClaimTypes.Role, token.Role??""),
             //new Claim (nameof (ScmToken.RoleArray), token.RoleArray),
         });
-        var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtModel.Security));
+        var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtConfig.Security));
         var cred = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
         var jwt = new JwtSecurityToken(
-            issuer: jwtModel.Issuer,
-            audience: jwtModel.Audience,
+            issuer: jwtConfig.Issuer,
+            audience: jwtConfig.Audience,
             claims: claims,
-            expires: DateTime.Now.AddMinutes(jwtModel.Expires),
+            expires: DateTime.Now.AddMinutes(jwtConfig.Expires),
             signingCredentials: cred);
         return new JwtSecurityTokenHandler().WriteToken(jwt);
     }

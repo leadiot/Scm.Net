@@ -291,6 +291,7 @@ namespace Com.Scm.Controllers
         /// </summary>
         /// <param name="path"></param>
         /// <returns></returns>
+        [HttpPost("Create")]
         public async Task<ScmFileDto> Create(string path)
         {
             var info = new DirectoryInfo(path);
@@ -309,6 +310,7 @@ namespace Com.Scm.Controllers
         /// </summary>
         /// <param name="path"></param>
         /// <returns></returns>
+        [HttpPost("Copyto")]
         public bool Copyto(string src, string dst)
         {
             return FileUtils.Copyto(src, dst);
@@ -319,6 +321,7 @@ namespace Com.Scm.Controllers
         /// </summary>
         /// <param name="path"></param>
         /// <returns></returns>
+        [HttpPost("Moveto")]
         public bool Moveto(string src, string dst)
         {
             return FileUtils.Moveto(src, dst);
@@ -329,6 +332,7 @@ namespace Com.Scm.Controllers
         /// </summary>
         /// <param name="path"></param>
         /// <returns></returns>
+        [HttpPost("Rename")]
         public bool Rename(string src, string dst, bool overwrite)
         {
             return FileUtils.RenameTo(src, dst);
@@ -339,6 +343,7 @@ namespace Com.Scm.Controllers
         /// </summary>
         /// <param name="path"></param>
         /// <returns></returns>
+        [HttpPost("Delete")]
         public bool Delete(string path)
         {
             return FileUtils.Delete(path);

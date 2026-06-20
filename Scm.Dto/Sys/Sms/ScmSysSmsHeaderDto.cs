@@ -1,4 +1,5 @@
 ﻿using Com.Scm.Dto;
+using Com.Scm.Utils;
 using System.ComponentModel.DataAnnotations;
 
 namespace Com.Scm.Sys.Sms
@@ -33,5 +34,17 @@ namespace Com.Scm.Sys.Sms
         /// 颜色
         /// </summary>
         public int color { get; set; }
+
+        public string colors
+        {
+            get
+            {
+                return TextUtils.FormatColor(color);
+            }
+            set
+            {
+                color = TextUtils.ParseColor(value);
+            }
+        }
     }
 }

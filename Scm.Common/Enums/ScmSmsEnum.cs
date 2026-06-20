@@ -2,6 +2,8 @@
 {
     public enum ScmSmsTypeEnum
     {
+        None,
+
         /// <summary>
         /// 收件箱（接收到的短信）
         /// </summary>

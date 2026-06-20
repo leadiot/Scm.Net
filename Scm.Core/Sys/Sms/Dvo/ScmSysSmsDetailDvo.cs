@@ -1,5 +1,6 @@
 ﻿using Com.Scm.Dvo;
 using Com.Scm.Enums;
+using Com.Scm.Utils;
 using System.ComponentModel.DataAnnotations;
 
 namespace Com.Scm.Sys.Sms.Dvo
@@ -50,5 +51,17 @@ namespace Com.Scm.Sys.Sms.Dvo
         /// 操作系统相关参数
         /// </summary>
         public Dictionary<string, string> os_params { get; set; }
+
+        public string colors
+        {
+            get
+            {
+                return TextUtils.FormatColor(color);
+            }
+            set
+            {
+                color = TextUtils.ParseColor(value);
+            }
+        }
     }
 }

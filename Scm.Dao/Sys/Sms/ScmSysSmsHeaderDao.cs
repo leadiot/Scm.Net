@@ -4,6 +4,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Com.Scm.Sys.Sms
 {
+    [SugarTable("scm_sys_sms_header")]
     public class ScmSysSmsHeaderDao : ScmUserDataDao
     {
         /// <summary>

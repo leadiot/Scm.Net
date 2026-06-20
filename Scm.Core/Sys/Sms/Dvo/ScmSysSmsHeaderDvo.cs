@@ -1,4 +1,5 @@
 ﻿using Com.Scm.Dvo;
+using Com.Scm.Utils;
 
 namespace Com.Scm.Sys.Sms.Dvo
 {
@@ -28,5 +29,17 @@ namespace Com.Scm.Sys.Sms.Dvo
         /// 颜色
         /// </summary>
         public int color { get; set; }
+
+        public string colors
+        {
+            get
+            {
+                return TextUtils.FormatColor(color);
+            }
+            set
+            {
+                color = TextUtils.ParseColor(value);
+            }
+        }
     }
 }

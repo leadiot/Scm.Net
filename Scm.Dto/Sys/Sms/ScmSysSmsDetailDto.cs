@@ -1,5 +1,6 @@
 ﻿using Com.Scm.Dto;
 using Com.Scm.Enums;
+using Com.Scm.Utils;
 using System.ComponentModel.DataAnnotations;
 
 namespace Com.Scm.Sys.Sms
@@ -11,7 +12,6 @@ namespace Com.Scm.Sys.Sms
         /// </summary>
         public long head_id { get; set; }
 
-        [Required]
         [StringLength(32)]
         /// <summary>
         /// 电话号码
@@ -21,6 +21,7 @@ namespace Com.Scm.Sys.Sms
         /// <summary>
         /// 电话
         /// </summary>
+        [Required]
         [StringLength(32)]
         public string phone { get; set; }
 
@@ -56,5 +57,17 @@ namespace Com.Scm.Sys.Sms
         /// 操作系统相关参数
         /// </summary>
         public Dictionary<string, string> os_params { get; set; }
+
+        public string colors
+        {
+            get
+            {
+                return TextUtils.FormatColor(color);
+            }
+            set
+            {
+                color = TextUtils.ParseColor(value);
+            }
+        }
     }
 }

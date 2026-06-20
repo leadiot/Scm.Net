@@ -1,17 +1,30 @@
 ﻿using Com.Scm.Dvo;
 using Com.Scm.Enums;
+using System.ComponentModel.DataAnnotations;
 
 namespace Com.Scm.Sys.Sms.Dvo
 {
     /// <summary>
     /// 
     /// </summary>
-    public class ScmSysSmsDvo : ScmDataDvo
+    public class ScmSysSmsDetailDvo : ScmDataDvo
     {
         /// <summary>
         /// 电话号码
         /// </summary>
         public string address { get; set; }
+
+        /// <summary>
+        /// 电话
+        /// </summary>
+        [StringLength(32)]
+        public string phone { get; set; }
+
+        /// <summary>
+        /// 联系人姓名
+        /// </summary>
+        [StringLength(32)]
+        public string name { get; set; }
 
         /// <summary>
         /// 短信内容
@@ -22,6 +35,11 @@ namespace Com.Scm.Sys.Sms.Dvo
         /// 发送日期
         /// </summary>
         public long date { get; set; }
+
+        /// <summary>
+        /// 颜色
+        /// </summary>
+        public int color { get; set; }
 
         /// <summary>
         /// 短信类型

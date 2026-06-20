@@ -1,27 +1,40 @@
-﻿using Com.Scm.Dao.User;
+﻿using Com.Scm.Dto;
 using Com.Scm.Enums;
-using SqlSugar;
 using System.ComponentModel.DataAnnotations;
 
 namespace Com.Scm.Sys.Sms
 {
-    [SugarTable("scm_sys_sms")]
-    public class ScmSysSmsDao : ScmUserDataDao
+    public class ScmSysSmsDetailDto : ScmDataDto
     {
+        /// <summary>
+        /// 
+        /// </summary>
+        public long head_id { get; set; }
+
+        [Required]
+        [StringLength(32)]
         /// <summary>
         /// 电话号码
         /// </summary>
-        [Required]
-        [StringLength(32)]
-        [SugarColumn(Length = 32)]
         public string address { get; set; }
 
         /// <summary>
-        /// 短信内容
+        /// 电话
         /// </summary>
+        [StringLength(32)]
+        public string phone { get; set; }
+
+        /// <summary>
+        /// 联系人姓名
+        /// </summary>
+        [StringLength(32)]
+        public string name { get; set; }
+
         [Required]
         [StringLength(256)]
-        [SugarColumn(Length = 256)]
+        /// <summary>
+        /// 短信内容
+        /// </summary>
         public string body { get; set; }
 
         /// <summary>
@@ -35,9 +48,13 @@ namespace Com.Scm.Sys.Sms
         public ScmSmsTypeEnum type { get; set; }
 
         /// <summary>
+        /// 颜色
+        /// </summary>
+        public int color { get; set; }
+
+        /// <summary>
         /// 操作系统相关参数
         /// </summary>
-        [SugarColumn(Length = 1024, IsNullable = true, IsJson = true)]
         public Dictionary<string, string> os_params { get; set; }
     }
 }

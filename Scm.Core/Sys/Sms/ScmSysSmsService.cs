@@ -1,5 +1,4 @@
 ﻿using Com.Scm.Config;
-using Com.Scm.Dsa;
 using Com.Scm.Enums;
 using Com.Scm.Filters;
 using Com.Scm.Service;
@@ -7,6 +6,7 @@ using Com.Scm.Sys.Sms.Dvo;
 using Com.Scm.Utils;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using SqlSugar;
 
 namespace Com.Scm.Sys.Sms
 {
@@ -16,19 +16,17 @@ namespace Com.Scm.Sys.Sms
     [ApiExplorerSettings(GroupName = "Sys")]
     public class ScmSysSmsService : ApiService
     {
-        private readonly SugarRepository<ScmSysSmsDao> _thisRepository;
-
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="thisRepository"></param>
+        /// <param name="sqlClient"></param>
         /// <param name="resHolder"></param>
         /// <param name="config"></param>
-        public ScmSysSmsService(SugarRepository<ScmSysSmsDao> thisRepository,
+        public ScmSysSmsService(ISqlSugarClient sqlClient,
             IResHolder resHolder,
             EnvConfig config)
         {
-            _thisRepository = thisRepository;
+            _SqlClient = sqlClient;
             _ResHolder = resHolder;
             _EnvConfig = config;
         }
@@ -38,13 +36,13 @@ namespace Com.Scm.Sys.Sms
         /// </summary>
         /// <param name="request"></param>
         /// <returns></returns>
-        public async Task<ScmSearchPageResponse<ScmSysSmsDvo>> GetPagesAsync(SmsSearchRequest request)
+        public async Task<ScmSearchPageResponse<ScmSysSmsDetailDvo>> GetPagesAsync(SmsSearchRequest request)
         {
-            var result = await _thisRepository.AsQueryable()
+            var result = await _SqlClient.Queryable<ScmSysSmsDetailDao>()
                 .WhereIF(!request.IsAllStatus(), a => a.row_status == request.row_status)
                 .WhereIF(!string.IsNullOrEmpty(request.key), a => a.address.Contains(request.key))
                 .OrderBy(m => m.id)
-                .Select<ScmSysSmsDvo>()
+                .Select<ScmSysSmsDetailDvo>()
                 .ToPageAsync(request.page, request.limit);
 
             Prepare(result.Items);
@@ -56,13 +54,30 @@ namespace Com.Scm.Sys.Sms
         /// </summary>
         /// <param name="request"></param>
         /// <returns></returns>
-        public async Task<List<ScmSysSmsDvo>> GetListAsync(SmsSearchRequest request)
+        public async Task<List<ScmSysSmsHeaderDvo>> GetConversationsAsync(SmsSearchRequest request)
         {
-            var result = await _thisRepository.AsQueryable()
+            var result = await _SqlClient.Queryable<ScmSysSmsHeaderDao>()
+                .Where(a => a.row_status == ScmRowStatusEnum.Enabled)
+                .OrderBy(m => m.id, SqlSugar.OrderByType.Desc)
+                .Select<ScmSysSmsHeaderDvo>()
+                .ToListAsync();
+
+            //Prepare(result);
+            return result;
+        }
+
+        /// <summary>
+        /// 查询所有
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        public async Task<List<ScmSysSmsDetailDvo>> GetListAsync(SmsSearchRequest request)
+        {
+            var result = await _SqlClient.Queryable<ScmSysSmsDetailDao>()
                 .Where(a => a.row_status == ScmRowStatusEnum.Enabled)
                 .WhereIF(!string.IsNullOrEmpty(request.key), a => a.address.Contains(request.key))
                 .OrderBy(m => m.id, SqlSugar.OrderByType.Desc)
-                .Select<ScmSysSmsDvo>()
+                .Select<ScmSysSmsDetailDvo>()
                 .ToListAsync();
 
             //Prepare(result);
@@ -75,12 +90,11 @@ namespace Com.Scm.Sys.Sms
         /// <param name="id"></param>
         /// <returns></returns>
         [HttpGet("{id}")]
-        public async Task<ScmSysSmsDvo> GetAsync(long id)
+        public async Task<ScmSysSmsDetailDvo> GetAsync(long id)
         {
-            var dvo = new ScmSysSmsDvo();
+            var dvo = new ScmSysSmsDetailDvo();
 
-            var dao = await _thisRepository
-                .AsQueryable()
+            var dao = await _SqlClient.Queryable<ScmSysSmsDetailDao>()
                 .Where(a => a.id == id)
                 .FirstAsync();
 
@@ -93,11 +107,10 @@ namespace Com.Scm.Sys.Sms
         /// <param name="id"></param>
         /// <returns></returns>
         [HttpGet("{id}")]
-        public async Task<ScmSysSmsDto> GetEditAsync(long id)
+        public async Task<ScmSysSmsDetailDto> GetEditAsync(long id)
         {
-            return await _thisRepository
-                .AsQueryable()
-                .Select<ScmSysSmsDto>()
+            return await _SqlClient.Queryable<ScmSysSmsDetailDao>()
+                .Select<ScmSysSmsDetailDto>()
                 .FirstAsync(m => m.id == id);
         }
 
@@ -107,11 +120,10 @@ namespace Com.Scm.Sys.Sms
         /// <param name="id"></param>
         /// <returns></returns>
         [HttpGet("{id}")]
-        public async Task<ScmSysSmsDvo> GetViewAsync(long id)
+        public async Task<ScmSysSmsDetailDvo> GetViewAsync(long id)
         {
-            return await _thisRepository
-                .AsQueryable()
-                .Select<ScmSysSmsDvo>()
+            return await _SqlClient.Queryable<ScmSysSmsDetailDao>()
+                .Select<ScmSysSmsDetailDvo>()
                 .FirstAsync(m => m.id == id);
         }
 
@@ -120,13 +132,13 @@ namespace Com.Scm.Sys.Sms
         /// </summary>
         /// <param name="model"></param>
         /// <returns></returns>
-        public async Task<ScmSysSmsDvo> AddAsync(ScmSysSmsDto model)
+        public async Task<ScmSysSmsDetailDvo> AddAsync(ScmSysSmsDetailDto model)
         {
-            var dao = model.Adapt<ScmSysSmsDao>();
+            var dao = model.Adapt<ScmSysSmsDetailDao>();
 
-            var qty = await _thisRepository.InsertAsync(dao);
+            var qty = await _SqlClient.InsertAsync(dao);
 
-            return dao.Clone<ScmSysSmsDvo>();
+            return dao.Clone<ScmSysSmsDetailDvo>();
         }
 
         /// <summary>
@@ -134,26 +146,26 @@ namespace Com.Scm.Sys.Sms
         /// </summary>
         /// <param name="model"></param>
         /// <returns></returns>
-        public async Task<ScmSysSmsDto> SaveAsync(ScmSysSmsDto model)
+        public async Task<ScmSysSmsDetailDto> SaveAsync(ScmSysSmsDetailDto model)
         {
-            ScmSysSmsDao dao = null;
+            ScmSysSmsDetailDao dao = null;
 
             if (IsNormalId(model.id))
             {
-                dao = await _thisRepository.GetByIdAsync(model.id);
+                dao = await _SqlClient.GetByIdAsync<ScmSysSmsDetailDao>(model.id);
             }
 
             if (dao == null)
             {
-                dao = model.Adapt<ScmSysSmsDao>();
-                await _thisRepository.InsertAsync(dao);
+                dao = model.Adapt<ScmSysSmsDetailDao>();
+                await _SqlClient.InsertAsync(dao);
 
                 model.id = dao.id;
             }
             else
             {
                 dao = model.Adapt(dao);
-                await _thisRepository.UpdateAsync(dao);
+                await _SqlClient.UpdateAsync(dao);
             }
 
             model.update_time = dao.update_time;
@@ -166,9 +178,9 @@ namespace Com.Scm.Sys.Sms
         /// </summary>
         /// <param name="model"></param>
         /// <returns></returns>
-        public async Task UpdateAsync(ScmSysSmsDto model)
+        public async Task UpdateAsync(ScmSysSmsDetailDto model)
         {
-            var dao = await _thisRepository.GetByIdAsync(model.id);
+            var dao = await _SqlClient.GetByIdAsync<ScmSysSmsDetailDao>(model.id);
             if (dao == null)
             {
                 return;
@@ -176,7 +188,7 @@ namespace Com.Scm.Sys.Sms
 
             dao = model.Adapt(dao);
 
-            await _thisRepository.UpdateAsync(dao);
+            await _SqlClient.UpdateAsync(dao);
         }
 
         /// <summary>
@@ -186,7 +198,7 @@ namespace Com.Scm.Sys.Sms
         /// <returns></returns>
         public async Task<int> StatusAsync(ScmChangeStatusRequest param)
         {
-            return await UpdateStatus(_thisRepository, param.ids, param.status);
+            return await UpdateStatus<ScmSysSmsDetailDao>(_SqlClient, param.ids, param.status);
         }
 
         /// <summary>
@@ -197,7 +209,7 @@ namespace Com.Scm.Sys.Sms
         [HttpDelete]
         public async Task<int> DeleteAsync(string ids)
         {
-            return await DeleteRecord(_thisRepository, ids.ToListLong());
+            return await DeleteRecord<ScmSysSmsDetailDao>(_SqlClient, ids.ToListLong());
         }
 
         /// <summary>

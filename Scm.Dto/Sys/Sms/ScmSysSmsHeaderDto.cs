@@ -1,23 +1,27 @@
 ﻿using Com.Scm.Dto;
-using Com.Scm.Enums;
 using System.ComponentModel.DataAnnotations;
 
 namespace Com.Scm.Sys.Sms
 {
-    public class ScmSysSmsDto : ScmDataDto
+    public class ScmSysSmsHeaderDto : ScmDataDto
     {
-        [Required]
-        [StringLength(32)]
         /// <summary>
-        /// 电话号码
+        /// 电话
         /// </summary>
-        public string address { get; set; }
+        [StringLength(32)]
+        public string phone { get; set; }
 
-        [Required]
-        [StringLength(256)]
+        /// <summary>
+        /// 联系人姓名
+        /// </summary>
+        [StringLength(32)]
+        public string name { get; set; }
+
         /// <summary>
         /// 短信内容
         /// </summary>
+        [Required]
+        [StringLength(256)]
         public string body { get; set; }
 
         /// <summary>
@@ -26,13 +30,8 @@ namespace Com.Scm.Sys.Sms
         public long date { get; set; }
 
         /// <summary>
-        /// 短信类型
+        /// 颜色
         /// </summary>
-        public ScmSmsTypeEnum type { get; set; }
-
-        /// <summary>
-        /// 操作系统相关参数
-        /// </summary>
-        public Dictionary<string, string> os_params { get; set; }
+        public int color { get; set; }
     }
 }

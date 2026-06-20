@@ -49,7 +49,7 @@ namespace Com.Scm.Sys.Notes
         public long cat_id { get; set; }
 
         /// <summary>
-        /// 标题
+        /// 主标题
         /// </summary>
         [Required]
         [StringLength(128)]
@@ -103,11 +103,6 @@ namespace Com.Scm.Sys.Notes
         public int files { get; set; }
 
         /// <summary>
-        /// 版本
-        /// </summary>
-        public int ver { get; set; }
-
-        /// <summary>
         /// 便签颜色
         /// </summary>
         public int color { get; set; }
@@ -117,6 +112,11 @@ namespace Com.Scm.Sys.Notes
         /// </summary>
         [SugarColumn(Length = 1024, IsNullable = true, IsJson = true)]
         public Dictionary<string, string> os_params { get; set; }
+
+        /// <summary>
+        /// 版本
+        /// </summary>
+        public int ver { get; set; }
 
         /// <summary>
         /// 

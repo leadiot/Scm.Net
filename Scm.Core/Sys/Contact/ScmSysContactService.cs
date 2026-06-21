@@ -62,11 +62,17 @@ namespace Com.Scm.Sys.Contact
                 .Where(a => a.row_status == ScmRowStatusEnum.Enabled)
                 .WhereIF(!string.IsNullOrEmpty(request.key), a => a.title.Contains(request.key))
                 .OrderBy(m => m.id, SqlSugar.OrderByType.Desc)
-                .Select<ScmSysContactDvo>()
                 .ToListAsync();
 
+            var list = new List<ScmSysContactDvo>();
+            foreach (var item in result)
+            {
+                var dvo = item.Clone<ScmSysContactDvo>();
+                list.Add(dvo);
+            }
+
             //Prepare(result);
-            return result;
+            return list;
         }
 
         /// <summary>

@@ -103,25 +103,25 @@ namespace Com.Scm.Sys.Contact
         /// 邮件
         /// </summary>
         [SugarColumn(Length = 1024, IsNullable = true, IsJson = true)]
-        public List<KvItem<string, string>> emails { get; set; }
+        public List<Dictionary<string, string>> emails { get; set; }
 
         /// <summary>
         /// 电话
         /// </summary>
         [SugarColumn(Length = 1024, IsNullable = true, IsJson = true)]
-        public List<KvItem<string, string>> phones { get; set; }
+        public List<Dictionary<string, string>> phones { get; set; }
 
         /// <summary>
         /// 地址
         /// </summary>
         [SugarColumn(Length = 1024, IsNullable = true, IsJson = true)]
-        public List<KvItem<string, string>> addresses { get; set; }
+        public List<Dictionary<string, string>> addresses { get; set; }
 
         /// <summary>
         /// 电话
         /// </summary>
         [SugarColumn(Length = 1024, IsNullable = true, IsJson = true)]
-        public List<KvItem<string, string>> imAddresses { get; set; }
+        public List<Dictionary<string, string>> imAddresses { get; set; }
 
         /// <summary>
         /// 操作系统相关参数

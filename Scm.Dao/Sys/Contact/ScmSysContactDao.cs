@@ -19,31 +19,31 @@ namespace Com.Scm.Sys.Contact
         /// 名
         /// </summary>
         [SugarColumn(Length = 32, IsNullable = true)]
-        public string firstName { get; set; }
+        public string first_name { get; set; }
 
         /// <summary>
         /// 中间名
         /// </summary>
         [SugarColumn(Length = 32, IsNullable = true)]
-        public string middleName { get; set; }
+        public string middle_name { get; set; }
 
         /// <summary>
         /// 姓
         /// </summary>
         [SugarColumn(Length = 32, IsNullable = true)]
-        public string lastName { get; set; }
+        public string last_name { get; set; }
 
         /// <summary>
         /// 前缀
         /// </summary>
         [SugarColumn(Length = 8, IsNullable = true)]
-        public string namePrefix { get; set; }
+        public string name_prefix { get; set; }
 
         /// <summary>
         /// 后缀
         /// </summary>
         [SugarColumn(Length = 8, IsNullable = true)]
-        public string nameSuffix { get; set; }
+        public string name_suffix { get; set; }
 
         /// <summary>
         /// 昵称
@@ -91,13 +91,13 @@ namespace Com.Scm.Sys.Contact
         /// 头像
         /// </summary>
         [SugarColumn(Length = 128, IsNullable = true)]
-        public string photoThumbUri { get; set; }
+        public string photo_thumb_uri { get; set; }
 
         /// <summary>
         /// 头像原图
         /// </summary>
         [SugarColumn(Length = 128, IsNullable = true)]
-        public string photoUri { get; set; }
+        public string photo_uri { get; set; }
 
         /// <summary>
         /// 邮件
@@ -121,7 +121,7 @@ namespace Com.Scm.Sys.Contact
         /// 电话
         /// </summary>
         [SugarColumn(Length = 1024, IsNullable = true, IsJson = true)]
-        public List<Dictionary<string, string>> imAddresses { get; set; }
+        public List<Dictionary<string, string>> im_addresses { get; set; }
 
         /// <summary>
         /// 操作系统相关参数

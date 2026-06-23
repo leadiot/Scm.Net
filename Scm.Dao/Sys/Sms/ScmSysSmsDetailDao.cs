@@ -44,9 +44,9 @@ namespace Com.Scm.Sys.Sms
         public string body { get; set; }
 
         /// <summary>
-        /// 发送日期
+        /// 发送时间
         /// </summary>
-        public long date { get; set; }
+        public long time { get; set; }
 
         /// <summary>
         /// 短信类型

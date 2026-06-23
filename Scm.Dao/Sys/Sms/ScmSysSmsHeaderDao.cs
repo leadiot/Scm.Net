@@ -32,7 +32,7 @@ namespace Com.Scm.Sys.Sms
         /// <summary>
         /// 发送日期
         /// </summary>
-        public long date { get; set; }
+        public long time { get; set; }
 
         /// <summary>
         /// 颜色

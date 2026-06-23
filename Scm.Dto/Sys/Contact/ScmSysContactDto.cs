@@ -15,23 +15,23 @@ namespace Com.Scm.Sys.Contact
         /// <summary>
         /// 名
         /// </summary>
-        public string firstName { get; set; }
+        public string first_name { get; set; }
         /// <summary>
         /// 中间名
         /// </summary>
-        public string middleName { get; set; }
+        public string middle_name { get; set; }
         /// <summary>
         /// 姓
         /// </summary>
-        public string lastName { get; set; }
+        public string last_name { get; set; }
         /// <summary>
         /// 前缀
         /// </summary>
-        public string namePrefix { get; set; }
+        public string name_prefix { get; set; }
         /// <summary>
         /// 后缀
         /// </summary>
-        public string nameSuffix { get; set; }
+        public string name_suffix { get; set; }
         /// <summary>
         /// 昵称
         /// </summary>
@@ -63,11 +63,11 @@ namespace Com.Scm.Sys.Contact
         /// <summary>
         /// 头像
         /// </summary>
-        public string photoThumbUri { get; set; }
+        public string photo_thumb_uri { get; set; }
         /// <summary>
         /// 头像原图
         /// </summary>
-        public string photoUri { get; set; }
+        public string photo_uri { get; set; }
 
         /// <summary>
         /// 邮件
@@ -87,7 +87,7 @@ namespace Com.Scm.Sys.Contact
         /// <summary>
         /// 电话
         /// </summary>
-        public List<Dictionary<string, string>> imAddresses { get; set; }
+        public List<Dictionary<string, string>> im_addresses { get; set; }
 
         /// <summary>
         /// 操作系统相关参数

@@ -82,19 +82,41 @@ namespace Com.Scm.Sys.Notes
         public string content { get; set; }
 
         /// <summary>
-        /// 版本信息
-        /// </summary>
-        public int ver { get; set; }
-
-        /// <summary>
         /// 便签颜色
         /// </summary>
         public int color { get; set; }
+
+        #region 外部引用
+        /// <summary>
+        /// 便签唯一ID
+        /// </summary>
+        public string note_id { get; set; }
+
+        /// <summary>
+        /// 外部创建时间
+        /// </summary>
+        public long note_create_time { get; set; }
+
+        /// <summary>
+        /// 外部更新时间
+        /// </summary>
+        public long note_update_time { get; set; }
+
+        /// <summary>
+        /// 标签列表
+        /// </summary>
+        public List<string> tags { get; set; }
 
         /// <summary>
         /// 操作系统相关参数
         /// </summary>
         public Dictionary<string, string> os_params { get; set; }
+        #endregion
+
+        /// <summary>
+        /// 版本信息
+        /// </summary>
+        public int ver { get; set; }
 
         public bool IsTooLong()
         {

@@ -6,6 +6,12 @@ namespace Com.Scm.Mqtt
     public class BrokerConfig
     {
         /// <summary>
+        /// 是否启用内置 Broker（默认 false）
+        /// 设为 false 时仅使用客户端连接外部 Broker
+        /// </summary>
+        public bool Enabled { get; set; } = true;
+
+        /// <summary>
         /// 监听端口（默认 1883）
         /// </summary>
         public int Port { get; set; } = 1883;

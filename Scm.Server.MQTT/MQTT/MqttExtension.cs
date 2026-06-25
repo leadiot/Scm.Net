@@ -60,8 +60,8 @@ namespace Com.Scm.Mqtt
             if (brokerConfig.Enabled)
             {
                 // 客户端自动连接本地 Broker
-                clientConfig.Host = "localhost";
-                clientConfig.Port = brokerConfig.Port;
+                //clientConfig.Host = "localhost";
+                //clientConfig.Port = brokerConfig.Port;
                 services.SetupMqttBroker(brokerConfig);
             }
 

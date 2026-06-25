@@ -6,6 +6,11 @@ namespace Com.Scm.Mqtt
     public class ClientConfig
     {
         /// <summary>
+        /// 是否启用内置 Client（默认 false）
+        /// </summary>
+        public bool Enabled { get; set; } = true;
+
+        /// <summary>
         /// Broker 服务器地址
         /// </summary>
         public string Host { get; set; } = "localhost";

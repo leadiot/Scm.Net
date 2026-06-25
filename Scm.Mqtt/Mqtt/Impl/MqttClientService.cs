@@ -33,6 +33,11 @@ namespace Com.Scm.Mqtt.Impl
         /// </summary>
         public async Task ConnectAsync(CancellationToken cancellationToken = default)
         {
+            if (!_config.Enabled)
+            {
+                return;
+            }
+
             var builder = new MqttClientOptionsBuilder()
                 .WithTcpServer(_config.Host, _config.Port)
                 .WithKeepAlivePeriod(TimeSpan.FromSeconds(_config.KeepAlivePeriod))
@@ -79,6 +84,11 @@ namespace Com.Scm.Mqtt.Impl
             bool retain = false,
             CancellationToken cancellationToken = default)
         {
+            if (!_config.Enabled)
+            {
+                return;
+            }
+
             EnsureConnected();
             var message = new MqttApplicationMessageBuilder()
                 .WithTopic(topic)
@@ -95,6 +105,11 @@ namespace Com.Scm.Mqtt.Impl
             MqttQualityOfServiceLevel qos = MqttQualityOfServiceLevel.AtMostOnce,
             CancellationToken cancellationToken = default)
         {
+            if (!_config.Enabled)
+            {
+                return;
+            }
+
             EnsureConnected();
             var subscribeOptions = new MqttClientSubscribeOptionsBuilder()
                 .WithTopicFilter(topic, qos)
@@ -106,6 +121,11 @@ namespace Com.Scm.Mqtt.Impl
         /// <inheritdoc />
         public async Task UnsubscribeAsync(string topic, CancellationToken cancellationToken = default)
         {
+            if (!_config.Enabled)
+            {
+                return;
+            }
+
             EnsureConnected();
             var unsubscribeOptions = new MqttClientUnsubscribeOptionsBuilder()
                 .WithTopicFilter(topic)

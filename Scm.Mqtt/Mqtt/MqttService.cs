@@ -5,6 +5,7 @@ namespace Com.Scm.Mqtt
 {
     /// <summary>
     /// MQTT 综合服务（封装客户端，统一管理连接、发布、订阅）
+    /// 此类暂未使用。
     /// </summary>
     public class MqttService : IDisposable
     {

@@ -6,6 +6,11 @@ namespace Com.Scm.Mqtt
     {
         public const string NAME = "MqttClient";
 
+        /// <summary>
+        /// 是否启用内置 Client（默认 false）
+        /// </summary>
+        public bool Enabled { get; set; } = true;
+
         public void Prepare(EnvConfig envConfig)
         {
             // 从配置文件读取设置，如果没有则使用默认值
@@ -29,7 +34,8 @@ namespace Com.Scm.Mqtt
             ClientId = $"scm-{Guid.NewGuid():N}",
             CleanSession = true,
             KeepAlivePeriod = 60,
-            ReconnectDelay = 5
+            ReconnectDelay = 5,
+            Enabled = false
         };
     }
 }

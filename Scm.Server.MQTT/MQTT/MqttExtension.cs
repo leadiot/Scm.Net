@@ -21,7 +21,7 @@ namespace Com.Scm.Mqtt
             if (config.Enabled)
             {
                 services.AddSingleton<BrokerConfig>(config);
-                //services.AddSingleton<MqttBrokerService>();
+                services.AddSingleton<MqttBrokerService>();
                 services.AddSingleton<IHostedService>(sp => sp.GetRequiredService<MqttBrokerService>());
             }
 
@@ -38,7 +38,7 @@ namespace Com.Scm.Mqtt
             if (config == null) throw new ArgumentNullException(nameof(config));
 
             services.AddSingleton<ClientConfig>(config);
-            //services.AddSingleton<MqttClientService>();
+            services.AddSingleton<MqttClientService>();
             services.AddSingleton<IMqttPublisher>(sp => sp.GetRequiredService<MqttClientService>());
             services.AddSingleton<IMqttSubscriber>(sp => sp.GetRequiredService<MqttClientService>());
             //services.AddSingleton<MqttService>();

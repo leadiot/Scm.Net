@@ -28,5 +28,9 @@ namespace Com.Scm.Mqtt
         /// 注册消息接收回调
         /// </summary>
         void OnMessageReceived(MqttMessageReceivedCallback callback);
+
+        Task ConnectAsync(CancellationToken cancellationToken = default);
+
+        Task DisconnectAsync(CancellationToken cancellationToken = default);
     }
 }

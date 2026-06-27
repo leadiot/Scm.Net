@@ -274,7 +274,7 @@ public class OperatorService : ApiService
         // 检测是否限制登录
         if (userDao.next_time > time)
         {
-            var msg = $"请于 {TimeUtils.FormatDataTime(userDao.next_time)} 后重试！";
+            var msg = $"请于 {TimeUtils.FormatDateTime(userDao.next_time)} 后重试！";
             response.SetFailure(LoginResponse.ERROR_05, msg);
             await LogUser(request, userDao, LoginResponse.ERROR_05, msg);
             return null;
@@ -368,7 +368,7 @@ public class OperatorService : ApiService
             // 检测是否限制登录
             if (userDao.next_time > time)
             {
-                var msg = $"请于 {TimeUtils.FormatDataTime(userDao.next_time)} 后重试！";
+                var msg = $"请于 {TimeUtils.FormatDateTime(userDao.next_time)} 后重试！";
                 response.SetFailure(LoginResponse.ERROR_05, msg);
                 await LogUser(request, userDao, LoginResponse.ERROR_05, msg);
                 return null;
@@ -524,7 +524,7 @@ public class OperatorService : ApiService
             // 检测是否限制登录
             if (userDao.next_time > time)
             {
-                var msg = $"请于 {TimeUtils.FormatDataTime(userDao.next_time)} 后重试！";
+                var msg = $"请于 {TimeUtils.FormatDateTime(userDao.next_time)} 后重试！";
                 response.SetFailure(LoginResponse.ERROR_05, msg);
                 await LogUser(request, userDao, LoginResponse.ERROR_05, msg);
                 return null;
@@ -906,7 +906,7 @@ public class OperatorService : ApiService
         // 检测是否限制登录
         if (userDao.next_time > time)
         {
-            response.SetFailure(SignonResponse.ERROR_05, $"请于 {TimeUtils.FormatDataTime(userDao.next_time)} 后重试！");
+            response.SetFailure(SignonResponse.ERROR_05, $"请于 {TimeUtils.FormatDateTime(userDao.next_time)} 后重试！");
             return false;
         }
 

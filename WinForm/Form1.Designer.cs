@@ -43,7 +43,7 @@ namespace WinForm
             // BtStart
             // 
             BtStart.Location = new Point(14, 275);
-            BtStart.Margin = new Padding(4, 4, 4, 4);
+            BtStart.Margin = new Padding(4);
             BtStart.Name = "BtStart";
             BtStart.Size = new Size(117, 46);
             BtStart.TabIndex = 0;
@@ -55,7 +55,7 @@ namespace WinForm
             // 
             BtStop.Enabled = false;
             BtStop.Location = new Point(138, 275);
-            BtStop.Margin = new Padding(4, 4, 4, 4);
+            BtStop.Margin = new Padding(4);
             BtStop.Name = "BtStop";
             BtStop.Size = new Size(117, 46);
             BtStop.TabIndex = 1;
@@ -99,7 +99,7 @@ namespace WinForm
             // txtDeviceId
             // 
             txtDeviceId.Location = new Point(97, 22);
-            txtDeviceId.Margin = new Padding(4, 4, 4, 4);
+            txtDeviceId.Margin = new Padding(4);
             txtDeviceId.Name = "txtDeviceId";
             txtDeviceId.Size = new Size(157, 23);
             txtDeviceId.TabIndex = 5;
@@ -108,16 +108,16 @@ namespace WinForm
             // txtHost
             // 
             txtHost.Location = new Point(97, 56);
-            txtHost.Margin = new Padding(4, 4, 4, 4);
+            txtHost.Margin = new Padding(4);
             txtHost.Name = "txtHost";
             txtHost.Size = new Size(157, 23);
             txtHost.TabIndex = 6;
-            txtHost.Text = "localhost";
+            txtHost.Text = "106.14.146.154";
             // 
             // txtPort
             // 
             txtPort.Location = new Point(97, 90);
-            txtPort.Margin = new Padding(4, 4, 4, 4);
+            txtPort.Margin = new Padding(4);
             txtPort.Name = "txtPort";
             txtPort.Size = new Size(157, 23);
             txtPort.TabIndex = 7;
@@ -190,7 +190,7 @@ namespace WinForm
             // txtInterval
             // 
             txtInterval.Location = new Point(97, 124);
-            txtInterval.Margin = new Padding(4, 4, 4, 4);
+            txtInterval.Margin = new Padding(4);
             txtInterval.Name = "txtInterval";
             txtInterval.Size = new Size(157, 23);
             txtInterval.TabIndex = 15;
@@ -249,7 +249,7 @@ namespace WinForm
             Controls.Add(BtStart);
             Controls.Add(StatusStrip);
             FormBorderStyle = FormBorderStyle.FixedSingle;
-            Margin = new Padding(4, 4, 4, 4);
+            Margin = new Padding(4);
             MaximizeBox = false;
             MinimizeBox = false;
             Name = "Form1";

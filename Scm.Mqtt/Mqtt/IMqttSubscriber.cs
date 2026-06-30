@@ -29,6 +29,8 @@ namespace Com.Scm.Mqtt
         /// </summary>
         void OnMessageReceived(MqttMessageReceivedCallback callback);
 
+        bool IsConnected { get; }
+
         Task ConnectAsync(CancellationToken cancellationToken = default);
 
         Task DisconnectAsync(CancellationToken cancellationToken = default);

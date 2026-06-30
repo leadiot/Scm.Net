@@ -106,7 +106,8 @@ namespace WinForm
                 };
 
                 string payload = JsonConvert.SerializeObject(data);
-                string topic = $"sensors/temperature/{txtDeviceId.Text}";
+                //string topic = $"sensors/temperature/{txtDeviceId.Text}";
+                string topic = $"test/topic";
 
                 await _mqttPublisher.PublishAsync(topic, payload, MqttQualityOfServiceLevel.AtLeastOnce);
 
@@ -130,7 +131,7 @@ namespace WinForm
                 ClientId = $"temp-device-{txtDeviceId.Text}-{Guid.NewGuid():N}",
                 CleanSession = true,
                 KeepAlivePeriod = 60,
-                ReconnectDelay = 5
+                ReconnectDelay = 5,
             };
 
             // 创建服务实例
@@ -143,7 +144,8 @@ namespace WinForm
             UpdateStatus("已连接");
 
             // 连接成功后再订阅响应消息
-            string responseTopic = $"sensors/temperature/{txtDeviceId.Text}/response";
+            string responseTopic = $"sensors/temperature/response";
+            //string responseTopic = "test/topic";
             await _mqttSubscriber.SubscribeAsync(responseTopic, MqttQualityOfServiceLevel.AtLeastOnce);
 
             // 注册消息接收回调

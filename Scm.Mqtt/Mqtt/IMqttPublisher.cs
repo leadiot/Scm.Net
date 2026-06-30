@@ -22,5 +22,11 @@ namespace Com.Scm.Mqtt
             MqttQualityOfServiceLevel qos = MqttQualityOfServiceLevel.AtMostOnce,
             bool retain = false,
             CancellationToken cancellationToken = default);
+
+        bool IsConnected { get; }
+
+        Task ConnectAsync(CancellationToken cancellationToken = default);
+
+        Task DisconnectAsync(CancellationToken cancellationToken = default);
     }
 }

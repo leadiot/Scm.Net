@@ -1,4 +1,4 @@
-namespace Scm.Server.Scalar.Config
+namespace Com.Scm.Config
 {
     public class ScalarConfig
     {

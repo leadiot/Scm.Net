@@ -1,12 +1,10 @@
-﻿using Microsoft.AspNetCore.Authentication;
+﻿using Com.Scm.Config;
+using Com.Scm.Scalar;
 using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.OpenApi;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.OpenApi;
 using Scalar.AspNetCore;
-using Scm.Server.Scalar.Config;
 
-namespace Scm.Server.Scalar
+namespace Com.Scm
 {
     public static class ScalarExtension
     {
@@ -37,6 +35,11 @@ namespace Scm.Server.Scalar
 
         public static void UseScalarSetup(this WebApplication app, ScalarConfig config)
         {
+            if (config == null)
+            {
+                return;
+            }
+
             // MapOpenApi 使用路由模板，{documentName} 占位符会匹配 AddOpenApi 注册的文档名称
             app.MapOpenApi("/openapi/{documentName}.json");
 

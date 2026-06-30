@@ -1,118 +1,43 @@
 ﻿using Com.Scm.Config;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.OpenApi;
-using Swashbuckle.AspNetCore.SwaggerGen;
+using Swashbuckle.AspNetCore.SwaggerUI;
 
-namespace Com.Scm;
-
-public static class SwaggerExtension
+namespace Com.Scm
 {
-    public static void SwaggerSetup(this IServiceCollection services, SwaggerConfig config)
+    public static class SwaggerExtension
     {
-        if (config == null)
+        public static void SwaggerSetup(this IServiceCollection services, SwaggerConfig config)
         {
-            return;
-        }
-
-        services.AddEndpointsApiExplorer();
-        services.AddSwaggerGen(s =>
-        {
-            // 基本信息与多文档支持
-            if (config.ApiDocs != null)
+            if (config == null)
             {
-                foreach (var doc in config.ApiDocs)
-                {
-                    s.SwaggerDoc(doc.Group, new OpenApiInfo
-                    {
-                        Version = doc.Version,
-                        Title = doc.Title,
-                        Description = doc.Description,
-                    });
-                }
+                return;
             }
 
-            s.OrderActionsBy(o => o.RelativePath);
-
-            // XML 注释
-            if (config.DllXmls != null)
+            services.AddOpenApi(options =>
             {
-                foreach (var file in config.DllXmls)
-                {
-                    var path = Path.Combine(AppContext.BaseDirectory, file);
-                    if (File.Exists(path))
-                    {
-                        s.IncludeXmlComments(path, true);
-                    }
-                }
-            }
-
-            // 解决模型名称冲突
-            s.CustomSchemaIds(type => type.FullName);
-
-            // JWT Bearer 定义（更标准的 Bearer 形式）
-            var schemeId = "ScmBearer";
-            s.AddSecurityDefinition(schemeId, new OpenApiSecurityScheme
-            {
-                Name = "Authorization",
-                //Description = "JWT Authorization header using the Bearer scheme. Example: \"Bearer {token}\"",
-                Description = "请输入认证令牌（格式：Bearer {Token} 或直接输入Token）",
-                In = ParameterLocation.Header,
-                Type = SecuritySchemeType.ApiKey,
-                Scheme = "Bearer",
-                BearerFormat = "JWT"
+                options.AddDocumentTransformer<BearerSecuritySchemeTransformer>();
             });
+        }
 
-            // 3. 配置全局安全要求（让所有接口默认携带该 Authorization 头部，也可单独给接口配置）
-            s.AddSecurityRequirement(document => new()
+        public static void UseSwaggerSetup(this WebApplication app, SwaggerConfig config)
+        {
+            if (config == null)
             {
-                [new OpenApiSecuritySchemeReference(schemeId, document)] = []
+                return;
+            }
+
+            app.MapOpenApi();
+            app.UseSwaggerUI(options =>
+            {
+                options.SwaggerEndpoint("/openapi/v1.json", "v1");
+                options.EnablePersistAuthorization(); // 持久化授权 Token
+                options.DisplayRequestDuration();     // 显示请求耗时
+                options.EnableTryItOutByDefault();    // 默认展开“Try it out”
+                options.EnableFilter();               // 启用接口过滤
+                options.DocExpansion(DocExpansion.List);
+                options.DefaultModelsExpandDepth(0);
             });
-
-            // 对有 [Authorize] 的接口，自动添加 401/403 响应和 Security 要求
-            s.OperationFilter<AuthResponsesOperationFilter>();
-        });
-    }
-
-    public static void UseSwaggerSetup(this IApplicationBuilder app, SwaggerConfig config)
-    {
-        if (app == null)
-        {
-            throw new ArgumentNullException(nameof(app));
         }
-        if (config == null)
-        {
-            return;
-        }
-
-        app.UseSwagger();
-        // Swagger UI
-        app.UseSwaggerUI(c =>
-        {
-            // 可选：设置 Swagger UI 为应用首页（访问根路径 "/" 直接进入 Swagger）
-            // 可选：自定义路由前缀（若 config 中提供）
-            var prefix = GetRoutePrefix(config);
-            if (!string.IsNullOrWhiteSpace(prefix))
-            {
-                c.RoutePrefix = prefix;
-            }
-
-            foreach (var doc in config.ApiDocs)
-            {
-                c.SwaggerEndpoint($"/swagger/{doc.Group}/swagger.json", $"{doc.Title} {doc.Version}");
-            }
-
-            // UI 友好设置
-            c.DocExpansion(Swashbuckle.AspNetCore.SwaggerUI.DocExpansion.List);
-            c.EnableDeepLinking();
-        });
-    }
-
-    // 从配置中获取 RoutePrefix（如果没有则返回 null）
-    private static string GetRoutePrefix(SwaggerConfig config)
-    {
-        // 如果将来需要在 SwaggerConfig 添加 RoutePrefix 字段，可在此读取并返回
-        return string.Empty;
     }
 }

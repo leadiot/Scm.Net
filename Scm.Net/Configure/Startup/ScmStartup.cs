@@ -74,7 +74,7 @@ namespace Com.Scm.Configure.Startup
 
             // Scalar配置
             LogUtils.Info("正在进行Scalar配置...");
-            var scalarConfig = AppUtils.GetConfig<ScalarConfig>(ScalarConfig.NAME);
+            var scalarConfig = AppUtils.GetConfig<ScalarConfig>(ScalarConfig.NAME) ?? new ScalarConfig();
             services.ScalarSetup(scalarConfig);
 
             // 字体配置
@@ -217,7 +217,7 @@ namespace Com.Scm.Configure.Startup
             var envConfig = app.Services.GetRequiredService<EnvConfig>();
             var corsConfig = AppUtils.GetConfig<CorsConfig>(CorsConfig.NAME);
             //var swaggerConfig = AppUtils.GetConfig<SwaggerConfig>(SwaggerConfig.NAME);
-            var scalarConfig = AppUtils.GetConfig<ScalarConfig>(ScalarConfig.NAME);
+            var scalarConfig = AppUtils.GetConfig<ScalarConfig>(ScalarConfig.NAME) ?? new ScalarConfig();
 
             AppUtils.ServiceProvider = app.Services;
 

@@ -70,12 +70,14 @@
 ### 系统与框架
 
 - **多数据库支持** — SQLite、MySQL、MariaDB、PostgreSQL、SQL Server、Oracle、Firebird、MongoDB
-- **多缓存机制** — MemoryCache、Dictionary、Redis
-- **动态 API** — 自动注册服务为 Web API，无需手动编写 Controller
+- **多种缓存机制** — MemoryCache、Dictionary、Redis
 - **代码生成器** — 自动生成实体、DAO、DTO/VO，支持自定义模板
 - **工作流引擎** — 可视化流程设计、节点配置、表单绑定、在线审批
+- **动态 API** — 自动注册服务为 Web API，无需手动编写 Controller
+- **API 文档** — Scalar、Swagger UI 生成，支持自定义注释
 - **定时任务** — Quartz.NET 集成，支持动态任务管理
 - **实时通信** — SignalR WebSocket 实时推送与在线聊天
+- **设备物联** — 支持 MQTT 协议，与物联网设备进行通信
 
 ### 业务能力
 
@@ -113,6 +115,8 @@
 | [Serilog](https://serilog.net/)                                  | 4.3.1   | 结构化日志                     |
 | [Newtonsoft.Json](https://www.newtonsoft.com/json)               | -       | JSON 序列化                  |
 | [JWT Bearer](https://github.com/aspnet/AspNetCore)               | 10.0.8  | 认证授权                      |
+| [Scalar](https://github.com/leadiot/Scalar)                      | 2.16.6  | API 文档可视化工具             |
+| [Swagger UI](https://swagger.io/swagger-ui)                      | 10.2.3  | API 文档可视化工具           |
 
 ### 前端（Scm.Vue）
 
@@ -134,6 +138,7 @@
 | .NET SDK      | ≥ 10.0   | <https://dotnet.microsoft.com>       |
 | Visual Studio | ≥ 2026   | <https://visualstudio.microsoft.com> |
 | Node.js       | ≥ 18.0.0 | <https://nodejs.org>                 |
+| VS Code       | ≥ 1.83.0 | <https://code.visualstudio.com/>     |
 
 ***
 
@@ -166,6 +171,7 @@ git clone https://gitee.com/leadiot/scm.net.git
 cd Scm.Net
 dotnet run
 ```
+访问 `http://localhost:5000/scalar` 确认后端接口正常，
 
 ### 4. 启动前端（需先克隆 Scm.Vue）
 
@@ -176,7 +182,7 @@ npm install
 npm run dev
 ```
 
-访问 `http://localhost:5000/swagger` 确认后端接口正常，访问 `http://localhost:2800` 进入前端页面。
+访问 `http://localhost:2800` 进入前端页面。
 
 > 详细说明请参考：[环境搭建教程](https://gitee.com/leadiot/scm.net/wikis/%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA%E6%95%99%E7%A8%8B) | [数据库配置说明](https://gitee.com/leadiot/scm.net/wikis/%E6%95%B0%E6%8D%AE%E5%BA%93%E9%85%8D%E7%BD%AE)
 
@@ -188,11 +194,11 @@ npm run dev
 
 | 配置节点        | 说明                                                        |
 | ----------- | --------------------------------------------------------- |
-| `Sql`       | 数据库连接（Type 支持 Sqlite、MySQL、PostgreSQL、SqlServer、Oracle 等） |
+| `Kestrel`   | HTTP 监听端点（默认 9999 端口）                                     |
 | `Cache`     | 缓存配置（Type 支持 MemoryCache、Dictionary、Redis）                |
 | `Uid`       | ID 生成器配置                                                  |
+| `Sql`       | 数据库连接（Type 支持 Sqlite、MySQL、PostgreSQL、SqlServer、Oracle 等） |
 | `Jwt`       | JWT 认证（Security Key、Issuer、Audience、Expires）              |
-| `Kestrel`   | HTTP 监听端点（默认 9999 端口）                                     |
 | `Cors`      | 跨域访问配置                                                    |
 | `Quartz`    | 定时任务调度配置                                                  |
 | `Email`     | 邮件服务（SMTP）                                                |
@@ -200,6 +206,8 @@ npm run dev
 | `Otp`       | 动态口令（TOTP）配置                                              |
 | `Generator` | 代码生成器配置                                                   |
 | `Serilog`   | 结构化日志配置                                                   |
+| `Scalar`    | API 文档可视化配置                                               |
+| `Swagger`   | API 文档可视化配置                                               |
 
 ***
 
@@ -228,7 +236,8 @@ npm run dev
 | `Scm.Server.RabbitMQ` | RabbitMQ 消息队列集成                        |
 | `Scm.Server.SignalR`  | SignalR 实时通讯                           |
 | `Scm.Server.Quartz`   | Quartz 定时任务调度                          |
-| `Scm.Server.Swagger`  | Swagger 文档扩展                           |
+| `Scm.Server.Swagger`  | Swagger 文档可视化                           |
+| `Scm.Server.Scalar`   | Scalar 文档可视化                           |
 | `Scm.Server.Aiml`     | AI 大语言模型集成                             |
 | `Scm.Server.Service`  | 业务服务扩展注册                               |
 | `Scm.Email`           | 邮件发送服务                                 |
@@ -282,7 +291,7 @@ Scm.Net/
 | `HbController`        | 心跳检测    |
 | `OnLineController`    | 在线用户管理  |
 
-> 启动后访问 `http://localhost:5000/swagger` 查看完整 API 文档。
+> 启动后访问 `http://localhost:5000/scalar` 查看完整 API 文档。
 
 ***
 

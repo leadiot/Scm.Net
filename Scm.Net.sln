@@ -83,6 +83,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WinForm", "WinForm\WinForm.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Scm.Mqtt", "Scm.Mqtt\Scm.Mqtt.csproj", "{BBFB35AA-9BC2-4EF5-A806-04F3DE0F581A}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Scm.Server.Scalar", "Scm.Server.Scalar\Scm.Server.Scalar.csproj", "{0C184417-7719-41B5-92E1-9CAD317EC243}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -225,6 +227,10 @@ Global
 		{BBFB35AA-9BC2-4EF5-A806-04F3DE0F581A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BBFB35AA-9BC2-4EF5-A806-04F3DE0F581A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BBFB35AA-9BC2-4EF5-A806-04F3DE0F581A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0C184417-7719-41B5-92E1-9CAD317EC243}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0C184417-7719-41B5-92E1-9CAD317EC243}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0C184417-7719-41B5-92E1-9CAD317EC243}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0C184417-7719-41B5-92E1-9CAD317EC243}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -264,6 +270,7 @@ Global
 		{D6161767-059E-4DEA-968E-3F920DB01FAD} = {F31CAB49-534E-4B14-AE02-8F99D01B6DB5}
 		{A03C5D2C-6BB8-4591-9644-9CF1BDD10FB8} = {49FC6A5D-62E5-4D4B-8F2E-71284D4DDB09}
 		{BBFB35AA-9BC2-4EF5-A806-04F3DE0F581A} = {B079BB77-40DD-4024-9A9C-14C824DDE273}
+		{0C184417-7719-41B5-92E1-9CAD317EC243} = {F31CAB49-534E-4B14-AE02-8F99D01B6DB5}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {E3837A3D-CB67-4767-B922-BCB491FA6C81}

@@ -23,6 +23,8 @@ using Com.Scm.Service;
 using Com.Scm.Uid.Config;
 using Com.Scm.Utils;
 using Microsoft.Extensions.FileProviders;
+using Scm.Server.Scalar;
+using Scm.Server.Scalar.Config;
 using Serilog;
 using SqlSugar;
 
@@ -66,9 +68,14 @@ namespace Com.Scm.Configure.Startup
             SqlSetup(services, envConfig, sqlConfig);
 
             // Swagger配置
-            LogUtils.Info("正在进行Swagger配置...");
-            var swaggerConfig = AppUtils.GetConfig<SwaggerConfig>(SwaggerConfig.NAME);
-            services.SwaggerSetup(swaggerConfig);
+            //LogUtils.Info("正在进行Swagger配置...");
+            //var swaggerConfig = AppUtils.GetConfig<SwaggerConfig>(SwaggerConfig.NAME);
+            //services.SwaggerSetup(swaggerConfig);
+
+            // Scalar配置
+            LogUtils.Info("正在进行Scalar配置...");
+            var scalarConfig = AppUtils.GetConfig<ScalarConfig>(ScalarConfig.NAME);
+            services.ScalarSetup(scalarConfig);
 
             // 字体配置
             LogUtils.Info("正在进行字体配置...");
@@ -208,14 +215,16 @@ namespace Com.Scm.Configure.Startup
         public static WebApplication ConfigureMiddleware(this WebApplication app)
         {
             var envConfig = app.Services.GetRequiredService<EnvConfig>();
-            var swaggerConfig = AppUtils.GetConfig<SwaggerConfig>(SwaggerConfig.NAME);
             var corsConfig = AppUtils.GetConfig<CorsConfig>(CorsConfig.NAME);
+            //var swaggerConfig = AppUtils.GetConfig<SwaggerConfig>(SwaggerConfig.NAME);
+            var scalarConfig = AppUtils.GetConfig<ScalarConfig>(ScalarConfig.NAME);
 
             AppUtils.ServiceProvider = app.Services;
 
             if (app.Environment.IsDevelopment())
             {
-                app.UseSwaggerSetup(swaggerConfig);
+                //app.UseSwaggerSetup(swaggerConfig);
+                app.UseScalarSetup(scalarConfig);
             }
 
             LogUtils.Info("正在进行静态文件设置...");

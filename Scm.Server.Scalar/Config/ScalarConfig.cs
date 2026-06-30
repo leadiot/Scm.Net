@@ -44,6 +44,16 @@ namespace Scm.Server.Scalar.Config
         /// </summary>
         public List<ApiServer> Servers { get; set; } = new List<ApiServer>();
 
+        /// <summary>
+        /// 
+        /// </summary>
+        public List<string> DllXmls { get; set; }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public List<ApiInfo> ApiDocs { get; set; }
+
         public void LoadDef()
         {
             Servers = new List<ApiServer>
@@ -51,6 +61,14 @@ namespace Scm.Server.Scalar.Config
                 new ApiServer { Url = "http://localhost:9999", Description = "本地开发环境" },
                 new ApiServer { Url = "http://localhost:5000", Description = "备用开发环境" }
             };
+            DllXmls = new List<string>();
+            ApiDocs = new List<ApiInfo>();
+        }
+
+        public bool HasDocs()
+        {
+            //return ApiDocs != null && ApiDocs.Count > 0;
+            return false;
         }
     }
 
@@ -60,6 +78,26 @@ namespace Scm.Server.Scalar.Config
     public class ApiServer
     {
         public string Url { get; set; }
+        public string Description { get; set; }
+    }
+
+    public class ApiInfo
+    {
+        /// <summary>
+        /// 
+        /// </summary>
+        public string Group { get; set; }
+        /// <summary>
+        /// 
+        /// </summary>
+        public string Version { get; set; }
+        /// <summary>
+        /// 
+        /// </summary>
+        public string Title { get; set; }
+        /// <summary>
+        /// 
+        /// </summary>
         public string Description { get; set; }
     }
 }

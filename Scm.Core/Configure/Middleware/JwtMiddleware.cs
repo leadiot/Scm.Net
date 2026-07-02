@@ -103,7 +103,7 @@ namespace Com.Scm.Configure.Middleware
 
         private void HandleRefreshToken(HttpContext context, ScmToken jwtToken)
         {
-            var now = TimeUtils.GetUnixTime(true);
+            var now = TimeUtils.GetUnixTime();
 
             // 从配置读取刷新阈值（单位：毫秒）
             var jwtConfig = AppUtils.GetConfig<JwtConfig>(JwtConfig.Name);

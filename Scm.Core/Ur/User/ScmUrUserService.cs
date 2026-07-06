@@ -289,7 +289,7 @@ namespace Com.Scm.Ur.User
             await _thisRepository.UpdateAsync(m => new UserDao()
             {
                 pass = newPass
-            }, m => id.Contains(m.id));
+            }, m => id.Contains(m.id) && m.usages == ScmUsagesEnum.Production);
         }
 
         /// <summary>

@@ -228,6 +228,11 @@ namespace Com.Scm.Scm.Ur
                 throw new BusinessException("无效的终端代码！");
             }
 
+            if (dao.IsDemo())
+            {
+                throw new BusinessException("演示终端不允许释放！");
+            }
+
             _ResHolder.Remove(dao.id);
 
             dao.binded = ScmBoolEnum.False;

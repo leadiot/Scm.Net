@@ -126,6 +126,11 @@ namespace Com.Scm.Ur
         [SugarColumn(Length = 256, IsNullable = true)]
         public string remark { get; set; }
 
+        /// <summary>
+        /// 用途
+        /// </summary>
+        public ScmUsagesEnum usages { get; set; }
+
         public override void PrepareCreate(long userId)
         {
             base.PrepareCreate(userId);
@@ -160,6 +165,11 @@ namespace Com.Scm.Ur
         public bool IsExpired()
         {
             return TimeUtils.GetUnixTime(true) > expired;
+        }
+
+        public bool IsDemo()
+        {
+            return usages == ScmUsagesEnum.Demo;
         }
     }
 }

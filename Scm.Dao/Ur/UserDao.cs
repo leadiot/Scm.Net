@@ -113,6 +113,11 @@ namespace Com.Scm.Ur
         [SugarColumn(Length = 1024, IsNullable = true)]
         public string remark { get; set; }
 
+        /// <summary>
+        /// 用途
+        /// </summary>
+        public ScmUsagesEnum usages { get; set; }
+
         #region 登录记录
         /// <summary>
         /// 登录次数
@@ -269,6 +274,10 @@ namespace Com.Scm.Ur
 
             var bytes = Convert.FromBase64String(otp_secret);
             return SecUtils.AesDecrypt(bytes);
+        }
+        public bool IsDemo()
+        {
+            return usages == ScmUsagesEnum.Demo;
         }
     }
 }

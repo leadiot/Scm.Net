@@ -243,7 +243,7 @@ namespace Com.Scm.Controllers
 
             var time = DateTime.Now.ToString("yyyyMMddHHmmss");
             var dataFile = Path.Combine(installPath, "data", "scm.db");
-            var dataBackupFile = Path.Combine(backupPath, "data", $"scm-{time}.db");
+            var dataBackupFile = Path.Combine(backupPath, $"scm-{time}.db");
             var settingsFile = Path.Combine(installPath, "appsettings.json");
             var settingsBackupFile = Path.Combine(backupPath, $"appsettings-{time}.json");
 

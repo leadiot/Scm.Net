@@ -3,6 +3,9 @@ using System.Text.RegularExpressions;
 
 namespace Com.Scm.Dto
 {
+    /// <summary>
+    /// 应用版本信息
+    /// </summary>
     public class ScmVerInfo : ScmDto
     {
         /// <summary>

@@ -69,6 +69,11 @@ namespace Com.Scm.Config
         /// </summary>
         public string DefaultPassWord { get; set; }
 
+        /// <summary>
+        /// 检测更新路径
+        /// </summary>
+        public string CheckUpgradeUrl { get; set; }
+
         public virtual void Prepare(WebApplicationBuilder builder)
         {
             DataDir = GetPath(builder.Environment.ContentRootPath, DataDir, "data");

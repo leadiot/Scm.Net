@@ -4,6 +4,9 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Com.Scm
 {
+    /// <summary>
+    /// 数据库版本信息
+    /// </summary>
     [SugarTable("scm_ver")]
     public class ScmVerDao : ScmDao
     {

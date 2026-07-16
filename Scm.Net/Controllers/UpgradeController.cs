@@ -241,9 +241,11 @@ namespace Com.Scm.Controllers
             var backupPath = Path.Combine(installPath, "backup");
             var tempPath = Path.Combine(installPath, "temp");
 
-            var dataFile = Path.Combine(installPath, "data", "scm.db");
             var time = DateTime.Now.ToString("yyyyMMddHHmmss");
-            var backupFile = Path.Combine(backupPath, "data", $"scm-{time}.db");
+            var dataFile = Path.Combine(installPath, "data", "scm.db");
+            var dataBackupFile = Path.Combine(backupPath, "data", $"scm-{time}.db");
+            var settingsFile = Path.Combine(installPath, "appsettings.json");
+            var settingsBackupFile = Path.Combine(backupPath, $"appsettings-{time}.json");
 
             // 1、创建备份目录
             var stepConfig = StepConfig.NewCreateDirStep("创建备份目录", backupPath);
@@ -253,13 +255,18 @@ namespace Com.Scm.Controllers
             stepConfig = StepConfig.NewCreateDirStep("创建临时目录", tempPath);
             config.AddStep(stepConfig);
 
-            // 3、升级文件下载
+            // 升级文件下载
             //var downloadFile = Path.Combine(tempPath, "upgrade.zip");
             //stepConfig = StepConfig.NewDownloadStep("升级文件下载", verInfo.url, downloadFile);
             //config.AddStep(stepConfig);
 
-            // 4、数据备份
-            stepConfig = StepConfig.NewMoveDocStep("数据备份", dataFile, backupFile);
+            // 3、数据备份
+            stepConfig = StepConfig.NewMoveDocStep("数据备份", dataFile, dataBackupFile);
+            stepConfig.ContinueOnError = true;
+            config.AddStep(stepConfig);
+
+            // 4、配置备份
+            stepConfig = StepConfig.NewMoveDocStep("配置备份", settingsFile, settingsBackupFile);
             stepConfig.ContinueOnError = true;
             config.AddStep(stepConfig);
 
@@ -271,14 +278,14 @@ namespace Com.Scm.Controllers
             stepConfig = StepConfig.NewMoveDirStep("应用更新", Path.Combine(tempPath, "Scm.Web"), installPath);
             config.AddStep(stepConfig);
 
-            // 7、数据恢复
-            stepConfig = StepConfig.NewCopyDocStep("数据恢复", backupFile, dataFile);
-            stepConfig.ContinueOnError = true;
+            // 7、配置恢复
+            stepConfig = StepConfig.NewCopyDocStep("配置恢复", settingsBackupFile, settingsFile);
             config.AddStep(stepConfig);
 
-            // 8、配置恢复
-            //stepConfig = StepConfig.NewCopyDocStep("配置恢复", Path.Combine(installPath, launchFile), null);
-            //config.AddStep(stepConfig);
+            // 8、数据恢复
+            stepConfig = StepConfig.NewCopyDocStep("数据恢复", dataBackupFile, dataFile);
+            stepConfig.ContinueOnError = true;
+            config.AddStep(stepConfig);
 
             // 9、启用应用
             stepConfig = StepConfig.NewLaunchStep("启用应用", launchFile, "", installPath);

@@ -288,7 +288,7 @@ namespace Com.Scm.Controllers
             config.AddStep(stepConfig);
 
             // 9、启用应用
-            stepConfig = StepConfig.NewLaunchStep("启用应用", launchFile, "", installPath);
+            stepConfig = StepConfig.NewLaunchStep("启用应用", launchFile, installPath);
             config.AddStep(stepConfig);
 
             // 10、临时文件清理

@@ -74,6 +74,15 @@ namespace Com.Scm.Config
         /// </summary>
         public string CheckUpgradeUrl { get; set; }
 
+        /// <summary>
+        /// 升级程序路径
+        /// </summary>
+        public string UpgradeFilePath { get; set; }
+        /// <summary>
+        /// 升级配置路径
+        /// </summary>
+        public string UpgradeJsonPath { get; set; }
+
         public virtual void Prepare(WebApplicationBuilder builder)
         {
             DataDir = GetPath(builder.Environment.ContentRootPath, DataDir, "data");

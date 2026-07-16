@@ -79,13 +79,18 @@ namespace Com.Scm.Dto
         public int size { get; set; }
 
         /// <summary>
+        /// 文件摘要
+        /// </summary>
+        public string hash { get; set; }
+
+        /// <summary>
         /// 更新事项
         /// </summary>
         public string remark { get; set; }
 
         public string GetVer()
         {
-            return $"{major}.{minor}.{patch}";
+            return $"{major}.{minor}.{patch}.{build}";
         }
 
         public bool IsNewer(int build)

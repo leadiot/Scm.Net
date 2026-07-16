@@ -40,9 +40,29 @@
 
         /// <summary>
         /// 发行版本
-        /// 格式：Scm.Net 10.13.25.45 (Build 2026041501)
+        /// 格式：10.13.25.45
         /// </summary>
-        public static readonly string VER_INFO = $"{MAJOR}.{MINOR}.{PATCH}.{BUILD} @Build {VER_CODE}";
+        public static readonly string VER_INFO = $"{MAJOR}.{MINOR}.{PATCH}.{BUILD}";
+
+        /// <summary>
+        /// 发行版本
+        /// 格式：10.13.25.45 @Build 2026041501
+        /// </summary>
+        public static readonly string VER_FULL = $"{VER_INFO} @Build {VER_CODE}";
+
+        /// <summary>
+        /// 检测更新路径
+        /// </summary>
+        public const string CheckUpgradeUrl = "";
+
+        /// <summary>
+        /// 升级程序路径
+        /// </summary>
+        public const string UpgradeFilePath = "Upgrade/Upgrade.Cmd.exe";
+        /// <summary>
+        /// 升级配置路径
+        /// </summary>
+        public const string UpgradeJsonPath = "Upgrade/Upgrade.json";
 
         public const long USER_ID = 1000000000000001030L;
     }

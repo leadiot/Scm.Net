@@ -18,6 +18,11 @@
         public string name { get; set; }
 
         /// <summary>
+        /// 精简介绍
+        /// </summary>
+        public string slogan { get; set; }
+
+        /// <summary>
         /// 项目地址
         /// </summary>
         public string project { get; set; }

@@ -2,8 +2,8 @@
 Scm应用入口
 
 【项目启动】
-1、复制/data目录下scm-origin.db，并命名为scm.db；
-2、复制/data目录下scm-origin.uid，并命名为scm.uid；
+1、修改appsettings.json中Env配置为您需要使用的目录；
+2、修改appsettings.json中Sql配置为您需要使用的链接；
 3、启动项目；
 4、访问地址：http://localhost:2800
 5、用户及口令：admin/123456

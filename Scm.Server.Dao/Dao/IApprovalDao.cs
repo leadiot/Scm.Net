@@ -1,5 +1,4 @@
 ﻿using Com.Scm.Enums;
-using SqlSugar;
 
 namespace Com.Scm.Dao
 {

@@ -141,12 +141,12 @@ namespace Com.Scm.Configure.Startup
 
             // MQTT Broker（必须在 SamplesServerUtils.Setup 之前，确保 Broker 先启动）
             LogUtils.Info("正在进行MQTT配置...");
-            var mqttBrokerConfig = AppUtils.GetConfig<MqttBrokerConfig>(MqttBrokerConfig.NAME) ?? new MqttBrokerConfig();
-            mqttBrokerConfig.Prepare(envConfig);
+            var mqttBrokerConfig = AppUtils.GetConfig<MqttBrokerConfig>(MqttBrokerConfig.NAME);
+            mqttBrokerConfig?.Prepare(envConfig);
 
             // MQTT Client（依赖于 MQTT Broker 配置）
             var mqttClientConfig = AppUtils.GetConfig<MqttClientConfig>(MqttClientConfig.NAME) ?? new MqttClientConfig();
-            mqttClientConfig.Prepare(envConfig);
+            mqttClientConfig?.Prepare(envConfig);
             services.SetupMqtt(mqttBrokerConfig, mqttClientConfig);
 
             // 自定义服务
@@ -453,7 +453,7 @@ namespace Com.Scm.Configure.Startup
                             }
                             else if (c.PropertyType == typeof(bool))
                             {
-                                p.DataType = "TINYINT(1)";
+                                p.DataType = "TINYINT";
                                 p.IsNullable = false;
                             }
                             else if (c.PropertyType == typeof(int))

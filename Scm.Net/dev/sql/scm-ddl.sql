@@ -6,5 +6,13 @@
  ALTER TABLE [scm_sys_menu] DROP COLUMN [layout];
  ALTER TABLE [scm_sys_menu] RENAME COLUMN [layout1] TO [layout];
 
- /** Ver:6 */
- ALTER TABLE [scm_sys_notes] RENAME TO [scm_sys_notes];
+/*
+ * Ver:6
+ * Date: 2026-06-03
+ */
+ ALTER TABLE [scm_sys_note] RENAME TO [scm_sys_notes];
+
+/*
+ * Ver:7
+ * Date: Todo
+ */

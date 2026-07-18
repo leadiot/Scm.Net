@@ -17,6 +17,8 @@ namespace Com.Scm.Utils
             {
                 case "sqlite":
                     return DbType.Sqlite;
+                case "postgresql":
+                    return DbType.PostgreSQL;
                 case "sqlserver":
                     return DbType.SqlServer;
                 case "oracle":

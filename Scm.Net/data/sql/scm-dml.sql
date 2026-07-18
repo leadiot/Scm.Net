@@ -107,3 +107,8 @@ UPDATE [scm_sys_menu] SET [od]=66 WHERE [id]=2055915979883548672;
 UPDATE [scm_sys_menu] SET [od]=67 WHERE [id]=2055916115632197632;
 UPDATE [scm_sys_menu] SET [od]=68 WHERE [id]=2062186352392409088;
 UPDATE [scm_sys_menu] SET [od]=69 WHERE [id]=2055915753743454208;
+
+/*
+ * Ver:7
+ * Date: Todo
+ */

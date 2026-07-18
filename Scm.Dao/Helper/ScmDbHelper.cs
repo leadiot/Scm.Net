@@ -19,11 +19,11 @@ namespace Com.Scm.Helper
         /// <summary>
         /// 数据版本
         /// </summary>
-        private const int VER = 6;
+        private const int VER = 7;
         /// <summary>
         /// 发行日期
         /// </summary>
-        private const string DATE = "2026-05-20";
+        private const string DATE = "2026-07-17";
 
         /// <summary>
         /// 

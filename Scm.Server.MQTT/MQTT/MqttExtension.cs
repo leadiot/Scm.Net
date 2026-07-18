@@ -53,11 +53,8 @@ namespace Com.Scm.Mqtt
             MqttBrokerConfig brokerConfig = null,
             MqttClientConfig clientConfig = null)
         {
-            brokerConfig ??= MqttBrokerConfig.Default;
-            clientConfig ??= MqttClientConfig.Default;
-
             // 根据配置决定是否启动内置 Broker
-            if (brokerConfig.Enabled)
+            if (brokerConfig != null && brokerConfig.Enabled)
             {
                 // 客户端自动连接本地 Broker
                 //clientConfig.Host = "localhost";

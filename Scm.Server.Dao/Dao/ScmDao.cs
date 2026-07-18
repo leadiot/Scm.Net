@@ -8,7 +8,7 @@ namespace Com.Scm.Dao
         /// <summary>
         /// 唯一编号
         /// </summary>
-        [SugarColumn(IsPrimaryKey = true)]
+        [SugarColumn(IsPrimaryKey = true, IsIdentity = true)]
         public long id { get; set; }
 
         public virtual void PrepareCreate(long userId)

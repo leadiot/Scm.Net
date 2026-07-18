@@ -14,7 +14,6 @@ namespace Com.Scm.Res.Ext
         /// <summary>
         /// 文件类型
         /// </summary>
-        [SugarColumn(ColumnDataType = "tinyint")]
         public ScmFileKindEnum kind { get; set; }
 
         /// <summary>

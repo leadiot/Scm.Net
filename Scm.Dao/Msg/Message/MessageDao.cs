@@ -63,7 +63,6 @@ public class MessageDao : ScmUserDataDao, IDeleteDao
     /// 是否删除
     /// </summary>
     [Required]
-    [SugarColumn(ColumnDataType = "tinyint", IsNullable = false)]
     public ScmRowDeleteEnum row_delete { get; set; }
 
     public override void PrepareCreate(long userId)

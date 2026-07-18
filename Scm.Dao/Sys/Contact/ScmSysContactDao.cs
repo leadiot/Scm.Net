@@ -102,31 +102,31 @@ namespace Com.Scm.Sys.Contact
         /// <summary>
         /// 邮件
         /// </summary>
-        [SugarColumn(Length = 1024, IsNullable = true, IsJson = true)]
+        [SugarColumn(IsNullable = true, IsJson = true)]
         public List<Dictionary<string, string>> emails { get; set; }
 
         /// <summary>
         /// 电话
         /// </summary>
-        [SugarColumn(Length = 1024, IsNullable = true, IsJson = true)]
+        [SugarColumn(IsNullable = true, IsJson = true)]
         public List<Dictionary<string, string>> phones { get; set; }
 
         /// <summary>
         /// 地址
         /// </summary>
-        [SugarColumn(Length = 1024, IsNullable = true, IsJson = true)]
+        [SugarColumn(IsNullable = true, IsJson = true)]
         public List<Dictionary<string, string>> addresses { get; set; }
 
         /// <summary>
         /// 电话
         /// </summary>
-        [SugarColumn(Length = 1024, IsNullable = true, IsJson = true)]
+        [SugarColumn(IsNullable = true, IsJson = true)]
         public List<Dictionary<string, string>> im_addresses { get; set; }
 
         /// <summary>
         /// 操作系统相关参数
         /// </summary>
-        [SugarColumn(Length = 1024, IsNullable = true, IsJson = true)]
+        [SugarColumn(IsNullable = true, IsJson = true)]
         public Dictionary<string, string> os_params { get; set; }
     }
 }

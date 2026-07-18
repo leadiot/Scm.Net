@@ -66,7 +66,6 @@ public class DicDetailDao : ScmDataDao, IDeleteDao
     /// <summary>
     /// 
     /// </summary>
-    [SugarColumn(ColumnDataType = "tinyint", IsNullable = false)]
     public ScmRowDeleteEnum row_delete { get; set; }
 
     public override void PrepareCreate(long userId)

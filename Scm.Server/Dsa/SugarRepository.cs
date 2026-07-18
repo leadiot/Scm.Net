@@ -81,17 +81,24 @@ namespace Com.Scm.Dsa
                 }
             };
 
-            //// LOG处理
-            //Context.Aop.OnLogExecuting = (s, p) =>
-            //{
-            //    var sqlValue = string.Empty;
-            //    var sql = s;
-            //    foreach (var item in p)
-            //    {
-            //        sql = sql.Replace(item.ParameterName, "'" + item.Value + "'");
-            //    }
-            //    LogUtils.Debug("Sql脚本：" + sql, "db");
-            //};
+            // LOG处理
+            Context.Aop.OnLogExecuting = (s, p) =>
+            {
+                var sqlValue = string.Empty;
+                var sql = s;
+                foreach (var item in p)
+                {
+                    sql = sql.Replace(item.ParameterName, "'" + item.Value + "'");
+                }
+                LogUtils.Debug("Sql脚本：" + sql, "db");
+            };
+
+            Context.Aop.OnError = (exp) =>
+            {
+                // 打印出错SQL+异常信息
+                LogUtils.Debug("执行失败SQL：" + exp.Sql);
+                LogUtils.Debug("错误详情：" + exp.Message);
+            };
         }
 
         /// <summary>

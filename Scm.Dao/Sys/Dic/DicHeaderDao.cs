@@ -55,13 +55,11 @@ public class DicHeaderDao : ScmDataDao, ISystemDao, IDeleteDao, ISortableDao
     /// 是否系统内置集成
     /// </summary>
     [Required]
-    [SugarColumn(ColumnDataType = "tinyint", IsNullable = false)]
     public ScmRowSystemEnum row_system { get; set; } = ScmRowSystemEnum.No;
 
     /// <summary>
     /// 
     /// </summary>
-    [SugarColumn(ColumnDataType = "tinyint", IsNullable = false)]
     public ScmRowDeleteEnum row_delete { get; set; }
 
     /// <summary>

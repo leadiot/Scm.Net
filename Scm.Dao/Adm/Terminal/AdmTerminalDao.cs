@@ -130,6 +130,11 @@ namespace Com.Scm.Adm.Terminal
         [SugarColumn(Length = 256, IsNullable = true)]
         public string remark { get; set; }
 
+        /// <summary>
+        /// 用途
+        /// </summary>
+        public ScmUsagesEnum usages { get; set; }
+
         public override void PrepareCreate(long userId)
         {
             base.PrepareCreate(userId);

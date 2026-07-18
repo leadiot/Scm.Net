@@ -16,3 +16,6 @@
  * Ver:7
  * Date: Todo
  */
+ ALTER TABLE [scm_sys_menu] RENAME COLUMN  [keepAlive] TO [keep_alive];
+ ALTER TABLE [scm_sys_menu] RENAME COLUMN  [showInDesktop] TO show_in_desktop;
+ ALTER TABLE [scm_sys_menu] RENAME COLUMN  [showInTaskbar] TO [show_in_taskbar];

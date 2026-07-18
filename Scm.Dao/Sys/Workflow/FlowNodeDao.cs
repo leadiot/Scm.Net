@@ -42,17 +42,17 @@ namespace Com.Scm.Sys.Workflow
         /// <summary>
         /// 用户列表
         /// </summary>
-        [SugarColumn(Length = 256, IsNullable = true, IsJson = true)]
+        [SugarColumn(IsNullable = true, IsJson = true)]
         public List<string> user_list { get; set; }
         /// <summary>
         /// 角色列表
         /// </summary>
-        [SugarColumn(Length = 256, IsNullable = true, IsJson = true)]
+        [SugarColumn(IsNullable = true, IsJson = true)]
         public List<string> role_list { get; set; }
         /// <summary>
         /// 节点参数
         /// </summary>
-        [SugarColumn(Length = 256, IsNullable = true, IsJson = true)]
+        [SugarColumn(IsNullable = true, IsJson = true)]
         public List<string> args { get; set; }
     }
 }

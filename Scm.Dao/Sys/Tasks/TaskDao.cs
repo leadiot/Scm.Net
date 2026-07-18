@@ -94,7 +94,6 @@ namespace Com.Scm.Sys.Tasks
         /// 
         /// </summary>
         [Required]
-        [SugarColumn(ColumnDataType = "tinyint", IsNullable = false)]
         public ScmRowDeleteEnum row_delete { get; set; }
 
         /// <summary>

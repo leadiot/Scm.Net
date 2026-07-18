@@ -74,7 +74,7 @@ namespace Com.Scm.Sys
         /// <summary>
         /// 已处理结点
         /// </summary>
-        [SugarColumn(Length = 512, IsNullable = true, IsJson = true)]
+        [SugarColumn(IsNullable = true, IsJson = true)]
         public List<long> nodes { get; set; }
 
         public void AddNode(long nodeId)

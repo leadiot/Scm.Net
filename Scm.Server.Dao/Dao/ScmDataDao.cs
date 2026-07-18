@@ -1,6 +1,5 @@
 ﻿using Com.Scm.Enums;
 using Com.Scm.Utils;
-using SqlSugar;
 
 namespace Com.Scm.Dao
 {
@@ -9,7 +8,6 @@ namespace Com.Scm.Dao
         /// <summary>
         /// 状态
         /// </summary>
-        [SugarColumn(ColumnDataType = "tinyint", IsNullable = false)]
         public ScmRowStatusEnum row_status { get; set; } = ScmRowStatusEnum.Enabled;
 
         /// <summary>

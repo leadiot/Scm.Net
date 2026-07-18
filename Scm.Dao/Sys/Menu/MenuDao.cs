@@ -96,7 +96,7 @@ public class MenuDao : ScmDataDao, ISortableDao, IDeleteDao
     /// <summary>
     /// 是否缓存
     /// </summary>
-    public bool keepAlive { get; set; } = true;
+    public bool keep_alive { get; set; } = true;
 
     /// <summary>
     /// 高亮，暂未使用
@@ -155,18 +155,17 @@ public class MenuDao : ScmDataDao, ISortableDao, IDeleteDao
     /// 指示该项是否在桌面界面中可见。
     /// </summary>
     /// <remarks>用于控制桌面视图中的可见性，通常用于在不同平台或视图模式下切换显示。</remarks>
-    public bool showInDesktop { get; set; }
+    public bool show_in_desktop { get; set; }
 
     /// <summary>
     /// 指示窗口是否显示在任务栏中。
     /// </summary>
     /// <remarks>仅对顶级窗口有效；对非顶级窗口或某些平台可能被忽略。</remarks>
-    public bool showInTaskbar { get; set; }
+    public bool show_in_taskbar { get; set; }
 
     /// <summary>
     /// 删除状态
     /// </summary>
-    [SugarColumn(ColumnDataType = "tinyint", IsNullable = false)]
     public ScmRowDeleteEnum row_delete { get; set; }
 
     public override void PrepareCreate(long userId)

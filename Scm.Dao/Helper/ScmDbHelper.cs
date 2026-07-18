@@ -833,7 +833,7 @@ namespace Com.Scm.Helper
             menuDao.icon = icon;
             menuDao.visible = true;
             menuDao.enabled = true;
-            menuDao.keepAlive = true;
+            menuDao.keep_alive = true;
             menuDao.layout = layout;
             menuDao.row_delete = ScmRowDeleteEnum.No;
             SaveDao(menuDao);

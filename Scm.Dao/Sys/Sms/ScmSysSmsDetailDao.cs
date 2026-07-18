@@ -61,7 +61,7 @@ namespace Com.Scm.Sys.Sms
         /// <summary>
         /// 操作系统相关参数
         /// </summary>
-        [SugarColumn(Length = 1024, IsNullable = true, IsJson = true)]
+        [SugarColumn(IsNullable = true, IsJson = true)]
         public Dictionary<string, string> os_params { get; set; }
     }
 }

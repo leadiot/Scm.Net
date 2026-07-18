@@ -20,7 +20,6 @@ namespace Com.Scm.Dao
         /// <summary>
         /// 审批状态
         /// </summary>
-        [SugarColumn(ColumnDataType = "tinyint", IsNullable = false)]
         public ScmWfaStatusEnum wfa_status { get; set; }
     }
 }

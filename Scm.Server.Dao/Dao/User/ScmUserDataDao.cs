@@ -9,7 +9,6 @@ namespace Com.Scm.Dao.User
         /// <summary>
         /// 状态
         /// </summary>
-        [SugarColumn(ColumnDataType = "tinyint", IsNullable = false)]
         public ScmRowStatusEnum row_status { get; set; }
 
         /// <summary>

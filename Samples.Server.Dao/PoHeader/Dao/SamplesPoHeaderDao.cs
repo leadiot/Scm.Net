@@ -64,7 +64,6 @@ namespace Com.Scm.Samples.PoHeader.Dao
         /// <summary>
         /// 审批状态
         /// </summary>
-        [SugarColumn(ColumnDataType = "tinyint", IsNullable = false)]
         public ScmWfaStatusEnum wfa_status { get; set; }
 
         public override void PrepareCreate(long userId)

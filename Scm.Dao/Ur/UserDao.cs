@@ -93,7 +93,6 @@ namespace Com.Scm.Ur
         /// <summary>
         /// OTP是否启用
         /// </summary>
-        [SugarColumn(ColumnDataType = "tinyint", IsNullable = false)]
         public ScmRowStatusEnum otp_status { get; set; }
         /// <summary>
         /// OTP Secret
@@ -162,12 +161,10 @@ namespace Com.Scm.Ur
         /// <summary>
         /// 
         /// </summary>
-        [SugarColumn(ColumnDataType = "tinyint", IsNullable = false)]
         public ScmRowSystemEnum row_system { get; set; } = ScmRowSystemEnum.No;
         /// <summary>
         /// 
         /// </summary>
-        [SugarColumn(ColumnDataType = "tinyint", IsNullable = false)]
         public ScmRowDeleteEnum row_delete { get; set; }
 
         /// <summary>

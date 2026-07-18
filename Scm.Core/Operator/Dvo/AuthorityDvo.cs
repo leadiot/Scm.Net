@@ -100,7 +100,7 @@ public class AuthorityMeta
     /// 不缓存
     /// </summary>
     [JsonIgnore]
-    public bool keepAlive { get; set; } = true;
+    public bool keep_alive { get; set; } = true;
 
     /// <summary>
     /// 按钮权限

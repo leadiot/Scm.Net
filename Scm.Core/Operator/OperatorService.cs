@@ -1440,7 +1440,7 @@ public class OperatorService : ApiService
                     type = item.types.ToKey().ToLower(),
                     hidden = !item.visible,
                     fullpage = item.fullpage ? true : null,
-                    keepAlive = item.keep_alive,
+                    keep_alive = item.keep_alive,
                     affix = item.codec == "dashboard"
                 },
                 children = recursiveList

@@ -41,6 +41,36 @@ namespace Com.Scm.Service
             return await _configRepository.GetFirstAsync(a => a.key == key && a.row_status == ScmRowStatusEnum.Enabled);
         }
 
+        public ConfigDao GetConfigByUser(string key, long userId)
+        {
+            return _configRepository.GetFirst(a => a.user_id == userId && a.key == key && a.row_status == ScmRowStatusEnum.Enabled);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="key"></param>
+        /// <returns></returns>
+        public async Task<ConfigDao> GetConfigByUserAsync(string key, long userId)
+        {
+            return await _configRepository.GetFirstAsync(a => a.user_id == userId && a.key == key && a.row_status == ScmRowStatusEnum.Enabled);
+        }
+
+        public ConfigDao GetConfigByCat(string key, long catId)
+        {
+            return _configRepository.GetFirst(a => a.cat_id == catId && a.key == key && a.row_status == ScmRowStatusEnum.Enabled);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="key"></param>
+        /// <returns></returns>
+        public async Task<ConfigDao> GetConfigByCatAsync(string key, long catId)
+        {
+            return await _configRepository.GetFirstAsync(a => a.cat_id == catId && a.key == key && a.row_status == ScmRowStatusEnum.Enabled);
+        }
+
         /// <summary>
         /// 
         /// </summary>

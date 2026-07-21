@@ -2,14 +2,24 @@
 using SqlSugar;
 using System.ComponentModel.DataAnnotations;
 
-namespace Com.Scm.Sys.Theme
+namespace Com.Scm.Desktop.Theme
 {
     /// <summary>
-    /// 
+    /// 桌面主题
     /// </summary>
-    [SugarTable("scm_sys_theme")]
-    public class ThemeDao : ScmDataDao
+    [SugarTable("scm_sys_theme_desktop")]
+    public class ThemeDesktopDao : ScmDataDao
     {
+        /// <summary>
+        /// 风格ID
+        /// </summary>
+        public int style_id { get; set; }
+
+        /// <summary>
+        /// 显示排序
+        /// </summary>
+        public int od { get; set; }
+
         /// <summary>
         /// 主题名称
         /// </summary>
@@ -25,5 +35,10 @@ namespace Com.Scm.Sys.Theme
         [StringLength(1024)]
         [SugarColumn(Length = 1024)]
         public string theme { get; set; }
+
+        /// <summary>
+        /// 预览内容
+        /// </summary>
+        public string preview { get; set; }
     }
 }

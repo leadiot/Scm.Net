@@ -66,7 +66,7 @@ namespace Com.Scm.Service
         /// </summary>
         /// <param name="key"></param>
         /// <returns></returns>
-        public async Task<ConfigDao> GetConfigByCatAsync(string key, long catId)
+        public async Task<ConfigDao> GetConfigByCatAsync(string key, int catId)
         {
             return await _configRepository.GetFirstAsync(a => a.cat_id == catId && a.key == key && a.row_status == ScmRowStatusEnum.Enabled);
         }

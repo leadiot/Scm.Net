@@ -15,7 +15,7 @@ namespace Com.Scm.Terminal
     /// <summary>
     /// 终端服务
     /// </summary>
-    [ApiExplorerSettings(GroupName = "Scm")]
+    [ApiExplorerSettings(GroupName = "v1")]
     public class TerminalService : ApiService
     {
         public TerminalService(ISqlSugarClient sqlClient

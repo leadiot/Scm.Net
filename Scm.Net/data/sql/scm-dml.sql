@@ -112,3 +112,6 @@ UPDATE [scm_sys_menu] SET [od]=69 WHERE [id]=2055915753743454208;
  * Ver:7
  * Date: Todo
  */
+ update scm_sys_menu set codec='app-media-video' where codec='app-media-vedio';
+ update scm_sys_menu set uri='/video' where uri='/vedio';
+ update scm_sys_menu set codec='app-calculator' where codec='app-calculate';

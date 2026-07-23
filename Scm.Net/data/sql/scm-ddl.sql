@@ -14,7 +14,7 @@
 
 /*
  * Ver:7
- * Date: Todo
+ * Date: 2026-07-23
  */
  ALTER TABLE [scm_sys_menu] RENAME COLUMN  [keepAlive] TO [keep_alive];
  ALTER TABLE [scm_sys_menu] RENAME COLUMN  [showInDesktop] TO show_in_desktop;

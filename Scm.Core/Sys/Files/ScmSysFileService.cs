@@ -150,41 +150,6 @@ public class ScmSysFileService : IApiService
     }
 
     /// <summary>
-    /// 
-    /// </summary>
-    /// <param name="file"></param>
-    /// <param name="path"></param>
-    /// <returns></returns>
-    public async Task<ScmUploadResult> UploadFile(IFormFile file, string path)
-    {
-        var result = new ScmUploadResult();
-
-        var dstPath = _envConfig.GetDataPath(path);
-        FileUtils.CreateDir(dstPath);
-
-        var name = file.Name;
-
-        var exts = Path.GetExtension(file.FileName).ToLower();
-        if (!IsAcceptExts(exts))
-        {
-            result.name = name;
-            result.message = "不支持的文件扩展名：" + exts;
-            return result;
-        }
-
-        var dstFile = Path.Combine(dstPath, DateTime.Now.ToFileTimeUtc() + exts);
-        using (var stream = System.IO.File.OpenWrite(dstFile))
-        {
-            await file.CopyToAsync(stream);
-        }
-        result.name = name;
-        result.path = _envConfig.ToUri(dstFile);
-        result.success = true;
-
-        return result;
-    }
-
-    /// <summary>
     /// 文件上传
     /// </summary>
     /// <returns></returns>

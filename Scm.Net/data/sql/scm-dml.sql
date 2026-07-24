@@ -112,6 +112,13 @@ UPDATE [scm_sys_menu] SET [od]=69 WHERE [id]=2055915753743454208;
  * Ver:7
  * Date: 2026-07-23
  */
- update scm_sys_menu set codec='app-media-video' where codec='app-media-vedio';
- update scm_sys_menu set uri='/video' where uri='/vedio';
- update scm_sys_menu set codec='app-calculator' where codec='app-calculate';
+UPDATE [scm_sys_menu] SET [codec]='app-media-video' WHERE [codec]='app-media-vedio';
+UPDATE [scm_sys_menu] SET [uri]='/video' WHERE [uri]='/vedio';
+UPDATE [scm_sys_menu] SET [codec]='app-calculator' WHERE [codec]='app-calculate';
+
+ 
+/*
+ * Ver:8
+ * Date: TODO
+ */
+UPDATE [scm_sys_theme] SET [theme] = replace([theme], '/data/bg/','/data/bg/login/');

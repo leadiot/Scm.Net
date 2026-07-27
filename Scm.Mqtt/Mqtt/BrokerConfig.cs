@@ -9,7 +9,7 @@ namespace Com.Scm.Mqtt
         /// 是否启用内置 Broker（默认 false）
         /// 设为 false 时仅使用客户端连接外部 Broker
         /// </summary>
-        public bool Enabled { get; set; } = true;
+        public bool Enabled { get; set; } = false;
 
         /// <summary>
         /// 监听端口（默认 1883）

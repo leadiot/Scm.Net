@@ -15,7 +15,7 @@ namespace Com.Scm.Ai
     /// <summary>
     /// AI智能问答服务
     /// </summary>
-    [ApiExplorerSettings(GroupName = "Ai")]
+    [ApiExplorerSettings(GroupName = "ai")]
     public class ScmAiChatService : IApiService
     {
         private readonly AiConfig _aiConfig;

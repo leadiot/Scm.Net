@@ -19,7 +19,7 @@ namespace Com.Scm.Ai
     /// <summary>
     /// AI知识库文档服务
     /// </summary>
-    [ApiExplorerSettings(GroupName = "Ai")]
+    [ApiExplorerSettings(GroupName = "ai")]
     public class ScmAiDocService : IApiService
     {
         private readonly EnvConfig _envConfig;

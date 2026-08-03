@@ -275,7 +275,7 @@ namespace Com.Scm.Configure.Startup
             // 授权：基于已认证用户检查权限策略
             app.UseAuthorization();
 
-            if (app.Environment.IsDevelopment())
+            if (app.Environment.IsDevelopment() || (scalarConfig?.ShowInProduction ?? false))
             {
                 //app.UseSwaggerSetup(swaggerConfig);
                 app.UseScalarSetup(scalarConfig);

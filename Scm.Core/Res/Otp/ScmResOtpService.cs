@@ -11,7 +11,7 @@ namespace Com.Scm.Res.Otp
     /// <summary>
     /// Otp管理
     /// </summary>
-    [ApiExplorerSettings(GroupName = "res")]
+    [ApiExplorerSettings(GroupName = "Res")]
     public class ScmResOtpService : ApiService
     {
         private readonly SugarRepository<ScmResOtpDao> _thisRepository;

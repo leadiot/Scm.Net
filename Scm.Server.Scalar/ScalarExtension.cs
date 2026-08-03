@@ -1,6 +1,7 @@
 ﻿using Com.Scm.Config;
 using Com.Scm.Scalar;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.OpenApi;
 using Microsoft.Extensions.DependencyInjection;
 using Scalar.AspNetCore;
 
@@ -8,28 +9,80 @@ namespace Com.Scm
 {
     public static class ScalarExtension
     {
+        /// <summary>
+        /// 兜底文档名：收纳未分组端点与不在 ApiDocs 配置中的孤儿分组，确保所有接口在 Scalar 中可见
+        /// </summary>
+        private const string OTHER_DOC_NAME = "other";
+
+        private const string OTHER_DOC_TITLE = "其他接口";
+
         public static void ScalarSetup(this IServiceCollection services, ScalarConfig config)
         {
+            if (config == null)
+            {
+                return;
+            }
+
             services.AddTransient<BearerSecuritySchemeTransformer>();
 
-            // 注册配置中的多文档
             if (config.HasDocs())
             {
-                foreach (var apiDoc in config.ApiDocs)
+                foreach (var doc in config.ApiDocs)
                 {
-                    services.AddOpenApi(apiDoc.Group, options =>
-                    {
-                        options.AddDocumentTransformer<BearerSecuritySchemeTransformer>();
-                    });
+                    services.AddOpenApi(doc.Group.ToLower());
                 }
+                services.AddOpenApi(OTHER_DOC_NAME);
+
+                //var configuredGroups = config.ApiDocs
+                //    .Select(d => d.Group)
+                //    .Where(g => !string.IsNullOrEmpty(g))
+                //    .ToList();
+
+                //foreach (var apiDoc in config.ApiDocs)
+                //{
+                //    var groupName = apiDoc.Group;
+                //    // 文档名统一以小写注册：AddOpenApi 内部会将文档名规范化为小写注册命名选项/键控服务，
+                //    // 直接使用小写可保证注册、路由解析、Scalar 下拉框三个环节名称一致
+                //    services.AddOpenApi(groupName.ToLower(), options =>
+                //    {
+                //        options.AddDocumentTransformer<BearerSecuritySchemeTransformer>();
+                //        // 用配置的中文标题/描述/版本回填文档 info（否则默认为 "{AppName} | {documentName}"）
+                //        options.AddDocumentTransformer(new OpenApiInfoTransformer(config, apiDoc));
+                //        // 只收纳对应分组的端点（忽略大小写比较，避免 GroupName 与文档名大小写不一致）
+                //        options.ShouldInclude = description =>
+                //            string.Equals(description.GroupName, groupName, StringComparison.OrdinalIgnoreCase);
+                //        options.ApplyXmlComments(config);
+                //    });
+                //}
+
+                //// 兜底文档：收纳未分组端点（GroupName == null）与配置之外的孤儿分组，
+                //// 否则这部分接口不会出现在任何文档中
+                //services.AddOpenApi(OTHER_DOC_NAME, options =>
+                //{
+                //    options.AddDocumentTransformer<BearerSecuritySchemeTransformer>();
+                //    options.AddDocumentTransformer(new OpenApiInfoTransformer(config, new ApiInfo
+                //    {
+                //        Title = OTHER_DOC_TITLE,
+                //        Description = "未配置分组的接口（含未分组端点与未纳入 ApiDocs 的分组）",
+                //        Version = config.Version
+                //    }));
+                //    options.ShouldInclude = description =>
+                //        description.GroupName == null ||
+                //        !configuredGroups.Any(g => string.Equals(description.GroupName, g, StringComparison.OrdinalIgnoreCase));
+                //    options.ApplyXmlComments(config);
+                //});
             }
             else
             {
-                // 注册默认文档 "v1"
-                services.AddOpenApi("v1", options =>
-                {
-                    options.AddDocumentTransformer<BearerSecuritySchemeTransformer>();
-                });
+                //// 注册默认文档 "v1"
+                //services.AddOpenApi("v1", options =>
+                //{
+                //    options.AddDocumentTransformer<BearerSecuritySchemeTransformer>();
+                //    options.AddDocumentTransformer(new OpenApiInfoTransformer(config, null));
+                //    options.ApplyXmlComments(config);
+                //});
+
+                services.AddOpenApi();
             }
         }
 
@@ -40,55 +93,99 @@ namespace Com.Scm
                 return;
             }
 
-            // MapOpenApi 使用路由模板，{documentName} 占位符会匹配 AddOpenApi 注册的文档名称
-            app.MapOpenApi("/openapi/{documentName}.json");
+            //app.MapOpenApi();
+            ////app.MapOpenApi("/openapi/{documentName}.json");
 
-            // 使用配置中的 Scalar 路由
-            var scalarRoute = config?.ScalarRoute ?? "/scalar";
+            //var scalarRoute = config.ScalarRoute ?? "/scalar";
+            //app.MapScalarApiReference(scalarRoute, options =>
+            //{
+            //    options.WithOpenApiRoutePattern("/openapi/{documentName}.json");
+            //    //foreach (var doc in config.ApiDocs)
+            //    //{
+            //    //    options.AddDocument(doc.Group, doc.Title);
+            //    //}
+            //    options.AddDocument("Scm", title: "Scm", isDefault: true)
+            //           .AddDocument("ai", title: "ai api")
+            //           .AddDocument("v1", title: "V1 Api")
+            //           .AddDocument("V1", title: "V1 Api2")
+            //           .AddDocument("Ur", title: "Internal API");
+            //});
+
+            app.MapOpenApi();
+            //app.MapOpenApi("/openapi/{documentName}.json");
+
+            // MapOpenApi 使用路由模板，{documentName} 占位符会匹配 AddOpenApi 注册的文档名称
+            var openApiRoute = string.IsNullOrEmpty(config.OpenApiRoute) ? "/openapi/{documentName}.json" : config.OpenApiRoute;
+
+            var scalarRoute = config.ScalarRoute ?? "/scalar";
 
             app.MapScalarApiReference(scalarRoute, options =>
             {
                 // 1. 设置文档标题
-                options.WithTitle(config?.Title ?? "Scm.Net API 文档");
+                //options.WithTitle(config.Title ?? "Scm.Net API 文档");
 
                 // 2. 设置 OpenAPI 路由模式（关键！必须与 MapOpenApi 的路由模板匹配）
-                options.WithOpenApiRoutePattern("/openapi/{documentName}.json");
+                options.WithOpenApiRoutePattern(openApiRoute);
 
                 // 3. 添加多文档支持
                 if (config.HasDocs())
                 {
-                    // 使用 AddDocument 方法逐个添加文档（推荐方式）
-                    // 参数：documentName（必须与 AddOpenApi 注册的名称一致）、title、routePattern
+                    var index = 0;
                     foreach (var apiDoc in config.ApiDocs)
                     {
-                        // 添加文档，并设置标题（routePattern 使用默认值即可）
-                        options.AddDocument(apiDoc.Group, title: apiDoc.Title);
+                        // documentName 必须与 AddOpenApi 注册的小写名称一致，首个文档为默认文档
+                        options.AddDocument(apiDoc.Group, title: apiDoc.Title, isDefault: index == 0);
+                        index++;
                     }
+                    // 兜底文档
+                    options.AddDocument(OTHER_DOC_NAME, title: OTHER_DOC_TITLE);
                 }
                 else
                 {
-                    // 默认只添加 v1 文档
-                    options.AddDocument("v1", title: config?.Title ?? "Scm.Net API 文档");
+                    options.AddDocument("v1", title: config.Title ?? "Scm.Net API 文档");
                 }
 
                 // 4. 配置自定义服务器地址（支持多个环境）
-                if (config?.Servers != null && config.Servers.Count > 0)
-                {
-                    foreach (var server in config.Servers)
-                    {
-                        options.AddServer(server.Url, server.Description);
-                    }
-                }
-
-                // 5. OAuth2 认证配置
-                options.AddAuthorizationCodeFlow("OAuth2", flow =>
-                {
-                    flow.WithAuthorizationUrl("/oauth/callback")
-                        .WithClientId("bookings-frontend-client")
-                        .WithSelectedScopes("openid", "profile", "orders")
-                        .WithPkce(Pkce.Sha256);
-                });
+                //if (config.Servers != null && config.Servers.Count > 0)
+                //{
+                //    foreach (var server in config.Servers)
+                //    {
+                //        options.AddServer(server.Url, server.Description);
+                //    }
+                //}
             });
+        }
+
+        /// <summary>
+        /// 文档名统一小写化，与 AddOpenApi 内部的规范化行为保持一致
+        /// </summary>
+        private static string GetDocumentName(string groupName)
+        {
+            return (groupName ?? string.Empty).ToLowerInvariant();
+        }
+
+        /// <summary>
+        /// 应用 XML 文档注释（读取程序集生成的 XML 文件填充接口摘要与说明）
+        /// </summary>
+        private static void ApplyXmlComments(this OpenApiOptions options, ScalarConfig config)
+        {
+            if (config?.DllXmls == null || config.DllXmls.Count == 0)
+            {
+                return;
+            }
+
+            var files = config.DllXmls
+                .Where(x => !string.IsNullOrEmpty(x))
+                .Select(x => Path.IsPathRooted(x) ? x : Path.Combine(AppContext.BaseDirectory, x))
+                .Where(File.Exists)
+                .ToList();
+
+            if (files.Count == 0)
+            {
+                return;
+            }
+
+            options.AddOperationTransformer(new XmlCommentsOperationTransformer(files));
         }
     }
 }

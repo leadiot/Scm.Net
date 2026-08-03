@@ -27,12 +27,12 @@ namespace Com.Scm.Config
         /// <summary>
         /// Scalar 文档路径
         /// </summary>
-        public string ScalarRoute { get; set; } = "/scalar/v1";
+        public string ScalarRoute { get; set; } = "/scalar";
 
         /// <summary>
-        /// OpenAPI 文档路径
+        /// OpenAPI 文档路径（多文档需包含 {documentName} 占位符）
         /// </summary>
-        public string OpenApiRoute { get; set; } = "/openapi/v1.json";
+        public string OpenApiRoute { get; set; } = "/openapi/{documentName}.json";
 
         /// <summary>
         /// 是否在生产环境显示
@@ -45,12 +45,12 @@ namespace Com.Scm.Config
         public List<ApiServer> Servers { get; set; } = new List<ApiServer>();
 
         /// <summary>
-        /// 
+        /// XML 注释文件列表（程序集启用 GenerateDocumentationFile 后生成的文件名）
         /// </summary>
         public List<string> DllXmls { get; set; }
 
         /// <summary>
-        /// 
+        /// API 分组文档列表（Group 需与代码中 ApiExplorerSettings 的 GroupName 一致）
         /// </summary>
         public List<ApiInfo> ApiDocs { get; set; }
 
@@ -67,8 +67,7 @@ namespace Com.Scm.Config
 
         public bool HasDocs()
         {
-            //return ApiDocs != null && ApiDocs.Count > 0;
-            return false;
+            return ApiDocs != null && ApiDocs.Count > 0;
         }
     }
 
@@ -84,19 +83,19 @@ namespace Com.Scm.Config
     public class ApiInfo
     {
         /// <summary>
-        /// 
+        /// 分组名（对应 ApiExplorerSettings 的 GroupName，忽略大小写）
         /// </summary>
         public string Group { get; set; }
         /// <summary>
-        /// 
+        /// 文档版本
         /// </summary>
         public string Version { get; set; }
         /// <summary>
-        /// 
+        /// 文档标题（Scalar 下拉框与 OpenAPI info.title）
         /// </summary>
         public string Title { get; set; }
         /// <summary>
-        /// 
+        /// 文档描述（OpenAPI info.description）
         /// </summary>
         public string Description { get; set; }
     }

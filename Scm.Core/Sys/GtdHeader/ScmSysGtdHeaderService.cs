@@ -12,7 +12,7 @@ namespace Com.Scm.Sys.GtdHeader
     /// <summary>
     /// 待办服务接口
     /// </summary>
-    [ApiExplorerSettings(GroupName = "gtd")]
+    [ApiExplorerSettings(GroupName = "Gtd")]
     public class ScmSysGtdHeaderService : ApiService
     {
         public const long SYS_ID = 1738391109933076480;

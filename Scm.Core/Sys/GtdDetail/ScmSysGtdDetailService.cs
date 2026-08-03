@@ -12,7 +12,7 @@ namespace Com.Scm.Sys.GtdDetail
     /// <summary>
     /// 
     /// </summary>
-    [ApiExplorerSettings(GroupName = "gtd")]
+    [ApiExplorerSettings(GroupName = "Gtd")]
     public class ScmSysGtdDetailService : ApiService
     {
         private readonly SugarRepository<GtdDetailDao> _thisRepository;

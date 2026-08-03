@@ -12,7 +12,7 @@ namespace Com.Scm.Ur.Organize;
 /// <summary>
 /// 服务接口
 /// </summary>
-[ApiExplorerSettings(GroupName = "Ur")]
+[ApiExplorerSettings(GroupName = "ur")]
 public class ScmUrOrganizeService : ApiService
 {
     private readonly SugarRepository<OrganizeDao> _thisRepository;

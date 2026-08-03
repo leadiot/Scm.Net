@@ -14,7 +14,7 @@ namespace Com.Scm.Samples.Demo
     /// <summary>
     /// 示例代码服务接口
     /// </summary>
-    [ApiExplorerSettings(GroupName = "Samples")]
+    [ApiExplorerSettings(GroupName = "samples")]
     public class SamplesDemoService : ApiService
     {
         private readonly SugarRepository<DemoDao> _thisRepository;

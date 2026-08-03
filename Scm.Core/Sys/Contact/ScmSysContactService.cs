@@ -13,7 +13,7 @@ namespace Com.Scm.Sys.Contact
     /// <summary>
     /// 联系人
     /// </summary>
-    [ApiExplorerSettings(GroupName = "Sys")]
+    [ApiExplorerSettings(GroupName = "sys")]
     public class ScmSysContactService : ApiService
     {
         private readonly SugarRepository<ScmSysContactDao> _thisRepository;

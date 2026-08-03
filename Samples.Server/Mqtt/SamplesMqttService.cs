@@ -7,7 +7,7 @@ namespace Com.Scm.Samples.Mqtt
     /// <summary>
     /// MQTT 示例服务 - API 接口层
     /// </summary>
-    [ApiExplorerSettings(GroupName = "Samples")]
+    [ApiExplorerSettings(GroupName = "samples")]
     public class SamplesMqttService : AppService
     {
         private readonly SugarRepository<TemperatureDataDao> _thisRepository;

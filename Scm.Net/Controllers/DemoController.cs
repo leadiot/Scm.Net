@@ -9,7 +9,7 @@ namespace Com.Scm.Controllers
     /// API 统一响应格式演示控制器
     /// </summary>
     [AllowAnonymous]
-    [ApiExplorerSettings(GroupName = "Scm")]
+    [ApiExplorerSettings(GroupName = "scm")]
     public class DemoController : ApiController
     {
         /// <summary>

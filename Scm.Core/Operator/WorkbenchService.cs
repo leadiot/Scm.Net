@@ -10,7 +10,7 @@ namespace Com.Scm.Operator;
 /// <summary>
 /// 工作台
 /// </summary>
-[ApiExplorerSettings(GroupName = "Scm")]
+[ApiExplorerSettings(GroupName = "scm")]
 public class WorkbenchService : IApiService
 {
     private readonly ISqlSugarClient _sqlClient;

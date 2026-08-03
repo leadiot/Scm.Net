@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace Com.Scm.Controllers
 {
     [AllowAnonymous]
-    [ApiExplorerSettings(GroupName = "Scm")]
+    [ApiExplorerSettings(GroupName = "scm")]
     public class DownloadController : ApiController
     {
         private EnvConfig _EnvConfig;

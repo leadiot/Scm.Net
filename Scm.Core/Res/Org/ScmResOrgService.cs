@@ -11,7 +11,7 @@ namespace Com.Scm.Res.Org
     /// <summary>
     /// 服务接口
     /// </summary>
-    [ApiExplorerSettings(GroupName = "Scm")]
+    [ApiExplorerSettings(GroupName = "scm")]
     public class ScmResOrgService : ApiService
     {
         private readonly SugarRepository<ScmResOrgDao> _thisRepository;

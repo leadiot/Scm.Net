@@ -10,7 +10,7 @@ namespace Com.Scm.Dev.Db
     /// <summary>
     /// 服务接口
     /// </summary>
-    [ApiExplorerSettings(GroupName = "Dev")]
+    [ApiExplorerSettings(GroupName = "dev")]
     public class ScmDevDbService : ApiService
     {
         private readonly SugarRepository<ScmDevDbDao> _thisRepository;

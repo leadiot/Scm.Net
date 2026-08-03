@@ -13,7 +13,7 @@ namespace Com.Scm.Msg.Aiml
     /// <summary>
     /// 
     /// </summary>
-    [ApiExplorerSettings(GroupName = "Msg")]
+    [ApiExplorerSettings(GroupName = "msg")]
     public class ScmMsgAimlService : ApiService
     {
         private readonly IJwtTokenHolder _jwtHolder;

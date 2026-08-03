@@ -13,7 +13,7 @@ namespace Com.Scm.Sys.Calllog
     /// <summary>
     /// 通话记录
     /// </summary>
-    [ApiExplorerSettings(GroupName = "Sys")]
+    [ApiExplorerSettings(GroupName = "sys")]
     public class ScmSysCalllogService : ApiService
     {
         private readonly SugarRepository<ScmSysCalllogDao> _thisRepository;

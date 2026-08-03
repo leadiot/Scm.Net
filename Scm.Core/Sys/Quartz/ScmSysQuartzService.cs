@@ -10,7 +10,7 @@ namespace Com.Scm.Sys.Quartz;
 /// <summary>
 /// 任务调度
 /// </summary>
-[ApiExplorerSettings(GroupName = "Sys")]
+[ApiExplorerSettings(GroupName = "sys")]
 public class ScmSysQuartzService : IApiService
 {
     private readonly IQuartzService _quartzHandle;

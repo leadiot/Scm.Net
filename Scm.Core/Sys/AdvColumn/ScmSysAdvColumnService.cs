@@ -10,7 +10,7 @@ namespace Com.Scm.Sys.SysAdvColumn;
 /// <summary>
 /// 服务接口
 /// </summary>
-[ApiExplorerSettings(GroupName = "Sys")]
+[ApiExplorerSettings(GroupName = "sys")]
 public class ScmSysAdvColumnService : IApiService
 {
     private readonly SugarRepository<ScmAdvColumnDao> _thisRepository;

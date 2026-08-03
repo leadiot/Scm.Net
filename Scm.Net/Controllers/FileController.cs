@@ -9,7 +9,7 @@ namespace Com.Scm.Controllers
     /// 文件信息服务
     /// </summary>
     [AllowAnonymous]
-    [ApiExplorerSettings(GroupName = "Scm")]
+    [ApiExplorerSettings(GroupName = "scm")]
     public class FileController : ApiController
     {
         public FileController()

@@ -12,7 +12,7 @@ namespace Com.Scm.Ur.Role;
 /// <summary>
 /// 服务接口
 /// </summary>
-[ApiExplorerSettings(GroupName = "Ur")]
+[ApiExplorerSettings(GroupName = "ur")]
 public class ScmUrRoleService : ApiService
 {
     private readonly SugarRepository<RoleDao> _thisRepository;

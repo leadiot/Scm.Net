@@ -12,7 +12,7 @@ namespace Com.Scm.Sys.FeedbackHeader
     /// <summary>
     /// 服务接口
     /// </summary>
-    [ApiExplorerSettings(GroupName = "Msg")]
+    [ApiExplorerSettings(GroupName = "msg")]
     public class ScmSysFeedbackHeaderService : ApiService
     {
         private readonly SugarRepository<FeedbackHeaderDao> _thisRepository;

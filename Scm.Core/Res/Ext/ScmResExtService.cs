@@ -13,7 +13,7 @@ namespace Com.Scm.Res.Ext
     /// <summary>
     /// 服务接口
     /// </summary>
-    [ApiExplorerSettings(GroupName = "Scm")]
+    [ApiExplorerSettings(GroupName = "scm")]
     public class ScmResExtService : ApiService
     {
         private readonly SugarRepository<ScmResExtDao> _thisRepository;

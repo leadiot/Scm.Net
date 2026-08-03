@@ -15,7 +15,7 @@ namespace Com.Scm.Msg.Notice;
 /// <summary>
 /// 通知模块服务接口
 /// </summary>
-[ApiExplorerSettings(GroupName = "Msg")]
+[ApiExplorerSettings(GroupName = "msg")]
 public class ScmMsgNoticeService : ApiService
 {
     private readonly SugarRepository<NoticeDao> _thisRepository;

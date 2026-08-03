@@ -11,7 +11,7 @@ namespace Com.Scm.Sys.Feedback
     /// <summary>
     /// 
     /// </summary>
-    [ApiExplorerSettings(GroupName = "Msg")]
+    [ApiExplorerSettings(GroupName = "msg")]
     public class ScmSysFeedbackService : ApiService
     {
         private readonly SugarRepository<FeedbackHeaderDao> _headerRepository;

@@ -18,7 +18,7 @@ namespace Com.Scm.Samples.Book
     /// <summary>
     /// 示例代码服务接口
     /// </summary>
-    [ApiExplorerSettings(GroupName = "Samples")]
+    [ApiExplorerSettings(GroupName = "samples")]
     public class SamplesBookService : ApiService, IBookService
     {
         private readonly SugarRepository<BookDao> _thisRepository;

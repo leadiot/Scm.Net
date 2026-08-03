@@ -11,7 +11,7 @@ namespace Com.Scm.Res.Tag
     /// <summary>
     /// 
     /// </summary>
-    [ApiExplorerSettings(GroupName = "Res")]
+    [ApiExplorerSettings(GroupName = "res")]
     public class ScmResTagService : ApiService
     {
         private readonly SugarRepository<ScmResTagDao> _thisRepository;

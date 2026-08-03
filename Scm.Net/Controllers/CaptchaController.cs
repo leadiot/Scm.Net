@@ -11,7 +11,7 @@ namespace Com.Scm.Controllers
     /// Captcha
     /// </summary>
     [AllowAnonymous]
-    [ApiExplorerSettings(GroupName = "Scm")]
+    [ApiExplorerSettings(GroupName = "scm")]
     public class CaptchaController : ApiController
     {
         private ICacheService _CacheService;
@@ -22,10 +22,10 @@ namespace Com.Scm.Controllers
         }
 
         /// <summary>
-        /// Éú³ÉÍ¼Æ¬
+        /// ï¿½ï¿½ï¿½ï¿½Í¼Æ¬
         /// </summary>
-        /// <param name="identify">±êÊ¶·û</param>
-        /// <returns>Í¼Æ¬¶ÔÏó</returns>
+        /// <param name="identify">ï¿½ï¿½Ê¶ï¿½ï¿½</param>
+        /// <returns>Í¼Æ¬ï¿½ï¿½ï¿½ï¿½</returns>
         [HttpGet("cha/{identify}")]
         [NoJsonResult]
         [NoAuditLog]
@@ -42,7 +42,7 @@ namespace Com.Scm.Controllers
         }
 
         /// <summary>
-        /// Éú³ÉKey
+        /// ï¿½ï¿½ï¿½ï¿½Key
         /// </summary>
         /// <param name="identify"></param>
         /// <returns></returns>

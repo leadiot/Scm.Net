@@ -12,7 +12,7 @@ namespace Com.Scm.Adm.DicHeader;
 /// <summary>
 /// 服务接口
 /// </summary>
-[ApiExplorerSettings(GroupName = "Adm")]
+[ApiExplorerSettings(GroupName = "adm")]
 public class ScmAdmDicHeaderService : ApiService
 {
     private readonly SugarRepository<AdmDicHeaderDao> _thisRepository;

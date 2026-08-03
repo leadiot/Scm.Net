@@ -12,7 +12,7 @@ namespace Com.Scm.Ur.Position;
 /// <summary>
 /// 岗位表服务接口
 /// </summary>
-[ApiExplorerSettings(GroupName = "Ur")]
+[ApiExplorerSettings(GroupName = "ur")]
 public class ScmUrPositionService : ApiService
 {
     private readonly SugarRepository<PositionDao> _thisRepository;

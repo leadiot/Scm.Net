@@ -11,7 +11,7 @@ namespace Com.Scm.Dev.Uid
     /// <summary>
     /// 服务接口
     /// </summary>
-    [ApiExplorerSettings(GroupName = "Dev")]
+    [ApiExplorerSettings(GroupName = "dev")]
     public class ScmDevUidService : ApiService
     {
         private readonly SugarRepository<ScmDevUidDao> _thisRepository;

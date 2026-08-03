@@ -11,7 +11,7 @@ namespace Com.Scm.Sys.DicDetail;
 /// <summary>
 /// 字典信息表服务接口
 /// </summary>
-[ApiExplorerSettings(GroupName = "Sys")]
+[ApiExplorerSettings(GroupName = "sys")]
 public class ScmSysDicDetailService : ApiService
 {
     private readonly SugarRepository<DicDetailDao> _thisRepository;

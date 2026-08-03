@@ -10,7 +10,7 @@ namespace Com.Scm.Ur.SysRoleConflict;
 /// <summary>
 /// 角色互斥表服务接口
 /// </summary>
-[ApiExplorerSettings(GroupName = "Ur")]
+[ApiExplorerSettings(GroupName = "ur")]
 public class ScmUrRoleConflictService : ApiService
 {
     private readonly SugarRepository<RoleConflictDao> _thisRepository;

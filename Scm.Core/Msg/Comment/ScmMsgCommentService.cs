@@ -15,7 +15,7 @@ namespace Com.Scm.Msg.Comment
     /// <summary>
     /// 
     /// </summary>
-    [ApiExplorerSettings(GroupName = "Msg")]
+    [ApiExplorerSettings(GroupName = "msg")]
     public class ScmMsgCommentService : ApiService
     {
         private readonly SugarRepository<CommentHeaderDao> _headerRepository;

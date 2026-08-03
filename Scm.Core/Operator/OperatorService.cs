@@ -36,7 +36,7 @@ namespace Com.Scm.Operator;
 /// 此机构信息可以是用户登录时选择，也可以是前端进行配置。
 /// 2025-10-09
 /// </summary>
-[ApiExplorerSettings(GroupName = "Scm")]
+[ApiExplorerSettings(GroupName = "scm")]
 public class OperatorService : ApiService
 {
     /// <summary>
@@ -687,7 +687,7 @@ public class OperatorService : ApiService
         var userDao = await _SqlClient.Queryable<UserDao>().Where(a => a.id == token.user_id).FirstAsync();
         return new OperatorInfo()
         {
-            Id = userDao.id.ToString(),
+            id = userDao.id,
             UserId = userDao.id,
             UserName = userDao.namec,
             Avatar = userDao.avatar
@@ -1183,7 +1183,7 @@ public class OperatorService : ApiService
     {
         return new OperatorInfo()
         {
-            Id = userDao.id.ToString(),
+            id = userDao.id,
             UserId = userDao.id,
             UserCode = userDao.codec,
             UserName = userDao.namec,

@@ -13,7 +13,7 @@ namespace Com.Scm.Adm.Config
     /// <summary>
     /// 
     /// </summary>
-    [ApiExplorerSettings(GroupName = "Adm")]
+    [ApiExplorerSettings(GroupName = "adm")]
     public class ScmAdmConfigService : ApiService
     {
         private readonly SugarRepository<AdmConfigDao> _thisRepository;

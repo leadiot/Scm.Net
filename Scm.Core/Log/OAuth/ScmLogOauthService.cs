@@ -12,7 +12,7 @@ namespace Com.Scm.Log.OAuth
     /// <summary>
     /// 三方登录服务接口
     /// </summary>
-    [ApiExplorerSettings(GroupName = "Log")]
+    [ApiExplorerSettings(GroupName = "log")]
     public class ScmLogOauthService : ApiService
     {
         private readonly SugarRepository<LogOauthDao> _thisRepository;

@@ -11,7 +11,7 @@ namespace Com.Scm.Sys.Config
     /// <summary>
     /// 
     /// </summary>
-    [ApiExplorerSettings(GroupName = "Sys")]
+    [ApiExplorerSettings(GroupName = "sys")]
     public class ScmSysConfigService : ApiService
     {
         private readonly SugarRepository<ConfigDao> _thisRepository;

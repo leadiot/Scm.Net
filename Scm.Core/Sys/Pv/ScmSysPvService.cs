@@ -11,7 +11,7 @@ namespace Com.Scm.Sys.Pv
     /// <summary>
     /// 
     /// </summary>
-    [ApiExplorerSettings(GroupName = "Sys")]
+    [ApiExplorerSettings(GroupName = "sys")]
     public class ScmSysPvService : ApiService
     {
         private readonly SugarRepository<PvHeaderDao> _headerRepository;

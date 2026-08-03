@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Com.Scm.Controllers
 {
-    [ApiExplorerSettings(GroupName = "Scm")]
+    [ApiExplorerSettings(GroupName = "scm")]
     public class QuartzController : ApiController
     {
         private readonly IQuartzService _jobService;

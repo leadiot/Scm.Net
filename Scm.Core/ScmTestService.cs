@@ -10,7 +10,7 @@ using SqlSugar;
 namespace Com.Scm
 {
     [NoAuditLog]
-    [ApiExplorerSettings(GroupName = "Scm")]
+    [ApiExplorerSettings(GroupName = "scm")]
     public class ScmTestService : AppService
     {
         private IJwtTokenHolder _JwtHolder;

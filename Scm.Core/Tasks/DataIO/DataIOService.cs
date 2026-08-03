@@ -13,7 +13,7 @@ namespace Com.Scm.Tasks.DataIO
     /// <summary>
     /// 
     /// </summary>
-    [ApiExplorerSettings(GroupName = "Scm")]
+    [ApiExplorerSettings(GroupName = "scm")]
     public class DataIOService : ApiService
     {
         private static bool _Running;

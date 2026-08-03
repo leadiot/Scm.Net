@@ -11,7 +11,7 @@ namespace Com.Scm.Log.Hb
     /// <summary>
     /// 
     /// </summary>
-    [ApiExplorerSettings(GroupName = "Log"), NoAuditLog]
+    [ApiExplorerSettings(GroupName = "log"), NoAuditLog]
     public class ScmLogHbService : IApiService
     {
         private readonly SugarRepository<LogHbDao> _thisRepository;

@@ -11,7 +11,7 @@ namespace Com.Scm.Flow
     /// <summary>
     /// 服务接口
     /// </summary>
-    [ApiExplorerSettings(GroupName = "Sys")]
+    [ApiExplorerSettings(GroupName = "sys")]
     public class ScmSysFlowOrderService : ApiService
     {
         private readonly SugarRepository<ScmFlowOrderDao> _thisRepository;

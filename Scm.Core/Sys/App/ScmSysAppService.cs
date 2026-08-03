@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Com.Scm.Sys.App
 {
-    [ApiExplorerSettings(GroupName = "Sys")]
+    [ApiExplorerSettings(GroupName = "sys")]
     public class ScmSysAppService : ApiService
     {
         private readonly SugarRepository<ScmDevAppDao> _thisRepository;

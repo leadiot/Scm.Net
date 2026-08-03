@@ -10,7 +10,7 @@ namespace Com.Scm.Sys.VoteResult;
 /// <summary>
 /// 投票日志服务接口
 /// </summary>
-[ApiExplorerSettings(GroupName = "Sys")]
+[ApiExplorerSettings(GroupName = "sys")]
 public class ScmSysVoteResultService : ApiService
 {
     private readonly SugarRepository<VoteResultDao> _thisRepository;

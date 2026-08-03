@@ -15,7 +15,7 @@ namespace Com.Scm.Ur.User
     /// <summary>
     /// 管理员表服务接口
     /// </summary>
-    [ApiExplorerSettings(GroupName = "Ur")]
+    [ApiExplorerSettings(GroupName = "ur")]
     public class ScmUrUserService : ApiService
     {
         private readonly IJwtTokenHolder _jwtHolder;

@@ -16,7 +16,7 @@ namespace Com.Scm.Ur.UserOidc
     /// <summary>
     /// 三方登录服务接口
     /// </summary>
-    [ApiExplorerSettings(GroupName = "Ur")]
+    [ApiExplorerSettings(GroupName = "ur")]
     public class ScmUrUserOidcService : ApiService
     {
         private readonly IJwtTokenHolder _jwtHolder;

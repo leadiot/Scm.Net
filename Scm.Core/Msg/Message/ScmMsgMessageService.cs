@@ -14,7 +14,7 @@ namespace Com.Scm.Msg.Message;
 /// <summary>
 /// 留言消息表服务接口
 /// </summary>
-[ApiExplorerSettings(GroupName = "Msg")]
+[ApiExplorerSettings(GroupName = "msg")]
 public class ScmMsgMessageService : ApiService
 {
     /// <summary>

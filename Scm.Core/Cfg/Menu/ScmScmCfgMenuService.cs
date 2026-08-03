@@ -11,7 +11,7 @@ namespace Com.Scm.Cfg.Menu
     /// <summary>
     /// 用户收藏菜单
     /// </summary>
-    [ApiExplorerSettings(GroupName = "Cfg")]
+    [ApiExplorerSettings(GroupName = "cfg")]
     public class ScmScmCfgMenuService : ApiService
     {
         private readonly SugarRepository<CfgMenuDao> _thisRepository;

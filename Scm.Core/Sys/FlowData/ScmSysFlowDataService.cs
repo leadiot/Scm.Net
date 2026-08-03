@@ -9,7 +9,7 @@ using SqlSugar;
 
 namespace Com.Scm.Sys.FlowData
 {
-    [ApiExplorerSettings(GroupName = "Sys")]
+    [ApiExplorerSettings(GroupName = "sys")]
     public class ScmSysFlowDataService : ApiService
     {
         private readonly IJwtTokenHolder _jwtHolder;

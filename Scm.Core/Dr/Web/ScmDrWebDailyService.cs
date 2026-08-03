@@ -10,7 +10,7 @@ namespace Com.Scm.Dr.Web
     /// <summary>
     /// 服务接口
     /// </summary>
-    [ApiExplorerSettings(GroupName = "Dr")]
+    [ApiExplorerSettings(GroupName = "dr")]
     public class ScmDrWebDailyService : ApiService
     {
         private readonly SugarRepository<ScmDrWebDailyDao> _thisRepository;

@@ -15,7 +15,7 @@ namespace Com.Scm.Controllers
     /// </summary>
     [NoAuditLog]
     [AllowAnonymous]
-    [ApiExplorerSettings(GroupName = "Scm")]
+    [ApiExplorerSettings(GroupName = "scm")]
     public class DbController : ApiController
     {
         private EnvConfig _EnvConfig;

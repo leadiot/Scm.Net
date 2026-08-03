@@ -13,7 +13,7 @@ namespace Com.Scm.Msg.Chat.Group
     /// <summary>
     /// 群组人员服务接口
     /// </summary>
-    [ApiExplorerSettings(GroupName = "Chat")]
+    [ApiExplorerSettings(GroupName = "chat")]
     public class ScmMsgChatGroupUserService : ApiService
     {
         private readonly SugarRepository<ChatGroupUserDao> _thisRepository;

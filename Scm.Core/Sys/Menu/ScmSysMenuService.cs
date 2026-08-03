@@ -8,7 +8,7 @@ namespace Com.Scm.Sys.Menu
     /// <summary>
     /// 服务接口
     /// </summary>
-    [ApiExplorerSettings(GroupName = "Sys")]
+    [ApiExplorerSettings(GroupName = "sys")]
     public class ScmSysMenuService : IApiService
     {
         private readonly SugarRepository<MenuDao> _thisRepository;

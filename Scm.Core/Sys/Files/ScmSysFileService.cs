@@ -16,7 +16,7 @@ namespace Com.Scm.Sys.Files;
 /// <summary>
 /// 
 /// </summary>
-[ApiExplorerSettings(GroupName = "Sys")]
+[ApiExplorerSettings(GroupName = "sys")]
 public class ScmSysFileService : IApiService
 {
     private readonly EnvConfig _envConfig;

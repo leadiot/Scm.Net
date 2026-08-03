@@ -11,7 +11,7 @@ namespace Com.Scm.Sys.VoteHeader;
 /// <summary>
 /// 投票表服务接口
 /// </summary>
-[ApiExplorerSettings(GroupName = "Sys")]
+[ApiExplorerSettings(GroupName = "sys")]
 public class ScmSysVoteHeaderService : ApiService
 {
     private readonly SugarRepository<VoteHeaderDao> _thisRepository;

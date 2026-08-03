@@ -10,7 +10,7 @@ namespace Com.Scm.Sys.Region;
 /// <summary>
 /// 服务接口
 /// </summary>
-[ApiExplorerSettings(GroupName = "Sys")]
+[ApiExplorerSettings(GroupName = "sys")]
 public class ScmSysRegionService : ApiService
 {
     private readonly SugarRepository<RegionDao> _thisRepository;

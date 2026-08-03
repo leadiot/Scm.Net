@@ -3,12 +3,12 @@ using Microsoft.AspNetCore.Mvc;
 namespace Com.Scm.Controllers;
 
 /// <summary>
-/// App使用的基类Controller
+/// App使锟矫的伙拷锟斤拷Controller
 /// </summary>
 [ApiController]
 //[Authorize("App")]
 [Route("app/[controller]")]
-[ApiExplorerSettings(GroupName = "Scm")]
+[ApiExplorerSettings(GroupName = "scm")]
 public class AppController : ControllerBase
 {
 }

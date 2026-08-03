@@ -12,7 +12,7 @@ namespace Com.Scm.Res.IconCat
     /// <summary>
     /// 图标分类
     /// </summary>
-    [ApiExplorerSettings(GroupName = "Res")]
+    [ApiExplorerSettings(GroupName = "res")]
     public class ScmResIconCatService : ApiService
     {
         private readonly SugarRepository<ScmResIconCatDao> _thisRepository;

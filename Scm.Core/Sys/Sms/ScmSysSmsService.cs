@@ -13,7 +13,7 @@ namespace Com.Scm.Sys.Sms
     /// <summary>
     /// 短信
     /// </summary>
-    [ApiExplorerSettings(GroupName = "Sys")]
+    [ApiExplorerSettings(GroupName = "sys")]
     public class ScmSysSmsService : ApiService
     {
         /// <summary>

@@ -14,7 +14,7 @@ namespace Com.Scm.Sys.Notes
     /// <summary>
     /// 记事
     /// </summary>
-    [ApiExplorerSettings(GroupName = "Sys")]
+    [ApiExplorerSettings(GroupName = "sys")]
     public class ScmSysNotesService : ApiService
     {
         private readonly SugarRepository<NotesDao> _thisRepository;

@@ -29,7 +29,7 @@ namespace Com.Scm
             {
                 foreach (var doc in config.ApiDocs)
                 {
-                    services.AddOpenApi(doc.Group.ToLower());
+                    services.AddOpenApi(doc.Group);
                 }
                 services.AddOpenApi(OTHER_DOC_NAME);
 
@@ -93,36 +93,16 @@ namespace Com.Scm
                 return;
             }
 
+            var openApiRoute = string.IsNullOrWhiteSpace(config.OpenApiRoute) ? "/openapi/{documentName}.json" : config.OpenApiRoute;
             //app.MapOpenApi();
-            ////app.MapOpenApi("/openapi/{documentName}.json");
+            app.MapOpenApi(openApiRoute);
 
-            //var scalarRoute = config.ScalarRoute ?? "/scalar";
-            //app.MapScalarApiReference(scalarRoute, options =>
-            //{
-            //    options.WithOpenApiRoutePattern("/openapi/{documentName}.json");
-            //    //foreach (var doc in config.ApiDocs)
-            //    //{
-            //    //    options.AddDocument(doc.Group, doc.Title);
-            //    //}
-            //    options.AddDocument("Scm", title: "Scm", isDefault: true)
-            //           .AddDocument("ai", title: "ai api")
-            //           .AddDocument("v1", title: "V1 Api")
-            //           .AddDocument("V1", title: "V1 Api2")
-            //           .AddDocument("Ur", title: "Internal API");
-            //});
-
-            app.MapOpenApi();
-            //app.MapOpenApi("/openapi/{documentName}.json");
-
-            // MapOpenApi 使用路由模板，{documentName} 占位符会匹配 AddOpenApi 注册的文档名称
-            var openApiRoute = string.IsNullOrEmpty(config.OpenApiRoute) ? "/openapi/{documentName}.json" : config.OpenApiRoute;
-
-            var scalarRoute = config.ScalarRoute ?? "/scalar";
+            var scalarRoute = string.IsNullOrWhiteSpace(config.ScalarRoute) ? "/scalar" : config.ScalarRoute;
 
             app.MapScalarApiReference(scalarRoute, options =>
             {
                 // 1. 设置文档标题
-                //options.WithTitle(config.Title ?? "Scm.Net API 文档");
+                options.WithTitle(config.Title ?? "Scm.Net API 文档");
 
                 // 2. 设置 OpenAPI 路由模式（关键！必须与 MapOpenApi 的路由模板匹配）
                 options.WithOpenApiRoutePattern(openApiRoute);
@@ -130,12 +110,10 @@ namespace Com.Scm
                 // 3. 添加多文档支持
                 if (config.HasDocs())
                 {
-                    var index = 0;
                     foreach (var apiDoc in config.ApiDocs)
                     {
                         // documentName 必须与 AddOpenApi 注册的小写名称一致，首个文档为默认文档
-                        options.AddDocument(apiDoc.Group, title: apiDoc.Title, isDefault: index == 0);
-                        index++;
+                        options.AddDocument(apiDoc.Group, title: apiDoc.Title);
                     }
                     // 兜底文档
                     options.AddDocument(OTHER_DOC_NAME, title: OTHER_DOC_TITLE);
@@ -146,13 +124,13 @@ namespace Com.Scm
                 }
 
                 // 4. 配置自定义服务器地址（支持多个环境）
-                //if (config.Servers != null && config.Servers.Count > 0)
-                //{
-                //    foreach (var server in config.Servers)
-                //    {
-                //        options.AddServer(server.Url, server.Description);
-                //    }
-                //}
+                if (config.Servers != null && config.Servers.Count > 0)
+                {
+                    foreach (var server in config.Servers)
+                    {
+                        options.AddServer(server.Url, server.Description);
+                    }
+                }
             });
         }
 

@@ -10,7 +10,7 @@ namespace Com.Scm.Controllers
     /// 文件上传服务
     /// </summary>
     [AllowAnonymous]
-    [ApiExplorerSettings(GroupName = "Scm")]
+    [ApiExplorerSettings(GroupName = "scm")]
     public class UploadController : ApiController
     {
         private EnvConfig _EnvConfig;

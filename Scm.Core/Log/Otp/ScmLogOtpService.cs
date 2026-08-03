@@ -11,7 +11,7 @@ namespace Com.Scm.Log.Sms
     /// <summary>
     /// 服务接口
     /// </summary>
-    [ApiExplorerSettings(GroupName = "Log")]
+    [ApiExplorerSettings(GroupName = "log")]
     public class ScmLogOtpService : ApiService
     {
         private readonly SugarRepository<LogOtpDao> _thisRepository;

@@ -11,7 +11,7 @@ namespace Com.Scm.Controllers
     /// 心跳服务
     /// </summary>
     [AllowAnonymous]
-    [ApiExplorerSettings(GroupName = "Scm")]
+    [ApiExplorerSettings(GroupName = "scm")]
     public class HbController : ApiController
     {
         private SugarRepository<LogHbDao> _ThisRepository;

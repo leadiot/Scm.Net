@@ -12,7 +12,7 @@ namespace Com.Scm.Log.Oidc
     /// <summary>
     /// 三方登录服务接口
     /// </summary>
-    [ApiExplorerSettings(GroupName = "Log")]
+    [ApiExplorerSettings(GroupName = "log")]
     public class ScmLogOidcService : ApiService
     {
         private readonly SugarRepository<LogOidcDao> _thisRepository;

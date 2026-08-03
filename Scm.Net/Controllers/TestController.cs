@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace Com.Scm.Controllers
 {
     [AllowAnonymous]
-    [ApiExplorerSettings(GroupName = "Scm")]
+    [ApiExplorerSettings(GroupName = "scm")]
     public class TestController : ApiController
     {
         private IJwtTokenHolder _JwtHolder;

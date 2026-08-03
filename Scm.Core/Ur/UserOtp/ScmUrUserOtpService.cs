@@ -13,7 +13,7 @@ namespace Com.Scm.Ur.UserOtp
     /// <summary>
     /// Otp服务接口
     /// </summary>
-    [ApiExplorerSettings(GroupName = "Ur")]
+    [ApiExplorerSettings(GroupName = "ur")]
     public class ScmUrUserOtpService : ApiService
     {
         private readonly IJwtTokenHolder _jwtHolder;

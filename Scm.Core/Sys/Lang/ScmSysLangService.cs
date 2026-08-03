@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Com.Scm.Sys.Lang
 {
-    [ApiExplorerSettings(GroupName = "Sys")]
+    [ApiExplorerSettings(GroupName = "sys")]
     public class ScmSysLangService : ApiService
     {
         private readonly SugarRepository<LangDao> _thisRepository;

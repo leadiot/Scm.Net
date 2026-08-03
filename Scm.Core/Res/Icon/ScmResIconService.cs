@@ -8,7 +8,7 @@ using SqlSugar;
 
 namespace Com.Scm.Res.Icon
 {
-    [ApiExplorerSettings(GroupName = "Res")]
+    [ApiExplorerSettings(GroupName = "res")]
     public class ScmResIconService : ApiService
     {
         private readonly SugarRepository<ScmResIconDao> _thisRepository;

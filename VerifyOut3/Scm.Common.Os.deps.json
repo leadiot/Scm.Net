@@ -1,0 +1,60 @@
+{
+  "runtimeTarget": {
+    "name": ".NETStandard,Version=v2.0/",
+    "signature": ""
+  },
+  "compilationOptions": {},
+  "targets": {
+    ".NETStandard,Version=v2.0": {},
+    ".NETStandard,Version=v2.0/": {
+      "Scm.Common.Os/1.0.0": {
+        "dependencies": {
+          "System.Management": "10.0.10"
+        },
+        "runtime": {
+          "Scm.Common.Os.dll": {}
+        }
+      },
+      "System.CodeDom/10.0.10": {
+        "runtime": {
+          "lib/netstandard2.0/System.CodeDom.dll": {
+            "assemblyVersion": "10.0.0.0",
+            "fileVersion": "10.0.1026.32716"
+          }
+        }
+      },
+      "System.Management/10.0.10": {
+        "dependencies": {
+          "System.CodeDom": "10.0.10"
+        },
+        "runtime": {
+          "lib/netstandard2.0/System.Management.dll": {
+            "assemblyVersion": "4.0.0.0",
+            "fileVersion": "10.0.1026.32716"
+          }
+        }
+      }
+    }
+  },
+  "libraries": {
+    "Scm.Common.Os/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "System.CodeDom/10.0.10": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-lru5igKxs4OgWKfMeOpMAYpfB1tNSSXHk2zyiSDO/h0u8RVAhN6KqW9d3ANybDB+ePIHg6HM/NlE8HlpOk4k5A==",
+      "path": "system.codedom/10.0.10",
+      "hashPath": "system.codedom.10.0.10.nupkg.sha512"
+    },
+    "System.Management/10.0.10": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-U13ksdXfQlF2WDdu3S4ZPVpikFs2HgV3dbJJZLeZpBIQ4z/xCmQnwEf6LsEEIC2zSamVVa1acA9RdVhZwnWKeA==",
+      "path": "system.management/10.0.10",
+      "hashPath": "system.management.10.0.10.nupkg.sha512"
+    }
+  }
+}

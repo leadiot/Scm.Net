@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Com.Scm.Sys.FlowNode
 {
-    [ApiExplorerSettings(GroupName = "Sys")]
+    [ApiExplorerSettings(GroupName = "sys")]
     public class ScmSysFlowNodeService : ApiService
     {
         private readonly SugarRepository<FlowNodeDao> _thisRepository;

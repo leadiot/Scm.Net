@@ -13,7 +13,7 @@ namespace Com.Scm.Dev.App
     /// <summary>
     /// 
     /// </summary>
-    [ApiExplorerSettings(GroupName = "Dev")]
+    [ApiExplorerSettings(GroupName = "dev")]
     public class ScmDevAppService : ApiService
     {
         private readonly SugarRepository<ScmDevAppDao> _thisRepository;

@@ -10,7 +10,7 @@ namespace Com.Scm.Controllers
     /// 在线用户
     /// </summary>
     [AllowAnonymous]
-    [ApiExplorerSettings(GroupName = "Scm")]
+    [ApiExplorerSettings(GroupName = "scm")]
     public class OnLineController : ApiController
     {
         private readonly ICacheService _cacheService;

@@ -11,7 +11,7 @@ namespace Com.Scm.Sys.Vote;
 /// <summary>
 /// 投票表服务接口
 /// </summary>
-[ApiExplorerSettings(GroupName = "Sys")]
+[ApiExplorerSettings(GroupName = "sys")]
 public class ScmSysVoteService : ApiService
 {
     private readonly IJwtTokenHolder _jwtHolder;

@@ -12,7 +12,7 @@ namespace Com.Scm.Msg.Chat.Friend
     /// <summary>
     /// 服务接口
     /// </summary>
-    [ApiExplorerSettings(GroupName = "Chat")]
+    [ApiExplorerSettings(GroupName = "chat")]
     public class ScmMsgChatFriendService : ApiService
     {
         private readonly SugarRepository<ChatFriendDao> _thisRepository;

@@ -9,7 +9,7 @@ namespace Com.Scm.Sys.SysSafety;
 /// <summary>
 /// 
 /// </summary>
-[ApiExplorerSettings(GroupName = "Sys")]
+[ApiExplorerSettings(GroupName = "sys")]
 public class ScmSysSafetyService : ApiService
 {
     /// <summary>

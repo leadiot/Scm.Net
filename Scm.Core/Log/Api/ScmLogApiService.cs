@@ -11,7 +11,7 @@ namespace Com.Scm.Log.Api
     /// <summary>
     /// 操作日志
     /// </summary>
-    [ApiExplorerSettings(GroupName = "Log"), NoAuditLog]
+    [ApiExplorerSettings(GroupName = "log"), NoAuditLog]
     public class ScmLogApiService : IApiService
     {
         private readonly SugarRepository<LogApiDao> _thisRepository;

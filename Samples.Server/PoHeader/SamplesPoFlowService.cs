@@ -10,7 +10,7 @@ using SqlSugar;
 
 namespace Com.Scm.Samples.PoHeader
 {
-    [ApiExplorerSettings(GroupName = "Samples")]
+    [ApiExplorerSettings(GroupName = "samples")]
     public class SamplesPoFlowService : ApiFlowService
     {
         public SamplesPoFlowService(ISqlSugarClient sqlClient, EnvConfig envConfig, IJwtTokenHolder jwtHolder)

@@ -10,7 +10,7 @@ namespace Com.Scm.Dev.Version
     /// <summary>
     /// 版本管理
     /// </summary>
-    [ApiExplorerSettings(GroupName = "Dev")]
+    [ApiExplorerSettings(GroupName = "dev")]
     public class ScmDevVersionService : ApiService
     {
         private readonly SugarRepository<ScmDevVerHeaderDao> _thisRepository;

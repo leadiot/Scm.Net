@@ -11,7 +11,7 @@ namespace Com.Scm.Sys.SysAdvInfo;
 /// <summary>
 /// 广告位信息表 服务接口
 /// </summary>
-[ApiExplorerSettings(GroupName = "Sys")]
+[ApiExplorerSettings(GroupName = "sys")]
 public class ScmSysAdvInfoService : IApiService
 {
     private readonly SugarRepository<ScmAdvInfoDao> _thisRepository;

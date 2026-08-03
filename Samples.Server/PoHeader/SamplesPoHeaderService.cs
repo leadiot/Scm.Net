@@ -13,7 +13,7 @@ namespace Com.Scm.Samples.PoHeader
     /// <summary>
     /// 服务接口
     /// </summary>
-    [ApiExplorerSettings(GroupName = "Samples")]
+    [ApiExplorerSettings(GroupName = "samples")]
     public class SamplesPoHeaderService : ApiService
     {
         private readonly SugarRepository<SamplesPoHeaderDao> _thisRepository;

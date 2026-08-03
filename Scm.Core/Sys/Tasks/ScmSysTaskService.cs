@@ -11,7 +11,7 @@ namespace Com.Scm.Sys.Tasks
     /// <summary>
     /// 服务接口
     /// </summary>
-    [ApiExplorerSettings(GroupName = "Sys")]
+    [ApiExplorerSettings(GroupName = "sys")]
     public class ScmSysTaskService : ApiService
     {
         private readonly SugarRepository<TaskDao> _thisRepository;

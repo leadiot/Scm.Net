@@ -9,7 +9,7 @@ namespace Com.Scm.Ur.RoleAuth;
 /// <summary>
 /// 授权表服务接口
 /// </summary>
-[ApiExplorerSettings(GroupName = "Ur")]
+[ApiExplorerSettings(GroupName = "ur")]
 public class ScmUrRoleAuthService : IApiService
 {
     private readonly SugarRepository<RoleAuthDao> _thisRepository;

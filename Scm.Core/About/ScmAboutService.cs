@@ -8,7 +8,7 @@ namespace Com.Scm.About
     /// <summary>
     /// 
     /// </summary>
-    [ApiExplorerSettings(GroupName = "About")]
+    [ApiExplorerSettings(GroupName = "about")]
     public class ScmAboutService : ApiService
     {
         /// <summary>

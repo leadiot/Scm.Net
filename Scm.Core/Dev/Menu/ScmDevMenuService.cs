@@ -12,7 +12,7 @@ namespace Com.Scm.Dev.Menu
     /// <summary>
     /// 服务接口
     /// </summary>
-    [ApiExplorerSettings(GroupName = "Dev")]
+    [ApiExplorerSettings(GroupName = "dev")]
     public class ScmDevMenuService : IApiService
     {
         private readonly SugarRepository<ScmDevMenuDao> _thisRepository;

@@ -12,7 +12,7 @@ namespace Com.Scm.Ur.Group;
 /// <summary>
 /// 服务接口
 /// </summary>
-[ApiExplorerSettings(GroupName = "Ur")]
+[ApiExplorerSettings(GroupName = "ur")]
 public class ScmUrGroupService : ApiService
 {
     private readonly SugarRepository<GroupDao> _thisRepository;

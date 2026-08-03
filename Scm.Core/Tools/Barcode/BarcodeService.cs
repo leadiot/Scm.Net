@@ -13,7 +13,7 @@ namespace Com.Scm.Tools.Barcode
     /// <summary>
     /// 
     /// </summary>
-    [ApiExplorerSettings(GroupName = "Scm")]
+    [ApiExplorerSettings(GroupName = "scm")]
     public class BarcodeService : ApiService
     {
         /// <summary>

@@ -12,7 +12,7 @@ namespace Com.Scm.Msg.CommentHeader
     /// <summary>
     /// 服务接口
     /// </summary>
-    [ApiExplorerSettings(GroupName = "Msg")]
+    [ApiExplorerSettings(GroupName = "msg")]
     public class ScmMsgCommentHeaderService : ApiService
     {
         private readonly SugarRepository<CommentHeaderDao> _thisRepository;

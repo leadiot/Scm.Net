@@ -13,7 +13,7 @@ namespace Com.Scm.Sys.Calendar;
 /// <summary>
 /// 日程表服务接口
 /// </summary>
-[ApiExplorerSettings(GroupName = "Sys")]
+[ApiExplorerSettings(GroupName = "sys")]
 public class ScmSysCalendarService : IApiService
 {
     private readonly SugarRepository<CalendarDao> _thisRepository;

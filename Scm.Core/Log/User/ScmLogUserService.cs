@@ -11,7 +11,7 @@ namespace Com.Scm.Log.User
     /// <summary>
     /// 登录日志
     /// </summary>
-    [ApiExplorerSettings(GroupName = "Log")]
+    [ApiExplorerSettings(GroupName = "log")]
     public class ScmLogUserService : ApiService
     {
         private readonly SugarRepository<LogUserDao> _thisRepository;

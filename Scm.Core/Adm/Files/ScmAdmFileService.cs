@@ -14,7 +14,7 @@ namespace Com.Scm.Adm.Files;
 /// <summary>
 /// 
 /// </summary>
-[ApiExplorerSettings(GroupName = "Adm")]
+[ApiExplorerSettings(GroupName = "adm")]
 public class ScmAdmFileService : IApiService
 {
     private readonly EnvConfig _envConfig;

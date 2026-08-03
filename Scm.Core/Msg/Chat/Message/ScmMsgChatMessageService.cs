@@ -19,7 +19,7 @@ namespace Com.Scm.Msg.Chat.Message
     /// <summary>
     /// 服务接口
     /// </summary>
-    [ApiExplorerSettings(GroupName = "Msg")]
+    [ApiExplorerSettings(GroupName = "msg")]
     public class ScmMsgChatMessageService : ApiService
     {
         private readonly SugarRepository<ChatMsgHeaderDao> _headerRepository;

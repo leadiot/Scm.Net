@@ -12,7 +12,7 @@ namespace Com.Scm.Res.Cat
     /// <summary>
     /// 
     /// </summary>
-    [ApiExplorerSettings(GroupName = "Res")]
+    [ApiExplorerSettings(GroupName = "res")]
     public class ScmResCatService : ApiService
     {
         private readonly SugarRepository<ScmResCatDao> _thisRepository;

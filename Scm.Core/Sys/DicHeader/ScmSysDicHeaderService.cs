@@ -13,7 +13,7 @@ namespace Com.Scm.Sys.DicHeader;
 /// <summary>
 /// 服务接口
 /// </summary>
-[ApiExplorerSettings(GroupName = "Sys")]
+[ApiExplorerSettings(GroupName = "sys")]
 public class ScmSysDicHeaderService : ApiService
 {
     private readonly SugarRepository<DicHeaderDao> _thisRepository;

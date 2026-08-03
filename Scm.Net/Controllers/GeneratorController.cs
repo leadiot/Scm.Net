@@ -10,7 +10,7 @@ namespace Com.Scm.Controllers
     /// <summary>
     /// 代码生成
     /// </summary>
-    [ApiExplorerSettings(GroupName = "Scm")]
+    [ApiExplorerSettings(GroupName = "scm")]
     public class GeneratorController : ApiController
     {
         private readonly IGeneratorService _generatorService;

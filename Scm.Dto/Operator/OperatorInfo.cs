@@ -9,11 +9,6 @@ namespace Com.Scm.Operator
     public class OperatorInfo : ScmDataDto
     {
         /// <summary>
-        /// 会话ID
-        /// </summary>
-        public string Id { get; set; }
-
-        /// <summary>
         /// 暂未使用
         /// </summary>
         public ScmUserTypesEnum Type { get; set; }

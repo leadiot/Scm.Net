@@ -12,7 +12,7 @@ namespace Com.Scm.Dev.Sql
     /// <summary>
     /// 数据库查询
     /// </summary>
-    [ApiExplorerSettings(GroupName = "Dev")]
+    [ApiExplorerSettings(GroupName = "dev")]
     public class ScmDevSqlService : ApiService
     {
         private readonly SugarRepository<ScmDevSqlDao> _thisRepository;

@@ -12,7 +12,7 @@ namespace Com.Scm.Scm.Ur
     /// <summary>
     /// 终端服务接口
     /// </summary>
-    [ApiExplorerSettings(GroupName = "Scm")]
+    [ApiExplorerSettings(GroupName = "scm")]
     public class ScmUrTerminalService : ApiService
     {
         private readonly SugarRepository<ScmUrTerminalDao> _thisRepository;

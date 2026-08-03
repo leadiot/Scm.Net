@@ -12,7 +12,7 @@ namespace Com.Scm.Sys
     /// <summary>
     /// 服务接口
     /// </summary>
-    [ApiExplorerSettings(GroupName = "Sys")]
+    [ApiExplorerSettings(GroupName = "sys")]
     public class ScmSysUomService : ApiService, IUomService
     {
         private readonly SugarRepository<ScmSysUomDao> _thisRepository;

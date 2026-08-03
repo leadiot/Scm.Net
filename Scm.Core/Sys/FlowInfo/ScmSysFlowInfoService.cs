@@ -15,7 +15,7 @@ namespace Com.Scm.Sys.FlowInfo
     /// <summary>
     /// 工作流服务接口
     /// </summary>
-    [ApiExplorerSettings(GroupName = "Sys")]
+    [ApiExplorerSettings(GroupName = "sys")]
     public class ScmSysFlowInfoService : ApiService
     {
         private readonly SugarRepository<FlowInfoDao> _thisRepository;

@@ -81,7 +81,7 @@ Products already built on this framework include:
 
 - **MQTT Communication** — Lightweight IoT communication protocol with built-in Broker support
 - **RabbitMQ Message Queue** — Publisher/Consumer pattern integration
-- **AI Large Language Models** — Integration with DeepSeek, Huawei Pangu, Tongyi Qianwen, Tencent Yuanbao, Baidu ERNIE, Doubao, ChatGPT
+- **AI Large Language Models** — Integration with DeepSeek, Huawei Pangu, Tongyi Qianwen, Tencent Yuanbao, Baidu ERNIE, Doubao, ChatGPT; open-source implementation supports DeepSeek/Qwen chat, SSE streaming and RAG knowledge-base Q&A (see [AI Integration Guide](docs/AiIntegration.md))
 - **Image Processing** — Barcode generation/recognition, image watermarking, CAPTCHA, avatar cropping
 - **Data Visualization** — ECharts charting integration, dashboard layout
 - **File Management** — File upload, import/export, online preview

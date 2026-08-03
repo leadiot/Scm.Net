@@ -60,6 +60,8 @@ SCM__EMAIL__PASSWORD=your_email_password
 | `SCM__SECURITY__APP_KEY` | Security:AppKey | 应用密钥 |
 | `SCM__SECURITY__AES_KEY` | Security:AesKey | AES密钥 |
 | `SCM__SECURITY__SIGN_KEY` | Security:SignKey | 签名密钥 |
+| `SCM__AI__DEEPSEEK__APIKEY` | Ai:DeepSeek:ApiKey | DeepSeek接口秘钥 |
+| `SCM__AI__QWEN__APIKEY` | Ai:Qwen:ApiKey | 通义千问（DashScope）接口秘钥 |
 
 ## 开发环境配置
 

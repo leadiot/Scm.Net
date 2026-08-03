@@ -1,3 +1,5 @@
+using Com.Scm.Ai.Config;
+using Com.Scm.Ai.Provider;
 using Com.Scm.Config;
 using Com.Scm.Configure.Filters;
 using Com.Scm.Configure.Middleware;
@@ -107,6 +109,13 @@ namespace Com.Scm.Configure.Startup
             var aimlConfig = AppUtils.GetConfig<AimlConfig>(AimlConfig.NAME) ?? new AimlConfig();
             aimlConfig.Prepare(envConfig);
             services.AddSingleton(aimlConfig);
+
+            // Ai大模型（DeepSeek、通义千问）
+            LogUtils.Info("正在进行AI配置...");
+            var aiConfig = AppUtils.GetConfig<AiConfig>(AiConfig.NAME) ?? new AiConfig();
+            aiConfig.Prepare(envConfig);
+            services.AddSingleton(aiConfig);
+            services.AddSingleton<AiClientManager>();
 
             // Oidc
             LogUtils.Info("正在进行OIDC配置...");

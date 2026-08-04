@@ -277,9 +277,12 @@ namespace Com.Scm.Configure.Startup
 
             if (app.Environment.IsDevelopment() || (scalarConfig?.ShowInProduction ?? false))
             {
-                //app.UseSwaggerSetup(swaggerConfig);
                 app.UseScalarSetup(scalarConfig);
             }
+            //if (app.Environment.IsDevelopment() || (swaggerConfig?.ShowInProduction ?? false))
+            //{
+            //    app.UseSwaggerSetup(swaggerConfig);
+            //}
 
             // Jwt 中间件：解析 Claims 注入 ScmContextHolder，必须在 UseAuthentication 之后
             app.UseMiddleware<JwtMiddleware>();

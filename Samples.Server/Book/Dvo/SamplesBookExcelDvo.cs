@@ -2,7 +2,7 @@
 
 namespace Com.Scm.Samples.Book.Dvo
 {
-    public class BookExcelDvo
+    public class SamplesBookExcelDvo
     {
         /// <summary>
         /// 书籍编码

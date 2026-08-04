@@ -8,7 +8,7 @@ using System.ComponentModel.DataAnnotations;
 namespace Com.Scm.Samples.PoHeader.Dao
 {
     /// <summary>
-    /// 
+    /// 采购摘要
     /// </summary>
     [SugarTable("samples_po_header")]
     public class SamplesPoHeaderDao : ScmDataDao

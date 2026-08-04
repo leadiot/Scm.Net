@@ -4,7 +4,7 @@ using Com.Scm.Utils;
 using SqlSugar;
 using System.ComponentModel.DataAnnotations;
 
-namespace Com.Scm.Samples.Demo
+namespace Com.Scm.Samples.Demo.Dao
 {
     /// <summary>
     /// 演示对象DAO

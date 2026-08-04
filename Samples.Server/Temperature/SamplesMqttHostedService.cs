@@ -1,16 +1,19 @@
 using Com.Scm.Mqtt;
 using Com.Scm.Mqtt.Impl;
 using Com.Scm.Response;
+using Com.Scm.Samples.Temperature.Dao;
+using Com.Scm.Samples.Temperature.Rnr;
 using Com.Scm.Ur;
 using Com.Scm.Utils;
 using Microsoft.Extensions.Hosting;
 using MQTTnet.Protocol;
 using SqlSugar;
 
-namespace Com.Scm.Samples.Mqtt
+namespace Com.Scm.Samples.Temperature
 {
     /// <summary>
-    /// MQTT 示例后台服务 - 应用启动时自动连接和订阅
+    /// 温度后台服务 - 用于通过MQTT接收多处终端上传的温度数据。
+    /// 应用启动时自动连接和订阅
     /// </summary>
     public class SamplesMqttHostedService : IHostedService, IDisposable
     {
@@ -105,10 +108,10 @@ namespace Com.Scm.Samples.Mqtt
                 LogUtils.Debug($"[MQTT] 收到消息：Topic={topic}, Payload={payload}");
 
                 // 解析温度数据
-                var temperatureData = payload.AsJsonObject<TemperatureRequest>();
+                var temperatureData = payload.AsJsonObject<SamplesTemperatureRequest>();
                 if (temperatureData != null)
                 {
-                    var dao = temperatureData.Adapt<TemperatureDataDao>();
+                    var dao = temperatureData.Adapt<SamplesTemperatureDataDao>();
                     dao.PrepareCreate(UserDto.SYS_ID);
                     await _sqlClient.InsertAsync(dao);
 
@@ -127,12 +130,12 @@ namespace Com.Scm.Samples.Mqtt
         /// <summary>
         /// 发送响应消息
         /// </summary>
-        private async Task SendResponseAsync(TemperatureRequest data)
+        private async Task SendResponseAsync(SamplesTemperatureRequest data)
         {
             // 检查温度是否在正常范围内 (示例: 0-40°C)
             bool isNormal = data.temperature >= 0 && data.temperature <= 40;
 
-            var result = new TemperatureResult
+            var result = new SamplesTemperatureResult
             {
                 device_id = data.device_id,
                 status = isNormal ? 0 : 1,

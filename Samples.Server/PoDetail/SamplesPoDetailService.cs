@@ -1,7 +1,7 @@
 using Com.Scm.Dsa;
 using Com.Scm.Exceptions;
-using Com.Scm.Samples.Book;
-using Com.Scm.Samples.PoDetail.Dao;
+using Com.Scm.Samples.Book.Dao;
+using Com.Scm.Samples.Po.Dao;
 using Com.Scm.Samples.PoDetail.Dto;
 using Com.Scm.Samples.PoDetail.Dvo;
 using Com.Scm.Service;
@@ -17,19 +17,16 @@ namespace Com.Scm.Samples.PoDetail
     public class SamplesPoDetailService : ApiService
     {
         private readonly SugarRepository<SamplesPoDetailDao> _thisRepository;
-        private readonly IBookService _BookService;
 
         /// <summary>
         /// 
         /// </summary>
         /// <param name="thisRepository"></param>
         public SamplesPoDetailService(SugarRepository<SamplesPoDetailDao> thisRepository,
-            IResHolder resHolder,
-            IBookService bookService)
+            IResHolder resHolder)
         {
             _thisRepository = thisRepository;
             _ResHolder = resHolder;
-            _BookService = bookService;
         }
 
         /// <summary>
@@ -76,7 +73,7 @@ namespace Com.Scm.Samples.PoDetail
             {
                 Prepare(dvo);
 
-                var bookDao = _BookService.GetDaoById(dvo.book_id);
+                var bookDao = _ResHolder.GetRes<SamplesBookDao>(dvo.book_id);
                 if (bookDao != null)
                 {
                     dvo.book_codes = bookDao.codes;

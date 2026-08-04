@@ -1,6 +1,7 @@
 ﻿using Com.Scm.Config;
 using Com.Scm.Dsa;
 using Com.Scm.Enums;
+using Com.Scm.Samples.Demo.Dao;
 using Com.Scm.Samples.Demo.Dvo;
 using Com.Scm.Samples.Utils;
 using Com.Scm.Service;

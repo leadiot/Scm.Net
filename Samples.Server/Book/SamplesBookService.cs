@@ -19,17 +19,16 @@ namespace Com.Scm.Samples.Book
     /// 示例代码服务接口
     /// </summary>
     [ApiExplorerSettings(GroupName = "samples")]
-    public class SamplesBookService : ApiService, IBookService
+    public class SamplesBookService : ApiService
     {
-        private readonly SugarRepository<BookDao> _thisRepository;
+        private readonly SugarRepository<SamplesBookDao> _thisRepository;
         private readonly EnvConfig _Config;
-        private static readonly Dictionary<long, BookDao> _Dict = new Dictionary<long, BookDao>();
 
         /// <summary>
         /// 构造函数
         /// </summary>
         /// <param name="thisRepository"></param>
-        public SamplesBookService(SugarRepository<BookDao> thisRepository,
+        public SamplesBookService(SugarRepository<SamplesBookDao> thisRepository,
             IResHolder resHolder,
             EnvConfig config)
         {
@@ -43,19 +42,19 @@ namespace Com.Scm.Samples.Book
         /// </summary>
         /// <param name="request"></param>
         /// <returns></returns>
-        public async Task<ScmSearchPageResponse<BookDvo>> GetPageAsync(SearchRequest request)
+        public async Task<ScmSearchPageResponse<SamplesBookDvo>> GetPageAsync(SearchRequest request)
         {
             var isEmpty = string.IsNullOrWhiteSpace(request.key);
             var isCodes = !isEmpty && SamplesUtils.IsDemoCodes(request.key);
 
             var result = await _thisRepository.AsQueryable()
                 //.Where(a => a.row_delete != ScmDeleteEnum.Yes)
-                .WhereIF(request.types != BookTypesEnum.None, a => a.types == request.types)
+                .WhereIF(request.types != SamplesBookTypesEnum.None, a => a.types == request.types)
                 .WhereIF(!request.IsAllStatus(), a => a.row_status == request.row_status)
                 .WhereIF(isCodes, a => a.codes == request.key)
                 .WhereIF(!isEmpty && !isCodes, a => a.codec.Contains(request.key) || a.names.Contains(request.key))
                 .OrderByDescending(a => a.id)
-                .Select<BookDvo>()
+                .Select<SamplesBookDvo>()
                 .ToPageAsync(request.page, request.limit);
 
             Prepare(result.Items);
@@ -67,22 +66,22 @@ namespace Com.Scm.Samples.Book
         /// </summary>
         /// <param name="request"></param>
         /// <returns></returns>
-        public async Task<List<BookDvo>> GetListAsync(SearchRequest request)
+        public async Task<List<SamplesBookDvo>> GetListAsync(SearchRequest request)
         {
             var items = await _thisRepository.AsQueryable()
                 //.Where(a => a.row_delete != ScmDeleteEnum.Yes)
-                .WhereIF(request.types != BookTypesEnum.None, a => a.types == request.types)
+                .WhereIF(request.types != SamplesBookTypesEnum.None, a => a.types == request.types)
                 .WhereIF(!request.IsAllStatus(), a => a.row_status == request.row_status)
                 .WhereIF(!string.IsNullOrEmpty(request.key), a => a.codec.Contains(request.key) || a.names.Contains(request.key))
                 .OrderByDescending(a => a.id)
-                .Select<BookDvo>()
+                .Select<SamplesBookDvo>()
                 .ToListAsync();
 
             Prepare(items);
             return items;
         }
 
-        private void Prepare(List<BookDvo> list)
+        private void Prepare(List<SamplesBookDvo> list)
         {
             foreach (var item in list)
             {
@@ -101,7 +100,7 @@ namespace Com.Scm.Samples.Book
         {
             var items = await _thisRepository.AsQueryable()
                 //.Where(a => a.row_delete != ScmDeleteEnum.Yes)
-                .WhereIF(request.types != BookTypesEnum.None, a => a.types == request.types)
+                .WhereIF(request.types != SamplesBookTypesEnum.None, a => a.types == request.types)
                 .WhereIF(!request.IsAllStatus(), a => a.row_status == request.row_status)
                 .OrderByDescending(a => a.id)
                 .Select(a => new ResOptionDvo { id = a.id, label = a.namec, value = a.id })
@@ -116,11 +115,11 @@ namespace Com.Scm.Samples.Book
         /// <param name="id"></param>
         /// <returns></returns>
         [HttpGet("{id}")]
-        public async Task<BookDvo> GetEditAsync(long id)
+        public async Task<SamplesBookDvo> GetEditAsync(long id)
         {
             return await _thisRepository
                 .AsQueryable()
-                .Select<BookDvo>()
+                .Select<SamplesBookDvo>()
                 .FirstAsync(m => m.id == id);
         }
 
@@ -130,11 +129,11 @@ namespace Com.Scm.Samples.Book
         /// <param name="id"></param>
         /// <returns></returns>
         [HttpGet("{id}")]
-        public async Task<BookDvo> GetViewAsync(long id)
+        public async Task<SamplesBookDvo> GetViewAsync(long id)
         {
             return await _thisRepository
                 .AsQueryable()
-                .Select<BookDvo>()
+                .Select<SamplesBookDvo>()
                 .FirstAsync(m => m.id == id);
         }
 
@@ -143,9 +142,9 @@ namespace Com.Scm.Samples.Book
         /// </summary>
         /// <param name="model"></param>
         /// <returns></returns>
-        public async Task AddAsync(BookDto model)
+        public async Task AddAsync(SamplesBookDto model)
         {
-            var dao = model.Clone<BookDao>();
+            var dao = model.Clone<SamplesBookDao>();
             await _thisRepository.InsertAsync(dao);
         }
 
@@ -154,7 +153,7 @@ namespace Com.Scm.Samples.Book
         /// </summary>
         /// <param name="model"></param>
         /// <returns></returns>
-        public async Task<bool> UpdateAsync(BookDto model)
+        public async Task<bool> UpdateAsync(SamplesBookDto model)
         {
             var dao = await _thisRepository.GetFirstAsync(a => a.codec == model.codec && a.id != model.id);
             if (dao != null)
@@ -168,7 +167,6 @@ namespace Com.Scm.Samples.Book
             }
 
             dao = model.Adapt(dao);
-            RemoveCacheById(dao.id);
             return await _thisRepository.UpdateAsync(dao);
         }
 
@@ -228,10 +226,10 @@ namespace Com.Scm.Samples.Book
             #region 数据导入
             using (var stream = request.file.OpenReadStream())
             {
-                var list = stream.Query<BookExcelDvo>();
+                var list = stream.Query<SamplesBookExcelDvo>();
                 foreach (var item in list)
                 {
-                    var dao = item.Clone<BookDao>();
+                    var dao = item.Clone<SamplesBookDao>();
                     await _thisRepository.InsertAsync(dao);
                 }
             }
@@ -254,29 +252,6 @@ namespace Com.Scm.Samples.Book
                 var bytes = new byte[stream.Length];
                 await stream.ReadAsync(bytes, 0, bytes.Length);
                 return new FileContentResult(bytes, "image/png");
-            }
-        }
-
-        public BookDao GetDaoById(long id, bool useCache = true)
-        {
-            if (_Dict.ContainsKey(id))
-            {
-                return _Dict[id];
-            }
-
-            var dao = _thisRepository.GetById(id);
-            if (dao != null)
-            {
-                _Dict[id] = dao;
-            }
-            return dao;
-        }
-
-        public void RemoveCacheById(long id)
-        {
-            if (_Dict.ContainsKey(id))
-            {
-                _Dict.Remove(id);
             }
         }
     }

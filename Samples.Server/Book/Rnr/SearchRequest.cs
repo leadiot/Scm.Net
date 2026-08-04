@@ -7,6 +7,6 @@ namespace Com.Scm.Samples.Book.Rnr
     /// </summary>
     public class SearchRequest : ScmSearchPageRequest
     {
-        public BookTypesEnum types { get; set; }
+        public SamplesBookTypesEnum types { get; set; }
     }
 }

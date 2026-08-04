@@ -11,12 +11,12 @@ namespace Com.Scm.Samples.Book.Dao
     /// 演示对象DAO
     /// </summary>
     [SugarTable("samples_book")]
-    public class BookDao : ScmDataDao, ISystemDao, IDeleteDao, IApprovalDao
+    public class SamplesBookDao : ScmDataDao, ISystemDao, IDeleteDao, IApprovalDao, IResDao
     {
         /// <summary>
         /// 书籍类型
         /// </summary>
-        public BookTypesEnum types { get; set; }
+        public SamplesBookTypesEnum types { get; set; }
         /// <summary>
         /// 系统编码（全局编码，用于系统时API交换）
         /// 格式：DEMO00000001
@@ -93,6 +93,26 @@ namespace Com.Scm.Samples.Book.Dao
             {
                 names = namec;
             }
+        }
+
+        public string GetCode()
+        {
+            return codec;
+        }
+
+        public string GetName()
+        {
+            return names;
+        }
+
+        public string GetNamec()
+        {
+            return namec;
+        }
+
+        public string GetNames()
+        {
+            return names;
         }
     }
 }

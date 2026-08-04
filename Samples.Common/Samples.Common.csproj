@@ -8,11 +8,12 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Demo\" />
-    <Folder Include="Demo\" />
-    <Folder Include="PoDetail\" />
-    <Folder Include="Demo\" />
-    <Folder Include="PoDetail\" />
+    <Compile Remove="Demo\**" />
+    <Compile Remove="PoDetail\**" />
+    <EmbeddedResource Remove="Demo\**" />
+    <EmbeddedResource Remove="PoDetail\**" />
+    <None Remove="Demo\**" />
+    <None Remove="PoDetail\**" />
   </ItemGroup>
 
   <ItemGroup>

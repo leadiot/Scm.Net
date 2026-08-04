@@ -1,22 +1,24 @@
 using Com.Scm.Dsa;
+using Com.Scm.Samples.Temperature.Dao;
+using Com.Scm.Samples.Temperature.Rnr;
 using Com.Scm.Service;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Com.Scm.Samples.Mqtt
+namespace Com.Scm.Samples.Temperature
 {
     /// <summary>
-    /// MQTT 示例服务 - API 接口层
+    /// 温度服务 - API 接口层
     /// </summary>
     [ApiExplorerSettings(GroupName = "samples")]
     public class SamplesMqttService : AppService
     {
-        private readonly SugarRepository<TemperatureDataDao> _thisRepository;
+        private readonly SugarRepository<SamplesTemperatureDataDao> _thisRepository;
         private readonly SamplesMqttHostedService _mqttHostedService;
 
         /// <summary>
         /// 构造函数
         /// </summary>
-        public SamplesMqttService(SugarRepository<TemperatureDataDao> thisRepository, SamplesMqttHostedService mqttHostedService)
+        public SamplesMqttService(SugarRepository<SamplesTemperatureDataDao> thisRepository, SamplesMqttHostedService mqttHostedService)
         {
             _thisRepository = thisRepository;
             _mqttHostedService = mqttHostedService;
@@ -26,12 +28,12 @@ namespace Com.Scm.Samples.Mqtt
         /// 获取所有设备的最新温度数据
         /// </summary>
         [HttpGet]
-        public async Task<List<TemperatureRequest>> GetAllTemperatureData()
+        public async Task<List<SamplesTemperatureRequest>> GetAllTemperatureData()
         {
             return await _thisRepository.AsQueryable()
                 .OrderBy(a => a.id, SqlSugar.OrderByType.Desc)
                 .Take(100)
-                .Select<TemperatureRequest>()
+                .Select<SamplesTemperatureRequest>()
                 .ToListAsync();
         }
 
@@ -39,12 +41,12 @@ namespace Com.Scm.Samples.Mqtt
         /// 获取指定设备的最新温度数据
         /// </summary>
         [HttpGet("{deviceId}")]
-        public async Task<TemperatureRequest> GetTemperatureData(string deviceId)
+        public async Task<SamplesTemperatureRequest> GetTemperatureData(string deviceId)
         {
             return await _thisRepository.AsQueryable()
                 .Where(a => a.device_id == deviceId)
                 .OrderBy(a => a.id, SqlSugar.OrderByType.Desc)
-                .Select<TemperatureRequest>()
+                .Select<SamplesTemperatureRequest>()
                 .FirstAsync();
         }
 

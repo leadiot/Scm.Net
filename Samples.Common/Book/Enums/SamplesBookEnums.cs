@@ -1,6 +1,6 @@
 ﻿namespace Com.Scm.Samples.Book.Enums
 {
-    public enum BookTypesEnum
+    public enum SamplesBookTypesEnum
     {
         None = 0,
         A,

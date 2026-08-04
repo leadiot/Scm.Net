@@ -1,15 +1,18 @@
-using Com.Scm.Request;
+using Com.Scm.Dao;
+using SqlSugar;
 
-namespace Com.Scm.Samples.Mqtt
+namespace Com.Scm.Samples.Temperature.Dao
 {
     /// <summary>
-    /// 温度数据 DTO
+    /// 温度数据 DAO
     /// </summary>
-    public class TemperatureRequest : ScmRequest
+    [SugarTable("samples_temperature_data")]
+    public class SamplesTemperatureDataDao : ScmDao
     {
         /// <summary>
         /// 设备 ID
         /// </summary>
+        [SugarColumn(Length = 16)]
         public string device_id { get; set; }
 
         /// <summary>
@@ -18,7 +21,7 @@ namespace Com.Scm.Samples.Mqtt
         public float temperature { get; set; }
 
         /// <summary>
-        /// 记录时间
+        /// 记录时间（Unix 毫秒戳）
         /// </summary>
         public long timestamp { get; set; }
     }

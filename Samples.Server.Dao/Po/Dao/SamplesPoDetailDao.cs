@@ -2,10 +2,10 @@ using Com.Scm.Dao;
 using SqlSugar;
 using System.ComponentModel.DataAnnotations;
 
-namespace Com.Scm.Samples.PoDetail.Dao
+namespace Com.Scm.Samples.Po.Dao
 {
     /// <summary>
-    /// 
+    /// 采购明细
     /// </summary>
     [SugarTable("samples_po_detail")]
     public class SamplesPoDetailDao : ScmDataDao

@@ -2,7 +2,7 @@
 
 namespace Com.Scm.Service
 {
-    [ApiExplorerSettings(GroupName = "v1")]
+    [ApiExplorerSettings(GroupName = "scm")]
     public class ScmSecService : ISecService
     {
         public SecConfig Get()

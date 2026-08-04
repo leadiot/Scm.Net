@@ -8,7 +8,7 @@ namespace Com.Scm.Service
     /// <summary>
     /// 
     /// </summary>
-    [ApiExplorerSettings(GroupName = "v1")]
+    [ApiExplorerSettings(GroupName = "scm")]
     public class ScmDicService : ApiService, IDicService
     {
         private readonly SugarRepository<DicHeaderDao> _headerRepository;

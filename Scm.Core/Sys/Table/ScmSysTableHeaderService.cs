@@ -11,7 +11,7 @@ namespace Com.Scm.Sys.Table
     /// <summary>
     /// 服务接口
     /// </summary>
-    [ApiExplorerSettings(GroupName = "v1")]
+    [ApiExplorerSettings(GroupName = "sys")]
     public class ScmSysTableHeaderService : ApiService
     {
         private readonly SugarRepository<SysTableHeaderDao> _thisRepository;

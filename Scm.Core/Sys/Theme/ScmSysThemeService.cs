@@ -11,7 +11,7 @@ namespace Com.Scm.Sys
     /// <summary>
     /// 服务接口
     /// </summary>
-    [ApiExplorerSettings(GroupName = "v1")]
+    [ApiExplorerSettings(GroupName = "sys")]
     public class ScmSysThemeService : ApiService
     {
         private readonly SugarRepository<ThemeDao> _thisRepository;

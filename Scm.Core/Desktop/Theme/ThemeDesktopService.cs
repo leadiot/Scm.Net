@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace Com.Scm.Desktop.Theme
 {
     [AllowAnonymous]
-    [ApiExplorerSettings(GroupName = "v1")]
+    [ApiExplorerSettings(GroupName = "scm")]
     public class ThemeDesktopService : ApiService
     {
         private readonly SugarRepository<ThemeDesktopDao> _thisRepository;

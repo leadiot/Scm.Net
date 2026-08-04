@@ -47,11 +47,10 @@ namespace Com.Scm.Terminal
                 throw new BusinessException("无效的终端或口令！");
             }
 
-            // 过审专用
-            //if (terminalDao.binded == ScmBoolEnum.True)
-            //{
-            //    throw new BusinessException("设备已经绑定到其它终端！");
-            //}
+            if (terminalDao.binded == ScmBoolEnum.True)
+            {
+                throw new BusinessException("设备已经绑定到其它终端！");
+            }
             if (terminalDao.types != request.types)
             {
                 throw new BusinessException("无效的终端类型！");

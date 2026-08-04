@@ -15,7 +15,7 @@ namespace Com.Scm.Samples.Temperature
     /// 温度后台服务 - 用于通过MQTT接收多处终端上传的温度数据。
     /// 应用启动时自动连接和订阅
     /// </summary>
-    public class SamplesMqttHostedService : IHostedService, IDisposable
+    public class SamplesTemperatureHostedService : IHostedService, IDisposable
     {
         private readonly ISqlSugarClient _sqlClient;
         private readonly IMqttPublisher _mqttPublisher;
@@ -36,7 +36,7 @@ namespace Com.Scm.Samples.Temperature
         /// <summary>
         /// 构造函数
         /// </summary>
-        public SamplesMqttHostedService(ISqlSugarClient sqlClient, IMqttPublisher mqttPublisher, IMqttSubscriber mqttSubscriber)
+        public SamplesTemperatureHostedService(ISqlSugarClient sqlClient, IMqttPublisher mqttPublisher, IMqttSubscriber mqttSubscriber)
         {
             _sqlClient = sqlClient;
             _mqttPublisher = mqttPublisher;
@@ -181,7 +181,7 @@ namespace Com.Scm.Samples.Temperature
             _disposed = true;
         }
 
-        ~SamplesMqttHostedService()
+        ~SamplesTemperatureHostedService()
         {
             Dispose(false);
         }

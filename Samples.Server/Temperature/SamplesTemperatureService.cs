@@ -10,15 +10,15 @@ namespace Com.Scm.Samples.Temperature
     /// 温度服务 - API 接口层
     /// </summary>
     [ApiExplorerSettings(GroupName = "samples")]
-    public class SamplesMqttService : AppService
+    public class SamplesTemperatureService : AppService
     {
         private readonly SugarRepository<SamplesTemperatureDataDao> _thisRepository;
-        private readonly SamplesMqttHostedService _mqttHostedService;
+        private readonly SamplesTemperatureHostedService _mqttHostedService;
 
         /// <summary>
         /// 构造函数
         /// </summary>
-        public SamplesMqttService(SugarRepository<SamplesTemperatureDataDao> thisRepository, SamplesMqttHostedService mqttHostedService)
+        public SamplesTemperatureService(SugarRepository<SamplesTemperatureDataDao> thisRepository, SamplesTemperatureHostedService mqttHostedService)
         {
             _thisRepository = thisRepository;
             _mqttHostedService = mqttHostedService;

@@ -66,7 +66,7 @@ namespace Com.Scm.Samples.Helper
 
         protected override void InitDml(ScmVerDao verDao)
         {
-            CreateUid(1000000000000002001, "samples_book", 1, "", "");
+            CreateUid(1000000000000002001, "samples_book", 7, "B", "");
             CreateUid(1000000000000002002, "samples_po_header", 10, "PO", "");
         }
 

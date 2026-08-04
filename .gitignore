@@ -11,11 +11,6 @@
 .vs/
 .vscode/
 
-# Vue 项目文件
-dist/
-node_modules/
-webpack/
-
 # Visual Studio 项目文件
 [Bb]in/
 [Oo]bj/
@@ -28,8 +23,6 @@ PublishProfiles/
 # 自定义项目文件
 [Gg]enerator/
 [Gg]enerated/
-
-# 需要特殊处理的文件
 
 # 敏感配置文件
 .env

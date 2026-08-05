@@ -221,7 +221,7 @@ namespace Com.Scm.Controllers
             {
                 var baseDir = _EnvConfig.GetDataPath("sql");
 
-                IModelHelper helper = new ScmDbHelper();
+                IModelDbHelper helper = new ScmDbHelper();
                 helper.Init(_SqlClient, baseDir);
                 helper.DropDb();
 
@@ -249,7 +249,7 @@ namespace Com.Scm.Controllers
             {
                 var baseDir = _EnvConfig.GetDataPath("sql");
 
-                IModelHelper helper = new ScmDbHelper();
+                IModelDbHelper helper = new ScmDbHelper();
                 helper.Init(_SqlClient, baseDir);
                 helper.InitDb();
 

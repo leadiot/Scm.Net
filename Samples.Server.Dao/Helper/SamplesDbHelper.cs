@@ -21,6 +21,60 @@ namespace Com.Scm.Samples.Helper
             //ScmServerHelper.Register(new SamplesDbHelper());
         }
 
+        #region 版本信息
+        protected override string GetKey()
+        {
+            return KEY;
+        }
+
+        protected override int GetVer()
+        {
+            return VER;
+        }
+
+        protected override string GetDate()
+        {
+            return DATE;
+        }
+        #endregion
+
+        #region 数据库创建
+        protected override void OnCreate(ScmVerDao verDao)
+        {
+            InitDdl(verDao);
+            InitDml(verDao);
+        }
+        protected void InitDdl(ScmVerDao verDao)
+        {
+            // 表格处理
+            CreateTable(Assembly.GetExecutingAssembly());
+        }
+
+        protected void InitDml(ScmVerDao verDao)
+        {
+            CreateUid(1000000000000002001, "samples_book", 7, "B", "");
+            CreateUid(1000000000000002002, "samples_po_header", 10, "PO", "");
+
+            var dmlFile = Path.Combine(_SqlDir, "samples-init.sql");
+            ExecuteSql(dmlFile, verDao.ver);
+        }
+        #endregion
+
+        #region 数据库升级
+        protected override void OnUpgrade(ScmVerDao verDao)
+        {
+            // 版本较新，不执行DML
+            if (verDao.ver >= VER)
+            {
+                return;
+            }
+
+            var dmlFile = Path.Combine(_SqlDir, "samples-upgrade.sql");
+            ExecuteSql(dmlFile, verDao.ver);
+        }
+        #endregion
+
+        #region 数据库清空
         /// <summary>
         /// 清空数据库
         /// </summary>
@@ -30,43 +84,6 @@ namespace Com.Scm.Samples.Helper
         {
             return DropTable(Assembly.GetExecutingAssembly());
         }
-
-        protected override void InitDdl(ScmVerDao verDao)
-        {
-            // 表格处理
-            InitTable(Assembly.GetExecutingAssembly());
-        }
-
-        protected override void InitDml(ScmVerDao verDao)
-        {
-            CreateUid(1000000000000002001, "samples_book", 7, "B", "");
-            CreateUid(1000000000000002002, "samples_po_header", 10, "PO", "");
-
-            var dmlFile = Path.Combine(_SqlDir, "samples-init.sql");
-            ExecuteSql(dmlFile, verDao.ver);
-        }
-
-        protected override void UpgradeDdl(ScmVerDao verDao)
-        {
-            // 版本较新，不执行DDL
-            if (verDao.ver < VER)
-            {
-                var ddlFile = Path.Combine(_SqlDir, "samples-ddl.sql");
-                ExecuteSql(ddlFile, verDao.ver);
-            }
-
-            // 表格处理
-            InitTable(Assembly.GetExecutingAssembly());
-        }
-
-        protected override void UpgradeDml(ScmVerDao verDao)
-        {
-            // 版本较新，不执行DML
-            if (verDao.ver < VER)
-            {
-                var dmlFile = Path.Combine(_SqlDir, "samples-dml.sql");
-                ExecuteSql(dmlFile, verDao.ver);
-            }
-        }
+        #endregion
     }
 }

@@ -22,10 +22,10 @@ namespace Com.Scm.Controllers
         }
 
         /// <summary>
-        /// ����ͼƬ
+        /// 生成图片
         /// </summary>
-        /// <param name="identify">��ʶ��</param>
-        /// <returns>ͼƬ����</returns>
+        /// <param name="identify">标识符</param>
+        /// <returns>图片对象</returns>
         [HttpGet("cha/{identify}")]
         [NoJsonResult]
         [NoAuditLog]
@@ -42,7 +42,7 @@ namespace Com.Scm.Controllers
         }
 
         /// <summary>
-        /// ����Key
+        /// 生成Key
         /// </summary>
         /// <param name="identify"></param>
         /// <returns></returns>

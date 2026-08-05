@@ -10,10 +10,10 @@ namespace Com.Scm.Computer.Dvo
         /// <summary>
         /// 源文件或目录路径
         /// </summary>
-        public string src { get; set; }
+        public List<string> src { get; set; }
 
         /// <summary>
-        /// 目标文件或目录路径
+        /// 目标目录路径
         /// </summary>
         public string dst { get; set; }
 

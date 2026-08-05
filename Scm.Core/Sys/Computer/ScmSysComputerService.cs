@@ -1,5 +1,7 @@
 ﻿using Com.Scm.Computer.Dvo;
+using Com.Scm.Dto;
 using Com.Scm.Service;
+using Com.Scm.Sys.Computer.Dvo;
 using Com.Scm.Utils;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Cryptography;
@@ -9,13 +11,51 @@ namespace Com.Scm.Computer
     /// <summary>
     /// 本机文件服务，提供当前电脑文件的列表、详情、移动、复制、删除等操作
     /// </summary>
-    public class ComputerService : ApiService
+    [ApiExplorerSettings(GroupName = "sys")]
+    public class ScmSysComputerService : ApiService
     {
-        public ComputerService()
+        public ScmSysComputerService()
         {
         }
 
         #region 文件列表
+        public async Task<ScmPageResultDto<FileDvo>> GetPagesAsync(SearchRequest request)
+        {
+            var list = new ScmPageResultDto<FileDvo>();
+            if (string.IsNullOrWhiteSpace(request.path))
+            {
+                return list;
+            }
+
+            var path = request.path.Trim();
+            switch (path.ToLower())
+            {
+                case "~desk":
+                    path = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
+                    break;
+                case "~home":
+                    path = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
+                    break;
+                case "~documents":
+                    path = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
+                    break;
+                case "~image":
+                    path = Environment.GetFolderPath(Environment.SpecialFolder.MyPictures);
+                    break;
+                case "~audio":
+                    path = Environment.GetFolderPath(Environment.SpecialFolder.MyMusic);
+                    break;
+                case "~video":
+                    path = Environment.GetFolderPath(Environment.SpecialFolder.MyVideos);
+                    break;
+                case "~download":
+                    path = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
+                    break;
+            }
+
+            return DoListAll(path, request.key, request.page, request.limit);
+        }
+
         /// <summary>
         /// 列出当前计算机的所有逻辑根目录（磁盘分区）
         /// </summary>
@@ -29,7 +69,7 @@ namespace Com.Scm.Computer
                 {
                     name = drive.Name,
                     path = drive.RootDirectory.FullName,
-                    is_dir = true,
+                    type = Enums.ScmFileTypeEnum.Dir,
                     icon = "drive"
                 };
 
@@ -46,46 +86,16 @@ namespace Com.Scm.Computer
         }
 
         /// <summary>
-        /// 列出当前用户主目录下的文件与子目录
-        /// </summary>
-        /// <returns></returns>
-        public List<FileDvo> GetListHomeAsync()
-        {
-            var path = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
-            return DoListAll(path);
-        }
-
-        /// <summary>
-        /// 列出当前用户桌面目录下的文件与子目录
-        /// </summary>
-        /// <returns></returns>
-        public List<FileDvo> GetListDesktopAsync()
-        {
-            var path = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
-            return DoListAll(path);
-        }
-
-        /// <summary>
-        /// 获取指定目录的文件列表（目录+文档）
-        /// </summary>
-        /// <param name="path">目录路径</param>
-        /// <returns></returns>
-        public List<FileDvo> GetListAsync(string path)
-        {
-            return DoListAll(path);
-        }
-
-        /// <summary>
         /// 获取指定目录的子目录列表
         /// </summary>
         /// <param name="path">目录路径</param>
         /// <returns></returns>
-        public List<FileDvo> GetListDirAsync(string path)
+        public List<FileDvo> GetListDirAsync(string path, string key)
         {
             var info = GetDirectory(path);
 
             var list = new List<FileDvo>();
-            foreach (var dir in SafeGetDirectories(info))
+            foreach (var dir in SafeGetDirectories(info, key))
             {
                 list.Add(FromDir(dir));
             }
@@ -98,12 +108,12 @@ namespace Com.Scm.Computer
         /// </summary>
         /// <param name="path">目录路径</param>
         /// <returns></returns>
-        public List<FileDvo> GetListDocAsync(string path)
+        public List<FileDvo> GetListDocAsync(string path, string key)
         {
             var info = GetDirectory(path);
 
             var list = new List<FileDvo>();
-            foreach (var file in SafeGetFiles(info))
+            foreach (var file in SafeGetFiles(info, key))
             {
                 list.Add(FromDoc(file));
             }
@@ -155,29 +165,32 @@ namespace Com.Scm.Computer
         [HttpPost]
         public FileDvo CopyAsync(FileTransferRequest request)
         {
-            if (request == null || string.IsNullOrWhiteSpace(request.src) || string.IsNullOrWhiteSpace(request.dst))
+            if (request == null || request.src == null || request.src.Count < 1 || string.IsNullOrWhiteSpace(request.dst))
             {
                 Error("源路径和目标路径不能为空！");
             }
 
-            var src = request.src;
-            if (Directory.Exists(src))
+            foreach (var src in request.src)
             {
-                var dst = ResolveDestPath(src, request.dst);
-                EnsureNotNested(src, dst);
-                CopyDirectory(src, dst, request.overwrite);
-                return GetDetailAsync(dst);
+                if (Directory.Exists(src))
+                {
+                    var dst = ResolveDestPath(src, request.dst);
+                    EnsureNotNested(src, dst);
+                    CopyDirectory(src, dst, request.overwrite);
+                    return GetDetailAsync(dst);
+                }
+
+                if (File.Exists(src))
+                {
+                    var dst = ResolveDestPath(src, request.dst);
+                    EnsureParentExists(dst);
+                    File.Copy(src, dst, request.overwrite);
+                    return GetDetailAsync(dst);
+                }
+
+                Error($"源路径不存在：{src}");
             }
 
-            if (File.Exists(src))
-            {
-                var dst = ResolveDestPath(src, request.dst);
-                EnsureParentExists(dst);
-                File.Copy(src, dst, request.overwrite);
-                return GetDetailAsync(dst);
-            }
-
-            Error($"源路径不存在：{src}");
             return null;
         }
 
@@ -189,29 +202,32 @@ namespace Com.Scm.Computer
         [HttpPost]
         public FileDvo MoveAsync(FileTransferRequest request)
         {
-            if (request == null || string.IsNullOrWhiteSpace(request.src) || string.IsNullOrWhiteSpace(request.dst))
+            if (request == null || request.src == null || request.src.Count < 1 || string.IsNullOrWhiteSpace(request.dst))
             {
                 Error("源路径和目标路径不能为空！");
             }
 
-            var src = request.src;
-            if (Directory.Exists(src))
+            foreach (var src in request.src)
             {
-                var dst = ResolveDestPath(src, request.dst);
-                EnsureNotNested(src, dst);
-                Directory.Move(src, dst);
-                return GetDetailAsync(dst);
+                if (Directory.Exists(src))
+                {
+                    var dst = ResolveDestPath(src, request.dst);
+                    EnsureNotNested(src, dst);
+                    Directory.Move(src, dst);
+                    return GetDetailAsync(dst);
+                }
+
+                if (File.Exists(src))
+                {
+                    var dst = ResolveDestPath(src, request.dst);
+                    EnsureParentExists(dst);
+                    File.Move(src, dst, request.overwrite);
+                    return GetDetailAsync(dst);
+                }
+
+                Error($"源路径不存在：{src}");
             }
 
-            if (File.Exists(src))
-            {
-                var dst = ResolveDestPath(src, request.dst);
-                EnsureParentExists(dst);
-                File.Move(src, dst, request.overwrite);
-                return GetDetailAsync(dst);
-            }
-
-            Error($"源路径不存在：{src}");
             return null;
         }
 
@@ -253,28 +269,31 @@ namespace Com.Scm.Computer
         /// </summary>
         /// <param name="request"></param>
         /// <returns></returns>
-        [HttpPost]
+        [HttpPost("Delete")]
         public bool DeleteAsync(FileDeleteRequest request)
         {
-            if (request == null || string.IsNullOrWhiteSpace(request.path))
+            if (request == null || request.path == null || request.path.Count < 1)
             {
                 Error("路径不能为空！");
             }
 
-            var path = request.path;
-            if (Directory.Exists(path))
+            foreach (var path in request.path)
             {
-                Directory.Delete(path, true);
-                return true;
+                if (Directory.Exists(path))
+                {
+                    Directory.Delete(path, true);
+                    return true;
+                }
+
+                if (File.Exists(path))
+                {
+                    File.Delete(path);
+                    return true;
+                }
+
+                Error($"路径不存在：{path}");
             }
 
-            if (File.Exists(path))
-            {
-                File.Delete(path);
-                return true;
-            }
-
-            Error($"路径不存在：{path}");
             return false;
         }
 
@@ -283,15 +302,32 @@ namespace Com.Scm.Computer
         /// </summary>
         /// <param name="path">目录路径</param>
         /// <returns></returns>
-        [HttpPost]
-        public FileDvo CreateDirAsync(string path)
+        [HttpPost("CreateDir")]
+        public FileDvo CreateDirAsync(FileCreateRequest request)
         {
+            var path = request.path?.Trim();
             if (string.IsNullOrWhiteSpace(path))
             {
                 Error("路径不能为空！");
             }
+            if (!Directory.Exists(path))
+            {
+                Error("路径不存在：" + path);
+            }
 
-            var info = Directory.CreateDirectory(path);
+            var name = request.name?.Trim();
+            if (string.IsNullOrWhiteSpace(name))
+            {
+                Error("名称不能为空！");
+            }
+
+            var dir = Path.Combine(path, name);
+            if (Directory.Exists(dir))
+            {
+                Error("目录已存在！");
+            }
+
+            var info = Directory.CreateDirectory(dir);
             return FromDir(info);
         }
         #endregion
@@ -302,22 +338,61 @@ namespace Com.Scm.Computer
         /// </summary>
         /// <param name="path"></param>
         /// <returns></returns>
-        private List<FileDvo> DoListAll(string path)
+        private ScmPageResultDto<FileDvo> DoListAll(string path, string key, int page, int limit)
         {
-            var info = GetDirectory(path);
+            var result = new ScmPageResultDto<FileDvo>();
+            if (string.IsNullOrEmpty(path))
+            {
+                return result;
+            }
+
+            var info = new DirectoryInfo(path);
+            if (!info.Exists)
+            {
+                return result;
+            }
+
+            page -= 1;
+            if (page < 0)
+            {
+                page = 0;
+            }
+
+            var from = page * limit;
+            var to = from + limit;
 
             var list = new List<FileDvo>();
-            foreach (var dir in SafeGetDirectories(info))
+
+            var dirList = SafeGetDirectories(info, key);
+            var dirQty = dirList.Length;
+            var end = dirQty > to ? to : dirQty;
+            while (from < end)
             {
-                list.Add(FromDir(dir));
+                list.Add(FromDir(dirList[from]));
+                from += 1;
             }
 
-            foreach (var file in SafeGetFiles(info))
+            var docList = SafeGetFiles(info, key);
+            var docQty = docList.Length;
+            if (from < to)
             {
-                list.Add(FromDoc(file));
+                from -= dirQty;
+                to -= dirQty;
+                end = docQty > to ? to : docQty;
+
+                while (from < end)
+                {
+                    list.Add(FromDoc(docList[from]));
+                    from += 1;
+                }
             }
 
-            return list;
+            var qty = dirQty + docQty;
+            result.TotalItems = qty;
+            result.TotalPages = (qty - 1 + limit) / limit;
+            result.Items = list;
+
+            return result;
         }
 
         /// <summary>
@@ -341,11 +416,16 @@ namespace Com.Scm.Computer
             return info;
         }
 
-        private IEnumerable<DirectoryInfo> SafeGetDirectories(DirectoryInfo info)
+        private DirectoryInfo[] SafeGetDirectories(DirectoryInfo info, string key, bool hasHidden = false)
         {
             try
             {
-                return info.GetDirectories();
+                var list = string.IsNullOrWhiteSpace(key) ? info.GetDirectories() : info.GetDirectories(key);
+                if (!hasHidden)
+                {
+                    list = list.Where(a => !a.Attributes.HasFlag(FileAttributes.Hidden)).ToArray();
+                }
+                return list;
             }
             catch
             {
@@ -353,11 +433,16 @@ namespace Com.Scm.Computer
             }
         }
 
-        private IEnumerable<FileInfo> SafeGetFiles(DirectoryInfo info)
+        private FileInfo[] SafeGetFiles(DirectoryInfo info, string key, bool hasHidden = false)
         {
             try
             {
-                return info.GetFiles();
+                var list = string.IsNullOrWhiteSpace(key) ? info.GetFiles() : info.GetFiles(key);
+                if (!hasHidden)
+                {
+                    list = list.Where(a => !a.Attributes.HasFlag(FileAttributes.Hidden)).ToArray();
+                }
+                return list;
             }
             catch
             {
@@ -376,7 +461,7 @@ namespace Com.Scm.Computer
             {
                 name = dir.Name,
                 path = dir.FullName,
-                is_dir = true,
+                type = Enums.ScmFileTypeEnum.Dir,
                 icon = "folder",
                 create_time = TimeUtils.GetUnixTime(dir.CreationTimeUtc),
                 change_time = TimeUtils.GetUnixTime(dir.LastWriteTimeUtc)
@@ -394,7 +479,7 @@ namespace Com.Scm.Computer
             {
                 name = file.Name,
                 path = file.FullName,
-                is_dir = false,
+                type = Enums.ScmFileTypeEnum.Doc,
                 icon = string.IsNullOrWhiteSpace(file.Extension) ? "file" : file.Extension.TrimStart('.').ToLower(),
                 size = file.Length,
                 create_time = TimeUtils.GetUnixTime(file.CreationTimeUtc),
@@ -485,7 +570,7 @@ namespace Com.Scm.Computer
         {
             long size = 0;
 
-            foreach (var file in SafeGetFiles(dir))
+            foreach (var file in SafeGetFiles(dir, null))
             {
                 try
                 {
@@ -497,7 +582,7 @@ namespace Com.Scm.Computer
                 }
             }
 
-            foreach (var sub in SafeGetDirectories(dir))
+            foreach (var sub in SafeGetDirectories(dir, null))
             {
                 size += CalcDirSize(sub);
             }

@@ -10,6 +10,6 @@ namespace Com.Scm.Computer.Dvo
         /// <summary>
         /// 要删除的文件或目录路径
         /// </summary>
-        public string path { get; set; }
+        public List<string> path { get; set; }
     }
 }

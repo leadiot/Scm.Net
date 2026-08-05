@@ -275,7 +275,7 @@ public class ScmAdmFileService : IApiService
         using (var stream = File.OpenRead(path))
         {
             var bytes = new byte[stream.Length];
-            await stream.ReadAsync(bytes, 0, bytes.Length);
+            await stream.ReadExactlyAsync(bytes);
             return new FileContentResult(bytes, FileUtils.GetMimeByExt(exts));
         }
     }

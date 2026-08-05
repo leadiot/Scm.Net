@@ -1,4 +1,5 @@
 ﻿using Com.Scm.Dvo;
+using Com.Scm.Enums;
 
 namespace Com.Scm.Computer.Dvo
 {
@@ -32,7 +33,7 @@ namespace Com.Scm.Computer.Dvo
         /// <summary>
         /// 是否是目录
         /// </summary>
-        public bool is_dir { get; set; }
+        public ScmFileTypeEnum type { get; set; }
 
         #region 文件属性
         /// <summary>

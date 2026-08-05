@@ -3,6 +3,7 @@ using Com.Scm.Dto;
 using Com.Scm.Service;
 using Com.Scm.Sys.Computer.Dvo;
 using Com.Scm.Utils;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Cryptography;
 
@@ -14,8 +15,11 @@ namespace Com.Scm.Computer
     [ApiExplorerSettings(GroupName = "sys")]
     public class ScmSysComputerService : ApiService
     {
-        public ScmSysComputerService()
+        private readonly IHttpContextAccessor _httpContextAccessor;
+
+        public ScmSysComputerService(IHttpContextAccessor httpContextAccessor)
         {
+            _httpContextAccessor = httpContextAccessor;
         }
 
         #region 文件列表
@@ -27,31 +31,7 @@ namespace Com.Scm.Computer
                 return list;
             }
 
-            var path = request.path.Trim();
-            switch (path.ToLower())
-            {
-                case "~desk":
-                    path = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
-                    break;
-                case "~home":
-                    path = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
-                    break;
-                case "~documents":
-                    path = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
-                    break;
-                case "~image":
-                    path = Environment.GetFolderPath(Environment.SpecialFolder.MyPictures);
-                    break;
-                case "~audio":
-                    path = Environment.GetFolderPath(Environment.SpecialFolder.MyMusic);
-                    break;
-                case "~video":
-                    path = Environment.GetFolderPath(Environment.SpecialFolder.MyVideos);
-                    break;
-                case "~download":
-                    path = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
-                    break;
-            }
+            var path = GetNativePath(request.path.Trim());
 
             return DoListAll(path, request.key, request.page, request.limit);
         }
@@ -609,5 +589,196 @@ namespace Com.Scm.Computer
             }
         }
         #endregion
+
+        #region 文件上传
+        /// <summary>
+        /// 上传文件
+        /// </summary>
+        /// <returns></returns>
+        [HttpPost]
+        public async Task<ScmUploadResponse> Upload([FromForm] ScmUploadRequest request)
+        {
+            if (request.type == UploadTypeEnum.ByFile)
+            {
+                return await ByFileAsync(request);
+            }
+
+            if (request.type == UploadTypeEnum.ByPart)
+            {
+                return await ByPartAsync(request);
+            }
+
+            if (request.type == UploadTypeEnum.ByHash)
+            {
+                return await ByHashAsync(request);
+            }
+
+            var response = new ScmUploadResponse();
+            response.SetFailure("未知的上传类型！");
+            return response;
+        }
+
+        /// <summary>
+        /// 文件上传
+        /// </summary>
+        /// <returns></returns>
+        public async Task<ScmUploadResponse> ByFileAsync([FromForm] ScmUploadRequest request)
+        {
+            var response = new ScmUploadResponse();
+
+            var files = _httpContextAccessor.HttpContext?.Request.Form.Files;
+            if (files.Count == 0)
+            {
+                response.SetFailure("上传文件不能为空！");
+                return response;
+            }
+
+            var dstPath = GetNativePath(request.path);
+
+            var qty = 0;
+            var now = DateTime.Now.ToFileTimeUtc();
+            foreach (var file in files)
+            {
+                var name = file.FileName;
+
+                var tmpFile = Path.GetTempFileName();
+                var dstFile = Path.Combine(dstPath, name);
+                using (var stream = System.IO.File.OpenWrite(tmpFile))
+                {
+                    await file.CopyToAsync(stream);
+                }
+                File.Move(tmpFile, dstFile, true);
+                response.AddResult(new ScmUploadResult { name = name, path = dstFile, success = true });
+
+                qty += 1;
+            }
+
+            response.SetSuccess();
+            return response;
+        }
+
+        /// <summary>
+        /// 分段上传
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        public async Task<ScmUploadResponse> ByPartAsync(ScmUploadRequest request)
+        {
+            var response = new ScmUploadResponse();
+
+            var files = _httpContextAccessor.HttpContext?.Request.Form.Files;
+            if (files.Count == 0)
+            {
+                response.SetFailure("上传文件不能为空！");
+                return response;
+            }
+
+            var qty = 0;
+            foreach (var file in files)
+            {
+                var name = file.Name;
+
+                var exts = Path.GetExtension(file.FileName).ToLower();
+
+                var dstFile = "";
+                using (var stream = System.IO.File.OpenWrite(dstFile))
+                {
+                    await file.CopyToAsync(stream);
+                }
+                qty += 1;
+            }
+
+            response.SetSuccess(qty, $"成功上传 {qty} 个文件！");
+            return response;
+        }
+
+        /// <summary>
+        /// 摘要上传
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        public async Task<ScmUploadResponse> ByHashAsync(ScmUploadRequest request)
+        {
+            var response = new ScmUploadResponse();
+
+            var files = _httpContextAccessor.HttpContext?.Request.Form.Files;
+            if (files.Count == 0)
+            {
+                response.SetFailure("上传文件不能为空！");
+                return response;
+            }
+
+            var qty = 0;
+            foreach (var file in files)
+            {
+                var name = file.Name;
+
+                var exts = Path.GetExtension(file.FileName).ToLower();
+
+                var dstFile = "";
+                using (var stream = System.IO.File.OpenWrite(dstFile))
+                {
+                    await file.CopyToAsync(stream);
+                }
+                qty += 1;
+            }
+
+            response.SetSuccess(qty, $"成功上传 {qty} 个文件！");
+            return response;
+        }
+        #endregion
+
+        private string GetNativePath(string path)
+        {
+            if (string.IsNullOrEmpty(path))
+            {
+                return path;
+            }
+
+            if (path[0] != '~')
+            {
+                return path;
+            }
+
+            var tag = path.Split('/')[0];
+            var pre = "";
+            switch (tag.ToLower())
+            {
+                case "~desk":
+                case "~desktop":
+                    pre = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
+                    break;
+                case "~home":
+                case "~personal":
+                    pre = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
+                    break;
+                case "~document":
+                case "~documents":
+                    pre = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
+                    break;
+                case "~image":
+                case "~images":
+                case "~pictures":
+                    pre = Environment.GetFolderPath(Environment.SpecialFolder.MyPictures);
+                    break;
+                case "~audio":
+                case "~audios":
+                case "~music":
+                    pre = Environment.GetFolderPath(Environment.SpecialFolder.MyMusic);
+                    break;
+                case "~video":
+                case "~videos":
+                    pre = Environment.GetFolderPath(Environment.SpecialFolder.MyVideos);
+                    break;
+                case "~download":
+                case "~downloads":
+                    pre = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), "Downloads");
+                    break;
+                default:
+                    return path;
+            }
+
+            return path.Replace(tag, pre);
+        }
     }
 }

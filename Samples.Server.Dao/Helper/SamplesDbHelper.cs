@@ -1,5 +1,4 @@
 ﻿using Com.Scm.Helper;
-using Com.Scm.Utils;
 using System.Reflection;
 
 namespace Com.Scm.Samples.Helper
@@ -22,40 +21,14 @@ namespace Com.Scm.Samples.Helper
             //ScmServerHelper.Register(new SamplesDbHelper());
         }
 
+        /// <summary>
+        /// 清空数据库
+        /// </summary>
+        /// <param name="baseDir"></param>
+        /// <returns></returns>
         public override bool DropDb()
         {
             return DropTable(Assembly.GetExecutingAssembly());
-        }
-
-        public override bool InitDb()
-        {
-            var key = KEY;
-
-            var verDao = ReadDbVer(key);
-            if (verDao == null)
-            {
-                verDao = new ScmVerDao();
-                verDao.key = key;
-                verDao.create_time = TimeUtils.GetUnixTime();
-
-                InitDdl(verDao);
-
-                InitDml(verDao);
-            }
-            else
-            {
-                // DDL处理
-                UpgradeDdl(verDao);
-
-                // DML处理
-                UpgradeDml(verDao);
-            }
-
-            verDao.ver = VER;
-            verDao.date = DATE;
-            verDao.update_time = TimeUtils.GetUnixTime();
-            SaveDbVer(verDao);
-            return true;
         }
 
         protected override void InitDdl(ScmVerDao verDao)
@@ -68,6 +41,9 @@ namespace Com.Scm.Samples.Helper
         {
             CreateUid(1000000000000002001, "samples_book", 7, "B", "");
             CreateUid(1000000000000002002, "samples_po_header", 10, "PO", "");
+
+            var dmlFile = Path.Combine(_SqlDir, "samples-init.sql");
+            ExecuteSql(dmlFile, verDao.ver);
         }
 
         protected override void UpgradeDdl(ScmVerDao verDao)

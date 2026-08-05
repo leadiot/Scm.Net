@@ -122,3 +122,6 @@ UPDATE [scm_sys_menu] SET [codec]='app-calculator' WHERE [codec]='app-calculate'
  * Date: TODO
  */
 UPDATE [scm_sys_theme] SET [theme] = replace([theme], '/data/bg/','/data/bg/login/');
+UPDATE [scm_sys_menu] SET [od]=56, [icon]='ms-monitor' WHERE [id]=2055889266013245440;
+INSERT INTO [scm_sys_menu] ([id],[client],[types],[lang],[codec],[namec],[icon],[pid],[uri],[layer],[od],[visible],[enabled],[fullpage],[keep_alive],[active],[redirect],[view],[color],[layout],[width],[height],[resizable],[center],[show_in_desktop],[show_in_taskbar],[row_delete],[row_status],[create_time],[create_user],[update_time],[update_user]) VALUES (2055888838861586432,10,1,'zh-cn','app-computer','云电脑','ms-computer',2055888578361298944,'/computer',1,55,1,1,0,1,NULL,NULL,'Computer',NULL,2,800,600,1,0,1,0,1,1,1785909540273,1000000000000001030,1785909588817,1000000000000001030);
+INSERT INTO [scm_ur_role_auth] ([role_id],[od],[auth_id],[api],[types],[row_status],[create_time],[create_user],[update_time],[update_user]) VALUES (1000000000000001030,0,2055888838861586432,'[]',1,1,1785909601082,1000000000000001030,1785909601082,1000000000000001030);

@@ -48,3 +48,4 @@ logs/
 *.tmp
 *.temp
 *.bak
+/Scm.Net/dev

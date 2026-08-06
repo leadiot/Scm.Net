@@ -7,6 +7,8 @@ using Com.Scm.Request;
 using Com.Scm.Utils;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Net.Http.Headers;
+using MimeKit;
 using System.Security.Cryptography;
 
 namespace Com.Scm.Controllers
@@ -190,6 +192,45 @@ namespace Com.Scm.Controllers
 
             Error($"路径不存在：{path}");
             return null;
+        }
+        #endregion
+
+        #region 文件查看
+        /// <summary>
+        /// 文件预览（自动根据文件类型选择最佳响应方式）
+        /// 文本/代码文件：小文件直接返回UTF-8内容，大文件流式输出
+        /// 音视频/图片等：流式输出 + HTTP Range 支持（边下边播、进度拖拽）
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        [NoJsonResult]
+        [HttpGet("view")]
+        public async Task<IActionResult> ViewFileAsync(string path)
+        {
+            LogUtils.Debug("文件预览：" + path);
+
+            if (string.IsNullOrEmpty(path))
+            {
+                return Empty;
+            }
+
+            var filePath = GetNativePath(path);
+            var info = new FileInfo(filePath);
+            if (!info.Exists)
+            {
+                throw new FileNotFoundException("文件不存在！");
+            }
+
+            // 其他所有文件（音视频、图片、大文本等）：流式输出 + Range 支持
+            var contentDisposition = new ContentDispositionHeaderValue("inline")
+            {
+                FileName = info.Name,
+                FileNameStar = info.Name
+            };
+            Response.Headers[HeaderNames.ContentDisposition] = contentDisposition.ToString();
+
+            var contentType = MimeTypes.GetMimeType(filePath);
+            return PhysicalFile(filePath, contentType, enableRangeProcessing: true);
         }
         #endregion
 

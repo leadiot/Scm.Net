@@ -201,8 +201,8 @@ namespace Com.Scm
         /// <summary>
         /// 执行外部脚本
         /// </summary>
-        /// <param name="file"></param>
-        /// <param name="ver"></param>
+        /// <param name="file">目标SQL脚本</param>
+        /// <param name="ver">当前数据库版本</param>
         protected void ExecuteSql(string file, int ver)
         {
             if (!File.Exists(file))

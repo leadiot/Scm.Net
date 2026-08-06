@@ -45,24 +45,9 @@ namespace Com.Scm.Helper
         /// <param name="verDao"></param>
         protected override void OnCreate(ScmVerDao verDao)
         {
-            InitDdl(verDao);
-            InitDml(verDao);
-        }
-
-        /// <summary>
-        /// 表格初始化
-        /// </summary>
-        private void InitDdl(ScmVerDao verDao)
-        {
             // 表格处理
             CreateTable(Assembly.GetExecutingAssembly());
-        }
 
-        /// <summary>
-        /// 数据初始化
-        /// </summary>
-        private void InitDml(ScmVerDao verDao)
-        {
             InitUid();
 
             InitLang();

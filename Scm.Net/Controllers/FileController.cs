@@ -1,12 +1,17 @@
 ﻿using Com.Scm.Dto;
+using Com.Scm.Dvo;
+using Com.Scm.Enums;
+using Com.Scm.Http;
 using Com.Scm.Utils;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Cryptography;
 
 namespace Com.Scm.Controllers
 {
     /// <summary>
     /// 文件信息服务
+    /// 基于整个电脑的文件服务，可以根据需要保留或删除
     /// </summary>
     [AllowAnonymous]
     [ApiExplorerSettings(GroupName = "scm")]
@@ -16,338 +21,865 @@ namespace Com.Scm.Controllers
         {
         }
 
-        /// <summary>
-        /// 获取文件信息
-        /// </summary>
-        /// <param name="id">文件ID</param>
-        /// <returns></returns>
-        [HttpGet("info/{id}")]
-        public async Task<ScmFileDto> Info(string path)
-        {
-            LogUtils.Debug("获取文件信息：" + path);
-
-            var dto = new ScmFileDto
-            {
-                //id = dao.id,
-                //type = dao.type,
-                //kind = dao.kind,
-                //dir_id = dao.dir_id,
-                //name = dao.name,
-                //path = dao.path,
-                //hash = dao.hash,
-                //size = dao.size,
-                //modify_time = dao.modify_time,
-                //ver = dao.ver
-            };
-
-            return dto;
-        }
-
-        #region 文件查看
+        #region 文件列表
         /// <summary>
         /// 列出当前计算机的所有逻辑根目录（磁盘分区）
         /// </summary>
-        [HttpGet("ListRoot")]
-        public async Task<List<ScmFileDto>> ListRoot()
+        /// <returns></returns>
+        [HttpGet("listRoot")]
+        public ScmPageResultDto<FileDvo> GetListRootAsync()
         {
-            var list = new List<ScmFileDto>();
+            var dvo = new ScmPageResultDto<FileDvo>();
 
+            var fileList = new List<FileDvo>();
             foreach (var drive in DriveInfo.GetDrives())
             {
-                list.Add(new ScmFileDto
+                var item = new FileDvo
                 {
-                    name = drive.Name,                          // "C:\"
-                    path = drive.RootDirectory.FullName,        // "C:\"
-                    is_dir = true,
-                    size = drive.IsReady ? drive.TotalSize : 0,
-                });
+                    name = drive.Name,
+                    path = drive.RootDirectory.FullName,
+                    type = Enums.ScmFileTypeEnum.Dir,
+                    icon = "drive"
+                };
+
+                if (drive.IsReady)
+                {
+                    item.size = drive.TotalSize;
+                    item.modify_time = TimeUtils.GetUnixTime(drive.RootDirectory.LastWriteTimeUtc);
+                }
+
+                fileList.Add(item);
+            }
+            dvo.Items = fileList;
+
+            return dvo;
+        }
+
+        /// <summary>
+        /// 列出用户主目录下的文档
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet("listHome")]
+        public ScmPageResultDto<FileDvo> GetListHomeAsync(string key, int page, int limit)
+        {
+            var path = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
+            return DoListAll(path, key, page, limit);
+        }
+
+        /// <summary>
+        /// 获取指定目录下的文件和目录列表（分页）
+        /// </summary>
+        /// <param name="path">目标目录路径</param>
+        /// <param name="key">搜索关键词</param>
+        /// <param name="page">页码</param>
+        /// <param name="limit">每页数量</param>
+        /// <returns></returns>
+        [HttpGet("list")]
+        public ScmPageResultDto<FileDvo> GetListAsync(string path, string key, int page, int limit)
+        {
+            var list = new ScmPageResultDto<FileDvo>();
+            if (string.IsNullOrWhiteSpace(path))
+            {
+                return list;
             }
 
-            return list;
-        }
+            path = GetNativePath(path);
 
-        /// <summary>
-        /// 列出当前用户主目录下的文件与子目录
-        /// </summary>
-        [HttpGet("ListHome")]
-        public async Task<List<ScmFileDto>> ListHome()
-        {
-            var path = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
-            return await DoListAll(path);
-        }
-
-        /// <summary>
-        /// 列出当前用户桌面目录下的文件与子目录
-        /// </summary>
-        [HttpGet("ListDesktop")]
-        public async Task<List<ScmFileDto>> ListDesktop()
-        {
-            var path = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
-            return await DoListAll(path);
-        }
-
-        [HttpGet("ListDocuments")]
-        public async Task<List<ScmFileDto>> ListDocuments()
-        {
-            var path = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
-            return await DoListAll(path);
-        }
-
-        [HttpGet("ListAudio")]
-        public async Task<List<ScmFileDto>> ListAudio()
-        {
-            var path = Environment.GetFolderPath(Environment.SpecialFolder.MyMusic);
-            return await DoListAll(path);
-        }
-
-        [HttpGet("ListVideo")]
-        public async Task<List<ScmFileDto>> ListVideo()
-        {
-            var path = Environment.GetFolderPath(Environment.SpecialFolder.MyVideos);
-            return await DoListAll(path);
-        }
-
-        [HttpGet("ListImage")]
-        public async Task<List<ScmFileDto>> ListImage()
-        {
-            var path = Environment.GetFolderPath(Environment.SpecialFolder.MyPictures);
-            return await DoListAll(path);
-        }
-
-        [HttpGet("ListDownloads")]
-        public async Task<List<ScmFileDto>> ListDownloads()
-        {
-            var path = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
-            path = Path.Combine(path, "Downloads");
-            return await DoListAll(path);
-        }
-
-        /// <summary>
-        /// 获取指定目录的文件列表（目录+文档）
-        /// </summary>
-        /// <param name="path">目录路径</param>
-        /// <returns></returns>
-        [HttpGet("ListAll")]
-        public async Task<List<ScmFileDto>> ListAll(string path)
-        {
-            LogUtils.Debug($"获取文件列表：path={path}");
-
-            return await DoListAll(path);
+            return DoListAll(path, key, page, limit);
         }
 
         /// <summary>
         /// 获取指定目录的子目录列表
         /// </summary>
         /// <param name="path">目录路径</param>
+        /// <param name="key">搜索关键词</param>
+        /// <param name="page">页码</param>
+        /// <param name="limit">每页数量</param>
         /// <returns></returns>
-        [HttpGet("ListDir")]
-        public async Task<List<ScmFileDto>> ListDir(string path)
+        [HttpGet("listDir")]
+        public ScmPageResultDto<FileDvo> GetListDirAsync(string path, string key, int page, int limit)
         {
-            LogUtils.Debug($"获取目录列表：path={path}");
-            return await DoListDir(path);
+            var list = new ScmPageResultDto<FileDvo>();
+            if (string.IsNullOrWhiteSpace(path))
+            {
+                return list;
+            }
+
+            path = GetNativePath(path);
+
+            return DoListDir(path, key, page, limit);
         }
 
         /// <summary>
         /// 获取指定目录的文档列表
         /// </summary>
         /// <param name="path">目录路径</param>
+        /// <param name="key">搜索关键词</param>
+        /// <param name="page">页码</param>
+        /// <param name="limit">每页数量</param>
         /// <returns></returns>
-        [HttpGet("ListDoc")]
-        public async Task<List<ScmFileDto>> ListDoc(string path)
+        [HttpGet("listDoc")]
+        public ScmPageResultDto<FileDvo> GetListDocAsync(string path, string key, int page, int limit)
         {
-            LogUtils.Debug($"获取文档列表：path={path}");
-            return await DoListDoc(path);
-        }
-
-        /// <summary>
-        /// 列举所有
-        /// </summary>
-        /// <param name="path"></param>
-        /// <returns></returns>
-        private async Task<List<ScmFileDto>> DoListAll(string path)
-        {
-            LogUtils.Debug($"获取文件列表：path={path}");
-
+            var list = new ScmPageResultDto<FileDvo>();
             if (string.IsNullOrWhiteSpace(path))
             {
-                return null;
+                return list;
             }
 
-            var info = new DirectoryInfo(path);
-            if (!info.Exists)
-            {
-                return null;
-            }
+            path = GetNativePath(path);
 
-            var list = new List<ScmFileDto>();
-
-            foreach (var dir in info.GetDirectories())
-            {
-                list.Add(new ScmFileDto
-                {
-                    name = dir.Name,
-                    path = dir.FullName,
-                    is_dir = true,
-                    create_time = TimeUtils.GetUnixTime(dir.CreationTimeUtc),
-                    change_time = TimeUtils.GetUnixTime(dir.LastWriteTimeUtc),
-                });
-            }
-
-            foreach (var file in info.GetFiles())
-            {
-                list.Add(new ScmFileDto
-                {
-                    name = file.Name,
-                    path = file.FullName,
-                    size = file.Length,
-                    is_dir = false,
-                    create_time = TimeUtils.GetUnixTime(file.CreationTimeUtc),
-                    change_time = TimeUtils.GetUnixTime(file.LastWriteTimeUtc),
-                });
-            }
-
-            return list;
+            return DoListDoc(path, key, page, limit);
         }
+        #endregion
 
+        #region 文件详情
         /// <summary>
-        /// 列举目录
+        /// 获取文件或目录的详细信息
         /// </summary>
-        /// <param name="path"></param>
+        /// <param name="path">文件或目录路径</param>
         /// <returns></returns>
-        private async Task<List<ScmFileDto>> DoListDir(string path)
+        [HttpGet("info")]
+        public FileDvo GetInfoAsync(string path)
         {
-            LogUtils.Debug($"获取文件列表：path={path}");
-
             if (string.IsNullOrWhiteSpace(path))
             {
-                return null;
+                Error("路径不能为空！");
             }
 
-            var info = new DirectoryInfo(path);
-            if (!info.Exists)
+            path = GetNativePath(path);
+            if (Directory.Exists(path))
             {
-                return null;
+                var dir = new DirectoryInfo(path);
+                var dvo = FromDir(dir);
+                dvo.size = CalcDirSize(dir);
+                return dvo;
             }
 
-            var list = new List<ScmFileDto>();
-
-            foreach (var dir in info.GetDirectories())
+            if (System.IO.File.Exists(path))
             {
-                list.Add(new ScmFileDto
-                {
-                    name = dir.Name,
-                    path = dir.FullName,
-                    is_dir = true,
-                    create_time = TimeUtils.GetUnixTime(dir.CreationTimeUtc),
-                    change_time = TimeUtils.GetUnixTime(dir.LastWriteTimeUtc),
-                });
+                var doc = new FileInfo(path);
+                var dvo = FromDoc(doc);
+                dvo.hash = CalcFileHash(path);
+                return dvo;
             }
 
-            return list;
-        }
-
-        /// <summary>
-        /// 列举文档
-        /// </summary>
-        /// <param name="path"></param>
-        /// <returns></returns>
-        private async Task<List<ScmFileDto>> DoListDoc(string path)
-        {
-            LogUtils.Debug($"获取文件列表：path={path}");
-
-            if (string.IsNullOrWhiteSpace(path))
-            {
-                return null;
-            }
-
-            var info = new DirectoryInfo(path);
-            if (!info.Exists)
-            {
-                return null;
-            }
-
-            var list = new List<ScmFileDto>();
-
-            foreach (var file in info.GetFiles())
-            {
-                list.Add(new ScmFileDto
-                {
-                    name = file.Name,
-                    path = file.FullName,
-                    size = file.Length,
-                    is_dir = false,
-                    create_time = TimeUtils.GetUnixTime(file.CreationTimeUtc),
-                    change_time = TimeUtils.GetUnixTime(file.LastWriteTimeUtc),
-                });
-            }
-
-            return list;
+            Error($"路径不存在：{path}");
+            return null;
         }
         #endregion
 
         #region 文件操作
         /// <summary>
-        /// 创建文件
+        /// 复制文件或目录
         /// </summary>
-        /// <param name="path"></param>
-        /// <returns></returns>
-        [HttpPost("Create")]
-        public async Task<ScmFileDto> Create(string path)
+        /// <param name="files">源文件或目录路径列表</param>
+        /// <param name="path">目标路径</param>
+        /// <param name="overwrite">是否覆盖</param>
+        /// <returns>目标文件信息</returns>
+        [HttpPost("Copy")]
+        public bool CopyAsync(List<string> files, string path, bool overwrite)
         {
-            var info = new DirectoryInfo(path);
-            info.Create();
+            if (files == null || files.Count < 1 || string.IsNullOrWhiteSpace(path))
+            {
+                Error("源路径和目标路径不能为空！");
+            }
 
-            var dto = new ScmFileDto();
-            dto.name = info.Name;
-            dto.path = path;
-            dto.create_time = TimeUtils.GetUnixTime(info.CreationTimeUtc);
+            foreach (var src in files)
+            {
+                if (Directory.Exists(src))
+                {
+                    var dst = ResolveDestPath(src, path);
+                    EnsureNotNested(src, dst);
+                    FileUtils.CopyDir(src, dst, overwrite);
+                }
 
-            return dto;
+                if (System.IO.File.Exists(src))
+                {
+                    var dst = ResolveDestPath(src, path);
+                    EnsureParentExists(dst);
+                    System.IO.File.Copy(src, dst, overwrite);
+                }
+
+                Error($"源路径不存在：{src}");
+            }
+
+            return true;
         }
 
         /// <summary>
-        /// 移动文件
+        /// 移动文件或目录
         /// </summary>
-        /// <param name="path"></param>
-        /// <returns></returns>
-        [HttpPost("Copyto")]
-        public bool Copyto(string src, string dst)
+        /// <param name="files">源文件或目录路径列表</param>
+        /// <param name="path">目标路径</param>
+        /// <param name="overwrite">是否覆盖</param>
+        /// <returns>目标文件信息</returns>
+        [HttpPost("Move")]
+        public bool MoveAsync(List<string> files, string path, bool overwrite)
         {
-            return FileUtils.Copyto(src, dst);
+            if (files == null || files.Count < 1 || string.IsNullOrWhiteSpace(path))
+            {
+                Error("源路径和目标路径不能为空！");
+            }
+
+            foreach (var src in files)
+            {
+                if (Directory.Exists(src))
+                {
+                    var dst = ResolveDestPath(src, path);
+                    EnsureNotNested(src, dst);
+                    Directory.Move(src, dst);
+                }
+
+                if (System.IO.File.Exists(src))
+                {
+                    var dst = ResolveDestPath(src, path);
+                    EnsureParentExists(dst);
+                    System.IO.File.Move(src, dst, overwrite);
+                }
+
+                Error($"源路径不存在：{src}");
+            }
+
+            return true;
         }
 
         /// <summary>
-        /// 移动文件
+        /// 重命名文件或目录
         /// </summary>
-        /// <param name="path"></param>
-        /// <returns></returns>
-        [HttpPost("Moveto")]
-        public bool Moveto(string src, string dst)
-        {
-            return FileUtils.Moveto(src, dst);
-        }
-
-        /// <summary>
-        /// 更名文件
-        /// </summary>
-        /// <param name="path"></param>
-        /// <returns></returns>
+        /// <param name="file">来源文件路径</param>
+        /// <param name="name">新名称</param>
+        /// <returns>重命名后的文件信息</returns>
         [HttpPost("Rename")]
-        public bool Rename(string src, string dst, bool overwrite)
+        public FileDvo RenameAsync(string file, string name)
         {
-            return FileUtils.RenameTo(src, dst);
+            if (string.IsNullOrWhiteSpace(file) || string.IsNullOrWhiteSpace(name))
+            {
+                Error("源路径和新名称不能为空！");
+            }
+
+            var root = Path.GetDirectoryName(file);
+            var dst = Path.Combine(root ?? string.Empty, name);
+
+            if (Directory.Exists(file))
+            {
+                Directory.Move(file, dst);
+                return GetInfoAsync(dst);
+            }
+
+            if (System.IO.File.Exists(file))
+            {
+                System.IO.File.Move(file, dst);
+                return GetInfoAsync(dst);
+            }
+
+            Error($"源路径不存在：{file}");
+            return null;
         }
 
         /// <summary>
-        /// 删除文件
+        /// 删除文件或目录（目录将递归删除）
         /// </summary>
-        /// <param name="path"></param>
+        /// <param name="files">待删除的文件或目录路径列表</param>
         /// <returns></returns>
         [HttpPost("Delete")]
-        public bool Delete(string path)
+        public bool DeleteAsync(List<string> files)
         {
-            return FileUtils.Delete(path);
+            if (files == null || files.Count < 1)
+            {
+                Error("路径不能为空！");
+            }
+
+            foreach (var path in files)
+            {
+                if (Directory.Exists(path))
+                {
+                    Directory.Delete(path, true);
+                    return true;
+                }
+
+                if (System.IO.File.Exists(path))
+                {
+                    System.IO.File.Delete(path);
+                    return true;
+                }
+
+                Error($"路径不存在：{path}");
+            }
+
+            return false;
         }
+
+        /// <summary>
+        /// 创建目录
+        /// </summary>
+        /// <param name="path">目录路径</param>
+        /// <param name="name">目录名称</param>
+        /// <returns></returns>
+        [HttpPost("CreateDir")]
+        public FileDvo CreateDirAsync(string path, string name)
+        {
+            if (string.IsNullOrWhiteSpace(path))
+            {
+                Error("路径不能为空！");
+            }
+
+            path = GetNativePath(path);
+            if (!Directory.Exists(path))
+            {
+                Error("路径不存在：" + path);
+            }
+
+            if (string.IsNullOrWhiteSpace(name))
+            {
+                Error("名称不能为空！");
+            }
+
+            var dir = Path.Combine(path, name);
+            if (Directory.Exists(dir))
+            {
+                Error("目录已存在！");
+            }
+
+            var info = Directory.CreateDirectory(dir);
+            return FromDir(info);
+        }
+        #endregion
+
+        #region 上传下载
+        /// <summary>
+        /// 文件上传
+        /// </summary>
+        /// <param name="path"></param>
+        /// <param name="file"></param>
+        /// <returns></returns>
+        public async Task<ScmUploadResponse> UploadFileAsync(IFormFile file, string path)
+        {
+            var response = new ScmUploadResponse();
+
+            if (file == null)
+            {
+                LogUtils.Debug("上传文件为空！");
+                response.SetFailure("上传文件为空！");
+                return response;
+            }
+
+            if (file.Length > ScmEnv.MAX_FILE_SIZE)
+            {
+                LogUtils.Debug("无效的内容过大！");
+                response.SetFailure("无效的内容过大！");
+                return response;
+            }
+
+            var name = file.FileName;
+            if (string.IsNullOrWhiteSpace(name))
+            {
+                LogUtils.Debug("无效的文件名称！");
+                response.SetFailure("无效的文件名称！");
+                return response;
+            }
+
+            var dstPath = GetNativePath(path);
+            if (!Directory.Exists(dstPath))
+            {
+                Directory.CreateDirectory(dstPath);
+            }
+
+            var dstFile = Path.Combine(dstPath, name);
+            using (var stream = System.IO.File.OpenWrite(dstFile))
+            {
+                await file.CopyToAsync(stream);
+            }
+
+            LogUtils.Debug("上传文件成功：" + name);
+            response.SetSuccess($"文件上传成功！");
+            return response;
+        }
+
+        /// <summary>
+        /// 下载文件
+        /// </summary>
+        /// <param name="path"></param>
+        /// <returns></returns>
+        [HttpGet]
+        public async Task<IActionResult> DownloadFileAsync(string path)
+        {
+            LogUtils.Debug("文件下载：" + path);
+
+            if (string.IsNullOrWhiteSpace(path))
+            {
+                return NotFound();
+            }
+
+            var filePath = GetNativePath(path);
+
+            // 校验文件是否存在
+            if (!System.IO.File.Exists(filePath))
+            {
+                return NotFound();
+            }
+
+            // 获取文件的MIME类型
+            var contentType = HttpContentType.APPLICATION_OCTET_STREAM;
+
+            // Response.Headers.Append($"Content-Disposition", $"attachment; filename=\"{FileUtils.GetFileName(filePath)}\"");
+
+            // 返回文件流（第三个参数是下载时显示的文件名）
+            return PhysicalFile(filePath, contentType, Path.GetFileName(filePath), enableRangeProcessing: true);
+        }
+        #endregion
+
+        #region 私有方法
+        /// <summary>
+        /// 列举目录下所有子目录与文件
+        /// </summary>
+        /// <param name="path"></param>
+        /// <returns></returns>
+        private ScmPageResultDto<FileDvo> DoListAll(string path, string key, int page, int limit)
+        {
+            var result = new ScmPageResultDto<FileDvo>();
+            if (string.IsNullOrEmpty(path))
+            {
+                return result;
+            }
+
+            var info = new DirectoryInfo(path);
+            if (!info.Exists)
+            {
+                return result;
+            }
+
+            page -= 1;
+            if (page < 0)
+            {
+                page = 0;
+            }
+
+            var from = page * limit;
+            var to = from + limit;
+
+            var list = new List<FileDvo>();
+
+            var dirList = SafeGetDirectories(info, key);
+            var dirQty = dirList.Length;
+            var end = dirQty > to ? to : dirQty;
+            while (from < end)
+            {
+                list.Add(FromDir(dirList[from]));
+                from += 1;
+            }
+
+            var docList = SafeGetFiles(info, key);
+            var docQty = docList.Length;
+            if (from < to)
+            {
+                from -= dirQty;
+                to -= dirQty;
+                end = docQty > to ? to : docQty;
+
+                while (from < end)
+                {
+                    list.Add(FromDoc(docList[from]));
+                    from += 1;
+                }
+            }
+
+            var qty = dirQty + docQty;
+            result.TotalItems = qty;
+            result.TotalPages = (qty - 1 + limit) / limit;
+            result.Items = list;
+
+            return result;
+        }
+
+        /// <summary>
+        /// 列出目录下所有子目录
+        /// </summary>
+        /// <param name="path"></param>
+        /// <param name="key"></param>
+        /// <param name="page"></param>
+        /// <param name="limit"></param>
+        /// <returns></returns>
+        private ScmPageResultDto<FileDvo> DoListDir(string path, string key, int page, int limit)
+        {
+            var result = new ScmPageResultDto<FileDvo>();
+            if (string.IsNullOrEmpty(path))
+            {
+                return result;
+            }
+
+            var info = new DirectoryInfo(path);
+            if (!info.Exists)
+            {
+                return result;
+            }
+
+            page -= 1;
+            if (page < 0)
+            {
+                page = 0;
+            }
+
+            var from = page * limit;
+            var to = from + limit;
+
+            var list = new List<FileDvo>();
+
+            var dirList = SafeGetDirectories(info, key);
+            var dirQty = dirList.Length;
+            var end = dirQty > to ? to : dirQty;
+            while (from < end)
+            {
+                list.Add(FromDir(dirList[from]));
+                from += 1;
+            }
+
+            var qty = dirQty;
+            result.TotalItems = qty;
+            result.TotalPages = (qty - 1 + limit) / limit;
+            result.Items = list;
+
+            return result;
+        }
+
+        /// <summary>
+        /// 列出目录下所有文件
+        /// </summary>
+        /// <param name="path"></param>
+        /// <param name="key"></param>
+        /// <param name="page"></param>
+        /// <param name="limit"></param>
+        /// <returns></returns>
+        private ScmPageResultDto<FileDvo> DoListDoc(string path, string key, int page, int limit)
+        {
+            var result = new ScmPageResultDto<FileDvo>();
+            if (string.IsNullOrEmpty(path))
+            {
+                return result;
+            }
+
+            var info = new DirectoryInfo(path);
+            if (!info.Exists)
+            {
+                return result;
+            }
+
+            page -= 1;
+            if (page < 0)
+            {
+                page = 0;
+            }
+
+            var from = page * limit;
+            var to = from + limit;
+
+            var list = new List<FileDvo>();
+
+            var docList = SafeGetFiles(info, key);
+            var docQty = docList.Length;
+            var end = docQty > to ? to : docQty;
+            while (from < end)
+            {
+                list.Add(FromDoc(docList[from]));
+                from += 1;
+            }
+
+            var qty = docQty;
+            result.TotalItems = qty;
+            result.TotalPages = (qty - 1 + limit) / limit;
+            result.Items = list;
+
+            return result;
+        }
+
+        /// <summary>
+        /// 安全获取目录列表
+        /// </summary>
+        /// <param name="info"></param>
+        /// <param name="key"></param>
+        /// <param name="hasHidden"></param>
+        /// <returns></returns>
+        private DirectoryInfo[] SafeGetDirectories(DirectoryInfo info, string key, bool hasHidden = false)
+        {
+            try
+            {
+                var list = string.IsNullOrWhiteSpace(key) ? info.GetDirectories() : info.GetDirectories(key);
+                if (!hasHidden)
+                {
+                    list = list.Where(a => !a.Attributes.HasFlag(FileAttributes.Hidden)).ToArray();
+                }
+                return list;
+            }
+            catch
+            {
+                return Array.Empty<DirectoryInfo>();
+            }
+        }
+
+        /// <summary>
+        /// 安全获取文件列表
+        /// </summary>
+        /// <param name="info"></param>
+        /// <param name="key"></param>
+        /// <param name="hasHidden"></param>
+        /// <returns></returns>
+        private FileInfo[] SafeGetFiles(DirectoryInfo info, string key, bool hasHidden = false)
+        {
+            try
+            {
+                var list = string.IsNullOrWhiteSpace(key) ? info.GetFiles() : info.GetFiles(key);
+                if (!hasHidden)
+                {
+                    list = list.Where(a => !a.Attributes.HasFlag(FileAttributes.Hidden)).ToArray();
+                }
+                return list;
+            }
+            catch
+            {
+                return Array.Empty<FileInfo>();
+            }
+        }
+
+        /// <summary>
+        /// 目录信息转换为视图对象
+        /// </summary>
+        /// <param name="dir"></param>
+        /// <returns></returns>
+        private FileDvo FromDir(DirectoryInfo dir)
+        {
+            return new FileDvo
+            {
+                name = dir.Name,
+                path = dir.FullName,
+                type = Enums.ScmFileTypeEnum.Dir,
+                icon = "folder",
+                create_time = TimeUtils.GetUnixTime(dir.CreationTimeUtc),
+                modify_time = TimeUtils.GetUnixTime(dir.LastWriteTimeUtc)
+            };
+        }
+
+        /// <summary>
+        /// 文件信息转换为视图对象
+        /// </summary>
+        /// <param name="file"></param>
+        /// <returns></returns>
+        private FileDvo FromDoc(FileInfo file)
+        {
+            return new FileDvo
+            {
+                name = file.Name,
+                path = file.FullName,
+                type = Enums.ScmFileTypeEnum.Doc,
+                icon = string.IsNullOrWhiteSpace(file.Extension) ? "file" : file.Extension.TrimStart('.').ToLower(),
+                size = file.Length,
+                create_time = TimeUtils.GetUnixTime(file.CreationTimeUtc),
+                modify_time = TimeUtils.GetUnixTime(file.LastWriteTimeUtc)
+            };
+        }
+
+        /// <summary>
+        /// 解析目标路径：若目标为已存在的目录，则拼接源名称
+        /// </summary>
+        /// <param name="src"></param>
+        /// <param name="dst"></param>
+        /// <returns></returns>
+        private string ResolveDestPath(string src, string dst)
+        {
+            if (Directory.Exists(dst))
+            {
+                var name = Path.GetFileName(src.TrimEnd(Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar));
+                return Path.Combine(dst, name);
+            }
+
+            return dst;
+        }
+
+        /// <summary>
+        /// 确保目标的父目录存在
+        /// </summary>
+        /// <param name="dst"></param>
+        private void EnsureParentExists(string dst)
+        {
+            var parent = Path.GetDirectoryName(dst);
+            if (!string.IsNullOrWhiteSpace(parent) && !Directory.Exists(parent))
+            {
+                Directory.CreateDirectory(parent);
+            }
+        }
+
+        /// <summary>
+        /// 防止把目录移动/复制到自身或其子目录
+        /// </summary>
+        /// <param name="src"></param>
+        /// <param name="dst"></param>
+        private void EnsureNotNested(string src, string dst)
+        {
+            var srcFull = Path.GetFullPath(src).TrimEnd(Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar);
+            var dstFull = Path.GetFullPath(dst).TrimEnd(Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar);
+
+            if (string.Equals(srcFull, dstFull, StringComparison.OrdinalIgnoreCase))
+            {
+                Error("目标路径与源路径相同！");
+            }
+
+            if (dstFull.StartsWith(srcFull + Path.DirectorySeparatorChar, StringComparison.OrdinalIgnoreCase))
+            {
+                Error("不能将目录移动或复制到其自身或其子目录内！");
+            }
+        }
+
+        /// <summary>
+        /// 递归计算目录大小
+        /// </summary>
+        /// <param name="dir"></param>
+        /// <returns></returns>
+        private long CalcDirSize(DirectoryInfo dir)
+        {
+            long size = 0;
+
+            foreach (var file in SafeGetFiles(dir, null))
+            {
+                try
+                {
+                    size += file.Length;
+                }
+                catch
+                {
+                    // 忽略无法访问的文件
+                }
+            }
+
+            foreach (var sub in SafeGetDirectories(dir, null))
+            {
+                size += CalcDirSize(sub);
+            }
+
+            return size;
+        }
+
+        /// <summary>
+        /// 计算文件MD5摘要
+        /// </summary>
+        /// <param name="path"></param>
+        /// <returns></returns>
+        private string CalcFileHash(string path)
+        {
+            try
+            {
+                using var stream = System.IO.File.OpenRead(path);
+                var bytes = MD5.HashData(stream);
+                return Convert.ToHexString(bytes).ToLower();
+            }
+            catch
+            {
+                return null;
+            }
+        }
+        #endregion
+
+        /// <summary>
+        /// 将路径中的特殊标记转换为本地系统路径
+        /// </summary>
+        /// <param name="path"></param>
+        /// <returns></returns>
+        private string GetNativePath(string path)
+        {
+            if (string.IsNullOrEmpty(path))
+            {
+                return path;
+            }
+
+            path = path.Trim();
+
+            if (path[0] != '~')
+            {
+                return path;
+            }
+
+            var tag = path.Split('/')[0];
+            var pre = "";
+            switch (tag.ToLower())
+            {
+                case "~desk":
+                case "~desktop":
+                    pre = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
+                    break;
+                case "~home":
+                case "~personal":
+                    pre = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
+                    break;
+                case "~document":
+                case "~documents":
+                    pre = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
+                    break;
+                case "~image":
+                case "~images":
+                case "~pictures":
+                    pre = Environment.GetFolderPath(Environment.SpecialFolder.MyPictures);
+                    break;
+                case "~audio":
+                case "~audios":
+                case "~music":
+                    pre = Environment.GetFolderPath(Environment.SpecialFolder.MyMusic);
+                    break;
+                case "~video":
+                case "~videos":
+                    pre = Environment.GetFolderPath(Environment.SpecialFolder.MyVideos);
+                    break;
+                case "~download":
+                case "~downloads":
+                    pre = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), "Downloads");
+                    break;
+                default:
+                    return path;
+            }
+
+            return path.Replace(tag, pre);
+        }
+    }
+
+    public class FileDvo : ScmDvo
+    {
+        /// <summary>
+        /// 文件名称
+        /// </summary>
+        public string name { get; set; }
+
+        /// <summary>
+        /// 完整路径
+        /// </summary>
+        public string path { get; set; }
+
+        /// <summary>
+        /// 文件图标
+        /// </summary>
+        public string icon { get; set; }
+
+        /// <summary>
+        /// 修改时间
+        /// </summary>
+        public long modify_time { get; set; }
+
+        /// <summary>
+        /// 创建时间
+        /// </summary>
+        public long create_time { get; set; }
+
+        /// <summary>
+        /// 是否是目录
+        /// </summary>
+        public ScmFileTypeEnum type { get; set; }
+
+        #region 文件属性
+        /// <summary>
+        /// 文件摘要（MD5）
+        /// </summary>
+        public string hash { get; set; }
+
+        /// <summary>
+        /// 文件大小
+        /// </summary>
+        public long size { get; set; }
         #endregion
     }
 }

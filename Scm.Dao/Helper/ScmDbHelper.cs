@@ -331,18 +331,22 @@ namespace Com.Scm.Helper
 
         private void InitTerminal()
         {
-            var terminalDao = new ScmUrTerminalDao();
-            terminalDao.id = ScmEnv.DEFAULT_ID;
-            terminalDao.types = ScmClientTypeEnum.None;
-            terminalDao.codes = "";
-            terminalDao.codec = "";
-            terminalDao.names = "";
-            terminalDao.namec = "";
-            terminalDao.icon = "";
-            terminalDao.pass = "";
-            terminalDao.access_token = "";
-            terminalDao.refresh_token = "";
+            var terminalDao = new ScmUrTerminalDao
+            {
+                id = ScmEnv.DEFAULT_ID,
+                types = ScmClientTypeEnum.None,
+                codes = "",
+                codec = "",
+                names = "",
+                namec = "",
+                icon = "",
+                pass = "",
+                access_token = "",
+                refresh_token = "",
+                remark = ""
+            };
             SaveDao(terminalDao);
+
             terminalDao.codes = "";
             terminalDao.row_status = ScmRowStatusEnum.Normal;
             _SqlClient.Updateable(terminalDao).ExecuteCommand();

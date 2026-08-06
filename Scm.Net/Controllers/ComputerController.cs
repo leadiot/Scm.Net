@@ -1,7 +1,9 @@
 ﻿using Com.Scm.Dto;
 using Com.Scm.Dvo;
 using Com.Scm.Enums;
+using Com.Scm.Filters;
 using Com.Scm.Http;
+using Com.Scm.Request;
 using Com.Scm.Utils;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -15,9 +17,9 @@ namespace Com.Scm.Controllers
     /// </summary>
     [AllowAnonymous]
     [ApiExplorerSettings(GroupName = "scm")]
-    public class FileController : ApiController
+    public class ComputerController : ApiController
     {
-        public FileController()
+        public ComputerController()
         {
         }
 
@@ -60,10 +62,10 @@ namespace Com.Scm.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpGet("listHome")]
-        public ScmPageResultDto<FileDvo> GetListHomeAsync(string key, int page, int limit)
+        public ScmPageResultDto<FileDvo> GetListHomeAsync(FileSearchRequest request)
         {
             var path = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
-            return DoListAll(path, key, page, limit);
+            return DoListAll(path, request.key, request.page, request.limit);
         }
 
         /// <summary>
@@ -97,8 +99,9 @@ namespace Com.Scm.Controllers
         /// <param name="limit">每页数量</param>
         /// <returns></returns>
         [HttpGet("listDir")]
-        public ScmPageResultDto<FileDvo> GetListDirAsync(string path, string key, int page, int limit)
+        public ScmPageResultDto<FileDvo> GetListDirAsync(FileSearchRequest request)
         {
+            var path = request.path;
             var list = new ScmPageResultDto<FileDvo>();
             if (string.IsNullOrWhiteSpace(path))
             {
@@ -107,7 +110,7 @@ namespace Com.Scm.Controllers
 
             path = GetNativePath(path);
 
-            return DoListDir(path, key, page, limit);
+            return DoListDir(path, request.key, request.page, request.limit);
         }
 
         /// <summary>
@@ -119,8 +122,9 @@ namespace Com.Scm.Controllers
         /// <param name="limit">每页数量</param>
         /// <returns></returns>
         [HttpGet("listDoc")]
-        public ScmPageResultDto<FileDvo> GetListDocAsync(string path, string key, int page, int limit)
+        public ScmPageResultDto<FileDvo> GetListDocAsync(FileSearchRequest request)
         {
+            var path = request.path;
             var list = new ScmPageResultDto<FileDvo>();
             if (string.IsNullOrWhiteSpace(path))
             {
@@ -129,7 +133,27 @@ namespace Com.Scm.Controllers
 
             path = GetNativePath(path);
 
-            return DoListDoc(path, key, page, limit);
+            return DoListDoc(path, request.key, request.page, request.limit);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet("listLib")]
+        public ScmPageResultDto<FileDvo> GetListLibAsync()
+        {
+            var dvo = new ScmPageResultDto<FileDvo>();
+
+            var fileList = new List<FileDvo>();
+            fileList.Add(new FileDvo { name = "文档", path = "~documents" });
+            fileList.Add(new FileDvo { name = "照片", path = "~pictures" });
+            fileList.Add(new FileDvo { name = "音乐", path = "~music" });
+            fileList.Add(new FileDvo { name = "视频", path = "~videos" });
+            fileList.Add(new FileDvo { name = "下载", path = "~downloads" });
+            dvo.Items = fileList;
+
+            return dvo;
         }
         #endregion
 
@@ -178,8 +202,16 @@ namespace Com.Scm.Controllers
         /// <param name="overwrite">是否覆盖</param>
         /// <returns>目标文件信息</returns>
         [HttpPost("Copy")]
-        public bool CopyAsync(List<string> files, string path, bool overwrite)
+        public bool CopyAsync(FileTransferRequest request)
         {
+            if (request == null)
+            {
+                Error("请求不能为空！");
+            }
+
+            var files = request.files;
+            var path = request.path;
+            var overwrite = request.overwrite;
             if (files == null || files.Count < 1 || string.IsNullOrWhiteSpace(path))
             {
                 Error("源路径和目标路径不能为空！");
@@ -192,6 +224,7 @@ namespace Com.Scm.Controllers
                     var dst = ResolveDestPath(src, path);
                     EnsureNotNested(src, dst);
                     FileUtils.CopyDir(src, dst, overwrite);
+                    continue;
                 }
 
                 if (System.IO.File.Exists(src))
@@ -199,6 +232,7 @@ namespace Com.Scm.Controllers
                     var dst = ResolveDestPath(src, path);
                     EnsureParentExists(dst);
                     System.IO.File.Copy(src, dst, overwrite);
+                    continue;
                 }
 
                 Error($"源路径不存在：{src}");
@@ -215,8 +249,16 @@ namespace Com.Scm.Controllers
         /// <param name="overwrite">是否覆盖</param>
         /// <returns>目标文件信息</returns>
         [HttpPost("Move")]
-        public bool MoveAsync(List<string> files, string path, bool overwrite)
+        public bool MoveAsync(FileTransferRequest request)
         {
+            if (request == null)
+            {
+                Error("请求不能为空！");
+            }
+
+            var files = request.files;
+            var path = request.path;
+            var overwrite = request.overwrite;
             if (files == null || files.Count < 1 || string.IsNullOrWhiteSpace(path))
             {
                 Error("源路径和目标路径不能为空！");
@@ -229,6 +271,7 @@ namespace Com.Scm.Controllers
                     var dst = ResolveDestPath(src, path);
                     EnsureNotNested(src, dst);
                     Directory.Move(src, dst);
+                    continue;
                 }
 
                 if (System.IO.File.Exists(src))
@@ -236,6 +279,7 @@ namespace Com.Scm.Controllers
                     var dst = ResolveDestPath(src, path);
                     EnsureParentExists(dst);
                     System.IO.File.Move(src, dst, overwrite);
+                    continue;
                 }
 
                 Error($"源路径不存在：{src}");
@@ -251,8 +295,16 @@ namespace Com.Scm.Controllers
         /// <param name="name">新名称</param>
         /// <returns>重命名后的文件信息</returns>
         [HttpPost("Rename")]
-        public FileDvo RenameAsync(string file, string name)
+        public FileDvo RenameAsync(FileRenameRequest request)
         {
+            if (request == null)
+            {
+                Error("请求不能为空！");
+            }
+
+            var file = request.file;
+            var name = request.name;
+
             if (string.IsNullOrWhiteSpace(file) || string.IsNullOrWhiteSpace(name))
             {
                 Error("源路径和新名称不能为空！");
@@ -283,8 +335,14 @@ namespace Com.Scm.Controllers
         /// <param name="files">待删除的文件或目录路径列表</param>
         /// <returns></returns>
         [HttpPost("Delete")]
-        public bool DeleteAsync(List<string> files)
+        public bool DeleteAsync(FileDeleteRequest request)
         {
+            if (request == null)
+            {
+                Error("请求不能为空！");
+            }
+
+            var files = request.files;
             if (files == null || files.Count < 1)
             {
                 Error("路径不能为空！");
@@ -317,19 +375,20 @@ namespace Com.Scm.Controllers
         /// <param name="name">目录名称</param>
         /// <returns></returns>
         [HttpPost("CreateDir")]
-        public FileDvo CreateDirAsync(string path, string name)
+        public FileDvo CreateDirAsync(FileCreateRequest request)
         {
+            var path = GetNativePath(request.path);
             if (string.IsNullOrWhiteSpace(path))
             {
                 Error("路径不能为空！");
             }
 
-            path = GetNativePath(path);
             if (!Directory.Exists(path))
             {
                 Error("路径不存在：" + path);
             }
 
+            var name = request.name;
             if (string.IsNullOrWhiteSpace(name))
             {
                 Error("名称不能为空！");
@@ -353,7 +412,8 @@ namespace Com.Scm.Controllers
         /// <param name="path"></param>
         /// <param name="file"></param>
         /// <returns></returns>
-        public async Task<ScmUploadResponse> UploadFileAsync(IFormFile file, string path)
+        [HttpPost("upload")]
+        public async Task<ScmUploadResponse> UploadFileAsync(IFormFile file, [FromForm] string path)
         {
             var response = new ScmUploadResponse();
 
@@ -401,7 +461,8 @@ namespace Com.Scm.Controllers
         /// </summary>
         /// <param name="path"></param>
         /// <returns></returns>
-        [HttpGet]
+        [NoJsonResult]
+        [HttpGet("download")]
         public async Task<IActionResult> DownloadFileAsync(string path)
         {
             LogUtils.Debug("文件下载：" + path);
@@ -836,6 +897,66 @@ namespace Com.Scm.Controllers
 
             return path.Replace(tag, pre);
         }
+    }
+
+    public class FileCreateRequest : ScmRequest
+    {
+        public string path { get; set; }
+
+        public string name { get; set; }
+    }
+
+    /// <summary>
+    /// 文件删除请求
+    /// </summary>
+    public class FileDeleteRequest : ScmRequest
+    {
+        /// <summary>
+        /// 要删除的文件或目录路径
+        /// </summary>
+        public List<string> files { get; set; }
+    }
+
+    /// <summary>
+    /// 文件重命名请求
+    /// </summary>
+    public class FileRenameRequest : ScmRequest
+    {
+        /// <summary>
+        /// 源文件或目录路径
+        /// </summary>
+        public string file { get; set; }
+
+        /// <summary>
+        /// 新的名称（不含路径）
+        /// </summary>
+        public string name { get; set; }
+    }
+
+    public class FileSearchRequest : ScmSearchPageRequest
+    {
+        public string path { get; set; }
+    }
+
+    /// <summary>
+    /// 文件复制/移动请求
+    /// </summary>
+    public class FileTransferRequest : ScmRequest
+    {
+        /// <summary>
+        /// 源文件或目录路径
+        /// </summary>
+        public List<string> files { get; set; }
+
+        /// <summary>
+        /// 目标目录路径
+        /// </summary>
+        public string path { get; set; }
+
+        /// <summary>
+        /// 是否覆盖已存在的目标
+        /// </summary>
+        public bool overwrite { get; set; }
     }
 
     public class FileDvo : ScmDvo

@@ -551,8 +551,12 @@ namespace Com.Scm.Configure.Startup
         {
             LogUtils.Info("字体目录：" + envConfig.Fonts);
             ImageEngine.LoadFont(envConfig.Fonts);
-            LogUtils.Info("默认字体：" + envConfig.DefaultFont);
-            ImageEngine.SetDefaultFontName(envConfig.DefaultFont);
+
+            if (!string.IsNullOrWhiteSpace(envConfig.DefaultFont))
+            {
+                LogUtils.Info("默认字体：" + envConfig.DefaultFont);
+                ImageEngine.SetDefaultFontName(envConfig.DefaultFont);
+            }
         }
     }
 }

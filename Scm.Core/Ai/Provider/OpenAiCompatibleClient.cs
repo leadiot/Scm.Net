@@ -141,7 +141,7 @@ namespace Com.Scm.Ai.Provider
 
         private async Task<HttpResponseMessage> PostAsync(string path, string body)
         {
-            if (!_config.IsEnabled())
+            if (!_config.IsValid())
             {
                 throw new BusinessException("AI服务未配置，请先配置 Ai 节点的 BaseUrl 与 ApiKey！");
             }

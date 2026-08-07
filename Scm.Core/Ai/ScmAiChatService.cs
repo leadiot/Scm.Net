@@ -2,6 +2,7 @@ using Com.Scm.Ai.Config;
 using Com.Scm.Ai.Dvo;
 using Com.Scm.Ai.Provider;
 using Com.Scm.Ai.Rag;
+using Com.Scm.Dvo;
 using Com.Scm.Enums;
 using Com.Scm.Exceptions;
 using Com.Scm.Filters;
@@ -37,6 +38,31 @@ namespace Com.Scm.Ai
             _sqlClient = sqlClient;
 
             AiDbSetup.EnsureTables(_sqlClient);
+        }
+
+        /// <summary>
+        /// 获取可选的AI服务列表
+        /// </summary>
+        /// <returns></returns>
+        public List<TextOptionDvo> GetProvider()
+        {
+            var list = new List<TextOptionDvo>();
+            foreach (var provider in _aiConfig.Providers ?? new List<AiProviderConfig>())
+            {
+                if (!provider.Enabled)
+                {
+                    continue;
+                }
+
+                list.Add(new TextOptionDvo()
+                {
+                    label = provider.Name,
+                    value = provider.Code,
+                    disabled = !provider.IsValid()
+                });
+            }
+
+            return list;
         }
 
         /// <summary>

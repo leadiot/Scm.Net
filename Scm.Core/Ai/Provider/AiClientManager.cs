@@ -40,9 +40,9 @@ namespace Com.Scm.Ai.Provider
         {
             var name = ResolveProvider(provider);
             var config = _config.GetProvider(name);
-            if (config == null || !config.IsEnabled())
+            if (config == null || !config.IsValid())
             {
-                throw new BusinessException($"AI服务[{name}]未配置，请先配置 Ai:{name} 节点的 BaseUrl 与 ApiKey！");
+                throw new BusinessException($"AI服务[{name}]未配置，请先在 Ai:Providers 列表中配置 Code 为 {name} 的服务的 BaseUrl 与 ApiKey！");
             }
 
             return _clients.GetOrAdd(name, _ => new OpenAiCompatibleClient(config));

@@ -23,33 +23,19 @@ namespace Com.Scm.Ai.Config
         public const string PROVIDER_QWEN = "qwen";
 
         /// <summary>
-        /// 默认对话服务，支持：deepseek、qwen
+        /// 默认对话服务，取Providers列表中某项的Code
         /// </summary>
         public string ChatProvider { get; set; } = PROVIDER_DEEPSEEK;
 
         /// <summary>
-        /// 默认向量化服务，支持：deepseek、qwen（DeepSeek暂未提供向量化接口，建议qwen）
+        /// 默认向量化服务，取Providers列表中某项的Code（DeepSeek暂未提供向量化接口，建议qwen）
         /// </summary>
         public string EmbeddingProvider { get; set; } = PROVIDER_QWEN;
 
         /// <summary>
-        /// DeepSeek配置
+        /// AI服务列表配置
         /// </summary>
-        public AiProviderConfig DeepSeek { get; set; } = new AiProviderConfig()
-        {
-            BaseUrl = "https://api.deepseek.com/v1",
-            ChatModel = "deepseek-chat"
-        };
-
-        /// <summary>
-        /// 通义千问配置（DashScope OpenAI兼容模式）
-        /// </summary>
-        public AiProviderConfig Qwen { get; set; } = new AiProviderConfig()
-        {
-            BaseUrl = "https://dashscope.aliyuncs.com/compatible-mode/v1",
-            ChatModel = "qwen-plus",
-            EmbeddingModel = "text-embedding-v3"
-        };
+        public List<AiProviderConfig> Providers { get; set; }
 
         /// <summary>
         /// RAG知识库配置
@@ -63,21 +49,39 @@ namespace Com.Scm.Ai.Config
         public void Prepare(EnvConfig envConfig)
         {
             Rag.Prepare(envConfig);
+
+            if (Providers == null)
+            {
+                Providers = new List<AiProviderConfig>();
+            }
+            if (Providers.Count < 1)
+            {
+                Providers.Add(new AiProviderConfig()
+                {
+                    Code = PROVIDER_DEEPSEEK,
+                    Name = "DeepSeek",
+                    BaseUrl = "https://api.deepseek.com/v1",
+                    ChatModel = "deepseek-chat"
+                });
+                Providers.Add(new AiProviderConfig()
+                {
+                    Code = PROVIDER_QWEN,
+                    Name = "通义千问",
+                    BaseUrl = "https://dashscope.aliyuncs.com/compatible-mode/v1",
+                    ChatModel = "qwen-plus",
+                    EmbeddingModel = "text-embedding-v3"
+                });
+            }
         }
 
         /// <summary>
-        /// 获取指定服务的配置
+        /// 按服务标识获取服务配置，未找到时返回null
         /// </summary>
         /// <param name="provider"></param>
         /// <returns></returns>
         public AiProviderConfig GetProvider(string provider)
         {
-            if (string.Equals(provider, PROVIDER_QWEN, StringComparison.OrdinalIgnoreCase))
-            {
-                return Qwen;
-            }
-
-            return DeepSeek;
+            return Providers?.FirstOrDefault(p => p.Enabled && string.Equals(p.Code, provider, StringComparison.OrdinalIgnoreCase));
         }
     }
 
@@ -86,6 +90,16 @@ namespace Com.Scm.Ai.Config
     /// </summary>
     public class AiProviderConfig
     {
+        /// <summary>
+        /// 服务标识，如：deepseek、qwen
+        /// </summary>
+        public string Code { get; set; }
+
+        /// <summary>
+        /// 服务名称，如：DeepSeek、通义千问
+        /// </summary>
+        public string Name { get; set; }
+
         /// <summary>
         /// 服务地址
         /// </summary>
@@ -112,9 +126,14 @@ namespace Com.Scm.Ai.Config
         public int Timeout { get; set; } = 300;
 
         /// <summary>
+        /// 是否启用
+        /// </summary>
+        public bool Enabled { get; set; } = true;
+
+        /// <summary>
         /// 是否可用
         /// </summary>
-        public bool IsEnabled()
+        public bool IsValid()
         {
             return !string.IsNullOrWhiteSpace(BaseUrl) && !string.IsNullOrWhiteSpace(ApiKey);
         }

@@ -152,6 +152,21 @@ namespace Com.Scm.Log.Fe
         }
 
         /// <summary>
+        /// 获取前端日志配置
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        public LogConfigDvo GetConfigAsync()
+        {
+            return new LogConfigDvo
+            {
+                LogLevel = ScmLogLevelEnum.Error,
+                LogNotify = true,
+                LogReport = true
+            };
+        }
+
+        /// <summary>
         /// 修改
         /// </summary>
         /// <param name="model"></param>

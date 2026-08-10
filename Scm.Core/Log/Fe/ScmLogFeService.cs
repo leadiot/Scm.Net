@@ -3,6 +3,7 @@ using Com.Scm.Dto;
 using Com.Scm.Enums;
 using Com.Scm.Filters;
 using Com.Scm.Log.Fe.Dvo;
+using Com.Scm.Log.Fe.Rnr;
 using Com.Scm.Ur;
 using Com.Scm.Utils;
 using Microsoft.AspNetCore.Mvc;
@@ -128,17 +129,22 @@ namespace Com.Scm.Log.Fe
             return await _thisRepository.InsertAsync(model.Adapt<LogFeDao>());
         }
 
-        public async Task<bool> ReportAsync(List<LogFeDto> items)
+        /// <summary>
+        /// 批量上报日志
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        public async Task<bool> ReportAsync(RecordRequest request)
         {
-            if (items == null || items.Count() < 1)
+            if (request == null || request.logs == null || request.logs.Count() < 1)
             {
                 return true;
             }
 
             var daoList = new List<LogFeDao>();
-            foreach (var item in items)
+            foreach (var log in request.logs)
             {
-                var dao = item.Adapt<LogFeDao>();
+                var dao = log.Adapt<LogFeDao>();
                 dao.PrepareCreate(UserDto.SYS_ID);
                 daoList.Add(dao);
             }

@@ -70,7 +70,7 @@ namespace Com.Scm.Helper
 
             InitRoleAuth(userRootDao, userAdminDao);
 
-            CreateTheme(1, "Default", "{\"page\":{\"backgroundImage\":\"url('/data/bg/login/bg01.jpg')\",\"backgroundColor\":\"\",\"backgroundSize\":\"cover\",\"backgroundPosition\":\"center center\",\"backgroundRepeat\":\"no-repeat\"},\"mask\":{\"backgroundColor\":\"rgba(0,0,0,0.5)\"}}");
+            CreateTheme(1, "Default", "{\"page\":{\"backgroundImage\":\"url('/images/login/bg01.jpg')\",\"backgroundColor\":\"\",\"backgroundSize\":\"cover\",\"backgroundPosition\":\"center center\",\"backgroundRepeat\":\"no-repeat\"},\"mask\":{\"backgroundColor\":\"rgba(0,0,0,0.5)\"}}");
 
             var dmlFile = Path.Combine(_SqlDir, "scm-init.sql");
             ExecuteSql(dmlFile, verDao.ver);

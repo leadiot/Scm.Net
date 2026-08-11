@@ -135,7 +135,7 @@ namespace Com.Scm.Helper
             appDao.row_status = ScmRowStatusEnum.Normal;
             _SqlClient.Updateable(appDao).ExecuteCommand();
 
-            CreateApp(1000000000000001001, 10, 1, "scm.net", "Scm.Net", "<p>一款基于Vue3和.Net10.0技术框架、适用于中后台管理系统的快速开发框架。</p><img src=\"/images/loginbg.svg\" alt=\"logo\"/>");
+            CreateApp(1000000000000001001, 10, 1, "scm.net", "Scm.Net", "<p>一款基于 .NET 10.0 及 Vue 3.5 的企业级快速开发框架。</p><img src=\"/images/loginbg.svg\" alt=\"logo\"/>");
             CreateApp(1000000000000002001, 10, 2, "iam.net", "联合登录", "<p>简单、易用的多平台联合登录系统。</p><img src=\"/images/loginbg.svg\" alt=\"logo\"/>");
         }
 

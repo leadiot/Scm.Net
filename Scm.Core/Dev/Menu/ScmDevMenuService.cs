@@ -118,7 +118,6 @@ namespace Com.Scm.Dev.Menu
                 pid = param.pid,
                 od = qty,
                 client = param.client,
-                lang = param.lang,
                 codec = "menu-code",
                 namec = param.name,
                 types = ScmMenuTypesEnum.Menu,

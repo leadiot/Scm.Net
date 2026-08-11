@@ -146,6 +146,7 @@ namespace Com.Scm.Configure.Startup
             services.AddScoped<ISecService, ScmSecService>();
             services.AddScoped<ICatService, ScmCatService>();
             services.AddScoped<ITagService, ScmTagService>();
+            services.AddScoped<I18nHolder, ScmI18nHolder>();
             services.AddScoped<IFlowService, ScmFlowService>();
 
             // MQTT Broker（必须在 SamplesServerUtils.Setup 之前，确保 Broker 先启动）

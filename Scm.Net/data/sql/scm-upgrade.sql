@@ -136,3 +136,35 @@ UPDATE [scm_sys_menu] SET [codec]='app-calculator' WHERE [codec]='app-calculate'
  */
 UPDATE [scm_sys_theme] SET [theme] = replace([theme], '/data/bg/','/data/bg/login/');
 UPDATE [scm_sys_menu] SET [od]=56, [icon]='ms-monitor' WHERE [id]=2055889266013245440;
+
+/** 1. 建表 **/
+CREATE TABLE [scm_sys_i18n] (
+  [id] integer NOT NULL PRIMARY KEY,
+  [module] varchar(16) NOT NULL,
+  [key] varchar(128) NOT NULL,
+  [lang] varchar(8) NOT NULL,
+  [value] varchar(256) NOT NULL,
+  [row_status] integer NOT NULL,
+  [create_time] integer NOT NULL,
+  [create_user] integer NOT NULL,
+  [update_time] integer NOT NULL,
+  [update_user] integer NOT NULL
+);
+CREATE INDEX [SCM_SYS_I18N_KEY_IDX] ON [scm_sys_i18n] ([key]);
+
+/** 2. 加列 **/
+ALTER TABLE [scm_sys_menu] ADD COLUMN [i18n] varchar(128);
+
+/** 3. 为现有菜单生成 key（按 codec 规范化） **/
+UPDATE scm_sys_menu
+SET i18n = 'menu.' || LOWER(REPLACE(codec, '-', '.')) || '.name'
+WHERE i18n IS NULL AND codec IS NOT NULL;
+
+/** 4. 把当前中文 namec 同步到翻译表（默认 zh-cn） **/
+INSERT INTO [scm_sys_i18n] ([module], [key], [lang], [value], [row_status], [create_time], [create_user], [update_time], [update_user])
+SELECT DISTINCT 'menu', i18n, 'zh-cn', namec, 1, 0, 0, 0, 0
+FROM scm_sys_menu
+WHERE i18n IS NOT NULL;
+
+/** 5. 最后移除 lang 列 **/
+ALTER TABLE scm_sys_menu DROP COLUMN lang;

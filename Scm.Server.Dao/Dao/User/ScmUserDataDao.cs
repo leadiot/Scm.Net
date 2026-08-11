@@ -1,6 +1,5 @@
 ﻿using Com.Scm.Enums;
 using Com.Scm.Utils;
-using SqlSugar;
 
 namespace Com.Scm.Dao.User
 {

@@ -1,10 +1,11 @@
 ﻿using Com.Scm.Dto;
 using Com.Scm.Enums;
+using Com.Scm.I18n;
 using System.ComponentModel.DataAnnotations;
 
 namespace Com.Scm.Sys.Menu
 {
-    public class MenuDto : ScmDataDto
+    public class MenuDto : ScmDataDto, I18nItem
     {
         public const long HOME_ID = 1000000000000000010L;
         public const long FAV_ID = 1000000000000000020L;
@@ -24,7 +25,7 @@ namespace Com.Scm.Sys.Menu
         /// <summary>
         /// 显示语言
         /// </summary>
-        public string lang { get; set; }
+        public string i18n { get; set; }
 
         /// <summary>
         /// 权限标识
@@ -162,6 +163,17 @@ namespace Com.Scm.Sys.Menu
                 children = new List<MenuDto>();
             }
             children.Add(dto);
+        }
+
+        public string GetKey()
+        {
+            return i18n;
+            //return $"menu.{codec}.name";
+        }
+
+        public void SetLang(string lang)
+        {
+            this.namec = lang;
         }
     }
 

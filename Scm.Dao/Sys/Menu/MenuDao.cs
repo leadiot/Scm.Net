@@ -24,12 +24,12 @@ public class MenuDao : ScmDataDao, ISortableDao, IDeleteDao
     public ScmMenuTypesEnum types { get; set; }
 
     /// <summary>
-    /// 语言
+    /// 菜单名称（默认）
     /// </summary>
     [Required]
-    [StringLength(8)]
-    [SugarColumn(Length = 8)]
-    public string lang { get; set; }
+    [StringLength(128)]
+    [SugarColumn(Length = 128)]
+    public string i18n { get; set; }
 
     /// <summary>
     /// 权限标识
@@ -40,7 +40,7 @@ public class MenuDao : ScmDataDao, ISortableDao, IDeleteDao
     public string codec { get; set; }
 
     /// <summary>
-    /// 菜单名称
+    /// 菜单名称（）
     /// </summary>
     [Required]
     [StringLength(32)]

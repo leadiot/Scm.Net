@@ -531,6 +531,8 @@ namespace Com.Scm.Helper
             menuDao.id = id;
             menuDao.types = ScmMenuTypesEnum.Menu;
             menuDao.client = ScmClientTypeEnum.Web;
+            menuDao.lang = "zh-cn";
+            menuDao.i18n = "";
             menuDao.codec = codec;
             menuDao.namec = namec;
             menuDao.pid = pid;

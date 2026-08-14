@@ -8,6 +8,7 @@ namespace Com.Scm.Adm.Dic;
 /// <summary>
 /// 字典信息表
 /// </summary>
+[ScmTable(IsIgnore = true)]
 [SugarTable("scm_sys_dic_detail")]
 public class AdmDicDetailDao : ScmDataDao
 {

@@ -8,7 +8,8 @@ namespace Com.Scm.Adm.Config
     /// <summary>
     /// 系统配置
     /// </summary>
-    [SqlSugar.SugarTable("scm_sys_config")]
+    [ScmTable(IsIgnore = true)]
+    [SugarTable("scm_sys_config")]
     public class AdmConfigDao : ScmDataDao
     {
         /// <summary>

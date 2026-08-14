@@ -8,7 +8,8 @@ namespace Com.Scm.Adm.Config
     /// <summary>
     /// 
     /// </summary>
-    [SqlSugar.SugarTable("scm_sys_config_cat")]
+    [ScmTable(IsIgnore = true)]
+    [SugarTable("scm_sys_config_cat")]
     public class AdmConfigCatDao : ScmDataDao, ISystemDao
     {
         /// <summary>

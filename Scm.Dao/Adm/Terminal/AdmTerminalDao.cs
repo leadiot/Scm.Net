@@ -9,6 +9,7 @@ namespace Com.Scm.Adm.Terminal
     /// <summary>
     /// 终端
     /// </summary>
+    [ScmTable(IsIgnore = true)]
     [SugarTable("scm_ur_terminal")]
     public class AdmTerminalDao : ScmDataDao
     {

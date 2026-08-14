@@ -8,6 +8,7 @@ namespace Com.Scm.Adm.Dic;
 /// <summary>
 /// 字典分类信息
 /// </summary>
+[ScmTable(IsIgnore = true)]
 [SugarTable("scm_sys_dic_header")]
 public class AdmDicHeaderDao : ScmDataDao, ISystemDao, IDeleteDao, ISortableDao
 {

@@ -154,10 +154,18 @@ namespace Com.Scm
         protected bool CreateTable(Assembly assembly)
         {
             var scmDao = typeof(ScmDao);
+            var scmTable = typeof(ScmTableAttribute);
             var daoType = assembly.GetTypes().Where(u => u.IsClass && !u.IsAbstract && !u.IsGenericType && u.Name.EndsWith("Dao")).ToList();
             var daoList = new List<Type>();
             foreach (var item in daoType.Where(s => !s.IsInterface))
             {
+                // 过滤不需要创建的表格
+                var attr = item.GetCustomAttribute<ScmTableAttribute>();
+                if (attr != null && attr.IsIgnore)
+                {
+                    continue;
+                }
+
                 if (CommonUtils.HasImplementedRawGeneric(item, scmDao))
                 {
                     daoList.Add(item);

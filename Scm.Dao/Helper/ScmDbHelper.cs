@@ -196,7 +196,7 @@ namespace Com.Scm.Helper
             _SqlClient.Updateable(roleRootDao).ExecuteCommand();
 
             var roleAdminDao = new RoleDao();
-            roleAdminDao.id = 1000000000000001030L;
+            roleAdminDao.id = ROLE_ADMIN_ID;
             roleAdminDao.codec = "admin";
             roleAdminDao.names = "系统管理员";
             roleAdminDao.namec = "系统管理员";
@@ -382,7 +382,7 @@ namespace Com.Scm.Helper
         private UserDao InitUserAdmin()
         {
             var userAdminDao = new UserDao();
-            userAdminDao.id = 1000000000000001030;
+            userAdminDao.id = ROLE_ADMIN_ID;
             userAdminDao.codes = "X0001030";
             userAdminDao.codec = "admin";
             userAdminDao.names = "系统管理员";

@@ -40,6 +40,11 @@ namespace Com.Scm
         protected string _SqlDir;
 
         /// <summary>
+        /// 默认角色ID
+        /// </summary>
+        protected const long ROLE_ADMIN_ID = 1000000000000001030L;
+
+        /// <summary>
         /// 初始化
         /// </summary>
         /// <param name="sqlClient"></param>

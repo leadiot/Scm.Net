@@ -11,7 +11,7 @@ using SqlSugar;
 using System.Text;
 using System.Text.Json;
 
-namespace Com.Scm.Ai
+namespace Com.Scm.Ai.Chat
 {
     /// <summary>
     /// AI智能问答服务

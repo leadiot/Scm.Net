@@ -1,5 +1,5 @@
-using Com.Scm;
 using Com.Scm.Ai.Config;
+using Com.Scm.Ai.Doc.Dvo;
 using Com.Scm.Ai.Dvo;
 using Com.Scm.Ai.Provider;
 using Com.Scm.Ai.Rag;
@@ -14,7 +14,7 @@ using Microsoft.AspNetCore.Mvc;
 using SqlSugar;
 using System.Text.Json;
 
-namespace Com.Scm.Ai
+namespace Com.Scm.Ai.Doc
 {
     /// <summary>
     /// AI知识库文档服务

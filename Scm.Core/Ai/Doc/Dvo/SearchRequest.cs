@@ -1,4 +1,4 @@
-namespace Com.Scm.Ai.Dvo
+namespace Com.Scm.Ai.Doc.Dvo
 {
     /// <summary>
     /// 知识库文档查询条件

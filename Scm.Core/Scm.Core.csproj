@@ -16,6 +16,7 @@
 		<ProjectReference Include="..\Scm.Email\Scm.Email.csproj" />
 		<ProjectReference Include="..\Scm.Phone\Scm.Phone.csproj" />
 		<ProjectReference Include="..\Scm.Server.Aiml\Scm.Server.Aiml.csproj" />
+		<ProjectReference Include="..\Scm.Ai\Scm.Ai.csproj" />
 		<ProjectReference Include="..\Scm.Server.Api\Scm.Server.Api.csproj" />
 		<ProjectReference Include="..\Scm.Server.Quartz\Scm.Server.Quartz.csproj" />
 		<ProjectReference Include="..\Scm.Server.SignalR\Scm.Server.SignalR.csproj" />

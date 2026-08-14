@@ -7,7 +7,7 @@ namespace Com.Scm.Ai.Provider
     /// <summary>
     /// AI客户端管理，按服务标识缓存客户端实例
     /// </summary>
-    public class AiClientManager
+    public class ScmAiClientManager
     {
         private readonly AiConfig _config;
         private readonly ConcurrentDictionary<string, OpenAiCompatibleClient> _clients = new ConcurrentDictionary<string, OpenAiCompatibleClient>();
@@ -16,7 +16,7 @@ namespace Com.Scm.Ai.Provider
         /// 
         /// </summary>
         /// <param name="config"></param>
-        public AiClientManager(AiConfig config)
+        public ScmAiClientManager(AiConfig config)
         {
             _config = config;
         }

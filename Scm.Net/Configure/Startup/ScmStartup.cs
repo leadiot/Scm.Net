@@ -115,7 +115,7 @@ namespace Com.Scm.Configure.Startup
             var aiConfig = AppUtils.GetConfig<AiConfig>(AiConfig.NAME) ?? new AiConfig();
             aiConfig.Prepare(envConfig);
             services.AddSingleton(aiConfig);
-            services.AddSingleton<AiClientManager>();
+            services.AddSingleton<ScmAiClientManager>();
 
             // Oidc
             LogUtils.Info("正在进行OIDC配置...");

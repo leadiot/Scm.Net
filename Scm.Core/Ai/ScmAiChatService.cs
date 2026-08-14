@@ -20,7 +20,7 @@ namespace Com.Scm.Ai
     public class ScmAiChatService : IApiService
     {
         private readonly AiConfig _aiConfig;
-        private readonly AiClientManager _aiManager;
+        private readonly ScmAiClientManager _aiManager;
         private readonly ISqlSugarClient _sqlClient;
 
         /// <summary>
@@ -30,7 +30,7 @@ namespace Com.Scm.Ai
         /// <param name="aiManager"></param>
         /// <param name="sqlClient"></param>
         public ScmAiChatService(AiConfig aiConfig,
-            AiClientManager aiManager,
+            ScmAiClientManager aiManager,
             ISqlSugarClient sqlClient)
         {
             _aiConfig = aiConfig;
@@ -104,7 +104,7 @@ namespace Com.Scm.Ai
 
             var response = await client.ChatStreamAsync(messages, model, request.temperature);
 
-            return new AiStreamResult(response);
+            return new ScmAiStreamResult(response);
         }
 
         /// <summary>

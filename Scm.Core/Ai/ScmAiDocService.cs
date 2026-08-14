@@ -24,7 +24,7 @@ namespace Com.Scm.Ai
     {
         private readonly EnvConfig _envConfig;
         private readonly AiConfig _aiConfig;
-        private readonly AiClientManager _aiManager;
+        private readonly ScmAiClientManager _aiManager;
         private readonly ISqlSugarClient _sqlClient;
         private readonly IJwtTokenHolder _jwtHolder;
         private readonly IHttpContextAccessor _httpContextAccessor;
@@ -40,7 +40,7 @@ namespace Com.Scm.Ai
         /// <param name="httpContextAccessor"></param>
         public ScmAiDocService(EnvConfig envConfig,
             AiConfig aiConfig,
-            AiClientManager aiManager,
+            ScmAiClientManager aiManager,
             ISqlSugarClient sqlClient,
             IJwtTokenHolder jwtHolder,
             IHttpContextAccessor httpContextAccessor)

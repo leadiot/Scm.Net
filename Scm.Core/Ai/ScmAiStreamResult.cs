@@ -6,7 +6,7 @@ namespace Com.Scm.Ai
     /// <summary>
     /// SSE流式输出结果，将AI服务的流式响应透传给客户端
     /// </summary>
-    public class AiStreamResult : IActionResult
+    public class ScmAiStreamResult : IActionResult
     {
         private readonly HttpResponseMessage _response;
 
@@ -14,7 +14,7 @@ namespace Com.Scm.Ai
         /// 
         /// </summary>
         /// <param name="response">AI服务的原始流式响应</param>
-        public AiStreamResult(HttpResponseMessage response)
+        public ScmAiStreamResult(HttpResponseMessage response)
         {
             _response = response;
         }

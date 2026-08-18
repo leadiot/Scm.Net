@@ -1,7 +1,7 @@
 ﻿using Com.Scm.Dto;
 using System.ComponentModel.DataAnnotations;
 
-namespace Com.Scm.Sys.Contact
+namespace Com.Scm.Sys.Contacts
 {
     public class ScmSysContactsDto : ScmDataDto
     {

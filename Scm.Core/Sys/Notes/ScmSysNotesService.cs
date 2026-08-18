@@ -146,14 +146,11 @@ namespace Com.Scm.Sys.Notes
         public async Task<NotesDvo> AddAsync(NotesDto model)
         {
             var dao = model.Adapt<ScmSysNotesDao>();
-            if (IsValidId(dao.cat_id))
+            if (!IsValidId(dao.cat_id))
             {
                 dao.cat_id = ScmResCatDto.SYS_ID;
             }
 
-            dao.files = model.IsTooLong() ? 1 : 0;
-            dao.summary = model.ToDbSummary();
-            dao.content = model.ToDbContent();
             dao.client = ScmClientTypeEnum.Web;
 
             var qty = await _thisRepository.InsertAsync(dao);
@@ -171,7 +168,6 @@ namespace Com.Scm.Sys.Notes
         public async Task<NotesDto> SaveAsync(NotesDto model)
         {
             ScmSysNotesDao dao = null;
-            var tooLong = model.IsTooLong();
 
             if (IsNormalId(model.id))
             {
@@ -180,25 +176,14 @@ namespace Com.Scm.Sys.Notes
 
             if (dao == null)
             {
-                dao = new ScmSysNotesDao();
-                dao.id = model.id;
-                dao.types = model.types;
-                dao.title = model.title;
-                dao.cat_id = model.cat_id;
-                dao.summary = model.ToDbSummary();
-                dao.content = model.ToDbContent();
-                dao.files = tooLong ? 1 : 0;
+                dao = model.Adapt<ScmSysNotesDao>();
                 await _thisRepository.InsertAsync(dao);
 
                 model.id = dao.id;
             }
             else
             {
-                dao.title = model.title;
-                dao.cat_id = model.cat_id;
-                dao.summary = model.ToDbSummary();
-                dao.content = model.ToDbContent();
-                dao.files = tooLong ? 1 : 0;
+                dao = model.Adapt(dao);
                 await _thisRepository.UpdateAsync(dao);
             }
 
@@ -229,10 +214,7 @@ namespace Com.Scm.Sys.Notes
                 dao.cat_id = ScmResCatDto.SYS_ID;
             }
 
-            dao.files = model.IsTooLong() ? 1 : 0;
-            dao.summary = model.ToDbSummary();
-            dao.content = model.ToDbContent();
-
+            dao = model.Adapt(dao);
             await _thisRepository.UpdateAsync(dao);
 
             SaveFile(dao, model);
@@ -296,10 +278,12 @@ namespace Com.Scm.Sys.Notes
 
         private void SaveFile(ScmSysNotesDao dao, NotesDto dto)
         {
-            if (dto.IsTooLong())
+            if (dao.files < 1)
             {
-                _EnvConfig.SaveFile(NotesDto.FOLDER_NAME, dao.GetFileName(), dto.content);
+                return;
             }
+
+            _EnvConfig.SaveFile(NotesDto.FOLDER_NAME, dao.GetFileName(), dto.content ?? "");
         }
     }
 }

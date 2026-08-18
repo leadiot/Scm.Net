@@ -141,7 +141,7 @@ namespace Com.Scm.Sys.Sms
                 return;
             }
 
-            dao.body = _EnvConfig.ReadFile(ScmSysSmsDao.FILE_DIR, dao.id + ".txt");
+            dao.body = _EnvConfig.ReadFile(ScmSysSmsDao.FILE_DIR, dao.GetFileName());
         }
 
         /// <summary>
@@ -246,8 +246,7 @@ namespace Com.Scm.Sys.Sms
             }
 
             // 写入文件
-            var body = dto.body ?? "";
-            _EnvConfig.SaveFile(ScmSysSmsDao.FILE_DIR, dao.id + ".txt", body);
+            _EnvConfig.SaveFile(ScmSysSmsDao.FILE_DIR, dao.GetFileName(), dto.body ?? "");
         }
 
         /// <summary>

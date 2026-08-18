@@ -85,8 +85,8 @@ namespace Com.Scm.Sys.Notes
         /// 摘要
         /// </summary>
         [Required]
-        [StringLength(1024)]
-        [SugarColumn(Length = 1024)]
+        [StringLength(512)]
+        [SugarColumn(Length = 512)]
         public string summary { get; set; }
 
         /// <summary>
@@ -171,6 +171,16 @@ namespace Com.Scm.Sys.Notes
             if (summary == null) summary = "";
             if (content == null) content = "";
             if (source == null) source = "";
+
+            if (content.Length > 2048)
+            {
+                content = content.Substring(0, 2048);
+                files = 1;
+            }
+            else
+            {
+                files = 0;
+            }
         }
     }
 }

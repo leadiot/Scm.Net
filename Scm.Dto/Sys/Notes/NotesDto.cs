@@ -12,7 +12,7 @@ namespace Com.Scm.Sys.Notes
         /// </summary>
         public const string FOLDER_NAME = "notes";
 
-        public const int SUMMARY_SIZE = 1024;
+        public const int SUMMARY_SIZE = 512;
         public const int CONTENT_SIZE = 2048;
 
         /// <summary>
@@ -73,7 +73,7 @@ namespace Com.Scm.Sys.Notes
         /// <summary>
         /// 
         /// </summary>
-        [StringLength(1024)]
+        [StringLength(SUMMARY_SIZE)]
         public string summary { get; set; }
 
         /// <summary>
@@ -122,36 +122,5 @@ namespace Com.Scm.Sys.Notes
         /// 版本信息
         /// </summary>
         public int ver { get; set; }
-
-        public bool IsTooLong()
-        {
-            var tmp = this.content ?? "";
-            return tmp.Length > NotesDto.CONTENT_SIZE;
-        }
-
-        public string ToDbSummary()
-        {
-            var tmp = this.content ?? "";
-            if (tmp.Length > NotesDto.SUMMARY_SIZE)
-            {
-                tmp = tmp.Substring(0, NotesDto.SUMMARY_SIZE);
-            }
-            return tmp;
-        }
-
-        public string ToDbContent()
-        {
-            var tmp = this.content ?? "";
-            if (tmp.Length > NotesDto.CONTENT_SIZE)
-            {
-                tmp = tmp.Substring(0, NotesDto.CONTENT_SIZE);
-            }
-            return tmp;
-        }
-
-        public static string GetFileName(long id)
-        {
-            return id + ".txt";
-        }
     }
 }

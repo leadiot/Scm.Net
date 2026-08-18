@@ -132,19 +132,24 @@ namespace Com.Scm.Sys.Sms
                 terminal_id = ScmEnv.DEFAULT_ID;
             }
 
-            TrimBody();
+            CheckNotNull();
         }
 
         public override void PrepareUpdate(long userId)
         {
             base.PrepareUpdate(userId);
 
-            TrimBody();
+            CheckNotNull();
         }
 
-        private void TrimBody()
+        private void CheckNotNull()
         {
-            if (body != null && body.Length > 256)
+            if (name == null) name = "";
+            if (body == null) body = "";
+            if (subject == null) subject = "";
+            if (source == null) source = "";
+
+            if (body.Length > 256)
             {
                 body = body.Substring(0, 256);
                 files = 1;
@@ -153,6 +158,15 @@ namespace Com.Scm.Sys.Sms
             {
                 files = 0;
             }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        public string GetFileName()
+        {
+            return id + ".txt";
         }
     }
 }

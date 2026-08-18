@@ -22,6 +22,11 @@ namespace Com.Scm.Nas.App
         public long terminal_id { get; set; }
 
         /// <summary>
+        /// 修改时间
+        /// </summary>
+        public long modify_time { get; set; }
+
+        /// <summary>
         /// 其它附加参数
         /// </summary>
         [SugarColumn(Length = 1024, IsNullable = true, IsJson = true)]

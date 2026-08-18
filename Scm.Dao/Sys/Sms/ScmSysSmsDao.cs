@@ -83,11 +83,6 @@ namespace Com.Scm.Sys.Sms
         public long contacts_id { get; set; }
 
         /// <summary>
-        /// 修改时间
-        /// </summary>
-        public long modify_time { get; set; }
-
-        /// <summary>
         /// 来源应用
         /// </summary>
         [SugarColumn(Length = 16, IsNullable = true)]
@@ -97,6 +92,23 @@ namespace Com.Scm.Sys.Sms
         /// 来源终端
         /// </summary>
         public long terminal_id { get; set; }
+
+        /// <summary>
+        /// 来源应用ID
+        /// </summary>
+        [SugarColumn(Length = 64, IsNullable = true)]
+        public string res_id { get; set; }
+
+        /// <summary>
+        /// 修改时间
+        /// </summary>
+        public long modify_time { get; set; }
+
+        /// <summary>
+        /// 其它附加参数
+        /// </summary>
+        [SugarColumn(Length = 1024, IsNullable = true, IsJson = true)]
+        public Dictionary<string, string> os_params { get; set; }
 
         /// <summary>
         /// 

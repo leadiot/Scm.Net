@@ -36,13 +36,13 @@ namespace Com.Scm.Sys.Sms
         /// </summary>
         /// <param name="request"></param>
         /// <returns></returns>
-        public async Task<ScmSearchPageResponse<ScmSysSmsDetailDvo>> GetPagesAsync(SmsSearchRequest request)
+        public async Task<ScmSearchPageResponse<ScmSysSmsDvo>> GetPagesAsync(SmsSearchRequest request)
         {
             var result = await _SqlClient.Queryable<ScmSysSmsDao>()
                 .WhereIF(!request.IsAllStatus(), a => a.row_status == request.row_status)
                 .WhereIF(!string.IsNullOrEmpty(request.key), a => a.address.Contains(request.key))
                 .OrderBy(m => m.id)
-                .Select<ScmSysSmsDetailDvo>()
+                .Select<ScmSysSmsDvo>()
                 .ToPageAsync(request.page, request.limit);
 
             Prepare(result.Items);
@@ -54,12 +54,12 @@ namespace Com.Scm.Sys.Sms
         /// </summary>
         /// <param name="request"></param>
         /// <returns></returns>
-        public async Task<List<ScmSysSmsHeaderDvo>> GetConversationsAsync(SmsSearchRequest request)
+        public async Task<List<ScmSysSmsThreadDvo>> GetConversationsAsync(SmsSearchRequest request)
         {
             var result = await _SqlClient.Queryable<ScmSysSmsThreadDao>()
                 .Where(a => a.row_status == ScmRowStatusEnum.Enabled)
                 .OrderBy(m => m.id, SqlSugar.OrderByType.Desc)
-                .Select<ScmSysSmsHeaderDvo>()
+                .Select<ScmSysSmsThreadDvo>()
                 .ToListAsync();
 
             //Prepare(result);
@@ -71,14 +71,14 @@ namespace Com.Scm.Sys.Sms
         /// </summary>
         /// <param name="request"></param>
         /// <returns></returns>
-        public async Task<List<ScmSysSmsDetailDvo>> GetListAsync(SmsSearchRequest request)
+        public async Task<List<ScmSysSmsDvo>> GetListAsync(SmsSearchRequest request)
         {
             var result = await _SqlClient.Queryable<ScmSysSmsDao>()
                 .Where(a => a.row_status == ScmRowStatusEnum.Enabled)
                 .WhereIF(IsValidId(request.id), a => a.thread_id == request.id)
                 .WhereIF(!string.IsNullOrEmpty(request.key), a => a.address.Contains(request.key))
                 .OrderBy(m => m.id, SqlSugar.OrderByType.Asc)
-                .Select<ScmSysSmsDetailDvo>()
+                .Select<ScmSysSmsDvo>()
                 .ToListAsync();
 
             //Prepare(result);
@@ -91,9 +91,9 @@ namespace Com.Scm.Sys.Sms
         /// <param name="id"></param>
         /// <returns></returns>
         [HttpGet("{id}")]
-        public async Task<ScmSysSmsDetailDvo> GetAsync(long id)
+        public async Task<ScmSysSmsDvo> GetAsync(long id)
         {
-            var dvo = new ScmSysSmsDetailDvo();
+            var dvo = new ScmSysSmsDvo();
 
             var dao = await _SqlClient.Queryable<ScmSysSmsDao>()
                 .Where(a => a.id == id)
@@ -121,10 +121,10 @@ namespace Com.Scm.Sys.Sms
         /// <param name="id"></param>
         /// <returns></returns>
         [HttpGet("{id}")]
-        public async Task<ScmSysSmsDetailDvo> GetViewAsync(long id)
+        public async Task<ScmSysSmsDvo> GetViewAsync(long id)
         {
             return await _SqlClient.Queryable<ScmSysSmsDao>()
-                .Select<ScmSysSmsDetailDvo>()
+                .Select<ScmSysSmsDvo>()
                 .FirstAsync(m => m.id == id);
         }
 
@@ -133,7 +133,7 @@ namespace Com.Scm.Sys.Sms
         /// </summary>
         /// <param name="model"></param>
         /// <returns></returns>
-        public async Task<ScmSysSmsDetailDvo> AddAsync(ScmSysSmsDto model)
+        public async Task<ScmSysSmsDvo> AddAsync(ScmSysSmsDto model)
         {
             var phone = model.address;
             var threadDao = await _SqlClient.Queryable<ScmSysSmsThreadDao>()
@@ -157,7 +157,7 @@ namespace Com.Scm.Sys.Sms
 
             var qty = await _SqlClient.InsertAsync(dao);
 
-            return dao.Clone<ScmSysSmsDetailDvo>();
+            return dao.Clone<ScmSysSmsDvo>();
         }
 
         /// <summary>

@@ -3,12 +3,12 @@ using Com.Scm.Utils;
 
 namespace Com.Scm.Sys.Sms.Dvo
 {
-    public class ScmSysSmsHeaderDvo : ScmDataDvo
+    public class ScmSysSmsThreadDvo : ScmDataDvo
     {
         /// <summary>
         /// 电话
         /// </summary>
-        public string phone { get; set; }
+        public string address { get; set; }
 
         /// <summary>
         /// 联系人姓名

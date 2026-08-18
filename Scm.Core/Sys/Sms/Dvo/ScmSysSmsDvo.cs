@@ -8,7 +8,7 @@ namespace Com.Scm.Sys.Sms.Dvo
     /// <summary>
     /// 
     /// </summary>
-    public class ScmSysSmsDetailDvo : ScmDataDvo
+    public class ScmSysSmsDvo : ScmDataDvo
     {
         /// <summary>
         /// 电话号码
@@ -46,11 +46,6 @@ namespace Com.Scm.Sys.Sms.Dvo
         /// 短信类型
         /// </summary>
         public ScmSmsTypeEnum type { get; set; }
-
-        /// <summary>
-        /// 操作系统相关参数
-        /// </summary>
-        public Dictionary<string, string> os_params { get; set; }
 
         public string colors
         {

@@ -17,7 +17,7 @@ namespace Com.Scm.Sys.Notes
     [ApiExplorerSettings(GroupName = "sys")]
     public class ScmSysNotesService : ApiService
     {
-        private readonly SugarRepository<NotesDao> _thisRepository;
+        private readonly SugarRepository<ScmSysNotesDao> _thisRepository;
 
         /// <summary>
         /// 
@@ -25,7 +25,7 @@ namespace Com.Scm.Sys.Notes
         /// <param name="thisRepository"></param>
         /// <param name="resHolder"></param>
         /// <param name="config"></param>
-        public ScmSysNotesService(SugarRepository<NotesDao> thisRepository,
+        public ScmSysNotesService(SugarRepository<ScmSysNotesDao> thisRepository,
             IResHolder resHolder,
             EnvConfig config)
         {
@@ -145,7 +145,7 @@ namespace Com.Scm.Sys.Notes
         /// <returns></returns>
         public async Task<NotesDvo> AddAsync(NotesDto model)
         {
-            var dao = model.Adapt<NotesDao>();
+            var dao = model.Adapt<ScmSysNotesDao>();
             if (IsValidId(dao.cat_id))
             {
                 dao.cat_id = ScmResCatDto.SYS_ID;
@@ -170,7 +170,7 @@ namespace Com.Scm.Sys.Notes
         /// <returns></returns>
         public async Task<NotesDto> SaveAsync(NotesDto model)
         {
-            NotesDao dao = null;
+            ScmSysNotesDao dao = null;
             var tooLong = model.IsTooLong();
 
             if (IsNormalId(model.id))
@@ -180,7 +180,7 @@ namespace Com.Scm.Sys.Notes
 
             if (dao == null)
             {
-                dao = new NotesDao();
+                dao = new ScmSysNotesDao();
                 dao.id = model.id;
                 dao.types = model.types;
                 dao.title = model.title;
@@ -294,7 +294,7 @@ namespace Com.Scm.Sys.Notes
             return response;
         }
 
-        private void SaveFile(NotesDao dao, NotesDto dto)
+        private void SaveFile(ScmSysNotesDao dao, NotesDto dto)
         {
             if (dto.IsTooLong())
             {

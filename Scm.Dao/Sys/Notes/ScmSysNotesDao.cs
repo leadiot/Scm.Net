@@ -9,7 +9,7 @@ namespace Com.Scm.Sys.Notes
     /// 记事功能
     /// </summary>
     [SugarTable("scm_sys_notes")]
-    public class NotesDao : ScmUserDataDao
+    public class ScmSysNotesDao : ScmUserDataDao
     {
         /// <summary>
         /// 显示排序

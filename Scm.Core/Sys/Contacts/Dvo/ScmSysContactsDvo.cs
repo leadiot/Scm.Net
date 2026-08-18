@@ -1,6 +1,6 @@
 ﻿using Com.Scm.Dvo;
 
-namespace Com.Scm.Sys.Contact.Dvo
+namespace Com.Scm.Sys.Contacts.Dvo
 {
     /// <summary>
     /// 
@@ -101,10 +101,5 @@ namespace Com.Scm.Sys.Contact.Dvo
         /// 即时通讯地址
         /// </summary>
         public List<Dictionary<string, string>> im_addresses { get; set; }
-
-        /// <summary>
-        /// 操作系统相关参数
-        /// </summary>
-        public Dictionary<string, string> os_params { get; set; }
     }
 }

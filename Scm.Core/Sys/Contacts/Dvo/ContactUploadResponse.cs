@@ -1,4 +1,4 @@
-﻿namespace Com.Scm.Sys.Contact.Dvo
+﻿namespace Com.Scm.Sys.Contacts.Dvo
 {
     /// <summary>
     /// 

@@ -3,12 +3,12 @@ using Com.Scm.Dsa;
 using Com.Scm.Enums;
 using Com.Scm.Filters;
 using Com.Scm.Service;
-using Com.Scm.Sys.Contact.Dvo;
+using Com.Scm.Sys.Contacts.Dvo;
 using Com.Scm.Utils;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Com.Scm.Sys.Contact
+namespace Com.Scm.Sys.Contacts
 {
     /// <summary>
     /// 联系人

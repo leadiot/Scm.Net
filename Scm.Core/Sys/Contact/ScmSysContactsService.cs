@@ -14,9 +14,9 @@ namespace Com.Scm.Sys.Contact
     /// 联系人
     /// </summary>
     [ApiExplorerSettings(GroupName = "sys")]
-    public class ScmSysContactService : ApiService
+    public class ScmSysContactsService : ApiService
     {
-        private readonly SugarRepository<ScmSysContactDao> _thisRepository;
+        private readonly SugarRepository<ScmSysContactsDao> _thisRepository;
 
         /// <summary>
         /// 
@@ -24,7 +24,7 @@ namespace Com.Scm.Sys.Contact
         /// <param name="thisRepository"></param>
         /// <param name="resHolder"></param>
         /// <param name="config"></param>
-        public ScmSysContactService(SugarRepository<ScmSysContactDao> thisRepository,
+        public ScmSysContactsService(SugarRepository<ScmSysContactsDao> thisRepository,
             IResHolder resHolder,
             EnvConfig config)
         {
@@ -38,13 +38,13 @@ namespace Com.Scm.Sys.Contact
         /// </summary>
         /// <param name="request"></param>
         /// <returns></returns>
-        public async Task<ScmSearchPageResponse<ScmSysContactDvo>> GetPagesAsync(ContactSearchRequest request)
+        public async Task<ScmSearchPageResponse<ScmSysContactsDvo>> GetPagesAsync(ContactSearchRequest request)
         {
             var result = await _thisRepository.AsQueryable()
                 .WhereIF(!request.IsAllStatus(), a => a.row_status == request.row_status)
                 .WhereIF(!string.IsNullOrEmpty(request.key), a => a.title.Contains(request.key))
                 .OrderBy(m => m.id)
-                .Select<ScmSysContactDvo>()
+                .Select<ScmSysContactsDvo>()
                 .ToPageAsync(request.page, request.limit);
 
             Prepare(result.Items);
@@ -56,7 +56,7 @@ namespace Com.Scm.Sys.Contact
         /// </summary>
         /// <param name="request"></param>
         /// <returns></returns>
-        public async Task<List<ScmSysContactDvo>> GetListAsync(ContactSearchRequest request)
+        public async Task<List<ScmSysContactsDvo>> GetListAsync(ContactSearchRequest request)
         {
             var result = await _thisRepository.AsQueryable()
                 .Where(a => a.row_status == ScmRowStatusEnum.Enabled)
@@ -64,10 +64,10 @@ namespace Com.Scm.Sys.Contact
                 .OrderBy(m => m.id, SqlSugar.OrderByType.Desc)
                 .ToListAsync();
 
-            var list = new List<ScmSysContactDvo>();
+            var list = new List<ScmSysContactsDvo>();
             foreach (var item in result)
             {
-                var dvo = item.Clone<ScmSysContactDvo>();
+                var dvo = item.Clone<ScmSysContactsDvo>();
                 list.Add(dvo);
             }
 
@@ -81,9 +81,9 @@ namespace Com.Scm.Sys.Contact
         /// <param name="id"></param>
         /// <returns></returns>
         [HttpGet("{id}")]
-        public async Task<ScmSysContactDvo> GetAsync(long id)
+        public async Task<ScmSysContactsDvo> GetAsync(long id)
         {
-            var dvo = new ScmSysContactDvo();
+            var dvo = new ScmSysContactsDvo();
 
             var dao = await _thisRepository
                 .AsQueryable()
@@ -99,11 +99,11 @@ namespace Com.Scm.Sys.Contact
         /// <param name="id"></param>
         /// <returns></returns>
         [HttpGet("{id}")]
-        public async Task<ScmSysContactDto> GetEditAsync(long id)
+        public async Task<ScmSysContactsDto> GetEditAsync(long id)
         {
             return await _thisRepository
                 .AsQueryable()
-                .Select<ScmSysContactDto>()
+                .Select<ScmSysContactsDto>()
                 .FirstAsync(m => m.id == id);
         }
 
@@ -113,11 +113,11 @@ namespace Com.Scm.Sys.Contact
         /// <param name="id"></param>
         /// <returns></returns>
         [HttpGet("{id}")]
-        public async Task<ScmSysContactDvo> GetViewAsync(long id)
+        public async Task<ScmSysContactsDvo> GetViewAsync(long id)
         {
             return await _thisRepository
                 .AsQueryable()
-                .Select<ScmSysContactDvo>()
+                .Select<ScmSysContactsDvo>()
                 .FirstAsync(m => m.id == id);
         }
 
@@ -126,13 +126,13 @@ namespace Com.Scm.Sys.Contact
         /// </summary>
         /// <param name="model"></param>
         /// <returns></returns>
-        public async Task<ScmSysContactDvo> AddAsync(ScmSysContactDto model)
+        public async Task<ScmSysContactsDvo> AddAsync(ScmSysContactsDto model)
         {
-            var dao = model.Adapt<ScmSysContactDao>();
+            var dao = model.Adapt<ScmSysContactsDao>();
 
             var qty = await _thisRepository.InsertAsync(dao);
 
-            return dao.Clone<ScmSysContactDvo>();
+            return dao.Clone<ScmSysContactsDvo>();
         }
 
         /// <summary>
@@ -140,9 +140,9 @@ namespace Com.Scm.Sys.Contact
         /// </summary>
         /// <param name="model"></param>
         /// <returns></returns>
-        public async Task<ScmSysContactDto> SaveAsync(ScmSysContactDto model)
+        public async Task<ScmSysContactsDto> SaveAsync(ScmSysContactsDto model)
         {
-            ScmSysContactDao dao = null;
+            ScmSysContactsDao dao = null;
 
             if (IsNormalId(model.id))
             {
@@ -151,7 +151,7 @@ namespace Com.Scm.Sys.Contact
 
             if (dao == null)
             {
-                dao = model.Adapt<ScmSysContactDao>();
+                dao = model.Adapt<ScmSysContactsDao>();
                 await _thisRepository.InsertAsync(dao);
 
                 model.id = dao.id;
@@ -172,7 +172,7 @@ namespace Com.Scm.Sys.Contact
         /// </summary>
         /// <param name="model"></param>
         /// <returns></returns>
-        public async Task UpdateAsync(ScmSysContactDto model)
+        public async Task UpdateAsync(ScmSysContactsDto model)
         {
             var dao = await _thisRepository.GetByIdAsync(model.id);
             if (dao == null)

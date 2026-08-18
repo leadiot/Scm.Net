@@ -135,24 +135,32 @@ namespace Com.Scm.Sys.Sms
         /// <returns></returns>
         public async Task<ScmSysSmsDvo> AddAsync(ScmSysSmsDto model)
         {
-            var phone = model.address;
+            var address = model.address;
             var threadDao = await _SqlClient.Queryable<ScmSysSmsThreadDao>()
-                .Where(a => a.address == phone)
+                .Where(a => a.address == address)
                 .FirstAsync();
+
+            var time = TimeUtils.GetUnixTime();
+
             if (threadDao == null)
             {
                 threadDao = new ScmSysSmsThreadDao();
-                threadDao.address = phone;
-                threadDao.name = model.name;
+                threadDao.address = address;
+                threadDao.name = model.name ?? model.address;
+                threadDao.body = model.body;
+                threadDao.time = time;
                 await _SqlClient.InsertAsync(threadDao);
             }
             else
             {
+                threadDao.body = model.body;
+                threadDao.time = time;
                 await _SqlClient.UpdateAsync(threadDao);
             }
 
             var dao = model.Adapt<ScmSysSmsDao>();
             dao.thread_id = threadDao.id;
+            dao.modify_time = time;
             dao.type = ScmSmsTypeEnum.SENT;
 
             var qty = await _SqlClient.InsertAsync(dao);

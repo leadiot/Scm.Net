@@ -38,7 +38,7 @@ namespace Com.Scm.Sys.Sms
         /// <returns></returns>
         public async Task<ScmSearchPageResponse<ScmSysSmsDetailDvo>> GetPagesAsync(SmsSearchRequest request)
         {
-            var result = await _SqlClient.Queryable<ScmSysSmsDetailDao>()
+            var result = await _SqlClient.Queryable<ScmSysSmsDao>()
                 .WhereIF(!request.IsAllStatus(), a => a.row_status == request.row_status)
                 .WhereIF(!string.IsNullOrEmpty(request.key), a => a.address.Contains(request.key))
                 .OrderBy(m => m.id)
@@ -56,7 +56,7 @@ namespace Com.Scm.Sys.Sms
         /// <returns></returns>
         public async Task<List<ScmSysSmsHeaderDvo>> GetConversationsAsync(SmsSearchRequest request)
         {
-            var result = await _SqlClient.Queryable<ScmSysSmsHeaderDao>()
+            var result = await _SqlClient.Queryable<ScmSysSmsThreadDao>()
                 .Where(a => a.row_status == ScmRowStatusEnum.Enabled)
                 .OrderBy(m => m.id, SqlSugar.OrderByType.Desc)
                 .Select<ScmSysSmsHeaderDvo>()
@@ -73,7 +73,7 @@ namespace Com.Scm.Sys.Sms
         /// <returns></returns>
         public async Task<List<ScmSysSmsDetailDvo>> GetListAsync(SmsSearchRequest request)
         {
-            var result = await _SqlClient.Queryable<ScmSysSmsDetailDao>()
+            var result = await _SqlClient.Queryable<ScmSysSmsDao>()
                 .Where(a => a.row_status == ScmRowStatusEnum.Enabled)
                 .WhereIF(IsValidId(request.id), a => a.header_id == request.id)
                 .WhereIF(!string.IsNullOrEmpty(request.key), a => a.address.Contains(request.key))
@@ -95,7 +95,7 @@ namespace Com.Scm.Sys.Sms
         {
             var dvo = new ScmSysSmsDetailDvo();
 
-            var dao = await _SqlClient.Queryable<ScmSysSmsDetailDao>()
+            var dao = await _SqlClient.Queryable<ScmSysSmsDao>()
                 .Where(a => a.id == id)
                 .FirstAsync();
 
@@ -108,10 +108,10 @@ namespace Com.Scm.Sys.Sms
         /// <param name="id"></param>
         /// <returns></returns>
         [HttpGet("{id}")]
-        public async Task<ScmSysSmsDetailDto> GetEditAsync(long id)
+        public async Task<ScmSysSmsDto> GetEditAsync(long id)
         {
-            return await _SqlClient.Queryable<ScmSysSmsDetailDao>()
-                .Select<ScmSysSmsDetailDto>()
+            return await _SqlClient.Queryable<ScmSysSmsDao>()
+                .Select<ScmSysSmsDto>()
                 .FirstAsync(m => m.id == id);
         }
 
@@ -123,7 +123,7 @@ namespace Com.Scm.Sys.Sms
         [HttpGet("{id}")]
         public async Task<ScmSysSmsDetailDvo> GetViewAsync(long id)
         {
-            return await _SqlClient.Queryable<ScmSysSmsDetailDao>()
+            return await _SqlClient.Queryable<ScmSysSmsDao>()
                 .Select<ScmSysSmsDetailDvo>()
                 .FirstAsync(m => m.id == id);
         }
@@ -133,15 +133,15 @@ namespace Com.Scm.Sys.Sms
         /// </summary>
         /// <param name="model"></param>
         /// <returns></returns>
-        public async Task<ScmSysSmsDetailDvo> AddAsync(ScmSysSmsDetailDto model)
+        public async Task<ScmSysSmsDetailDvo> AddAsync(ScmSysSmsDto model)
         {
             var phone = model.phone;
-            var headerDao = await _SqlClient.Queryable<ScmSysSmsHeaderDao>()
-                .Where(a => a.phone == phone)
+            var headerDao = await _SqlClient.Queryable<ScmSysSmsThreadDao>()
+                .Where(a => a.address == phone)
                 .FirstAsync();
             if (headerDao == null)
             {
-                headerDao = new ScmSysSmsHeaderDao();
+                headerDao = new ScmSysSmsThreadDao();
                 headerDao.phone = phone;
                 headerDao.body = model.body;
                 headerDao.name = model.name;
@@ -153,7 +153,7 @@ namespace Com.Scm.Sys.Sms
                 await _SqlClient.UpdateAsync(headerDao);
             }
 
-            var dao = model.Adapt<ScmSysSmsDetailDao>();
+            var dao = model.Adapt<ScmSysSmsDao>();
             dao.header_id = headerDao.id;
             dao.type = ScmSmsTypeEnum.SENT;
 
@@ -167,18 +167,18 @@ namespace Com.Scm.Sys.Sms
         /// </summary>
         /// <param name="model"></param>
         /// <returns></returns>
-        public async Task<ScmSysSmsDetailDto> SaveAsync(ScmSysSmsDetailDto model)
+        public async Task<ScmSysSmsDto> SaveAsync(ScmSysSmsDto model)
         {
-            ScmSysSmsDetailDao dao = null;
+            ScmSysSmsDao dao = null;
 
             if (IsNormalId(model.id))
             {
-                dao = await _SqlClient.GetByIdAsync<ScmSysSmsDetailDao>(model.id);
+                dao = await _SqlClient.GetByIdAsync<ScmSysSmsDao>(model.id);
             }
 
             if (dao == null)
             {
-                dao = model.Adapt<ScmSysSmsDetailDao>();
+                dao = model.Adapt<ScmSysSmsDao>();
                 await _SqlClient.InsertAsync(dao);
 
                 model.id = dao.id;
@@ -199,9 +199,9 @@ namespace Com.Scm.Sys.Sms
         /// </summary>
         /// <param name="model"></param>
         /// <returns></returns>
-        public async Task UpdateAsync(ScmSysSmsDetailDto model)
+        public async Task UpdateAsync(ScmSysSmsDto model)
         {
-            var dao = await _SqlClient.GetByIdAsync<ScmSysSmsDetailDao>(model.id);
+            var dao = await _SqlClient.GetByIdAsync<ScmSysSmsDao>(model.id);
             if (dao == null)
             {
                 return;
@@ -219,7 +219,7 @@ namespace Com.Scm.Sys.Sms
         /// <returns></returns>
         public async Task<int> StatusAsync(ScmChangeStatusRequest param)
         {
-            return await UpdateStatus<ScmSysSmsDetailDao>(_SqlClient, param.ids, param.status);
+            return await UpdateStatus<ScmSysSmsDao>(_SqlClient, param.ids, param.status);
         }
 
         /// <summary>
@@ -230,7 +230,7 @@ namespace Com.Scm.Sys.Sms
         [HttpDelete]
         public async Task<int> DeleteAsync(string ids)
         {
-            return await DeleteRecord<ScmSysSmsDetailDao>(_SqlClient, ids.ToListLong());
+            return await DeleteRecord<ScmSysSmsDao>(_SqlClient, ids.ToListLong());
         }
 
         /// <summary>

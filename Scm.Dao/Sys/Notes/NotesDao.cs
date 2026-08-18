@@ -97,7 +97,7 @@ namespace Com.Scm.Sys.Notes
         public string content { get; set; }
 
         /// <summary>
-        /// 文件
+        /// 文件数量（用于判断是否需要读取指定目录的文件数据）
         /// </summary>
         [Required]
         public int files { get; set; }
@@ -108,10 +108,20 @@ namespace Com.Scm.Sys.Notes
         public int color { get; set; }
 
         /// <summary>
-        /// 操作系统相关参数
+        /// 修改时间（内部或外部资源的实际修改时间，与update_time不同）
         /// </summary>
-        [SugarColumn(IsNullable = true, IsJson = true)]
-        public Dictionary<string, string> os_params { get; set; }
+        public long modify_time { get; set; }
+
+        /// <summary>
+        /// 来源应用
+        /// </summary>
+        [SugarColumn(Length = 16, IsNullable = true)]
+        public string source { get; set; }
+
+        /// <summary>
+        /// 来源终端（首次来源终端）
+        /// </summary>
+        public long terminal_id { get; set; }
 
         /// <summary>
         /// 版本

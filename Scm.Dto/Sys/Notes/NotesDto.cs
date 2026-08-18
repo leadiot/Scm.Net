@@ -108,9 +108,14 @@ namespace Com.Scm.Sys.Notes
         public List<string> tags { get; set; }
 
         /// <summary>
-        /// 操作系统相关参数
+        /// 来源应用
         /// </summary>
-        public Dictionary<string, string> os_params { get; set; }
+        public string source { get; set; }
+
+        /// <summary>
+        /// 来源终端
+        /// </summary>
+        public long terminal_id { get; set; }
         #endregion
 
         /// <summary>

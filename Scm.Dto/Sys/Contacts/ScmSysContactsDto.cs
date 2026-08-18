@@ -114,5 +114,16 @@ namespace Com.Scm.Sys.Contacts
         /// </summary>
         [StringLength(1024)]
         public string note { get; set; }
+
+        /// <summary>
+        /// 来源应用
+        /// </summary>
+        [StringLength(16)]
+        public string source { get; set; }
+
+        /// <summary>
+        /// 来源终端
+        /// </summary>
+        public long terminal_id { get; set; }
     }
 }

@@ -140,7 +140,8 @@ namespace Com.Scm.Sys.Contacts
         /// <summary>
         /// 来源应用
         /// </summary>
-        public int source { get; set; }
+        [SugarColumn(Length = 16, IsNullable = true)]
+        public string source { get; set; }
 
         /// <summary>
         /// 来源终端（最初是由哪个终端创建的）

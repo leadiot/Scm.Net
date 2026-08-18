@@ -139,6 +139,8 @@ namespace Com.Scm.Sys.Notes
             this.salt = new Random().Next(10000).ToString("d4");
             this.key = this.id + this.salt;
             this.ver = 1;
+
+            CheckNotNull();
         }
 
         /// <summary>
@@ -148,6 +150,8 @@ namespace Com.Scm.Sys.Notes
         public override void PrepareUpdate(long userId)
         {
             base.PrepareUpdate(userId);
+
+            CheckNotNull();
 
             this.ver += 1;
         }
@@ -159,6 +163,14 @@ namespace Com.Scm.Sys.Notes
         public string GetFileName()
         {
             return id + ".txt";
+        }
+
+        public void CheckNotNull()
+        {
+            if (sub_title == null) sub_title = "";
+            if (summary == null) summary = "";
+            if (content == null) content = "";
+            if (source == null) source = "";
         }
     }
 }

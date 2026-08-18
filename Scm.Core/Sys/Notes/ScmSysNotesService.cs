@@ -178,7 +178,9 @@ namespace Com.Scm.Sys.Notes
             if (dao == null)
             {
                 // 此处不能使用Adapt，原有的KEY\Salt可能会丢失
-                dao = model.Adapt<ScmSysNotesDao>();
+                //dao = model.Adapt<ScmSysNotesDao>();
+                dao = new ScmSysNotesDao();
+                dao.id = model.id;
                 dao.title = model.title;
                 dao.sub_title = model.sub_title;
                 dao.content = model.content;
@@ -189,7 +191,7 @@ namespace Com.Scm.Sys.Notes
             else
             {
                 // 此处不能使用Adapt，原有的KEY\Salt可能会丢失
-                dao = model.Adapt(dao);
+                //dao = model.Adapt(dao);
                 dao.title = model.title;
                 dao.sub_title = model.sub_title;
                 dao.content = model.content;
@@ -218,7 +220,7 @@ namespace Com.Scm.Sys.Notes
             }
 
             // 此处不能使用Adapt，原有的KEY\Salt可能会丢失
-            dao = model.Adapt(dao);
+            //dao = model.Adapt(dao);
             dao.title = model.title;
             dao.sub_title = model.sub_title;
             dao.content = model.content;

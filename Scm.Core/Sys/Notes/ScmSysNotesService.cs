@@ -165,6 +165,7 @@ namespace Com.Scm.Sys.Notes
         /// </summary>
         /// <param name="model"></param>
         /// <returns></returns>
+        [AllowAnonymous]
         public async Task<NotesDto> SaveAsync(NotesDto model)
         {
             ScmSysNotesDao dao = null;
@@ -176,14 +177,22 @@ namespace Com.Scm.Sys.Notes
 
             if (dao == null)
             {
+                // 此处不能使用Adapt，原有的KEY\Salt可能会丢失
                 dao = model.Adapt<ScmSysNotesDao>();
+                dao.title = model.title;
+                dao.sub_title = model.sub_title;
+                dao.content = model.content;
                 await _thisRepository.InsertAsync(dao);
 
                 model.id = dao.id;
             }
             else
             {
+                // 此处不能使用Adapt，原有的KEY\Salt可能会丢失
                 dao = model.Adapt(dao);
+                dao.title = model.title;
+                dao.sub_title = model.sub_title;
+                dao.content = model.content;
                 await _thisRepository.UpdateAsync(dao);
             }
 
@@ -208,13 +217,16 @@ namespace Com.Scm.Sys.Notes
                 return;
             }
 
+            // 此处不能使用Adapt，原有的KEY\Salt可能会丢失
             dao = model.Adapt(dao);
+            dao.title = model.title;
+            dao.sub_title = model.sub_title;
+            dao.content = model.content;
             if (!IsValidId(dao.cat_id))
             {
                 dao.cat_id = ScmResCatDto.SYS_ID;
             }
 
-            dao = model.Adapt(dao);
             await _thisRepository.UpdateAsync(dao);
 
             SaveFile(dao, model);

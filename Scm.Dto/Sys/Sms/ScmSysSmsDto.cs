@@ -36,16 +36,20 @@ namespace Com.Scm.Sys.Sms
         public string name { get; set; }
 
         /// <summary>
-        /// 短信内容
+        /// 短信内容，此处不做限制，超长则存入文件
         /// </summary>
         [Required]
-        [StringLength(256)]
         public string body { get; set; }
+
+        /// <summary>
+        /// 外部文件数量
+        /// </summary>
+        public int files { get; set; }
 
         /// <summary>
         /// 主题
         /// </summary>
-        [StringLength(512)]
+        [StringLength(128)]
         public string subject { get; set; }
 
         /// <summary>

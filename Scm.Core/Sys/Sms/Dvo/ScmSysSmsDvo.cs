@@ -33,6 +33,16 @@ namespace Com.Scm.Sys.Sms.Dvo
         public string body { get; set; }
 
         /// <summary>
+        /// 外部文件数量
+        /// </summary>
+        public int files { get; set; }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public string subject { get; set; }
+
+        /// <summary>
         /// 发送日期
         /// </summary>
         public long time { get; set; }

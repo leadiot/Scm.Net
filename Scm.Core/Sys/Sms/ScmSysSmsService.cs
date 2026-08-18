@@ -110,9 +110,12 @@ namespace Com.Scm.Sys.Sms
         [HttpGet("{id}")]
         public async Task<ScmSysSmsDto> GetEditAsync(long id)
         {
-            return await _SqlClient.Queryable<ScmSysSmsDao>()
-                .Select<ScmSysSmsDto>()
+            var dao = await _SqlClient.Queryable<ScmSysSmsDao>()
                 .FirstAsync(m => m.id == id);
+
+            ReadFile(dao);
+
+            return dao.Clone<ScmSysSmsDto>();
         }
 
         /// <summary>
@@ -123,9 +126,22 @@ namespace Com.Scm.Sys.Sms
         [HttpGet("{id}")]
         public async Task<ScmSysSmsDvo> GetViewAsync(long id)
         {
-            return await _SqlClient.Queryable<ScmSysSmsDao>()
-                .Select<ScmSysSmsDvo>()
+            var dao = await _SqlClient.Queryable<ScmSysSmsDao>()
                 .FirstAsync(m => m.id == id);
+
+            ReadFile(dao);
+
+            return dao.Clone<ScmSysSmsDvo>();
+        }
+
+        private void ReadFile(ScmSysSmsDao dao)
+        {
+            if (dao.files < 1)
+            {
+                return;
+            }
+
+            dao.body = _EnvConfig.ReadFile(ScmSysSmsDao.FILE_DIR, dao.id + ".txt");
         }
 
         /// <summary>
@@ -195,6 +211,8 @@ namespace Com.Scm.Sys.Sms
                 await _SqlClient.UpdateAsync(dao);
             }
 
+            SaveFile(dao, model);
+
             model.update_time = dao.update_time;
             model.create_time = dao.create_time;
             return model;
@@ -216,6 +234,20 @@ namespace Com.Scm.Sys.Sms
             dao = model.Adapt(dao);
 
             await _SqlClient.UpdateAsync(dao);
+
+            SaveFile(dao, model);
+        }
+
+        private void SaveFile(ScmSysSmsDao dao, ScmSysSmsDto dto)
+        {
+            if (dao.files < 1)
+            {
+                return;
+            }
+
+            // 写入文件
+            var body = dto.body ?? "";
+            _EnvConfig.SaveFile(ScmSysSmsDao.FILE_DIR, dao.id + ".txt", body);
         }
 
         /// <summary>

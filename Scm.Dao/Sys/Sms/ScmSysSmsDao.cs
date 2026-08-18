@@ -1,6 +1,7 @@
 ﻿using Com.Scm.Dao;
 using Com.Scm.Dao.User;
 using Com.Scm.Enums;
+using Com.Scm.Utils;
 using SqlSugar;
 using System.ComponentModel.DataAnnotations;
 
@@ -12,6 +13,8 @@ namespace Com.Scm.Sys.Sms
     [SugarTable("scm_sys_sms")]
     public class ScmSysSmsDao : ScmUserDataDao, IDeleteDao
     {
+        public const string FILE_DIR = "sms";
+
         /// <summary>
         /// 会话 ID
         /// </summary>
@@ -51,10 +54,15 @@ namespace Com.Scm.Sys.Sms
         public string body { get; set; }
 
         /// <summary>
+        /// 外部文件数量
+        /// </summary>
+        public int files { get; set; }
+
+        /// <summary>
         /// 主题
         /// </summary>
-        [StringLength(512)]
-        [SugarColumn(Length = 512, IsNullable = true)]
+        [StringLength(128)]
+        [SugarColumn(Length = 128, IsNullable = true)]
         public string subject { get; set; }
 
         /// <summary>
@@ -114,5 +122,37 @@ namespace Com.Scm.Sys.Sms
         /// 
         /// </summary>
         public ScmRowDeleteEnum row_delete { get; set; }
+
+        public override void PrepareCreate(long userId)
+        {
+            base.PrepareCreate(userId);
+
+            if (!ScmUtils.IsNormalId(terminal_id))
+            {
+                terminal_id = ScmEnv.DEFAULT_ID;
+            }
+
+            TrimBody();
+        }
+
+        public override void PrepareUpdate(long userId)
+        {
+            base.PrepareUpdate(userId);
+
+            TrimBody();
+        }
+
+        private void TrimBody()
+        {
+            if (body != null && body.Length > 256)
+            {
+                body = body.Substring(0, 256);
+                files = 1;
+            }
+            else
+            {
+                files = 0;
+            }
+        }
     }
 }

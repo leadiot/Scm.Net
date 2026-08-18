@@ -58,7 +58,7 @@ namespace Com.Scm.Sys.Sms
         {
             var result = await _SqlClient.Queryable<ScmSysSmsThreadDao>()
                 .Where(a => a.row_status == ScmRowStatusEnum.Enabled)
-                .OrderBy(m => m.id, SqlSugar.OrderByType.Desc)
+                .OrderBy(m => m.update_time, SqlSugar.OrderByType.Desc)
                 .Select<ScmSysSmsThreadDvo>()
                 .ToListAsync();
 

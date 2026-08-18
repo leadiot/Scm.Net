@@ -75,7 +75,7 @@ namespace Com.Scm.Sys.Sms
         {
             var result = await _SqlClient.Queryable<ScmSysSmsDao>()
                 .Where(a => a.row_status == ScmRowStatusEnum.Enabled)
-                .WhereIF(IsValidId(request.id), a => a.header_id == request.id)
+                .WhereIF(IsValidId(request.id), a => a.thread_id == request.id)
                 .WhereIF(!string.IsNullOrEmpty(request.key), a => a.address.Contains(request.key))
                 .OrderBy(m => m.id, SqlSugar.OrderByType.Asc)
                 .Select<ScmSysSmsDetailDvo>()
@@ -135,26 +135,24 @@ namespace Com.Scm.Sys.Sms
         /// <returns></returns>
         public async Task<ScmSysSmsDetailDvo> AddAsync(ScmSysSmsDto model)
         {
-            var phone = model.phone;
-            var headerDao = await _SqlClient.Queryable<ScmSysSmsThreadDao>()
+            var phone = model.address;
+            var threadDao = await _SqlClient.Queryable<ScmSysSmsThreadDao>()
                 .Where(a => a.address == phone)
                 .FirstAsync();
-            if (headerDao == null)
+            if (threadDao == null)
             {
-                headerDao = new ScmSysSmsThreadDao();
-                headerDao.phone = phone;
-                headerDao.body = model.body;
-                headerDao.name = model.name;
-                await _SqlClient.InsertAsync(headerDao);
+                threadDao = new ScmSysSmsThreadDao();
+                threadDao.address = phone;
+                threadDao.name = model.name;
+                await _SqlClient.InsertAsync(threadDao);
             }
             else
             {
-                headerDao.body = model.body;
-                await _SqlClient.UpdateAsync(headerDao);
+                await _SqlClient.UpdateAsync(threadDao);
             }
 
             var dao = model.Adapt<ScmSysSmsDao>();
-            dao.header_id = headerDao.id;
+            dao.thread_id = threadDao.id;
             dao.type = ScmSmsTypeEnum.SENT;
 
             var qty = await _SqlClient.InsertAsync(dao);

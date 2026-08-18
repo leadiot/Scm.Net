@@ -172,6 +172,8 @@ namespace Com.Scm.Sys.Notes
             if (content == null) content = "";
             if (source == null) source = "";
 
+            modify_time = update_time;
+
             if (content.Length > 2048)
             {
                 content = content.Substring(0, 2048);

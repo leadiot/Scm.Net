@@ -12,7 +12,7 @@ namespace Com.Scm.Nas.App
     public class ScmSysNotesTerminalDao : ScmUserDataDao, IDeleteDao
     {
         /// <summary>
-        /// 通讯录ID
+        /// 便签ID
         /// </summary>
         public long sys_id { get; set; }
 

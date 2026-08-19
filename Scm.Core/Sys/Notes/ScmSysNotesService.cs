@@ -161,10 +161,10 @@ namespace Com.Scm.Sys.Notes
         /// </summary>
         /// <param name="model"></param>
         /// <returns></returns>
-        [AllowAnonymous]
         public async Task<NotesDto> SaveAsync(NotesDto model)
         {
             ScmSysNotesDao dao = null;
+            var time = TimeUtils.GetUnixTime();
 
             if (IsNormalId(model.id))
             {
@@ -180,6 +180,7 @@ namespace Com.Scm.Sys.Notes
                 dao.title = model.title;
                 dao.sub_title = model.sub_title;
                 dao.content = model.content;
+                dao.modify_time = time;
                 await _SqlClient.InsertAsync(dao);
 
                 model.id = dao.id;
@@ -191,7 +192,9 @@ namespace Com.Scm.Sys.Notes
                 dao.title = model.title;
                 dao.sub_title = model.sub_title;
                 dao.content = model.content;
+                dao.modify_time = time;
                 await _SqlClient.UpdateAsync(dao);
+
                 UpdateModifyTime(dao);
             }
 
@@ -221,6 +224,7 @@ namespace Com.Scm.Sys.Notes
             dao.title = model.title;
             dao.sub_title = model.sub_title;
             dao.content = model.content;
+            dao.modify_time = TimeUtils.GetUnixTime();
             if (!IsValidId(dao.cat_id))
             {
                 dao.cat_id = ScmResCatDto.SYS_ID;

@@ -93,7 +93,6 @@ namespace Com.Scm.Sys.Notes
                 dvo.types = dao.types;
                 dvo.title = dao.title;
                 dvo.content = dao.summary;
-                dvo.ver = dao.ver;
 
                 if (dao.files > 0)
                 {
@@ -200,7 +199,6 @@ namespace Com.Scm.Sys.Notes
 
             SaveFile(dao, model);
 
-            model.ver = dao.ver;
             model.update_time = dao.update_time;
             model.create_time = dao.create_time;
             return model;

@@ -101,5 +101,14 @@ namespace Com.Scm.Sys.Contacts.Dvo
         /// 即时通讯地址
         /// </summary>
         public List<Dictionary<string, string>> im_addresses { get; set; }
+
+        /// <summary>
+        /// 来源终端（最初是由哪个终端创建的）
+        /// </summary>
+        public long terminal_id { get; set; }
+        /// <summary>
+        /// 来源终端名称
+        /// </summary>
+        public string terminal_name { get; set; }
     }
 }

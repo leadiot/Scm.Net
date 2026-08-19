@@ -2,8 +2,10 @@
 using Com.Scm.Dsa;
 using Com.Scm.Enums;
 using Com.Scm.Filters;
+using Com.Scm.Nas.App;
 using Com.Scm.Service;
 using Com.Scm.Sys.Contacts.Dvo;
+using Com.Scm.Ur;
 using Com.Scm.Utils;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -62,17 +64,20 @@ namespace Com.Scm.Sys.Contacts
                 .Where(a => a.row_status == ScmRowStatusEnum.Enabled)
                 .WhereIF(!string.IsNullOrEmpty(request.key), a => a.title.Contains(request.key))
                 .OrderBy(m => m.id, SqlSugar.OrderByType.Desc)
+                .Select<ScmSysContactsDvo>()
                 .ToListAsync();
 
-            var list = new List<ScmSysContactsDvo>();
-            foreach (var item in result)
-            {
-                var dvo = item.Clone<ScmSysContactsDvo>();
-                list.Add(dvo);
-            }
+            Prepare(result);
+            return result;
+        }
 
-            //Prepare(result);
-            return list;
+        private void Prepare(List<ScmSysContactsDvo> list)
+        {
+            foreach (var item in list)
+            {
+                var terminalDao = _ResHolder.GetRes<ScmUrTerminalDao>(item.terminal_id);
+                item.terminal_name = terminalDao?.names;
+            }
         }
 
         /// <summary>
@@ -138,33 +143,38 @@ namespace Com.Scm.Sys.Contacts
         /// <summary>
         /// 更新
         /// </summary>
-        /// <param name="model"></param>
+        /// <param name="dto"></param>
         /// <returns></returns>
-        public async Task<ScmSysContactsDto> SaveAsync(ScmSysContactsDto model)
+        public async Task<ScmSysContactsDto> SaveAsync(ScmSysContactsDto dto)
         {
             ScmSysContactsDao dao = null;
+            var time = TimeUtils.GetUnixTime();
 
-            if (IsNormalId(model.id))
+            if (IsNormalId(dto.id))
             {
-                dao = await _thisRepository.GetByIdAsync(model.id);
+                dao = await _thisRepository.GetByIdAsync(dto.id);
             }
 
             if (dao == null)
             {
-                dao = model.Adapt<ScmSysContactsDao>();
+                dao = dto.Adapt<ScmSysContactsDao>();
+                dao.modify_time = time;
                 await _thisRepository.InsertAsync(dao);
 
-                model.id = dao.id;
+                dto.id = dao.id;
             }
             else
             {
-                dao = model.Adapt(dao);
+                dao = dto.Adapt(dao);
+                dao.modify_time = time;
                 await _thisRepository.UpdateAsync(dao);
+
+                UpdateModifyTime(dao);
             }
 
-            model.update_time = dao.update_time;
-            model.create_time = dao.create_time;
-            return model;
+            dto.update_time = dao.update_time;
+            dto.create_time = dao.create_time;
+            return dto;
         }
 
         /// <summary>
@@ -181,8 +191,20 @@ namespace Com.Scm.Sys.Contacts
             }
 
             dao = model.Adapt(dao);
+            dao.modify_time = TimeUtils.GetUnixTime();
 
             await _thisRepository.UpdateAsync(dao);
+
+            UpdateModifyTime(dao);
+        }
+
+        private void UpdateModifyTime(ScmSysContactsDao dao)
+        {
+            _SqlClient.Updateable<ScmSysContactsTerminalDao>()
+                .SetColumns(a => a.modify_time == dao.modify_time)
+                .SetColumns(a => a.update_time == dao.update_time)
+                .Where(a => a.sys_id == dao.id)
+                .ExecuteCommand();
         }
 
         /// <summary>

@@ -1,13 +1,14 @@
 ﻿using Com.Scm.Config;
-using Com.Scm.Dsa;
 using Com.Scm.Enums;
 using Com.Scm.Filters;
+using Com.Scm.Nas.App;
 using Com.Scm.Res.Cat;
 using Com.Scm.Service;
 using Com.Scm.Sys.Notes.Dvo;
 using Com.Scm.Utils;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using SqlSugar;
 
 namespace Com.Scm.Sys.Notes
 {
@@ -17,19 +18,17 @@ namespace Com.Scm.Sys.Notes
     [ApiExplorerSettings(GroupName = "sys")]
     public class ScmSysNotesService : ApiService
     {
-        private readonly SugarRepository<ScmSysNotesDao> _thisRepository;
-
         /// <summary>
         /// 
         /// </summary>
         /// <param name="thisRepository"></param>
         /// <param name="resHolder"></param>
         /// <param name="config"></param>
-        public ScmSysNotesService(SugarRepository<ScmSysNotesDao> thisRepository,
+        public ScmSysNotesService(ISqlSugarClient sqlClient,
             IResHolder resHolder,
             EnvConfig config)
         {
-            _thisRepository = thisRepository;
+            _SqlClient = sqlClient;
             _ResHolder = resHolder;
             _EnvConfig = config;
         }
@@ -41,7 +40,7 @@ namespace Com.Scm.Sys.Notes
         /// <returns></returns>
         public async Task<ScmSearchPageResponse<NoteBasicDvo>> GetPagesAsync(NoteSearchRequest request)
         {
-            var result = await _thisRepository.AsQueryable()
+            var result = await _SqlClient.Queryable<ScmSysNotesDao>()
                 .WhereIF(!request.IsAllStatus(), a => a.row_status == request.row_status)
                 .WhereIF(IsValidId(request.cat_id), a => a.cat_id == request.cat_id)
                 .WhereIF(!string.IsNullOrEmpty(request.key), a => a.title.Contains(request.key))
@@ -61,7 +60,7 @@ namespace Com.Scm.Sys.Notes
         /// <returns></returns>
         public async Task<List<NoteBasicDvo>> GetListAsync(NoteSearchRequest request)
         {
-            var result = await _thisRepository.AsQueryable()
+            var result = await _SqlClient.Queryable<ScmSysNotesDao>()
                 .Where(a => a.row_status == ScmRowStatusEnum.Enabled)
                 .WhereIF(IsValidId(request.cat_id), a => a.cat_id == request.cat_id)
                 .WhereIF(!string.IsNullOrEmpty(request.key), a => a.title.Contains(request.key))
@@ -84,8 +83,7 @@ namespace Com.Scm.Sys.Notes
         {
             var dvo = new NotesDvo();
 
-            var dao = await _thisRepository
-                .AsQueryable()
+            var dao = await _SqlClient.Queryable<ScmSysNotesDao>()
                 .Where(a => a.id == id)
                 .FirstAsync();
 
@@ -118,8 +116,7 @@ namespace Com.Scm.Sys.Notes
         [HttpGet("{id}")]
         public async Task<NotesDto> GetEditAsync(long id)
         {
-            return await _thisRepository
-                .AsQueryable()
+            return await _SqlClient.Queryable<ScmSysNotesDao>()
                 .Select<NotesDto>()
                 .FirstAsync(m => m.id == id);
         }
@@ -132,8 +129,7 @@ namespace Com.Scm.Sys.Notes
         [HttpGet("{id}")]
         public async Task<NotesDvo> GetViewAsync(long id)
         {
-            return await _thisRepository
-                .AsQueryable()
+            return await _SqlClient.Queryable<ScmSysNotesDao>()
                 .Select<NotesDvo>()
                 .FirstAsync(m => m.id == id);
         }
@@ -153,7 +149,7 @@ namespace Com.Scm.Sys.Notes
 
             dao.client = ScmClientTypeEnum.Web;
 
-            var qty = await _thisRepository.InsertAsync(dao);
+            var qty = await _SqlClient.InsertAsync(dao);
 
             SaveFile(dao, model);
 
@@ -172,7 +168,7 @@ namespace Com.Scm.Sys.Notes
 
             if (IsNormalId(model.id))
             {
-                dao = await _thisRepository.GetByIdAsync(model.id);
+                dao = await _SqlClient.Queryable<ScmSysNotesDao>().FirstAsync(a => a.id == model.id);
             }
 
             if (dao == null)
@@ -184,7 +180,7 @@ namespace Com.Scm.Sys.Notes
                 dao.title = model.title;
                 dao.sub_title = model.sub_title;
                 dao.content = model.content;
-                await _thisRepository.InsertAsync(dao);
+                await _SqlClient.InsertAsync(dao);
 
                 model.id = dao.id;
             }
@@ -195,7 +191,8 @@ namespace Com.Scm.Sys.Notes
                 dao.title = model.title;
                 dao.sub_title = model.sub_title;
                 dao.content = model.content;
-                await _thisRepository.UpdateAsync(dao);
+                await _SqlClient.UpdateAsync(dao);
+                UpdateModifyTime(dao);
             }
 
             SaveFile(dao, model);
@@ -213,7 +210,7 @@ namespace Com.Scm.Sys.Notes
         /// <returns></returns>
         public async Task UpdateAsync(NotesDto model)
         {
-            var dao = await _thisRepository.GetByIdAsync(model.id);
+            var dao = await _SqlClient.Queryable<ScmSysNotesDao>().FirstAsync(a => a.id == model.id);
             if (dao == null)
             {
                 return;
@@ -229,7 +226,8 @@ namespace Com.Scm.Sys.Notes
                 dao.cat_id = ScmResCatDto.SYS_ID;
             }
 
-            await _thisRepository.UpdateAsync(dao);
+            await _SqlClient.UpdateAsync(dao);
+            UpdateModifyTime(dao);
 
             SaveFile(dao, model);
         }
@@ -241,7 +239,7 @@ namespace Com.Scm.Sys.Notes
         /// <returns></returns>
         public async Task<int> StatusAsync(ScmChangeStatusRequest param)
         {
-            return await UpdateStatus(_thisRepository, param.ids, param.status);
+            return await UpdateStatus<ScmSysNotesDao>(_SqlClient, param.ids, param.status);
         }
 
         /// <summary>
@@ -252,7 +250,7 @@ namespace Com.Scm.Sys.Notes
         [HttpDelete]
         public async Task<int> DeleteAsync(string ids)
         {
-            return await DeleteRecord(_thisRepository, ids.ToListLong());
+            return await DeleteRecord<ScmSysNotesDao>(_SqlClient, ids.ToListLong());
         }
 
         /// <summary>
@@ -298,6 +296,15 @@ namespace Com.Scm.Sys.Notes
             }
 
             _EnvConfig.SaveFile(NotesDto.FOLDER_NAME, dao.GetFileName(), dto.content ?? "");
+        }
+
+        private void UpdateModifyTime(ScmSysNotesDao dao)
+        {
+            _SqlClient.Updateable<ScmSysNotesTerminalDao>()
+                .SetColumns(a => a.modify_time == dao.modify_time)
+                .SetColumns(a => a.update_time == dao.update_time)
+                .Where(a => a.sys_id == dao.id)
+                .ExecuteCommand();
         }
     }
 }

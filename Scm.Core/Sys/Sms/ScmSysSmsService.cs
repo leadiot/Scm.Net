@@ -183,7 +183,13 @@ namespace Com.Scm.Sys.Sms
             dao.type = ScmSmsTypeEnum.SENT;
             dao.row_delete = ScmRowDeleteEnum.No;
 
+            dao.source = "web";
+            dao.res_id = "";
+            dao.os_params = new Dictionary<string, string>();
+
             var qty = await _SqlClient.InsertAsync(dao);
+
+            SaveFile(dao, dto);
 
             return dao.Clone<ScmSysSmsDvo>();
         }
@@ -191,55 +197,55 @@ namespace Com.Scm.Sys.Sms
         /// <summary>
         /// 保存，暂时使用不到
         /// </summary>
-        /// <param name="model"></param>
+        /// <param name="dto"></param>
         /// <returns></returns>
-        public async Task<ScmSysSmsDto> SaveAsync(ScmSysSmsDto model)
+        public async Task<ScmSysSmsDto> SaveAsync(ScmSysSmsDto dto)
         {
             ScmSysSmsDao dao = null;
 
-            if (IsNormalId(model.id))
+            if (IsNormalId(dto.id))
             {
-                dao = await _SqlClient.GetByIdAsync<ScmSysSmsDao>(model.id);
+                dao = await _SqlClient.GetByIdAsync<ScmSysSmsDao>(dto.id);
             }
 
             if (dao == null)
             {
-                dao = model.Adapt<ScmSysSmsDao>();
+                dao = dto.Adapt<ScmSysSmsDao>();
                 await _SqlClient.InsertAsync(dao);
 
-                model.id = dao.id;
+                dto.id = dao.id;
             }
             else
             {
-                dao = model.Adapt(dao);
+                dao = dto.Adapt(dao);
                 await _SqlClient.UpdateAsync(dao);
             }
 
-            SaveFile(dao, model);
+            SaveFile(dao, dto);
 
-            model.update_time = dao.update_time;
-            model.create_time = dao.create_time;
-            return model;
+            dto.update_time = dao.update_time;
+            dto.create_time = dao.create_time;
+            return dto;
         }
 
         /// <summary>
         /// 更新，暂时使用不到
         /// </summary>
-        /// <param name="model"></param>
+        /// <param name="dto"></param>
         /// <returns></returns>
-        public async Task UpdateAsync(ScmSysSmsDto model)
+        public async Task UpdateAsync(ScmSysSmsDto dto)
         {
-            var dao = await _SqlClient.GetByIdAsync<ScmSysSmsDao>(model.id);
+            var dao = await _SqlClient.GetByIdAsync<ScmSysSmsDao>(dto.id);
             if (dao == null)
             {
                 return;
             }
 
-            dao = model.Adapt(dao);
+            dao = dto.Adapt(dao);
 
             await _SqlClient.UpdateAsync(dao);
 
-            SaveFile(dao, model);
+            SaveFile(dao, dto);
         }
 
         private void SaveFile(ScmSysSmsDao dao, ScmSysSmsDto dto)

@@ -147,11 +147,12 @@ namespace Com.Scm.Sys.Sms
         /// <summary>
         /// 添加
         /// </summary>
-        /// <param name="model"></param>
+        /// <param name="dto"></param>
         /// <returns></returns>
-        public async Task<ScmSysSmsDvo> AddAsync(ScmSysSmsDto model)
+        public async Task<ScmSysSmsDvo> AddAsync(ScmSysSmsDto dto)
         {
-            var address = model.address;
+            var address = dto.address;
+
             var threadDao = await _SqlClient.Queryable<ScmSysSmsThreadDao>()
                 .Where(a => a.address == address)
                 .FirstAsync();
@@ -162,22 +163,25 @@ namespace Com.Scm.Sys.Sms
             {
                 threadDao = new ScmSysSmsThreadDao();
                 threadDao.address = address;
-                threadDao.name = model.name ?? model.address;
-                threadDao.body = model.body;
+                threadDao.name = dto.name ?? dto.address;
+                threadDao.body = dto.body;
                 threadDao.time = time;
                 await _SqlClient.InsertAsync(threadDao);
             }
             else
             {
-                threadDao.body = model.body;
+                threadDao.body = dto.body;
                 threadDao.time = time;
                 await _SqlClient.UpdateAsync(threadDao);
             }
 
-            var dao = model.Adapt<ScmSysSmsDao>();
+            var dao = dto.Adapt<ScmSysSmsDao>();
             dao.thread_id = threadDao.id;
             dao.modify_time = time;
+            dao.date = time;
+            dao.delivery_date = time;
             dao.type = ScmSmsTypeEnum.SENT;
+            dao.row_delete = ScmRowDeleteEnum.No;
 
             var qty = await _SqlClient.InsertAsync(dao);
 
@@ -185,7 +189,7 @@ namespace Com.Scm.Sys.Sms
         }
 
         /// <summary>
-        /// 更新
+        /// 保存，暂时使用不到
         /// </summary>
         /// <param name="model"></param>
         /// <returns></returns>
@@ -219,7 +223,7 @@ namespace Com.Scm.Sys.Sms
         }
 
         /// <summary>
-        /// 更新
+        /// 更新，暂时使用不到
         /// </summary>
         /// <param name="model"></param>
         /// <returns></returns>

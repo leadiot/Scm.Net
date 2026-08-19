@@ -157,5 +157,29 @@ namespace Com.Scm.Sys.Contacts
         /// 删除状态
         /// </summary>
         public ScmRowDeleteEnum row_delete { get; set; }
+
+        public override void PrepareCreate(long userId)
+        {
+            base.PrepareCreate(userId);
+
+            CheckNotNull();
+        }
+
+        public override void PrepareUpdate(long userId)
+        {
+            base.PrepareUpdate(userId);
+
+            CheckNotNull();
+        }
+
+        private void CheckNotNull()
+        {
+            if (dates == null) dates = new List<Dictionary<string, string>>();
+            if (phones == null) phones = new List<Dictionary<string, string>>();
+            if (emails == null) emails = new List<Dictionary<string, string>>();
+            if (addresses == null) addresses = new List<Dictionary<string, string>>();
+            if (im_addresses == null) im_addresses = new List<Dictionary<string, string>>();
+            if (source == null) source = "";
+        }
     }
 }

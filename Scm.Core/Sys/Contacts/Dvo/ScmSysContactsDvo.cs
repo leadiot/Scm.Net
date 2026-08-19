@@ -68,9 +68,9 @@ namespace Com.Scm.Sys.Contacts.Dvo
         public string note { get; set; }
 
         /// <summary>
-        /// 生日
+        /// 头像原图
         /// </summary>
-        public string birthday { get; set; }
+        public string photo_uri { get; set; }
 
         /// <summary>
         /// 头像
@@ -78,9 +78,9 @@ namespace Com.Scm.Sys.Contacts.Dvo
         public string photo_thumb_uri { get; set; }
 
         /// <summary>
-        /// 头像原图
+        /// 电话
         /// </summary>
-        public string photo_uri { get; set; }
+        public List<Dictionary<string, string>> phones { get; set; }
 
         /// <summary>
         /// 邮件
@@ -88,9 +88,9 @@ namespace Com.Scm.Sys.Contacts.Dvo
         public List<Dictionary<string, string>> emails { get; set; }
 
         /// <summary>
-        /// 电话
+        /// 生日
         /// </summary>
-        public List<Dictionary<string, string>> phones { get; set; }
+        public List<Dictionary<string, string>> dates { get; set; }
 
         /// <summary>
         /// 地址

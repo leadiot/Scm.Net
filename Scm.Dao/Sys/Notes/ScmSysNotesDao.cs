@@ -1,4 +1,5 @@
-﻿using Com.Scm.Dao.User;
+﻿using Com.Scm.Dao;
+using Com.Scm.Dao.User;
 using Com.Scm.Enums;
 using SqlSugar;
 using System.ComponentModel.DataAnnotations;
@@ -9,7 +10,7 @@ namespace Com.Scm.Sys.Notes
     /// 记事功能
     /// </summary>
     [SugarTable("scm_sys_notes")]
-    public class ScmSysNotesDao : ScmUserDataDao
+    public class ScmSysNotesDao : ScmUserDataDao, IDeleteDao
     {
         /// <summary>
         /// 显示排序
@@ -124,9 +125,9 @@ namespace Com.Scm.Sys.Notes
         public long terminal_id { get; set; }
 
         /// <summary>
-        /// 版本
+        /// 删除状态
         /// </summary>
-        public int ver { get; set; }
+        public ScmRowDeleteEnum row_delete { get; set; }
 
         /// <summary>
         /// 
@@ -138,7 +139,6 @@ namespace Com.Scm.Sys.Notes
 
             this.salt = new Random().Next(10000).ToString("d4");
             this.key = this.id + this.salt;
-            this.ver = 1;
 
             CheckNotNull();
         }
@@ -152,8 +152,6 @@ namespace Com.Scm.Sys.Notes
             base.PrepareUpdate(userId);
 
             CheckNotNull();
-
-            this.ver += 1;
         }
 
         /// <summary>
@@ -171,8 +169,6 @@ namespace Com.Scm.Sys.Notes
             if (summary == null) summary = "";
             if (content == null) content = "";
             if (source == null) source = "";
-
-            modify_time = update_time;
 
             if (content.Length > 2048)
             {

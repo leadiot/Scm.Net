@@ -98,6 +98,11 @@ namespace Com.Scm.Sys.Notes
         public string content { get; set; }
 
         /// <summary>
+        /// 预览内容
+        /// </summary>
+        public string preview { get; set; }
+
+        /// <summary>
         /// 文件数量（用于判断是否需要读取指定目录的文件数据）
         /// </summary>
         [Required]
@@ -179,6 +184,33 @@ namespace Com.Scm.Sys.Notes
             {
                 files = 0;
             }
+
+            this.preview = GenPreview();
+        }
+
+        private string GenPreview()
+        {
+            if (content == null)
+            {
+                return "";
+            }
+
+            var preview = content;
+            // 仅取第一行（去掉换行后的内容）
+            int newLineIndex = preview.IndexOf('\n');
+            if (newLineIndex >= 0)
+            {
+                preview = preview.Substring(0, newLineIndex);
+            }
+
+            // 去掉回车符
+            preview = preview.Replace("\r", "");
+            // 截取前 32 字
+            if (preview.Length > 32)
+            {
+                preview = preview.Substring(0, 29) + "…";
+            }
+            return preview;
         }
     }
 }

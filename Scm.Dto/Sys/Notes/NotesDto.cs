@@ -71,15 +71,20 @@ namespace Com.Scm.Sys.Notes
         public int files { get; set; }
 
         /// <summary>
-        /// 
+        /// 内容摘要
         /// </summary>
         [StringLength(SUMMARY_SIZE)]
         public string summary { get; set; }
 
         /// <summary>
-        /// 
+        /// 便签内容
         /// </summary>
         public string content { get; set; }
+
+        /// <summary>
+        /// 预览内容
+        /// </summary>
+        public string preview { get; set; }
 
         /// <summary>
         /// 便签颜色

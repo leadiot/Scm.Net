@@ -1,6 +1,5 @@
 ﻿using Com.Scm.Dto;
 using Com.Scm.Enums;
-using Com.Scm.Utils;
 using System.ComponentModel.DataAnnotations;
 
 namespace Com.Scm.Sys.Sms
@@ -96,17 +95,5 @@ namespace Com.Scm.Sys.Sms
         /// 
         /// </summary>
         public ScmRowDeleteEnum row_delete { get; set; }
-
-        public string colors
-        {
-            get
-            {
-                return TextUtils.FormatColor(color);
-            }
-            set
-            {
-                color = TextUtils.ParseColor(value);
-            }
-        }
     }
 }

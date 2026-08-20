@@ -15,6 +15,6 @@ namespace Com.Scm.Sys.Notes.Dvo
         /// <summary>
         /// 
         /// </summary>
-        public NoteTypesEnum types { get; set; }
+        public ScmNotesTypesEnum types { get; set; }
     }
 }

@@ -1,6 +1,6 @@
 ﻿namespace Com.Scm.Enums
 {
-    public enum NoteTypesEnum
+    public enum ScmNotesTypesEnum
     {
         None = 0,
         /// <summary>

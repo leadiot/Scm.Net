@@ -5,6 +5,7 @@ using Com.Scm.Nas.App;
 using Com.Scm.Res.Cat;
 using Com.Scm.Service;
 using Com.Scm.Sys.Notes.Dvo;
+using Com.Scm.Ur;
 using Com.Scm.Utils;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -44,7 +45,7 @@ namespace Com.Scm.Sys.Notes
                 .WhereIF(!request.IsAllStatus(), a => a.row_status == request.row_status)
                 .WhereIF(IsValidId(request.cat_id), a => a.cat_id == request.cat_id)
                 .WhereIF(!string.IsNullOrEmpty(request.key), a => a.title.Contains(request.key))
-                .WhereIF(request.types != NoteTypesEnum.None, a => a.types == request.types)
+                .WhereIF(request.types != ScmNotesTypesEnum.None, a => a.types == request.types)
                 .OrderBy(m => m.id)
                 .Select<NoteBasicDvo>()
                 .ToPageAsync(request.page, request.limit);
@@ -64,7 +65,7 @@ namespace Com.Scm.Sys.Notes
                 .Where(a => a.row_status == ScmRowStatusEnum.Enabled)
                 .WhereIF(IsValidId(request.cat_id), a => a.cat_id == request.cat_id)
                 .WhereIF(!string.IsNullOrEmpty(request.key), a => a.title.Contains(request.key))
-                .WhereIF(request.types != NoteTypesEnum.None, a => a.types == request.types)
+                .WhereIF(request.types != ScmNotesTypesEnum.None, a => a.types == request.types)
                 .OrderBy(m => m.id, SqlSugar.OrderByType.Desc)
                 .Select<NoteBasicDvo>()
                 .ToListAsync();
@@ -147,6 +148,9 @@ namespace Com.Scm.Sys.Notes
             }
 
             dao.client = ScmClientTypeEnum.Web;
+            dao.source = "web";
+            dao.terminal_id = ScmUrTerminalDto.DEFAULT_ID;
+            dao.row_delete = ScmRowDeleteEnum.No;
 
             var qty = await _SqlClient.InsertAsync(dao);
 

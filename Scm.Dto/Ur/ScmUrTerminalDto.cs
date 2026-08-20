@@ -9,6 +9,8 @@ namespace Com.Scm.Ur
     /// </summary>
     public class ScmUrTerminalDto : ScmDataDto
     {
+        public const long DEFAULT_ID = 1000000000000000001L;
+
         /// <summary>
         /// 终端类型
         /// </summary>

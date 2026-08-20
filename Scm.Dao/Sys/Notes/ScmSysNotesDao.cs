@@ -41,7 +41,7 @@ namespace Com.Scm.Sys.Notes
         /// <summary>
         /// 文章类型
         /// </summary>
-        public NoteTypesEnum types { get; set; }
+        public ScmNotesTypesEnum types { get; set; }
 
         /// <summary>
         /// 分类

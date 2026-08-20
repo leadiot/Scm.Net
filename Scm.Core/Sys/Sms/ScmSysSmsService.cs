@@ -202,6 +202,7 @@ namespace Com.Scm.Sys.Sms
         public async Task<ScmSysSmsDto> SaveAsync(ScmSysSmsDto dto)
         {
             ScmSysSmsDao dao = null;
+            var time = TimeUtils.GetUnixTime();
 
             if (IsNormalId(dto.id))
             {
@@ -211,6 +212,7 @@ namespace Com.Scm.Sys.Sms
             if (dao == null)
             {
                 dao = dto.Adapt<ScmSysSmsDao>();
+                dao.modify_time = time;
                 await _SqlClient.InsertAsync(dao);
 
                 dto.id = dao.id;
@@ -218,6 +220,7 @@ namespace Com.Scm.Sys.Sms
             else
             {
                 dao = dto.Adapt(dao);
+                dao.modify_time = time;
                 await _SqlClient.UpdateAsync(dao);
             }
 
@@ -242,6 +245,7 @@ namespace Com.Scm.Sys.Sms
             }
 
             dao = dto.Adapt(dao);
+            dao.modify_time = TimeUtils.GetUnixTime();
 
             await _SqlClient.UpdateAsync(dao);
 

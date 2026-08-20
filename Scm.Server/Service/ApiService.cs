@@ -88,7 +88,7 @@ namespace Com.Scm.Service
 
         #region 记录操作
         /// <summary>
-        /// 更新数据状态
+        /// 更新记录状态
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="cient"></param>
@@ -110,6 +110,14 @@ namespace Com.Scm.Service
             return await updateable.ExecuteCommandAsync();
         }
 
+        /// <summary>
+        /// 更新记录状态
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="client"></param>
+        /// <param name="ids"></param>
+        /// <param name="status"></param>
+        /// <returns></returns>
         protected async Task<int> UpdateStatusAsync<T>(ISqlSugarClient client, List<long> ids, ScmRowStatusEnum status) where T : class, IStatusDao, new()
         {
             var updateable = client.Updateable<T>()
@@ -150,7 +158,6 @@ namespace Com.Scm.Service
         {
             return await client.Deleteable<T>().Where(m => ids.Contains(m.id)).ExecuteCommandAsync();
         }
-
 
         /// <summary>
         /// 逻辑删除记录

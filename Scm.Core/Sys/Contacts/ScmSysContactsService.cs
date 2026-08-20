@@ -1,5 +1,4 @@
 ﻿using Com.Scm.Config;
-using Com.Scm.Dsa;
 using Com.Scm.Enums;
 using Com.Scm.Filters;
 using Com.Scm.Nas.App;
@@ -9,6 +8,7 @@ using Com.Scm.Ur;
 using Com.Scm.Utils;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using SqlSugar;
 
 namespace Com.Scm.Sys.Contacts
 {
@@ -18,19 +18,17 @@ namespace Com.Scm.Sys.Contacts
     [ApiExplorerSettings(GroupName = "sys")]
     public class ScmSysContactsService : ApiService
     {
-        private readonly SugarRepository<ScmSysContactsDao> _thisRepository;
-
         /// <summary>
         /// 
         /// </summary>
         /// <param name="thisRepository"></param>
         /// <param name="resHolder"></param>
         /// <param name="config"></param>
-        public ScmSysContactsService(SugarRepository<ScmSysContactsDao> thisRepository,
+        public ScmSysContactsService(ISqlSugarClient sqlClient,
             IResHolder resHolder,
             EnvConfig config)
         {
-            _thisRepository = thisRepository;
+            _SqlClient = sqlClient;
             _ResHolder = resHolder;
             _EnvConfig = config;
         }
@@ -42,7 +40,7 @@ namespace Com.Scm.Sys.Contacts
         /// <returns></returns>
         public async Task<ScmSearchPageResponse<ScmSysContactsDvo>> GetPagesAsync(ContactSearchRequest request)
         {
-            var result = await _thisRepository.AsQueryable()
+            var result = await _SqlClient.Queryable<ScmSysContactsDao>()
                 .WhereIF(!request.IsAllStatus(), a => a.row_status == request.row_status)
                 .WhereIF(!string.IsNullOrEmpty(request.key), a => a.title.Contains(request.key))
                 .OrderBy(m => m.id)
@@ -59,7 +57,7 @@ namespace Com.Scm.Sys.Contacts
         /// <returns></returns>
         public async Task<List<ScmSysContactsDvo>> GetListAsync(ContactSearchRequest request)
         {
-            var daoList = await _thisRepository.AsQueryable()
+            var daoList = await _SqlClient.Queryable<ScmSysContactsDao>()
                 .Where(a => a.row_status == ScmRowStatusEnum.Enabled)
                 .WhereIF(!string.IsNullOrEmpty(request.key), a => a.title.Contains(request.key))
                 .OrderBy(m => m.id, SqlSugar.OrderByType.Desc)
@@ -93,8 +91,7 @@ namespace Com.Scm.Sys.Contacts
         {
             var dvo = new ScmSysContactsDvo();
 
-            var dao = await _thisRepository
-                .AsQueryable()
+            var dao = await _SqlClient.Queryable<ScmSysContactsDao>()
                 .Where(a => a.id == id)
                 .FirstAsync();
 
@@ -109,8 +106,7 @@ namespace Com.Scm.Sys.Contacts
         [HttpGet("{id}")]
         public async Task<ScmSysContactsDto> GetEditAsync(long id)
         {
-            return await _thisRepository
-                .AsQueryable()
+            return await _SqlClient.Queryable<ScmSysContactsDao>()
                 .Select<ScmSysContactsDto>()
                 .FirstAsync(m => m.id == id);
         }
@@ -123,8 +119,7 @@ namespace Com.Scm.Sys.Contacts
         [HttpGet("{id}")]
         public async Task<ScmSysContactsDvo> GetViewAsync(long id)
         {
-            return await _thisRepository
-                .AsQueryable()
+            return await _SqlClient.Queryable<ScmSysContactsDao>()
                 .Select<ScmSysContactsDvo>()
                 .FirstAsync(m => m.id == id);
         }
@@ -138,7 +133,7 @@ namespace Com.Scm.Sys.Contacts
         {
             var dao = model.Adapt<ScmSysContactsDao>();
 
-            var qty = await _thisRepository.InsertAsync(dao);
+            var qty = await _SqlClient.InsertAsync(dao);
 
             return dao.Clone<ScmSysContactsDvo>();
         }
@@ -155,14 +150,14 @@ namespace Com.Scm.Sys.Contacts
 
             if (IsNormalId(dto.id))
             {
-                dao = await _thisRepository.GetByIdAsync(dto.id);
+                dao = await _SqlClient.Queryable<ScmSysContactsDao>().FirstAsync(a => a.id == dto.id);
             }
 
             if (dao == null)
             {
                 dao = dto.Adapt<ScmSysContactsDao>();
                 dao.modify_time = time;
-                await _thisRepository.InsertAsync(dao);
+                await _SqlClient.InsertAsync(dao);
 
                 dto.id = dao.id;
             }
@@ -170,7 +165,7 @@ namespace Com.Scm.Sys.Contacts
             {
                 dao = dto.Adapt(dao);
                 dao.modify_time = time;
-                await _thisRepository.UpdateAsync(dao);
+                await _SqlClient.UpdateAsync(dao);
 
                 UpdateModifyTime(dao);
             }
@@ -183,20 +178,20 @@ namespace Com.Scm.Sys.Contacts
         /// <summary>
         /// 更新
         /// </summary>
-        /// <param name="model"></param>
+        /// <param name="dto"></param>
         /// <returns></returns>
-        public async Task UpdateAsync(ScmSysContactsDto model)
+        public async Task UpdateAsync(ScmSysContactsDto dto)
         {
-            var dao = await _thisRepository.GetByIdAsync(model.id);
+            var dao = await _SqlClient.Queryable<ScmSysContactsDao>().FirstAsync(a => a.id == dto.id);
             if (dao == null)
             {
                 return;
             }
 
-            dao = model.Adapt(dao);
+            dao = dto.Adapt(dao);
             dao.modify_time = TimeUtils.GetUnixTime();
 
-            await _thisRepository.UpdateAsync(dao);
+            await _SqlClient.UpdateAsync(dao);
 
             UpdateModifyTime(dao);
         }
@@ -217,7 +212,7 @@ namespace Com.Scm.Sys.Contacts
         /// <returns></returns>
         public async Task<int> StatusAsync(ScmChangeStatusRequest param)
         {
-            return await UpdateStatusAsync(_thisRepository, param.ids, param.status);
+            return await UpdateStatusAsync<ScmSysContactsDao>(_SqlClient, param.ids, param.status);
         }
 
         /// <summary>
@@ -228,7 +223,7 @@ namespace Com.Scm.Sys.Contacts
         [HttpDelete]
         public async Task<int> RemoveAsync(string ids)
         {
-            return await RemoveRecordAsync(_thisRepository, ids.ToListLong());
+            return await RemoveRecordAsync<ScmSysContactsDao>(_SqlClient, ids.ToListLong());
         }
 
         /// <summary>

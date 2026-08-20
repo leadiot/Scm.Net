@@ -41,6 +41,7 @@ namespace Com.Scm.Sys.Contacts
         public async Task<ScmSearchPageResponse<ScmSysContactsDvo>> GetPagesAsync(ContactSearchRequest request)
         {
             var result = await _SqlClient.Queryable<ScmSysContactsDao>()
+                .Where(a => a.row_delete == ScmRowDeleteEnum.No)
                 .WhereIF(!request.IsAllStatus(), a => a.row_status == request.row_status)
                 .WhereIF(!string.IsNullOrEmpty(request.key), a => a.title.Contains(request.key))
                 .OrderBy(m => m.id)
@@ -58,6 +59,7 @@ namespace Com.Scm.Sys.Contacts
         public async Task<List<ScmSysContactsDvo>> GetListAsync(ContactSearchRequest request)
         {
             var daoList = await _SqlClient.Queryable<ScmSysContactsDao>()
+                .Where(a => a.row_delete == ScmRowDeleteEnum.No)
                 .Where(a => a.row_status == ScmRowStatusEnum.Enabled)
                 .WhereIF(!string.IsNullOrEmpty(request.key), a => a.title.Contains(request.key))
                 .OrderBy(m => m.id, SqlSugar.OrderByType.Desc)

@@ -42,6 +42,7 @@ namespace Com.Scm.Sys.Notes
         public async Task<ScmSearchPageResponse<NoteBasicDvo>> GetPagesAsync(NoteSearchRequest request)
         {
             var result = await _SqlClient.Queryable<ScmSysNotesDao>()
+                .Where(a => a.row_delete == ScmRowDeleteEnum.No)
                 .WhereIF(!request.IsAllStatus(), a => a.row_status == request.row_status)
                 .WhereIF(IsValidId(request.cat_id), a => a.cat_id == request.cat_id)
                 .WhereIF(!string.IsNullOrEmpty(request.key), a => a.title.Contains(request.key))
@@ -62,6 +63,7 @@ namespace Com.Scm.Sys.Notes
         public async Task<List<NoteBasicDvo>> GetListAsync(NoteSearchRequest request)
         {
             var result = await _SqlClient.Queryable<ScmSysNotesDao>()
+                .Where(a => a.row_delete == ScmRowDeleteEnum.No)
                 .Where(a => a.row_status == ScmRowStatusEnum.Enabled)
                 .WhereIF(IsValidId(request.cat_id), a => a.cat_id == request.cat_id)
                 .WhereIF(!string.IsNullOrEmpty(request.key), a => a.title.Contains(request.key))

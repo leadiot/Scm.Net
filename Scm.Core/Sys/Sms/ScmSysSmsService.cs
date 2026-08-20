@@ -39,6 +39,7 @@ namespace Com.Scm.Sys.Sms
         public async Task<ScmSearchPageResponse<ScmSysSmsDvo>> GetPagesAsync(SmsSearchRequest request)
         {
             var result = await _SqlClient.Queryable<ScmSysSmsDao>()
+                .Where(a => a.row_delete == ScmRowDeleteEnum.No)
                 .WhereIF(!request.IsAllStatus(), a => a.row_status == request.row_status)
                 .WhereIF(!string.IsNullOrEmpty(request.key), a => a.address.Contains(request.key))
                 .OrderBy(m => m.id)
@@ -74,7 +75,7 @@ namespace Com.Scm.Sys.Sms
         public async Task<List<ScmSysSmsDvo>> GetListAsync(SmsSearchRequest request)
         {
             var result = await _SqlClient.Queryable<ScmSysSmsDao>()
-                .Where(a => a.row_status == ScmRowStatusEnum.Enabled)
+                .Where(a => a.row_status == ScmRowStatusEnum.Enabled && a.row_delete == ScmRowDeleteEnum.No)
                 .WhereIF(IsValidId(request.id), a => a.thread_id == request.id)
                 .WhereIF(!string.IsNullOrEmpty(request.key), a => a.address.Contains(request.key))
                 .OrderBy(m => m.id, SqlSugar.OrderByType.Asc)

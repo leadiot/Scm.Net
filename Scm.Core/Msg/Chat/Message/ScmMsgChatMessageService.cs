@@ -263,7 +263,7 @@ namespace Com.Scm.Msg.Chat.Message
         /// <returns></returns>
         public async Task<int> StatusAsync(ScmChangeStatusRequest param)
         {
-            return await UpdateStatus(_detailRepository, param.ids, param.status);
+            return await UpdateStatusAsync(_detailRepository, param.ids, param.status);
         }
 
         /// <summary>
@@ -274,7 +274,7 @@ namespace Com.Scm.Msg.Chat.Message
         [HttpDelete]
         public async Task<int> DeleteAsync(string ids)
         {
-            return await DeleteRecord(_detailRepository, ids.ToListLong());
+            return await DeleteRecordAsync(_detailRepository, ids.ToListLong());
         }
 
         /// <summary>

@@ -49,7 +49,6 @@ namespace Com.Scm.Sys.Contacts
                 .Select<ScmSysContactsDvo>()
                 .ToPageAsync(request.page, request.limit);
 
-            Prepare(result.Items);
             return result;
         }
 
@@ -60,15 +59,19 @@ namespace Com.Scm.Sys.Contacts
         /// <returns></returns>
         public async Task<List<ScmSysContactsDvo>> GetListAsync(ContactSearchRequest request)
         {
-            var result = await _thisRepository.AsQueryable()
+            var daoList = await _thisRepository.AsQueryable()
                 .Where(a => a.row_status == ScmRowStatusEnum.Enabled)
                 .WhereIF(!string.IsNullOrEmpty(request.key), a => a.title.Contains(request.key))
                 .OrderBy(m => m.id, SqlSugar.OrderByType.Desc)
-                .Select<ScmSysContactsDvo>()
                 .ToListAsync();
 
-            Prepare(result);
-            return result;
+            var dvoList = new List<ScmSysContactsDvo>();
+            foreach (var dao in daoList)
+            {
+                dvoList.Add(dao.Clone<ScmSysContactsDvo>());
+            }
+
+            return dvoList;
         }
 
         private void Prepare(List<ScmSysContactsDvo> list)
@@ -214,7 +217,7 @@ namespace Com.Scm.Sys.Contacts
         /// <returns></returns>
         public async Task<int> StatusAsync(ScmChangeStatusRequest param)
         {
-            return await UpdateStatus(_thisRepository, param.ids, param.status);
+            return await UpdateStatusAsync(_thisRepository, param.ids, param.status);
         }
 
         /// <summary>
@@ -223,9 +226,9 @@ namespace Com.Scm.Sys.Contacts
         /// <param name="ids">逗号分隔</param>
         /// <returns></returns>
         [HttpDelete]
-        public async Task<int> DeleteAsync(string ids)
+        public async Task<int> RemoveAsync(string ids)
         {
-            return await DeleteRecord(_thisRepository, ids.ToListLong());
+            return await RemoveRecordAsync(_thisRepository, ids.ToListLong());
         }
 
         /// <summary>

@@ -266,7 +266,7 @@ namespace Com.Scm.Sys.Sms
         /// <returns></returns>
         public async Task<int> StatusAsync(ScmChangeStatusRequest param)
         {
-            return await UpdateStatus<ScmSysSmsDao>(_SqlClient, param.ids, param.status);
+            return await UpdateStatusAsync<ScmSysSmsDao>(_SqlClient, param.ids, param.status);
         }
 
         /// <summary>
@@ -275,9 +275,9 @@ namespace Com.Scm.Sys.Sms
         /// <param name="ids">逗号分隔</param>
         /// <returns></returns>
         [HttpDelete]
-        public async Task<int> DeleteAsync(string ids)
+        public async Task<int> RemoveAsync(string ids)
         {
-            return await DeleteRecord<ScmSysSmsDao>(_SqlClient, ids.ToListLong());
+            return await RemoveRecordAsync<ScmSysSmsDao>(_SqlClient, ids.ToListLong());
         }
 
         /// <summary>

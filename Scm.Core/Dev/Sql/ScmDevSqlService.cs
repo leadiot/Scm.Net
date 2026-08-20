@@ -92,7 +92,7 @@ namespace Com.Scm.Dev.Sql
         /// <returns></returns>
         public async Task<int> StatusAsync(ScmChangeStatusRequest param)
         {
-            return await UpdateStatus(_thisRepository, param.ids, param.status);
+            return await UpdateStatusAsync(_thisRepository, param.ids, param.status);
         }
 
         /// <summary>
@@ -108,7 +108,7 @@ namespace Com.Scm.Dev.Sql
                 return 0;
             }
 
-            return await DeleteRecord(_thisRepository, ids.ToListLong());
+            return await DeleteRecordAsync(_thisRepository, ids.ToListLong());
         }
 
         /// <summary>

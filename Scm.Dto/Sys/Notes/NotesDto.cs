@@ -30,7 +30,7 @@ namespace Com.Scm.Sys.Notes
         /// 便签类型
         /// </summary>
         [Required]
-        public ScmNotesTypesEnum types { get; set; }
+        public ScmNotesTypeEnum types { get; set; }
 
         /// <summary>
         /// 标题

@@ -479,7 +479,7 @@ namespace Com.Scm.Ur.User
         /// <returns></returns>
         public async Task<int> StatusAsync(ScmChangeStatusRequest param)
         {
-            return await UpdateStatus(_thisRepository, param.ids, param.status);
+            return await UpdateStatusAsync(_thisRepository, param.ids, param.status);
         }
 
         /// <summary>

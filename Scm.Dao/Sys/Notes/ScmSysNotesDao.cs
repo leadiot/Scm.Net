@@ -1,6 +1,7 @@
 ﻿using Com.Scm.Dao;
 using Com.Scm.Dao.User;
 using Com.Scm.Enums;
+using Com.Scm.Utils;
 using SqlSugar;
 using System.ComponentModel.DataAnnotations;
 
@@ -41,7 +42,7 @@ namespace Com.Scm.Sys.Notes
         /// <summary>
         /// 文章类型
         /// </summary>
-        public ScmNotesTypesEnum types { get; set; }
+        public ScmNotesTypeEnum types { get; set; }
 
         /// <summary>
         /// 分类
@@ -174,6 +175,11 @@ namespace Com.Scm.Sys.Notes
             if (summary == null) summary = "";
             if (content == null) content = "";
             if (source == null) source = "";
+
+            if (!ScmUtils.IsNormalId(cat_id))
+            {
+                cat_id = ScmEnv.DEFAULT_ID;
+            }
 
             if (content.Length > 2048)
             {

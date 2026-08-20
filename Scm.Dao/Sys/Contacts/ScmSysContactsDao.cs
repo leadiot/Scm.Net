@@ -1,4 +1,5 @@
-﻿using Com.Scm.Dao.User;
+﻿using Com.Scm.Dao;
+using Com.Scm.Dao.User;
 using Com.Scm.Enums;
 using SqlSugar;
 using System.ComponentModel.DataAnnotations;
@@ -6,7 +7,7 @@ using System.ComponentModel.DataAnnotations;
 namespace Com.Scm.Sys.Contacts
 {
     [SugarTable("scm_sys_contacts")]
-    public class ScmSysContactsDao : ScmUserDataDao
+    public class ScmSysContactsDao : ScmUserDataDao, IDeleteDao
     {
         /// <summary>
         /// 联系人全名（DISPLAY_NAME）

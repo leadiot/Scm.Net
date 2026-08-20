@@ -132,7 +132,7 @@ namespace Com.Scm.Sys.FlowData
         /// <returns></returns>
         public async Task<int> StatusAsync(ScmChangeStatusRequest param)
         {
-            return await UpdateStatus<ScmFlowDataHeaderDao>(_SqlClient, param.ids, param.status);
+            return await UpdateStatusAsync<ScmFlowDataHeaderDao>(_SqlClient, param.ids, param.status);
         }
 
         /// <summary>
@@ -143,7 +143,7 @@ namespace Com.Scm.Sys.FlowData
         [HttpDelete]
         public async Task<int> DeleteAsync(string ids)
         {
-            return await DeleteRecord<ScmFlowDataHeaderDao>(_SqlClient, ids.ToListLong(), false);
+            return await DeleteRecordAsync<ScmFlowDataHeaderDao>(_SqlClient, ids.ToListLong(), false);
         }
     }
 }

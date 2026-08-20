@@ -95,7 +95,7 @@ namespace Com.Scm.Service
         /// <param name="ids"></param>
         /// <param name="status"></param>
         /// <returns></returns>
-        protected async Task<int> UpdateStatus<T>(SugarRepository<T> cient, List<long> ids, ScmRowStatusEnum status) where T : class, IStatusDao, new()
+        protected async Task<int> UpdateStatusAsync<T>(SugarRepository<T> cient, List<long> ids, ScmRowStatusEnum status) where T : class, IStatusDao, new()
         {
             var updateable = cient.AsUpdateable()
                 .Where(a => ids.Contains(a.id));
@@ -110,7 +110,7 @@ namespace Com.Scm.Service
             return await updateable.ExecuteCommandAsync();
         }
 
-        protected async Task<int> UpdateStatus<T>(ISqlSugarClient client, List<long> ids, ScmRowStatusEnum status) where T : class, IStatusDao, new()
+        protected async Task<int> UpdateStatusAsync<T>(ISqlSugarClient client, List<long> ids, ScmRowStatusEnum status) where T : class, IStatusDao, new()
         {
             var updateable = client.Updateable<T>()
                 .Where(a => ids.Contains(a.id));
@@ -133,16 +133,8 @@ namespace Com.Scm.Service
         /// <param name="ids"></param>
         /// <param name="delete"></param>
         /// <returns></returns>
-        protected async Task<int> DeleteRecord<T>(SugarRepository<T> client, List<long> ids, bool delete = true) where T : ScmDao, new()
+        protected async Task<int> DeleteRecordAsync<T>(SugarRepository<T> client, List<long> ids, bool delete = true) where T : ScmDao, new()
         {
-            //if (CommonUtils.HasImplementedRawGeneric(typeof(T), typeof(IDeleteDao)))
-            //{
-            //    return await sugar.AsUpdateable()
-            //        .Where(a => ids.Contains(a.id))
-            //        .SetColumns(a => a.row_delete == delete)
-            //        .ExecuteCommandAsync();
-            //}
-
             return await client.AsDeleteable().Where(m => ids.Contains(m.id)).ExecuteCommandAsync();
         }
 
@@ -154,21 +146,42 @@ namespace Com.Scm.Service
         /// <param name="ids"></param>
         /// <param name="delete"></param>
         /// <returns></returns>
-        protected async Task<int> DeleteRecord<T>(ISqlSugarClient client, List<long> ids, bool delete = true) where T : ScmDao, new()
+        protected async Task<int> DeleteRecordAsync<T>(ISqlSugarClient client, List<long> ids, bool delete = true) where T : ScmDao, new()
         {
-            //if (typeof(T) is IDeleteDao)
-            //{
-
-            //}
-            //if (CommonUtils.HasImplementedRawGeneric(typeof(T), typeof(IDeleteDao)))
-            //{
-            //    return await sugar.AsUpdateable()
-            //        .Where(a => ids.Contains(a.id))
-            //        .SetColumns(a => a.row_delete == delete)
-            //        .ExecuteCommandAsync();
-            //}
-
             return await client.Deleteable<T>().Where(m => ids.Contains(m.id)).ExecuteCommandAsync();
+        }
+
+
+        /// <summary>
+        /// 逻辑删除记录
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="client"></param>
+        /// <param name="ids"></param>
+        /// <param name="delete"></param>
+        /// <returns></returns>
+        protected async Task<int> RemoveRecordAsync<T>(SugarRepository<T> client, List<long> ids, bool delete = true) where T : ScmDao, IDeleteDao, new()
+        {
+            return await client.AsUpdateable()
+                .SetColumns(a => a.row_delete == (delete ? ScmRowDeleteEnum.Yes : ScmRowDeleteEnum.No))
+                .Where(a => ids.Contains(a.id))
+                .ExecuteCommandAsync();
+        }
+
+        /// <summary>
+        /// 逻辑删除记录
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="client"></param>
+        /// <param name="ids"></param>
+        /// <param name="delete"></param>
+        /// <returns></returns>
+        protected async Task<int> RemoveRecordAsync<T>(ISqlSugarClient client, List<long> ids, bool delete = true) where T : ScmDao, IDeleteDao, new()
+        {
+            return await client.Updateable<T>()
+                .Where(a => ids.Contains(a.id))
+                .SetColumns(a => a.row_delete == (delete ? ScmRowDeleteEnum.Yes : ScmRowDeleteEnum.No))
+                .ExecuteCommandAsync();
         }
         #endregion
 

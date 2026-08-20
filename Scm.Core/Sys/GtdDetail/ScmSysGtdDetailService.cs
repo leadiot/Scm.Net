@@ -153,7 +153,7 @@ namespace Com.Scm.Sys.GtdDetail
         /// <returns></returns>
         public async Task<int> StatusAsync(ScmChangeStatusRequest param)
         {
-            return await UpdateStatus(_thisRepository, param.ids, param.status);
+            return await UpdateStatusAsync(_thisRepository, param.ids, param.status);
         }
 
         /// <summary>
@@ -164,7 +164,7 @@ namespace Com.Scm.Sys.GtdDetail
         [HttpDelete]
         public async Task<int> DeleteAsync(string ids)
         {
-            return await DeleteRecord(_thisRepository, ids.ToListLong());
+            return await DeleteRecordAsync(_thisRepository, ids.ToListLong());
         }
     }
 }

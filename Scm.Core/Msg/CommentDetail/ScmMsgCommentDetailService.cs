@@ -170,7 +170,7 @@ namespace Com.Scm.Msg.CommentDetail
         /// <returns></returns>
         public async Task<int> StatusAsync(ScmChangeStatusRequest request)
         {
-            return await UpdateStatus(_thisRepository, request.ids, request.status);
+            return await UpdateStatusAsync(_thisRepository, request.ids, request.status);
         }
 
         /// <summary>
@@ -181,7 +181,7 @@ namespace Com.Scm.Msg.CommentDetail
         [HttpDelete]
         public async Task<int> DeleteAsync(string ids)
         {
-            return await DeleteRecord(_thisRepository, ids.ToListLong());
+            return await DeleteRecordAsync(_thisRepository, ids.ToListLong());
         }
     }
 }

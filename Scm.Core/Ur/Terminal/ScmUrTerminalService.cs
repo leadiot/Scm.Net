@@ -198,7 +198,7 @@ namespace Com.Scm.Scm.Ur
         {
             _ResHolder.Clear();
 
-            return await UpdateStatus(_thisRepository, param.ids, param.status);
+            return await UpdateStatusAsync(_thisRepository, param.ids, param.status);
         }
 
         /// <summary>
@@ -211,7 +211,7 @@ namespace Com.Scm.Scm.Ur
         {
             _ResHolder.Clear();
 
-            return await DeleteRecord(_thisRepository, ids.ToListLong());
+            return await DeleteRecordAsync(_thisRepository, ids.ToListLong());
         }
 
         /// <summary>

@@ -45,7 +45,7 @@ namespace Com.Scm.Sys.Notes
                 .WhereIF(!request.IsAllStatus(), a => a.row_status == request.row_status)
                 .WhereIF(IsValidId(request.cat_id), a => a.cat_id == request.cat_id)
                 .WhereIF(!string.IsNullOrEmpty(request.key), a => a.title.Contains(request.key))
-                .WhereIF(request.types != ScmNotesTypesEnum.None, a => a.types == request.types)
+                .WhereIF(request.types != ScmNotesTypeEnum.None, a => a.types == request.types)
                 .OrderBy(m => m.id)
                 .Select<NoteBasicDvo>()
                 .ToPageAsync(request.page, request.limit);
@@ -65,7 +65,7 @@ namespace Com.Scm.Sys.Notes
                 .Where(a => a.row_status == ScmRowStatusEnum.Enabled)
                 .WhereIF(IsValidId(request.cat_id), a => a.cat_id == request.cat_id)
                 .WhereIF(!string.IsNullOrEmpty(request.key), a => a.title.Contains(request.key))
-                .WhereIF(request.types != ScmNotesTypesEnum.None, a => a.types == request.types)
+                .WhereIF(request.types != ScmNotesTypeEnum.None, a => a.types == request.types)
                 .OrderBy(m => m.id, SqlSugar.OrderByType.Desc)
                 .Select<NoteBasicDvo>()
                 .ToListAsync();
@@ -245,7 +245,7 @@ namespace Com.Scm.Sys.Notes
         /// <returns></returns>
         public async Task<int> StatusAsync(ScmChangeStatusRequest param)
         {
-            return await UpdateStatus<ScmSysNotesDao>(_SqlClient, param.ids, param.status);
+            return await UpdateStatusAsync<ScmSysNotesDao>(_SqlClient, param.ids, param.status);
         }
 
         /// <summary>
@@ -254,9 +254,9 @@ namespace Com.Scm.Sys.Notes
         /// <param name="ids">逗号分隔</param>
         /// <returns></returns>
         [HttpDelete]
-        public async Task<int> DeleteAsync(string ids)
+        public async Task<int> RemoveAsync(string ids)
         {
-            return await DeleteRecord<ScmSysNotesDao>(_SqlClient, ids.ToListLong());
+            return await RemoveRecordAsync<ScmSysNotesDao>(_SqlClient, ids.ToListLong());
         }
 
         /// <summary>

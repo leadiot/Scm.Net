@@ -11,7 +11,6 @@
 		<ProjectReference Include="..\Scm.Common.Dto\Scm.Common.Dto.csproj" />
 		<ProjectReference Include="..\Scm.Common.Log\Scm.Common.Log.csproj" />
 		<ProjectReference Include="..\Scm.Common.OS\Scm.Common.Os.csproj" />
-		<ProjectReference Include="..\Scm.Common\Scm.Common.csproj" />
 		<ProjectReference Include="..\Scm.Dto\Scm.Dto.csproj" />
 		<ProjectReference Include="..\Scm.Email\Scm.Email.csproj" />
 		<ProjectReference Include="..\Scm.Phone\Scm.Phone.csproj" />

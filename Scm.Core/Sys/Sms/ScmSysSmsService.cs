@@ -3,6 +3,7 @@ using Com.Scm.Enums;
 using Com.Scm.Filters;
 using Com.Scm.Service;
 using Com.Scm.Sys.Sms.Dvo;
+using Com.Scm.Ur;
 using Com.Scm.Utils;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -16,6 +17,8 @@ namespace Com.Scm.Sys.Sms
     [ApiExplorerSettings(GroupName = "sys")]
     public class ScmSysSmsService : ApiService
     {
+        public const string SOURCE_WEB = "Nas.Web";
+
         /// <summary>
         /// 
         /// </summary>
@@ -178,10 +181,12 @@ namespace Com.Scm.Sys.Sms
 
             var dao = dto.Adapt<ScmSysSmsDao>();
             dao.thread_id = threadDao.id;
-            dao.modify_time = time;
             dao.date = time;
             dao.delivery_date = time;
             dao.type = ScmSmsTypeEnum.SENT;
+            dao.source = SOURCE_WEB;
+            dao.modify_time = time;
+            dao.terminal_id = ScmUrTerminalDto.DEFAULT_ID;
             dao.row_delete = ScmRowDeleteEnum.No;
 
             dao.source = "web";

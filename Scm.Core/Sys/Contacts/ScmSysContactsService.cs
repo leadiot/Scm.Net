@@ -18,6 +18,8 @@ namespace Com.Scm.Sys.Contacts
     [ApiExplorerSettings(GroupName = "sys")]
     public class ScmSysContactsService : ApiService
     {
+        public const string SOURCE_WEB = "Nas.Web";
+
         /// <summary>
         /// 
         /// </summary>
@@ -134,6 +136,10 @@ namespace Com.Scm.Sys.Contacts
         public async Task<ScmSysContactsDvo> AddAsync(ScmSysContactsDto model)
         {
             var dao = model.Adapt<ScmSysContactsDao>();
+            dao.modify_time = TimeUtils.GetUnixTime();
+            dao.source = SOURCE_WEB;
+            dao.terminal_id = ScmUrTerminalDto.DEFAULT_ID;
+            dao.row_delete = ScmRowDeleteEnum.No;
 
             var qty = await _SqlClient.InsertAsync(dao);
 
@@ -159,6 +165,9 @@ namespace Com.Scm.Sys.Contacts
             {
                 dao = dto.Adapt<ScmSysContactsDao>();
                 dao.modify_time = time;
+                dao.source = SOURCE_WEB;
+                dao.terminal_id = ScmUrTerminalDto.DEFAULT_ID;
+                dao.row_delete = ScmRowDeleteEnum.No;
                 await _SqlClient.InsertAsync(dao);
 
                 dto.id = dao.id;

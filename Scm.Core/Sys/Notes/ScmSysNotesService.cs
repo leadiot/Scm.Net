@@ -19,6 +19,8 @@ namespace Com.Scm.Sys.Notes
     [ApiExplorerSettings(GroupName = "sys")]
     public class ScmSysNotesService : ApiService
     {
+        public const string SOURCE_WEB = "Nas.Web";
+
         /// <summary>
         /// 
         /// </summary>
@@ -150,7 +152,8 @@ namespace Com.Scm.Sys.Notes
             }
 
             dao.client = ScmClientTypeEnum.Web;
-            dao.source = "web";
+            dao.modify_time = TimeUtils.GetUnixTime();
+            dao.source = SOURCE_WEB;
             dao.terminal_id = ScmUrTerminalDto.DEFAULT_ID;
             dao.row_delete = ScmRowDeleteEnum.No;
 
@@ -185,7 +188,11 @@ namespace Com.Scm.Sys.Notes
                 dao.title = model.title;
                 dao.sub_title = model.sub_title;
                 dao.content = model.content;
+                dao.client = ScmClientTypeEnum.Web;
+                dao.source = SOURCE_WEB;
                 dao.modify_time = time;
+                dao.terminal_id = ScmUrTerminalDto.DEFAULT_ID;
+                dao.row_delete = ScmRowDeleteEnum.No;
                 await _SqlClient.InsertAsync(dao);
 
                 model.id = dao.id;

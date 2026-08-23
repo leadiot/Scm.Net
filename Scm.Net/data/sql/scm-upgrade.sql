@@ -168,3 +168,124 @@ WHERE i18n IS NOT NULL;
 
 /** 5. 最后移除 lang 列 **/
 ALTER TABLE scm_sys_menu DROP COLUMN lang;
+
+/** 便签功能完善 */
+ALTER TABLE [scm_sys_notes] ADD COLUMN [preview] varchar(32);
+ALTER TABLE [scm_sys_notes] ADD COLUMN [row_delete] integer NOT NULL DEFAULT 0;
+UPDATE [scm_sys_notes] SET [preview] = LEFT([title], 32);
+ALTER TABLE [scm_sys_notes] ADD COLUMN [modify_time] bigint NOT NULL DEFAULT 0;
+UPDATE [scm_sys_notes] SET [modify_time] = [update_time];
+ALTER TABLE [scm_sys_notes] ADD COLUMN [source] varchar(16);
+UPDATE [scm_sys_notes] SET [source] = 'nas';
+ALTER TABLE [scm_sys_notes] ADD COLUMN [terminal_id] BIGINT NOT NULL DEFAULT 0;
+UPDATE [scm_sys_notes] SET [terminal_id] = 1000000000000000001;
+ALTER TABLE [scm_sys_notes] DROP COLUMN [ver];
+
+CREATE TABLE [scm_sys_notes_terminal] (
+	[id] integer NOT NULL PRIMARY KEY, 
+	[user_id] integer NOT NULL, 
+	[sys_id] integer NOT NULL, 
+	[terminal_id] integer NOT NULL, 
+	[res_id] varchar(64), 
+	[modify_time] integer NOT NULL, 
+	[os_params] varchar(1024), 
+	[row_delete] integer NOT NULL, 
+	[row_status] integer NOT NULL, 
+	[create_time] integer NOT NULL, 
+	[create_user] integer NOT NULL, 
+	[update_time] integer NOT NULL, 
+	[update_user] integer NOT NULL
+)
+
+CREATE TABLE [scm_sys_contacts] (
+	[id] integer NOT NULL PRIMARY KEY, 
+	[user_id] integer NOT NULL, 
+	[name] varchar(256) NOT NULL, 
+	[nickname] varchar(64), 
+	[first_name] varchar(64), 
+	[middle_name] varchar(64), 
+	[last_name] varchar(64), 
+	[name_prefix] varchar(16), 
+	[name_suffix] varchar(16), 
+	[company] varchar(128), 
+	[department] varchar(128), 
+	[title] varchar(128), 
+	[website] varchar(512), 
+	[photo_uri] varchar(512), 
+	[photo_thumb_uri] varchar(512), 
+	[phones] varchar(1024), 
+	[emails] varchar(1024), 
+	[dates] varchar(1024), 
+	[addresses] varchar(1024), 
+	[im_addresses] varchar(1024), 
+	[note] varchar(1024), 
+	[source] varchar(16), 
+	[terminal_id] integer NOT NULL, 
+	[modify_time] integer NOT NULL, 
+	[row_delete] integer NOT NULL, 
+	[row_status] integer NOT NULL, 
+	[create_time] integer NOT NULL, 
+	[create_user] integer NOT NULL, 
+	[update_time] integer NOT NULL, 
+	[update_user] integer NOT NULL
+);
+
+CREATE TABLE [scm_sys_contacts_terminal] (
+	[id] integer NOT NULL PRIMARY KEY, 
+	[user_id] integer NOT NULL, 
+	[sys_id] integer NOT NULL, 
+	[terminal_id] integer NOT NULL, 
+	[res_id] varchar(64), 
+	[modify_time] integer NOT NULL, 
+	[os_params] varchar(1024), 
+	[row_delete] integer NOT NULL, 
+	[row_status] integer NOT NULL, 
+	[create_time] integer NOT NULL, 
+	[create_user] integer NOT NULL, 
+	[update_time] integer NOT NULL, 
+	[update_user] integer NOT NULL
+);
+
+CREATE TABLE [scm_sys_sms] (
+	[id] integer NOT NULL PRIMARY KEY, 
+	[user_id] integer NOT NULL, 
+	[thread_id] integer NOT NULL, 
+	[type] integer NOT NULL, 
+	[protocol] integer NOT NULL, 
+	[address] varchar(64) NOT NULL, 
+	[name] varchar(32), 
+	[body] varchar(256) NOT NULL, 
+	[files] integer NOT NULL, 
+	[subject] varchar(128), 
+	[color] integer NOT NULL, 
+	[date] integer NOT NULL, 
+	[delivery_date] integer NOT NULL, 
+	[read] integer NOT NULL, 
+	[contacts_id] integer NOT NULL, 
+	[source] varchar(16), 
+	[terminal_id] integer NOT NULL, 
+	[res_id] varchar(64), 
+	[modify_time] integer NOT NULL, 
+	[os_params] varchar(1024), 
+	[row_delete] integer NOT NULL, 
+	[row_status] integer NOT NULL, 
+	[create_time] integer NOT NULL, 
+	[create_user] integer NOT NULL, 
+	[update_time] integer NOT NULL, 
+	[update_user] integer NOT NULL
+);
+
+CREATE TABLE [scm_sys_sms_thread] (
+	[id] integer NOT NULL PRIMARY KEY, 
+	[user_id] integer NOT NULL, 
+	[address] varchar(64) NOT NULL, 
+	[name] varchar(32), 
+	[body] varchar(256), 
+	[time] integer NOT NULL, 
+	[color] integer NOT NULL, 
+	[row_status] integer NOT NULL, 
+	[create_time] integer NOT NULL, 
+	[create_user] integer NOT NULL, 
+	[update_time] integer NOT NULL, 
+	[update_user] integer NOT NULL
+);

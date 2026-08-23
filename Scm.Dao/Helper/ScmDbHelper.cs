@@ -19,7 +19,7 @@ namespace Com.Scm.Helper
         /// <summary>
         /// 发行日期
         /// </summary>
-        private const string DATE = "2026-07-17";
+        private const string DATE = "2026-08-25";
 
         #region 版本信息
         protected override string GetKey()

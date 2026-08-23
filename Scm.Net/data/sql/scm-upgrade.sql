@@ -129,10 +129,9 @@ UPDATE [scm_sys_menu] SET [codec]='app-media-video' WHERE [codec]='app-media-ved
 UPDATE [scm_sys_menu] SET [uri]='/video' WHERE [uri]='/vedio';
 UPDATE [scm_sys_menu] SET [codec]='app-calculator' WHERE [codec]='app-calculate';
 
- 
 /*
  * Ver:8
- * Date: TODO
+ * Date: 2026-08-25
  */
 UPDATE [scm_sys_theme] SET [theme] = replace([theme], '/data/bg/','/data/bg/login/');
 UPDATE [scm_sys_menu] SET [od]=56, [icon]='ms-monitor' WHERE [id]=2055889266013245440;
@@ -289,3 +288,8 @@ CREATE TABLE [scm_sys_sms_thread] (
 	[update_time] integer NOT NULL, 
 	[update_user] integer NOT NULL
 );
+
+/*
+ * Ver:9
+ * Date: TODO
+ */

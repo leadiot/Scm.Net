@@ -171,7 +171,7 @@ ALTER TABLE scm_sys_menu DROP COLUMN lang;
 /** 便签功能完善 */
 ALTER TABLE [scm_sys_notes] ADD COLUMN [preview] varchar(32);
 ALTER TABLE [scm_sys_notes] ADD COLUMN [row_delete] integer NOT NULL DEFAULT 0;
-UPDATE [scm_sys_notes] SET [preview] = LEFT([title], 32);
+/* UPDATE [scm_sys_notes] SET [preview] = LEFT([title], 32); */
 ALTER TABLE [scm_sys_notes] ADD COLUMN [modify_time] bigint NOT NULL DEFAULT 0;
 UPDATE [scm_sys_notes] SET [modify_time] = [update_time];
 ALTER TABLE [scm_sys_notes] ADD COLUMN [source] varchar(16);
@@ -194,7 +194,7 @@ CREATE TABLE [scm_sys_notes_terminal] (
 	[create_user] integer NOT NULL, 
 	[update_time] integer NOT NULL, 
 	[update_user] integer NOT NULL
-)
+);
 
 CREATE TABLE [scm_sys_contacts] (
 	[id] integer NOT NULL PRIMARY KEY, 

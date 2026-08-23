@@ -8,6 +8,7 @@ namespace Com.Scm.Sys.Menu;
 /// <summary>
 /// 资源菜单表
 /// </summary>
+[ScmTable(IsIgnore = true)]
 [SugarTable("scm_sys_menu")]
 public class MenuDao : ScmDataDao, ISortableDao, IDeleteDao
 {
@@ -22,11 +23,6 @@ public class MenuDao : ScmDataDao, ISortableDao, IDeleteDao
     /// </summary>
     [Required]
     public ScmMenuTypesEnum types { get; set; }
-
-    [Required]
-    [StringLength(8)]
-    [SugarColumn(Length = 8, IsNullable = true)]
-    public string lang { get; set; }
 
     /// <summary>
     /// 菜单名称（默认）

@@ -24,14 +24,6 @@ public class ScmDevMenuDao : ScmDataDao, ISortableDao, IDeleteDao
     public ScmMenuTypesEnum types { get; set; }
 
     /// <summary>
-    /// TODO：下个版本删除
-    /// </summary>
-    [Required]
-    [StringLength(8)]
-    [SugarColumn(Length = 8, IsNullable = true)]
-    public string lang { get; set; }
-
-    /// <summary>
     /// 菜单名称（默认）
     /// </summary>
     [Required]

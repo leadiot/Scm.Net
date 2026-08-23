@@ -22,11 +22,6 @@ namespace Com.Scm.Dev
         public ScmMenuTypesEnum types { get; set; }
 
         /// <summary>
-        /// 显示语言
-        /// </summary>
-        public string lang { get; set; }
-
-        /// <summary>
         /// 权限标识
         /// </summary>
         public string codec { get; set; }

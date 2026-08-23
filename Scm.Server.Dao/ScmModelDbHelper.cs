@@ -229,6 +229,7 @@ namespace Com.Scm
 
             _SqlClient.Ado.UseTran(() =>
             {
+                var sql = "";
                 foreach (var line in lines)
                 {
                     if (string.IsNullOrWhiteSpace(line))
@@ -236,8 +237,8 @@ namespace Com.Scm
                         continue;
                     }
 
-                    var sql = line.Trim();
-                    if (sql.StartsWith("/*"))
+                    var tmp = line.Trim();
+                    if (tmp.StartsWith("/*"))
                     {
                         inComment = true;
                     }
@@ -246,10 +247,10 @@ namespace Com.Scm
                     {
                         if (!needRun)
                         {
-                            needRun = ver <= GetSqlVer(sql);
+                            needRun = ver <= GetSqlVer(tmp);
                         }
 
-                        if (sql.EndsWith("*/"))
+                        if (tmp.EndsWith("*/"))
                         {
                             inComment = false;
                         }
@@ -262,7 +263,16 @@ namespace Com.Scm
                         continue;
                     }
 
-                    _SqlClient.Ado.ExecuteCommand(_SqlClient.EscapeSql(line));
+                    sql += tmp + ' ';
+
+                    // 支持多行SQL
+                    if (!tmp.EndsWith(';'))
+                    {
+                        continue;
+                    }
+
+                    _SqlClient.Ado.ExecuteCommand(_SqlClient.EscapeSql(sql));
+                    sql = "";
                 }
             });
         }

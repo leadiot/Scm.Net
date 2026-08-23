@@ -15,7 +15,7 @@ namespace Com.Scm.Helper
         /// <summary>
         /// 数据版本
         /// </summary>
-        private const int VER = 7;
+        private const int VER = 9;
         /// <summary>
         /// 发行日期
         /// </summary>

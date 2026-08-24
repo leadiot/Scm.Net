@@ -6,8 +6,8 @@ namespace Com.Scm.Sys.AppInfo
     /// <summary>
     /// 当前应用介绍信息
     /// </summary>
-    [SugarTable("scm_sys_app")]
-    public class ScmSysAppDao : ScmDataDao
+    [SugarTable("scm_sys_app_info")]
+    public class ScmSysAppInfoDao : ScmDataDao
     {
         /// <summary>
         /// 应用类型

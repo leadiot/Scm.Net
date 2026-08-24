@@ -292,6 +292,53 @@ CREATE TABLE [scm_sys_sms_thread] (
 /** 修复API为""的问题 */
 UPDATE [scm_ur_role_auth] SET [api] = NULL WHERE [api] = '""';
 
+CREATE TABLE [scm_sys_app_info] (
+  [id] INTEGER NOT NULL PRIMARY KEY,
+  [types] INTEGER NOT NULL,
+  [code] varchar(16) NOT NULL,
+  [name] varchar(32) NOT NULL,
+  [slogan] varchar(64) NULL,
+  [project] varchar(128) NULL,
+  [homepage] varchar(128) NULL,
+  [helppage] varchar(128) NULL,
+  [content] varchar(256) NULL,
+  [email] varchar(64) NULL,
+  [qchat] varchar(64) NULL,
+  [row_status] INTEGER NOT NULL,
+  [create_time] INTEGER NOT NULL,
+  [create_user] INTEGER NOT NULL,
+  [update_time] INTEGER NOT NULL,
+  [update_user] INTEGER NOT NULL
+);
+
+CREATE TABLE [scm_sys_ver_info] (
+  [id] INTEGER NOT NULL PRIMARY KEY,
+  [major] INTEGER NOT NULL,
+  [minor] INTEGER NOT NULL,
+  [patch] INTEGER NOT NULL,
+  [build] INTEGER NOT NULL,
+  [ver_info] varchar(64) NOT NULL,
+  [ver_code] varchar(64) NOT NULL,
+  [ver_date] varchar(64) NOT NULL,
+  [phase] INTEGER NOT NULL,
+  [forced] INTEGER NOT NULL,
+  [current] INTEGER NOT NULL,
+  [url] varchar(512) NULL,
+  [size] INTEGER NOT NULL,
+  [hash] varchar(128) NULL,
+  [remark] varchar(2048) NULL,
+  [ver_min] varchar(64) NULL,
+  [ver_max] varchar(64) NULL,
+  [file] varchar(128) NULL,
+  [handle] INTEGER NOT NULL,
+  [result] INTEGER NOT NULL,
+  [row_status] INTEGER NOT NULL,
+  [create_time] INTEGER NOT NULL,
+  [create_user] INTEGER NOT NULL,
+  [update_time] INTEGER NOT NULL,
+  [update_user] INTEGER NOT NULL
+);
+
 /*
  * Ver:9
  * Date: TODO

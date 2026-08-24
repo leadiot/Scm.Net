@@ -8,8 +8,8 @@ namespace Com.Scm.Sys.VerInfo
     /// <summary>
     /// 当前应用的版本信息
     /// </summary>
-    [SugarTable("scm_sys_ver")]
-    public class ScmSysVerDao : ScmDataDao
+    [SugarTable("scm_sys_ver_info")]
+    public class ScmSysVerInfoDao : ScmDataDao
     {
         public int major { get; set; }
 

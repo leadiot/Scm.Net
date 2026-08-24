@@ -25,7 +25,7 @@ namespace Com.Scm.Controllers
         /// <param name="code"></param>
         /// <param name="section"></param>
         /// <returns></returns>
-        [HttpGet, AllowAnonymous]
+        [HttpGet("info")]
         public async Task<string> GetInfoAsync(string code, string section)
         {
             if (string.IsNullOrWhiteSpace(code))

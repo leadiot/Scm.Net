@@ -25,7 +25,7 @@ namespace Com.Scm.Controllers
         /// <param name="code"></param>
         /// <param name="section"></param>
         /// <returns></returns>
-        [HttpGet("{section}/{code}")]
+        [HttpGet("info")]
         public async Task<string> GetAsync(string section, string code)
         {
             if (string.IsNullOrWhiteSpace(code))

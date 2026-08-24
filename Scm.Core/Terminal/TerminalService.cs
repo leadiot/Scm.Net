@@ -39,21 +39,22 @@ namespace Com.Scm.Terminal
                 .FirstAsync();
             if (terminalDao == null)
             {
-                throw new BusinessException("无效的终端或口令！");
+                throw new BusinessException("无效的终端信息！");
+            }
+
+            if (terminalDao.types != request.types)
+            {
+                throw new BusinessException("无效的终端类型！");
             }
 
             if (terminalDao.pass != request.pass)
             {
-                throw new BusinessException("无效的终端或口令！");
+                throw new BusinessException("无效的终端代码或口令！");
             }
 
-            if (terminalDao.binded == ScmBoolEnum.True)
+            if (terminalDao.binded == ScmBoolEnum.True && !terminalDao.IsDemo())
             {
                 throw new BusinessException("设备已经绑定到其它终端！");
-            }
-            if (terminalDao.types != request.types)
-            {
-                throw new BusinessException("无效的终端类型！");
             }
 
             GenToken(terminalDao, token);

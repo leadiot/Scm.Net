@@ -147,5 +147,10 @@ namespace Com.Scm.Adm.Terminal
         {
             return TimeUtils.GetUnixTime(true) > expired;
         }
+
+        public bool IsDemo()
+        {
+            return usages == ScmUsagesEnum.Demo;
+        }
     }
 }

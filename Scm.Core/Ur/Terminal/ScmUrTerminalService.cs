@@ -230,7 +230,7 @@ namespace Com.Scm.Scm.Ur
 
             if (dao.IsDemo())
             {
-                throw new BusinessException("演示终端不允许释放！");
+                return true;
             }
 
             _ResHolder.Remove(dao.id);

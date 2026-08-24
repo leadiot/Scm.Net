@@ -1,6 +1,7 @@
-using Com.Scm.Dsa;
 using Com.Scm.Exceptions;
+using Com.Scm.Service;
 using Com.Scm.Ur.RoleAuth.Dvo;
+using Com.Scm.Utils;
 using Microsoft.AspNetCore.Mvc;
 using SqlSugar;
 
@@ -10,13 +11,8 @@ namespace Com.Scm.Ur.RoleAuth;
 /// 授权表服务接口
 /// </summary>
 [ApiExplorerSettings(GroupName = "ur")]
-public class ScmUrRoleAuthService : IApiService
+public class ScmUrRoleAuthService : ApiService
 {
-    private readonly SugarRepository<RoleAuthDao> _thisRepository;
-    private readonly SugarRepository<UserRoleDao> _userRoleRepository;
-    private readonly SugarRepository<RoleDao> _roleRepository;
-    private readonly SugarRepository<RoleConflictDao> _roleConflictRepository;
-
     /// <summary>
     /// 
     /// </summary>
@@ -24,15 +20,9 @@ public class ScmUrRoleAuthService : IApiService
     /// <param name="userRoleRepository"></param>
     /// <param name="roleConflictRepository"></param>
     /// <param name="roleRepository"></param>
-    public ScmUrRoleAuthService(SugarRepository<RoleAuthDao> thisRepository
-    , SugarRepository<UserRoleDao> userRoleRepository
-    , SugarRepository<RoleConflictDao> roleConflictRepository
-    , SugarRepository<RoleDao> roleRepository)
+    public ScmUrRoleAuthService(ISqlSugarClient sqlClient)
     {
-        _thisRepository = thisRepository;
-        _userRoleRepository = userRoleRepository;
-        _roleConflictRepository = roleConflictRepository;
-        _roleRepository = roleRepository;
+        _SqlClient = sqlClient;
     }
 
     /// <summary>
@@ -42,7 +32,7 @@ public class ScmUrRoleAuthService : IApiService
     [HttpGet("{roleId}")]
     public async Task<List<RoleAuthDto>> GetByRoleAsync(long roleId)
     {
-        return await _thisRepository.AsQueryable()
+        return await _SqlClient.Queryable<RoleAuthDao>()
             .Where(m => m.role_id == roleId && m.types == Enums.ScmRoleAuthTypesEnum.RoleMenu)
             .OrderBy(m => m.id)
             .Select<RoleAuthDto>()
@@ -56,7 +46,9 @@ public class ScmUrRoleAuthService : IApiService
     [HttpGet("{userId}")]
     public async Task<List<string>> GetByUserAsync(long userId)
     {
-        var model = await _userRoleRepository.GetListAsync(m => m.user_id == userId);
+        var model = await _SqlClient.Queryable<UserRoleDao>()
+            .Where(m => m.user_id == userId)
+            .ToListAsync();
         return model.Select(m => m.role_id.ToString()).ToList();
     }
 
@@ -68,7 +60,7 @@ public class ScmUrRoleAuthService : IApiService
     public async Task AddRoleAsync(SysAuthorityAdminByRoleParam param)
     {
         //根据角色查询互斥内容
-        var roleConflict = await _roleConflictRepository.GetListAsync();
+        var roleConflict = await _SqlClient.Queryable<RoleConflictDao>().ToListAsync();
         if (roleConflict.Count > 0)
         {
             if (roleConflict.Any(item => param.RoleArr.Contains(item.rolea_id.ToString()) && param.RoleArr.Contains(item.roleb_id.ToString())))
@@ -78,9 +70,11 @@ public class ScmUrRoleAuthService : IApiService
         }
 
         //查询角色列表
-        var roleList = await _roleRepository.GetListAsync(m => param.RoleArr.Contains(m.id.ToString()));
+        var roleList = await _SqlClient.Queryable<RoleDao>().Where(m => param.RoleArr.Contains(m.id.ToString())).ToListAsync();
         //查询已授权角色信息
-        var adminRoleList = await _userRoleRepository.GetListAsync(m => param.RoleArr.Contains(m.role_id.ToString()));
+        var adminRoleList = await _SqlClient.Queryable<UserRoleDao>()
+            .Where(m => param.RoleArr.Contains(m.role_id.ToString()))
+            .ToListAsync();
         foreach (var item in roleList)
         {
             if (item is { max_length: 0 })
@@ -95,7 +89,7 @@ public class ScmUrRoleAuthService : IApiService
         }
 
         var addRole = new List<UserRoleDao>();
-        var adminRoleArr = await _userRoleRepository.GetListAsync(m => param.AdminArr.Contains(m.user_id.ToString()));
+        var adminRoleArr = await _SqlClient.Queryable<UserRoleDao>().Where(m => param.AdminArr.Contains(m.user_id.ToString())).ToListAsync();
         foreach (var item in param.AdminArr)
         {
             var roleIds = adminRoleArr.Where(m => m.user_id == long.Parse(item))
@@ -105,7 +99,7 @@ public class ScmUrRoleAuthService : IApiService
         }
         if (addRole.Count > 0)
         {
-            await _userRoleRepository.InsertRangeAsync(addRole);
+            await _SqlClient.InsertAsync(addRole);
         }
     }
 
@@ -116,7 +110,9 @@ public class ScmUrRoleAuthService : IApiService
     /// <returns></returns>
     public async Task<bool> AddAsync(SysAuthorityParam model)
     {
-        await _thisRepository.DeleteAsync(m => m.role_id == model.RoleId && m.types == Enums.ScmRoleAuthTypesEnum.RoleMenu);
+        await _SqlClient.Deleteable<RoleAuthDao>()
+            .Where(m => m.role_id == model.RoleId && m.types == Enums.ScmRoleAuthTypesEnum.RoleMenu)
+            .ExecuteCommandAsync();
         var list = model.Menus.Select(item => new RoleAuthDao()
         {
             role_id = model.RoleId,
@@ -125,6 +121,6 @@ public class ScmUrRoleAuthService : IApiService
             types = Enums.ScmRoleAuthTypesEnum.RoleMenu
         }).ToList();
 
-        return await _thisRepository.InsertRangeAsync(list);
+        return await _SqlClient.InsertAsync<RoleAuthDao>(list) > 0;
     }
 }

@@ -314,6 +314,10 @@ namespace Com.Scm.Helper
             var aboutHistoryDao = CreateMenu(1000000000000004400, "about-history", "更新历史", aboutDao.id, 4, 4, "/about/ver/scm.net", "about/ver", "sc-file-text-line");
             roleAdminList.Add(new RoleAuthDao { role_id = roleAdminDao.id, auth_id = aboutHistoryDao.id, types = ScmRoleAuthTypesEnum.RoleMenu });
 
+            foreach (var role in roleAdminList)
+            {
+                role.PrepareCreate(UserDto.SYS_ID);
+            }
             _SqlClient.Insertable(roleAdminList).ExecuteCommand();
 
             // Root

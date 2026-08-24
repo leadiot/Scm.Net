@@ -223,12 +223,20 @@ namespace Com.Scm
                 return;
             }
 
-            var lines = File.ReadAllLines(file);
-            var inComment = false;
-            var needRun = false;
-
             _SqlClient.Ado.UseTran(() =>
             {
+                ExecuteSqlTrans(file, ver);
+            });
+        }
+
+        private void ExecuteSqlTrans(string file, int ver)
+        {
+            try
+            {
+                var lines = File.ReadAllLines(file);
+                var inComment = false;
+                var needRun = false;
+
                 var sql = "";
                 foreach (var line in lines)
                 {
@@ -274,7 +282,11 @@ namespace Com.Scm
                     _SqlClient.Ado.ExecuteCommand(_SqlClient.EscapeSql(sql));
                     sql = "";
                 }
-            });
+            }
+            catch (Exception exp)
+            {
+                LogUtils.Error(exp);
+            }
         }
 
         /// <summary>

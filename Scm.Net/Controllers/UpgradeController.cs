@@ -1,10 +1,10 @@
 using Com.Scm.Config;
-using Com.Scm.Dev;
 using Com.Scm.Dto;
 using Com.Scm.Enums;
 using Com.Scm.Exceptions;
 using Com.Scm.Response;
-using Com.Scm.Sys;
+using Com.Scm.Sys.AppInfo;
+using Com.Scm.Sys.VerInfo;
 using Com.Scm.Upgrade.Config;
 using Com.Scm.Utils;
 using Microsoft.AspNetCore.Authorization;
@@ -42,7 +42,7 @@ namespace Com.Scm.Controllers
             var appInfo = new ScmAppInfo();
 
             // TODO：此处需要调整，ScmDevApp代表的是系统支持的三方应用的信息，而非本应用的信息；
-            var dao = await _SqlClient.Queryable<ScmDevAppDao>()
+            var dao = await _SqlClient.Queryable<ScmSysAppDao>()
                 .FirstAsync(a => a.code == ScmServerEnv.APP_CODE);
             if (dao == null)
             {
@@ -50,13 +50,13 @@ namespace Com.Scm.Controllers
                 appInfo.code = ScmServerEnv.APP_CODE;
                 appInfo.name = ScmServerEnv.APP_NAME;
                 appInfo.slogan = ScmServerEnv.APP_SLOGAN;
-                appInfo.website = ScmServerEnv.APP_WEBSITE;
-                //appInfo.help = "";
+                appInfo.homepage = ScmServerEnv.APP_HOMEPAGE;
+                appInfo.helppage = ScmServerEnv.APP_HELPPAGE;
                 appInfo.content = "";
             }
             else
             {
-                appInfo = new ScmAppInfo();
+                appInfo = dao.Adapt<ScmAppInfo>();
             }
 
             return appInfo;
@@ -69,7 +69,7 @@ namespace Com.Scm.Controllers
         [HttpGet("verInfo")]
         public async Task<ScmVerInfo> GetVerInfoAsync()
         {
-            var latestUpgrade = await _SqlClient.Queryable<ScmSysUpgradeDao>()
+            var latestUpgrade = await _SqlClient.Queryable<ScmSysVerDao>()
                 .FirstAsync(a => a.build == ScmServerEnv.BUILD);
 
             ScmVerInfo verInfo = null;
@@ -101,7 +101,7 @@ namespace Com.Scm.Controllers
         public async Task<ScmVerInfo> CheckUpdateAsync()
         {
             // 先检查本地缓存信息
-            var dao = await _SqlClient.Queryable<ScmSysUpgradeDao>()
+            var dao = await _SqlClient.Queryable<ScmSysVerDao>()
                 .Where(a => a.build > ScmServerEnv.BUILD)
                 .FirstAsync();
             if (dao != null)
@@ -129,12 +129,12 @@ namespace Com.Scm.Controllers
             }
 
             var dto = response.Data;
-            dao = await _SqlClient.Queryable<ScmSysUpgradeDao>()
+            dao = await _SqlClient.Queryable<ScmSysVerDao>()
                 .Where(a => a.build == dto.build)
                 .FirstAsync();
             if (dao == null)
             {
-                dao = dto.Adapt<ScmSysUpgradeDao>();
+                dao = dto.Adapt<ScmSysVerDao>();
                 await _SqlClient.Insertable(dao).ExecuteCommandAsync();
             }
 
@@ -149,7 +149,7 @@ namespace Com.Scm.Controllers
         [HttpGet("download")]
         public async Task<bool> DownloadUpdate(long id)
         {
-            var dao = await _SqlClient.Queryable<ScmSysUpgradeDao>()
+            var dao = await _SqlClient.Queryable<ScmSysVerDao>()
                 .FirstAsync(a => a.id == id);
             if (dao == null)
             {
@@ -186,7 +186,7 @@ namespace Com.Scm.Controllers
         [HttpGet("upgrade")]
         public async Task<bool> UpgradeAsync(long id)
         {
-            var dao = await _SqlClient.Queryable<ScmSysUpgradeDao>()
+            var dao = await _SqlClient.Queryable<ScmSysVerDao>()
                 .FirstAsync(a => a.id == id);
             if (dao == null)
             {
@@ -255,14 +255,14 @@ namespace Com.Scm.Controllers
         [HttpGet("verList")]
         public async Task<List<ScmVerInfo>> GetVersionHistoryAsync()
         {
-            var upgrades = await _SqlClient.Queryable<ScmSysUpgradeDao>()
+            var upgrades = await _SqlClient.Queryable<ScmSysVerDao>()
                 .OrderByDescending(u => u.id)
                 .ToListAsync();
 
             return upgrades.Select(MapToVerInfo).ToList();
         }
 
-        private ScmVerInfo MapToVerInfo(ScmSysUpgradeDao upgradeInfo)
+        private ScmVerInfo MapToVerInfo(ScmSysVerDao upgradeInfo)
         {
             return new ScmVerInfo
             {
@@ -283,7 +283,7 @@ namespace Com.Scm.Controllers
             };
         }
 
-        private void SaveUpgradeJson(string installPath, string launchFile, ScmSysUpgradeDao verInfo)
+        private void SaveUpgradeJson(string installPath, string launchFile, ScmSysVerDao verInfo)
         {
             var config = new UpgradeConfig();
             config.Title = "Scm.Net";

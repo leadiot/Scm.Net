@@ -3,10 +3,13 @@ using Com.Scm.Enums;
 using SqlSugar;
 using System.ComponentModel.DataAnnotations;
 
-namespace Com.Scm.Sys
+namespace Com.Scm.Sys.VerInfo
 {
-    [SugarTable("scm_sys_upgrade")]
-    public class ScmSysUpgradeDao : ScmDataDao
+    /// <summary>
+    /// 当前应用的版本信息
+    /// </summary>
+    [SugarTable("scm_sys_ver")]
+    public class ScmSysVerDao : ScmDataDao
     {
         public int major { get; set; }
 

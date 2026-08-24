@@ -68,7 +68,11 @@
         /// <summary>
         /// 应用首页
         /// </summary>
-        public const string APP_WEBSITE = "http://www.c-scm.net";
+        public const string APP_HOMEPAGE = "http://www.c-scm.net";
+        /// <summary>
+        /// 帮助首页
+        /// </summary>
+        public const string APP_HELPPAGE = "https://gitee.com/leadiot/scm.net";
 
         /// <summary>
         /// 检测更新路径

@@ -1,21 +1,20 @@
 ﻿using Com.Scm.Config;
-using Com.Scm.Service;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Com.Scm.About
+namespace Com.Scm.Controllers
 {
-    /// <summary>
-    /// 
-    /// </summary>
-    [ApiExplorerSettings(GroupName = "about")]
-    public class ScmAboutService : ApiService
+    [AllowAnonymous]
+    [ApiExplorerSettings(GroupName = "scm")]
+    public class AboutController : ApiController
     {
+        private EnvConfig _EnvConfig;
+
         /// <summary>
         /// 
         /// </summary>
         /// <param name="envConfig"></param>
-        public ScmAboutService(EnvConfig envConfig)
+        public AboutController(EnvConfig envConfig)
         {
             _EnvConfig = envConfig;
         }
@@ -31,7 +30,7 @@ namespace Com.Scm.About
         {
             if (string.IsNullOrWhiteSpace(code))
             {
-                code = ScmEnv.APP_CODE;
+                code = ScmServerEnv.APP_CODE;
             }
             if (string.IsNullOrEmpty(section))
             {

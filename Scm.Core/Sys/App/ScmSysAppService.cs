@@ -63,7 +63,7 @@ namespace Com.Scm.Sys.App
         {
             if (string.IsNullOrWhiteSpace(code))
             {
-                code = ScmEnv.APP_CODE;
+                code = "";
             }
             if (string.IsNullOrEmpty(section))
             {

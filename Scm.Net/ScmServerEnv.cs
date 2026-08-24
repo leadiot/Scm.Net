@@ -51,6 +51,21 @@
         public static readonly string VER_FULL = $"{VER_INFO} @Build {VER_CODE}";
 
         /// <summary>
+        /// 应用代码
+        /// </summary>
+        public const string APP_CODE = "Scm.Net";
+
+        /// <summary>
+        /// 应用名称
+        /// </summary>
+        public const string APP_NAME = "Scm.Net";
+
+        /// <summary>
+        /// 应用简介
+        /// </summary>
+        public const string APP_SLOGAN = "";
+
+        /// <summary>
         /// 检测更新路径
         /// </summary>
         public const string CheckUpgradeUrl = "";

@@ -3,11 +3,6 @@
     public partial class ScmEnv
     {
         /// <summary>
-        /// 应用代码
-        /// </summary>
-        public const string APP_CODE = "Scm.Net";
-
-        /// <summary>
         /// 发行
         /// </summary>
         public const string ISSUER = "Scm.Net";

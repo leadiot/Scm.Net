@@ -36,7 +36,7 @@ namespace Com.Scm.Controllers
         /// 应用信息
         /// </summary>
         /// <returns></returns>
-        [HttpGet]
+        [HttpGet("appInfo")]
         public async Task<ScmAppInfo> GetAppInfoAsync()
         {
             var appInfo = new ScmAppInfo();
@@ -50,6 +50,8 @@ namespace Com.Scm.Controllers
                 appInfo.code = ScmServerEnv.APP_CODE;
                 appInfo.name = ScmServerEnv.APP_NAME;
                 appInfo.slogan = ScmServerEnv.APP_SLOGAN;
+                appInfo.website = ScmServerEnv.APP_WEBSITE;
+                //appInfo.help = "";
                 appInfo.content = "";
             }
             else
@@ -64,11 +66,11 @@ namespace Com.Scm.Controllers
         /// 版本信息
         /// </summary>
         /// <returns></returns>
-        [HttpGet]
+        [HttpGet("verInfo")]
         public async Task<ScmVerInfo> GetVerInfoAsync()
         {
             var latestUpgrade = await _SqlClient.Queryable<ScmSysUpgradeDao>()
-                .FirstAsync(a => a.ver_code == ScmServerEnv.VER_CODE);
+                .FirstAsync(a => a.build == ScmServerEnv.BUILD);
 
             ScmVerInfo verInfo = null;
             if (latestUpgrade == null)

@@ -66,6 +66,11 @@
         public const string APP_SLOGAN = "";
 
         /// <summary>
+        /// 应用首页
+        /// </summary>
+        public const string APP_WEBSITE = "http://www.c-scm.net";
+
+        /// <summary>
         /// 检测更新路径
         /// </summary>
         public const string CheckUpgradeUrl = "";

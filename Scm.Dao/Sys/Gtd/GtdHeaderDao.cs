@@ -63,6 +63,16 @@ namespace Com.Scm.Sys.Gtd
         public long next_time { get; set; }
 
         /// <summary>
+        /// 终端ID
+        /// </summary>
+        public long terminal_id { get; set; }
+
+        /// <summary>
+        /// 数据修改时间
+        /// </summary>
+        public long modify_time { get; set; }
+
+        /// <summary>
         /// 处理状态
         /// </summary>
         public ScmGtdHandleEnum handle { get; set; }
@@ -71,5 +81,12 @@ namespace Com.Scm.Sys.Gtd
         /// 删除标识
         /// </summary>
         public ScmRowDeleteEnum row_delete { get; set; } = ScmRowDeleteEnum.No;
+
+        public override void PrepareCreate(long userId)
+        {
+            base.PrepareCreate(userId);
+
+            modify_time = update_time;
+        }
     }
 }

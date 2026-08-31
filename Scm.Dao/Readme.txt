@@ -1,0 +1,3 @@
+﻿有关Dao设计的说明：
+1、有些数据需要具体到terminal_id属性，用于说明数据创建时的来源终端；
+2、数据表中modify_time和update_time定位不完全相同：update_time仅代表此记录的修改时间，modify_time代表数据关联的内容（如文件、原始记录等）的修改时间。

@@ -66,5 +66,15 @@ namespace Com.Scm.Sys.Gtd
         /// 作业状态
         /// </summary>
         public ScmGtdHandleEnum handle { get; set; }
+
+        /// <summary>
+        /// 终端ID
+        /// </summary>
+        public long terminal_id { get; set; }
+
+        /// <summary>
+        /// 数据更新时间
+        /// </summary>
+        public long modify_time { get; set; }
     }
 }

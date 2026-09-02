@@ -13,7 +13,7 @@ namespace Com.Scm.Sys.Sms
     [SugarTable("scm_sys_sms")]
     public class ScmSysSmsDao : ScmUserDataDao, IDeleteDao
     {
-        public const string FILE_DIR = "sms";
+        public const string FOLDER_NAME = "sms";
 
         /// <summary>
         /// 会话 ID

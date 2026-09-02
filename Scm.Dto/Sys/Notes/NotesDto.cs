@@ -7,10 +7,6 @@ namespace Com.Scm.Sys.Notes
     public class NotesDto : ScmDataDto
     {
         public const long SYS_ID = 1000000000000000001;
-        /// <summary>
-        /// 
-        /// </summary>
-        public const string FOLDER_NAME = "notes";
 
         public const int SUMMARY_SIZE = 512;
         public const int CONTENT_SIZE = 2048;

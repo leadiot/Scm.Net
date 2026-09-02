@@ -99,14 +99,7 @@ namespace Com.Scm.Sys.Notes
                 dvo.title = dao.title;
                 dvo.content = dao.summary;
 
-                if (dao.files > 0)
-                {
-                    var content = _EnvConfig.ReadFile(NotesDto.FOLDER_NAME, dao.GetFileName());
-                    if (!string.IsNullOrWhiteSpace(content))
-                    {
-                        dvo.content = content;
-                    }
-                }
+                ReadFile(dao);
             }
 
             return dvo;
@@ -303,6 +296,20 @@ namespace Com.Scm.Sys.Notes
             return response;
         }
 
+        private void ReadFile(ScmSysNotesDao dao)
+        {
+            if (dao.files < 1)
+            {
+                return;
+            }
+
+            var content = _EnvConfig.ReadFile(ScmSysNotesDao.FOLDER_NAME, dao.GetFileName());
+            if (!string.IsNullOrWhiteSpace(content))
+            {
+                dao.content = content;
+            }
+        }
+
         private void SaveFile(ScmSysNotesDao dao, NotesDto dto)
         {
             if (dao.files < 1)
@@ -310,7 +317,7 @@ namespace Com.Scm.Sys.Notes
                 return;
             }
 
-            _EnvConfig.SaveFile(NotesDto.FOLDER_NAME, dao.GetFileName(), dto.content ?? "");
+            _EnvConfig.SaveFile(ScmSysNotesDao.FOLDER_NAME, dao.GetFileName(), dto.content ?? "");
         }
 
         private void UpdateModifyTime(ScmSysNotesDao dao)

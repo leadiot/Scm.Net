@@ -14,6 +14,11 @@ namespace Com.Scm.Sys.Notes
     public class ScmSysNotesDao : ScmUserDataDao, IDeleteDao
     {
         /// <summary>
+        /// 
+        /// </summary>
+        public const string FOLDER_NAME = "notes";
+
+        /// <summary>
         /// 显示排序
         /// </summary>
         public int od { get; set; }

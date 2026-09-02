@@ -13,7 +13,7 @@ namespace Com.Scm.Sys.GtdHeader
     /// <summary>
     /// 待办服务接口
     /// </summary>
-    [ApiExplorerSettings(GroupName = "gtd")]
+    [ApiExplorerSettings(GroupName = "scm")]
     public class ScmSysGtdHeaderService : ApiService
     {
         private readonly SugarRepository<GtdHeaderDao> _thisRepository;
@@ -128,6 +128,7 @@ namespace Com.Scm.Sys.GtdHeader
             }
 
             dao = model.Adapt(dao);
+            dao.modify_time = TimeUtils.GetUnixTime();
             return await _thisRepository.UpdateAsync(dao);
         }
 
@@ -146,6 +147,7 @@ namespace Com.Scm.Sys.GtdHeader
             }
 
             dao.handle = model.handle;
+            dao.modify_time = TimeUtils.GetUnixTime();
             return await _thisRepository.UpdateAsync(dao);
         }
 
@@ -180,9 +182,10 @@ namespace Com.Scm.Sys.GtdHeader
         /// <param name="ids">逗号分隔</param>
         /// <returns></returns>
         [HttpDelete]
-        public async Task<int> DeleteAsync(string ids)
+        public async Task<int> RemoveAsync(string ids)
         {
-            return await DeleteRecordAsync(_thisRepository, ids.ToListLong());
+            //return await DeleteRecordAsync(_thisRepository, ids.ToListLong());
+            return await RemoveRecordAsync(_thisRepository, ids.ToListLong());
         }
     }
 }

@@ -1,3 +1,4 @@
+using Com.Scm.Dao;
 using Com.Scm.Dao.User;
 using Com.Scm.Enums;
 using Com.Scm.Sys.Enums;
@@ -10,7 +11,7 @@ namespace Com.Scm.Sys.Gtd
     /// 待办（头档）
     /// </summary>
     [SugarTable("scm_gtd_header")]
-    public class GtdHeaderDao : ScmUserDataDao
+    public class GtdHeaderDao : ScmUserDataDao, IDeleteDao
     {
         /// <summary>
         /// 

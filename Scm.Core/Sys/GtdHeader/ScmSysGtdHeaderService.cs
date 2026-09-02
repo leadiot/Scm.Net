@@ -4,6 +4,7 @@ using Com.Scm.Service;
 using Com.Scm.Sys.Enums;
 using Com.Scm.Sys.Gtd;
 using Com.Scm.Sys.GtdHeader.Dvo;
+using Com.Scm.Ur;
 using Com.Scm.Utils;
 using Microsoft.AspNetCore.Mvc;
 
@@ -15,8 +16,6 @@ namespace Com.Scm.Sys.GtdHeader
     [ApiExplorerSettings(GroupName = "gtd")]
     public class ScmSysGtdHeaderService : ApiService
     {
-        public const long SYS_ID = 1738391109933076480;
-
         private readonly SugarRepository<GtdHeaderDao> _thisRepository;
 
         public ScmSysGtdHeaderService(SugarRepository<GtdHeaderDao> thisRepository, IResHolder resHolder)
@@ -110,6 +109,7 @@ namespace Com.Scm.Sys.GtdHeader
             var dao = model.Adapt<GtdHeaderDao>();
             dao.handle = ScmGtdHandleEnum.Todo;
             dao.priority = ScmGtdPriorityEnum.Level4;
+            dao.terminal_id = ScmUrTerminalDto.DEFAULT_ID;
 
             return await _thisRepository.InsertAsync(dao);
         }

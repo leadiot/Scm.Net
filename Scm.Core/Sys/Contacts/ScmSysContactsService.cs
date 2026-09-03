@@ -234,7 +234,14 @@ namespace Com.Scm.Sys.Contacts
         [HttpDelete]
         public async Task<int> RemoveAsync(string ids)
         {
-            return await RemoveRecordAsync<ScmSysContactsDao>(_SqlClient, ids.ToListLong());
+            var idList = ids.ToListLong();
+            var qty = await RemoveRecordAsync<ScmSysContactsDao>(_SqlClient, idList);
+            await _SqlClient.Updateable<ScmSysContactsTerminalDao>()
+                .SetColumns(a => a.row_delete == ScmRowDeleteEnum.Yes)
+                .SetColumns(a => a.modify_time == TimeUtils.GetUnixTime())
+                .Where(a => idList.Contains(a.sys_id))
+                .ExecuteCommandAsync();
+            return qty;
         }
 
         /// <summary>

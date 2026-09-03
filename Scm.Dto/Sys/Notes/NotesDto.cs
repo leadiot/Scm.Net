@@ -120,6 +120,11 @@ namespace Com.Scm.Sys.Notes
         #endregion
 
         /// <summary>
+        /// 修改时间
+        /// </summary>
+        public long modify_time { get; set; }
+
+        /// <summary>
         /// 版本信息
         /// </summary>
         public int ver { get; set; }

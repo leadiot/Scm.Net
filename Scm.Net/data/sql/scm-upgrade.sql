@@ -341,5 +341,7 @@ CREATE TABLE [scm_sys_ver_info] (
 
 /*
  * Ver:9
- * Date: TODO
+ * Date: 2026-09-25
  */
+ALTER TABLE [scm_gtd_header] ADD COLUMN [terminal_id] bigint NOT NULL DEFAULT 0;
+ALTER TABLE [scm_gtd_header] ADD COLUMN [modify_time] bigint NOT NULL DEFAULT 0;

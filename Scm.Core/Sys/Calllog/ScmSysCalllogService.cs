@@ -205,7 +205,7 @@ namespace Com.Scm.Sys.Calllog
         /// </summary>
         /// <param name="request"></param>
         /// <returns></returns>
-        [HttpPost, AllowAnonymous, NoJsonResult]
+        [HttpPost, NoJsonResult]
         public async Task<CalllogUploadResponse> UploadAsync([FromForm] ScmUploadRequest request)
         {
             var response = new CalllogUploadResponse();

@@ -58,7 +58,7 @@ namespace Com.Scm.Sys.App
         /// <param name="code"></param>
         /// <param name="section"></param>
         /// <returns></returns>
-        [HttpGet, AllowAnonymous]
+        [AllowAnonymous]
         public async Task<string> GetInfoAsync(string code, string section)
         {
             if (string.IsNullOrWhiteSpace(code))

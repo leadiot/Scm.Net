@@ -10,6 +10,7 @@ namespace Com.Scm.Controllers
     /// <summary>
     /// 心跳服务
     /// </summary>
+    [NoAuditLog]
     [AllowAnonymous]
     [ApiExplorerSettings(GroupName = "scm")]
     public class HbController : ApiController
@@ -32,6 +33,12 @@ namespace Com.Scm.Controllers
             return msg;
         }
 
+        [HttpGet("Time")]
+        public long GetTime(long time)
+        {
+            return TimeUtils.GetUnixTime();
+        }
+
         /// <summary>
         /// 终端设备心跳
         /// </summary>
@@ -44,7 +51,6 @@ namespace Com.Scm.Controllers
         /// <param name="dt">心跳时间(Datetime)</param>
         /// <returns></returns>
         [HttpPost("hd")]
-        [NoAuditLog]
         public async Task<bool> HdAsync([FromForm] string ip,
             [FromForm] string ma,
             [FromForm] string hn,

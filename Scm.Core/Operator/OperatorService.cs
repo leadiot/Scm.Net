@@ -89,7 +89,7 @@ public class OperatorService : ApiService
     /// </summary>
     /// <param name="request"></param>
     /// <returns></returns>
-    [HttpGet, AllowAnonymous]
+    [AllowAnonymous]
     public async Task<DateThemeResponse> GetDateThemeAsync(DateThemeRequest request)
     {
         var date = request.GetDate();

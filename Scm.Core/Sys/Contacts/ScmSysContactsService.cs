@@ -249,7 +249,7 @@ namespace Com.Scm.Sys.Contacts
         /// </summary>
         /// <param name="request"></param>
         /// <returns></returns>
-        [HttpPost, AllowAnonymous, NoJsonResult]
+        [HttpPost, NoJsonResult]
         public async Task<ContactUploadResponse> UploadAsync([FromForm] ScmUploadRequest request)
         {
             var response = new ContactUploadResponse();

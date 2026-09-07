@@ -322,8 +322,8 @@ public class ScmSysFileService : IApiService
     /// </summary>
     /// <param name="file"></param>
     /// <returns></returns>
-    [HttpGet, AllowAnonymous, NoJsonResult, NoAuditLog]
-    public async Task<IActionResult> ViewAsync(string file)
+    [AllowAnonymous, NoJsonResult, NoAuditLog]
+    public async Task<IActionResult> GetViewAsync(string file)
     {
         var path = _envConfig.GetDataPath(file);
         if (!System.IO.File.Exists(path))

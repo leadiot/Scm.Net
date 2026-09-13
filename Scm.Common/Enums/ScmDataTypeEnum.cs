@@ -13,7 +13,7 @@ namespace Com.Scm.Enums
         Long = 3,
         [Description("单精度")]
         Float = 4,
-        [Description("又精度")]
+        [Description("双精度")]
         Double = 5,
         [Description("布尔")]
         Bool = 6,

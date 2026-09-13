@@ -533,7 +533,7 @@ namespace Com.Scm.Configure.Startup
                 };
             });
 
-            var sqlDir = envConfig.GetDataPath("sql");
+            var sqlDir = envConfig.GetRootPath("sql");
             IModelDbHelper dbHelper = new ScmDbHelper();
             dbHelper.Init(sugarScope, sqlDir);
             dbHelper.InitDb();

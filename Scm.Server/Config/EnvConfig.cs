@@ -7,6 +7,8 @@ namespace Com.Scm.Config
     {
         public const string NAME = "Env";
 
+        public string RootDir { get; private set; }
+
         /// <summary>
         /// 数据目录物理路径，可以是相对或绝对路径。
         /// </summary>
@@ -85,11 +87,35 @@ namespace Com.Scm.Config
 
         public virtual void Prepare(WebApplicationBuilder builder)
         {
-            DataDir = GetPath(builder.Environment.ContentRootPath, DataDir, "data");
-            if (DataDir.EndsWith(ScmEnv.DirSeparator))
+            RootDir = builder.Environment.ContentRootPath;
+
+            if (string.IsNullOrEmpty(DataUri))
             {
-                DataDir = DataDir.Substring(0, DataDir.Length - 1);
+                DataUri = "/data";
             }
+
+            #region Data目录处理
+            var path = DataDir;
+            if (string.IsNullOrWhiteSpace(path))
+            {
+                path = "data";
+            }
+            path = ScmUtils.ToMachinePath(path);
+            if (!Path.IsPathRooted(path))
+            {
+                path = Path.Combine(RootDir, path);
+            }
+            if (!Directory.Exists(path))
+            {
+                var baseDir = Path.Combine(RootDir, "data");
+                FileUtils.CopyDir(baseDir, path);
+            }
+            if (path.EndsWith(ScmEnv.DirSeparator))
+            {
+                path = path.Substring(0, path.Length - 1);
+            }
+            DataDir = path;
+            #endregion
 
             Upload = GetPath(DataDir, Upload, "upload");
 
@@ -134,6 +160,11 @@ namespace Com.Scm.Config
         }
 
         #region 系统相关
+        public string GetRootPath(string path)
+        {
+            return Combine(RootDir, path);
+        }
+
         public string GetDataPath(string path)
         {
             return Combine(DataDir, path);

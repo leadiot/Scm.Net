@@ -7,7 +7,15 @@ namespace Com.Scm.Config
     {
         public const string NAME = "Env";
 
+        /// <summary>
+        /// 应用跟目录，通常是应用程序的根目录，包含应用程序的所有文件和子目录。
+        /// </summary>
         public string RootDir { get; private set; }
+
+        /// <summary>
+        /// 初始化数据目录，用于数据初始化及数据升级
+        /// </summary>
+        public string InitDir { get; private set; }
 
         /// <summary>
         /// 数据目录物理路径，可以是相对或绝对路径。
@@ -89,6 +97,8 @@ namespace Com.Scm.Config
         {
             RootDir = builder.Environment.ContentRootPath;
 
+            InitDir = Path.Combine(RootDir, "init");
+
             if (string.IsNullOrEmpty(DataUri))
             {
                 DataUri = "/data";
@@ -160,11 +170,31 @@ namespace Com.Scm.Config
         }
 
         #region 系统相关
+        /// <summary>
+        /// 应用根目录（和应用程序相关）
+        /// </summary>
+        /// <param name="path"></param>
+        /// <returns></returns>
         public string GetRootPath(string path)
         {
             return Combine(RootDir, path);
         }
 
+        /// <summary>
+        /// 数据目录（和升级相关）
+        /// </summary>
+        /// <param name="path"></param>
+        /// <returns></returns>
+        public string GetInitPath(string path)
+        {
+            return Combine(InitDir, path);
+        }
+
+        /// <summary>
+        /// 数据目录（和用户相关）
+        /// </summary>
+        /// <param name="path"></param>
+        /// <returns></returns>
         public string GetDataPath(string path)
         {
             return Combine(DataDir, path);

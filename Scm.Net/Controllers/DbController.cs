@@ -219,7 +219,7 @@ namespace Com.Scm.Controllers
             var response = new ScmApiResponse();
             try
             {
-                var baseDir = _EnvConfig.GetRootPath("sql");
+                var baseDir = _EnvConfig.GetInitPath("sql");
 
                 IModelDbHelper helper = new ScmDbHelper();
                 helper.Init(_SqlClient, baseDir);
@@ -247,7 +247,7 @@ namespace Com.Scm.Controllers
             var response = new ScmApiResponse();
             try
             {
-                var baseDir = _EnvConfig.GetRootPath("sql");
+                var baseDir = _EnvConfig.GetInitPath("sql");
 
                 IModelDbHelper helper = new ScmDbHelper();
                 helper.Init(_SqlClient, baseDir);

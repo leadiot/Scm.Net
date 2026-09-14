@@ -1,4 +1,5 @@
 ﻿using Com.Scm.Dao;
+using Com.Scm.Dao.Sync;
 using Com.Scm.Dao.User;
 using Com.Scm.Enums;
 using Com.Scm.Utils;
@@ -11,7 +12,7 @@ namespace Com.Scm.Sys.Sms
     /// 短信
     /// </summary>
     [SugarTable("scm_sys_sms")]
-    public class ScmSysSmsDao : ScmUserDataDao, IDeleteDao
+    public class ScmSysSmsDao : ScmUserDataDao, IDeleteDao, ISyncDao
     {
         public const string FOLDER_NAME = "sms";
 
@@ -123,6 +124,11 @@ namespace Com.Scm.Sys.Sms
         /// </summary>
         public ScmRowDeleteEnum row_delete { get; set; }
 
+        /// <summary>
+        /// 同步时间
+        /// </summary>
+        public long sync_time { get; set; }
+
         public override void PrepareCreate(long userId)
         {
             base.PrepareCreate(userId);
@@ -144,6 +150,8 @@ namespace Com.Scm.Sys.Sms
 
         private void CheckNotNull()
         {
+            sync_time = update_time;
+
             if (name == null) name = "";
             if (body == null) body = "";
             if (subject == null) subject = "";

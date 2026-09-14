@@ -1,7 +1,9 @@
 using Com.Scm.Dao;
+using Com.Scm.Dao.Sync;
 using Com.Scm.Dao.User;
 using Com.Scm.Enums;
 using Com.Scm.Sys.Enums;
+using Com.Scm.Utils;
 using SqlSugar;
 using System.ComponentModel.DataAnnotations;
 
@@ -11,7 +13,7 @@ namespace Com.Scm.Sys.Gtd
     /// 待办（头档）
     /// </summary>
     [SugarTable("scm_gtd_header")]
-    public class GtdHeaderDao : ScmUserDataDao, IDeleteDao
+    public class GtdHeaderDao : ScmUserDataDao, IDeleteDao, ISyncDao
     {
         /// <summary>
         /// 
@@ -83,11 +85,28 @@ namespace Com.Scm.Sys.Gtd
         /// </summary>
         public ScmRowDeleteEnum row_delete { get; set; } = ScmRowDeleteEnum.No;
 
+        /// <summary>
+        /// 同步时间
+        /// </summary>
+        public long sync_time { get; set; }
+
         public override void PrepareCreate(long userId)
         {
             base.PrepareCreate(userId);
 
-            modify_time = update_time;
+            if (!ScmUtils.IsNormalId(terminal_id))
+            {
+                terminal_id = ScmEnv.DEFAULT_ID;
+            }
+
+            sync_time = update_time;
+        }
+
+        public override void PrepareUpdate(long userId)
+        {
+            base.PrepareUpdate(userId);
+
+            sync_time = update_time;
         }
     }
 }

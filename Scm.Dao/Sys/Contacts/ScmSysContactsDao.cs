@@ -1,13 +1,15 @@
 ﻿using Com.Scm.Dao;
+using Com.Scm.Dao.Sync;
 using Com.Scm.Dao.User;
 using Com.Scm.Enums;
+using Com.Scm.Utils;
 using SqlSugar;
 using System.ComponentModel.DataAnnotations;
 
 namespace Com.Scm.Sys.Contacts
 {
     [SugarTable("scm_sys_contacts")]
-    public class ScmSysContactsDao : ScmUserDataDao, IDeleteDao
+    public class ScmSysContactsDao : ScmUserDataDao, IDeleteDao, ISyncDao
     {
         /// <summary>
         /// 联系人全名（DISPLAY_NAME）
@@ -159,6 +161,11 @@ namespace Com.Scm.Sys.Contacts
         /// </summary>
         public ScmRowDeleteEnum row_delete { get; set; }
 
+        /// <summary>
+        /// 同步时间
+        /// </summary>
+        public long sync_time { get; set; }
+
         public override void PrepareCreate(long userId)
         {
             base.PrepareCreate(userId);
@@ -175,6 +182,8 @@ namespace Com.Scm.Sys.Contacts
 
         private void CheckNotNull()
         {
+            sync_time = TimeUtils.GetUnixTime();
+
             if (dates == null) dates = new List<Dictionary<string, string>>();
             if (phones == null) phones = new List<Dictionary<string, string>>();
             if (emails == null) emails = new List<Dictionary<string, string>>();

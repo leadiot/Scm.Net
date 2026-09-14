@@ -110,6 +110,7 @@ namespace Com.Scm.Sys.GtdHeader
             dao.handle = ScmGtdHandleEnum.Todo;
             dao.priority = ScmGtdPriorityEnum.Level4;
             dao.terminal_id = ScmUrTerminalDto.DEFAULT_ID;
+            dao.modify_time = TimeUtils.GetUnixTime();
 
             return await _thisRepository.InsertAsync(dao);
         }

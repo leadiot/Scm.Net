@@ -6,7 +6,6 @@ using Com.Scm.Service;
 using Com.Scm.Sys.Contacts.Dvo;
 using Com.Scm.Ur;
 using Com.Scm.Utils;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SqlSugar;
 
@@ -178,7 +177,7 @@ namespace Com.Scm.Sys.Contacts
                 dao.modify_time = time;
                 await _SqlClient.UpdateAsync(dao);
 
-                UpdateModifyTime(dao);
+                UpdateSyncTime(dao);
             }
 
             dto.update_time = dao.update_time;
@@ -204,13 +203,13 @@ namespace Com.Scm.Sys.Contacts
 
             await _SqlClient.UpdateAsync(dao);
 
-            UpdateModifyTime(dao);
+            UpdateSyncTime(dao);
         }
 
-        private void UpdateModifyTime(ScmSysContactsDao dao)
+        private void UpdateSyncTime(ScmSysContactsDao dao)
         {
             _SqlClient.Updateable<ScmSysContactsTerminalDao>()
-                .SetColumns(a => a.modify_time == dao.modify_time)
+                .SetColumns(a => a.sync_time == dao.sync_time)
                 .SetColumns(a => a.update_time == dao.update_time)
                 .Where(a => a.sys_id == dao.id)
                 .ExecuteCommand();
@@ -238,7 +237,7 @@ namespace Com.Scm.Sys.Contacts
             var qty = await RemoveRecordAsync<ScmSysContactsDao>(_SqlClient, idList);
             await _SqlClient.Updateable<ScmSysContactsTerminalDao>()
                 .SetColumns(a => a.row_delete == ScmRowDeleteEnum.Yes)
-                .SetColumns(a => a.modify_time == TimeUtils.GetUnixTime())
+                .SetColumns(a => a.sync_time == TimeUtils.GetUnixTime())
                 .Where(a => idList.Contains(a.sys_id))
                 .ExecuteCommandAsync();
             return qty;

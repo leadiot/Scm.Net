@@ -1,4 +1,5 @@
 ﻿using Com.Scm.Dao;
+using Com.Scm.Dao.Sync;
 using Com.Scm.Dao.User;
 using Com.Scm.Enums;
 using Com.Scm.Utils;
@@ -11,7 +12,7 @@ namespace Com.Scm.Sys.Notes
     /// 记事功能
     /// </summary>
     [SugarTable("scm_sys_notes")]
-    public class ScmSysNotesDao : ScmUserDataDao, IDeleteDao
+    public class ScmSysNotesDao : ScmUserDataDao, IDeleteDao, ISyncDao
     {
         /// <summary>
         /// 
@@ -141,6 +142,11 @@ namespace Com.Scm.Sys.Notes
         public ScmRowDeleteEnum row_delete { get; set; }
 
         /// <summary>
+        /// 同步时间
+        /// </summary>
+        public long sync_time { get; set; }
+
+        /// <summary>
         /// 
         /// </summary>
         /// <param name="userId"></param>
@@ -176,6 +182,8 @@ namespace Com.Scm.Sys.Notes
 
         public void CheckNotNull()
         {
+            sync_time = TimeUtils.GetUnixTime();
+
             if (sub_title == null) sub_title = "";
             if (summary == null) summary = "";
             if (content == null) content = "";

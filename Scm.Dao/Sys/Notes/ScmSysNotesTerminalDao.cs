@@ -1,6 +1,5 @@
-﻿using Com.Scm.Dao;
-using Com.Scm.Dao.User;
-using Com.Scm.Enums;
+﻿using Com.Scm.Dao.Sync;
+using Com.Scm.Dao.Terminal;
 using SqlSugar;
 
 namespace Com.Scm.Nas.App
@@ -9,17 +8,12 @@ namespace Com.Scm.Nas.App
     /// 设备便签表
     /// </summary>
     [SugarTable("scm_sys_notes_terminal")]
-    public class ScmSysNotesTerminalDao : ScmUserDataDao, IDeleteDao
+    public class ScmSysNotesTerminalDao : ScmTerminalDataDao, ISyncDao
     {
         /// <summary>
         /// 便签ID
         /// </summary>
         public long sys_id { get; set; }
-
-        /// <summary>
-        /// 终端ID
-        /// </summary>
-        public long terminal_id { get; set; }
 
         /// <summary>
         /// 来源应用ID
@@ -28,19 +22,14 @@ namespace Com.Scm.Nas.App
         public string res_id { get; set; }
 
         /// <summary>
-        /// 修改时间
-        /// </summary>
-        public long modify_time { get; set; }
-
-        /// <summary>
         /// 其它附加参数
         /// </summary>
         [SugarColumn(Length = 1024, IsNullable = true, IsJson = true)]
         public Dictionary<string, string> os_params { get; set; }
 
         /// <summary>
-        /// 
+        /// 同步时间
         /// </summary>
-        public ScmRowDeleteEnum row_delete { get; set; }
+        public long sync_time { get; set; }
     }
 }

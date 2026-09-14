@@ -341,7 +341,28 @@ CREATE TABLE [scm_sys_ver_info] (
 
 /*
  * Ver:9
- * Date: 2026-09-25
+ * Date: 2026-09-05
  */
 ALTER TABLE [scm_gtd_header] ADD COLUMN [terminal_id] bigint NOT NULL DEFAULT 0;
 ALTER TABLE [scm_gtd_header] ADD COLUMN [modify_time] bigint NOT NULL DEFAULT 0;
+
+
+/*
+ * Ver:10
+ * Date: 2026-09-14
+ */
+ALTER TABLE [scm_gtd_header] ADD COLUMN [sync_time] bigint NOT NULL DEFAULT 0;
+UPDATE [scm_gtd_header] set [sync_time] = [update_time];
+
+ALTER TABLE [scm_sys_contacts] ADD COLUMN [sync_time] bigint NOT NULL DEFAULT 0;
+UPDATE [scm_sys_contacts] set [sync_time] = [update_time];
+ALTER TABLE [scm_sys_contacts_terminal] ADD COLUMN [sync_time] bigint NOT NULL DEFAULT 0;
+UPDATE [scm_sys_contacts_terminal] set [sync_time] = [update_time];
+
+ALTER TABLE [scm_sys_notes] ADD COLUMN [sync_time] bigint NOT NULL DEFAULT 0;
+UPDATE [scm_sys_notes] set [sync_time] = [update_time];
+ALTER TABLE [scm_sys_notes_terminal] ADD COLUMN [sync_time] bigint NOT NULL DEFAULT 0;
+UPDATE [scm_sys_notes_terminal] set [sync_time] = [update_time];
+
+ALTER TABLE [scm_sys_sms] ADD COLUMN [sync_time] bigint NOT NULL DEFAULT 0;
+UPDATE [scm_sys_sms] set [sync_time] = [update_time];

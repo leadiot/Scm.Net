@@ -15,11 +15,11 @@ namespace Com.Scm.Helper
         /// <summary>
         /// 数据版本
         /// </summary>
-        private const int VER = 10;
+        private const int VER = 11;
         /// <summary>
         /// 发行日期
         /// </summary>
-        private const string DATE = "2026-09-05";
+        private const string DATE = "2026-09-14";
 
         #region 版本信息
         protected override string GetKey()

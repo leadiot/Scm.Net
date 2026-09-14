@@ -262,7 +262,7 @@ namespace Com.Scm.Sys.Notes
             var qty = await RemoveRecordAsync<ScmSysNotesDao>(_SqlClient, idList);
             await _SqlClient.Updateable<ScmSysNotesTerminalDao>()
                 .SetColumns(a => a.row_delete == ScmRowDeleteEnum.Yes)
-                .SetColumns(a => a.modify_time == TimeUtils.GetUnixTime())
+                .SetColumns(a => a.sync_time == TimeUtils.GetUnixTime())
                 .Where(a => idList.Contains(a.sys_id))
                 .ExecuteCommandAsync();
             return qty;
@@ -330,7 +330,7 @@ namespace Com.Scm.Sys.Notes
         private void UpdateModifyTime(ScmSysNotesDao dao)
         {
             _SqlClient.Updateable<ScmSysNotesTerminalDao>()
-                .SetColumns(a => a.modify_time == dao.modify_time)
+                .SetColumns(a => a.sync_time == dao.modify_time)
                 .SetColumns(a => a.update_time == dao.update_time)
                 .Where(a => a.sys_id == dao.id)
                 .ExecuteCommand();

@@ -182,7 +182,7 @@ namespace Com.Scm.Sys.Notes
 
         public void CheckNotNull()
         {
-            sync_time = TimeUtils.GetUnixTime();
+            sync_time = update_time;
 
             if (sub_title == null) sub_title = "";
             if (summary == null) summary = "";

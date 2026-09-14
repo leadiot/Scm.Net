@@ -200,7 +200,7 @@ namespace Com.Scm.Sys.Notes
                 dao.modify_time = time;
                 await _SqlClient.UpdateAsync(dao);
 
-                UpdateModifyTime(dao);
+                UpdateSyncTime(dao);
             }
 
             SaveFile(dao, model);
@@ -235,7 +235,7 @@ namespace Com.Scm.Sys.Notes
             }
 
             await _SqlClient.UpdateAsync(dao);
-            UpdateModifyTime(dao);
+            UpdateSyncTime(dao);
 
             SaveFile(dao, model);
         }
@@ -327,10 +327,10 @@ namespace Com.Scm.Sys.Notes
             _EnvConfig.SaveFile(ScmSysNotesDao.FOLDER_NAME, dao.GetFileName(), dto.content ?? "");
         }
 
-        private void UpdateModifyTime(ScmSysNotesDao dao)
+        private void UpdateSyncTime(ScmSysNotesDao dao)
         {
             _SqlClient.Updateable<ScmSysNotesTerminalDao>()
-                .SetColumns(a => a.sync_time == dao.modify_time)
+                .SetColumns(a => a.sync_time == dao.sync_time)
                 .SetColumns(a => a.update_time == dao.update_time)
                 .Where(a => a.sys_id == dao.id)
                 .ExecuteCommand();

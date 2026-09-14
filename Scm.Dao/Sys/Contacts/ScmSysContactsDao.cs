@@ -2,7 +2,6 @@
 using Com.Scm.Dao.Sync;
 using Com.Scm.Dao.User;
 using Com.Scm.Enums;
-using Com.Scm.Utils;
 using SqlSugar;
 using System.ComponentModel.DataAnnotations;
 
@@ -182,7 +181,7 @@ namespace Com.Scm.Sys.Contacts
 
         private void CheckNotNull()
         {
-            sync_time = TimeUtils.GetUnixTime();
+            sync_time = update_time;
 
             if (dates == null) dates = new List<Dictionary<string, string>>();
             if (phones == null) phones = new List<Dictionary<string, string>>();

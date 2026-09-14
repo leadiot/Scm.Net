@@ -1,4 +1,6 @@
-﻿using Com.Scm.Dao.User;
+﻿using Com.Scm.Dao;
+using Com.Scm.Dao.Sync;
+using Com.Scm.Dao.User;
 using Com.Scm.Enums;
 using SqlSugar;
 using System.ComponentModel.DataAnnotations;
@@ -6,7 +8,7 @@ using System.ComponentModel.DataAnnotations;
 namespace Com.Scm.Sys.Calllog
 {
     [SugarTable("scm_sys_calllog")]
-    public class ScmSysCalllogDao : ScmUserDataDao
+    public class ScmSysCalllogDao : ScmUserDataDao, IDeleteDao, ISyncDao
     {
         /// <summary>
         /// 号码
@@ -43,5 +45,20 @@ namespace Com.Scm.Sys.Calllog
         /// </summary>
         [SugarColumn(IsNullable = true, IsJson = true)]
         public Dictionary<string, string> os_params { get; set; }
+
+        /// <summary>
+        /// 修改时间
+        /// </summary>
+        public long modify_time { get; set; }
+
+        /// <summary>
+        /// 删除标记
+        /// </summary>
+        public ScmRowDeleteEnum row_delete { get; set; }
+
+        /// <summary>
+        /// 同步时间
+        /// </summary>
+        public long sync_time { get; set; }
     }
 }

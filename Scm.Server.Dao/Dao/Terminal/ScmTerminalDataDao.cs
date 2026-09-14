@@ -1,4 +1,5 @@
 ﻿using Com.Scm.Enums;
+using Com.Scm.Utils;
 
 namespace Com.Scm.Dao.Terminal
 {
@@ -33,5 +34,27 @@ namespace Com.Scm.Dao.Terminal
         /// 更新人员
         /// </summary>
         public long update_user { get; set; }
+
+        public override void PrepareCreate(long userId)
+        {
+            base.PrepareCreate(userId);
+
+            row_delete = ScmRowDeleteEnum.No;
+            row_status = ScmRowStatusEnum.Enabled;
+
+            create_user = userId;
+            create_time = TimeUtils.GetUnixTime();
+
+            update_user = userId;
+            update_time = create_time;
+        }
+
+        public override void PrepareUpdate(long userId)
+        {
+            base.PrepareUpdate(userId);
+
+            update_user = userId;
+            update_time = TimeUtils.GetUnixTime();
+        }
     }
 }

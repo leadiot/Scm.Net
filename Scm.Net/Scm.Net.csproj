@@ -1,87 +1,92 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
-  <PropertyGroup>
-    <TargetFramework>net10.0</TargetFramework>
-    <ImplicitUsings>enable</ImplicitUsings>
-    <Nullable>disable</Nullable>
-    <RootNamespace>Com.Scm</RootNamespace>
-    <StartupObject>Com.Scm.Program</StartupObject>
-    <ApplicationIcon>Resources\logo.ico</ApplicationIcon>
-  </PropertyGroup>
+	<PropertyGroup>
+		<TargetFramework>net10.0</TargetFramework>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<Nullable>disable</Nullable>
+		<RootNamespace>Com.Scm</RootNamespace>
+		<StartupObject>Com.Scm.Program</StartupObject>
+		<ApplicationIcon>Resources\logo.ico</ApplicationIcon>
+	</PropertyGroup>
 
-  <ItemGroup>
-    <Content Include="Resources\logo.ico" />
-  </ItemGroup>
+	<ItemGroup>
+		<Content Include="Resources\logo.ico" />
+		<Content Remove="data\quartz\data\jobs.json" />
+		<Content Remove="data\unit-origin.json" />
+	</ItemGroup>
 
-  <ItemGroup>
-    <Compile Remove="logs\**" />
-    <Compile Remove="Publish\**" />
-    <Content Remove="logs\**" />
-    <Content Remove="Publish\**" />
-    <None Remove="logs\**" />
-    <None Remove="Publish\**" />
-  </ItemGroup>
+	<ItemGroup>
+		<Compile Remove="dev\**" />
+		<Compile Remove="logs\**" />
+		<Compile Remove="Publish\**" />
+		<Content Remove="dev\**" />
+		<Content Remove="logs\**" />
+		<Content Remove="Publish\**" />
+		<None Remove="dev\**" />
+		<None Remove="logs\**" />
+		<None Remove="Publish\**" />
+	</ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\Samples.Server\Samples.Server.csproj" />
-    <ProjectReference Include="..\Scm.Common\Scm.Common.csproj" />
-    <ProjectReference Include="..\Scm.Core\Scm.Core.csproj" />
-    <ProjectReference Include="..\Scm.Email\Scm.Email.csproj" />
-    <ProjectReference Include="..\Scm.Generator\Scm.Generator.csproj" />
-    <ProjectReference Include="..\Scm.Mqtt\Scm.Mqtt.csproj" />
-    <ProjectReference Include="..\Scm.Server.Cache\Scm.Server.Cache.csproj" />
-    <ProjectReference Include="..\Scm.Server.MQTT\Scm.Server.MQTT.csproj" />
-    <ProjectReference Include="..\Scm.Server.Quartz\Scm.Server.Quartz.csproj" />
-    <ProjectReference Include="..\Scm.Server.Scalar\Scm.Server.Scalar.csproj" />
-    <ProjectReference Include="..\Scm.Server.Service\Scm.Server.Service.csproj" />
-    <ProjectReference Include="..\Scm.Server.SignalR\Scm.Server.SignalR.csproj" />
-  </ItemGroup>
+	<ItemGroup>
+		<ProjectReference Include="..\Samples.Server\Samples.Server.csproj" />
+		<ProjectReference Include="..\Scm.Common\Scm.Common.csproj" />
+		<ProjectReference Include="..\Scm.Core\Scm.Core.csproj" />
+		<ProjectReference Include="..\Scm.Email\Scm.Email.csproj" />
+		<ProjectReference Include="..\Scm.Generator\Scm.Generator.csproj" />
+		<ProjectReference Include="..\Scm.Mqtt\Scm.Mqtt.csproj" />
+		<ProjectReference Include="..\Scm.Server.Cache\Scm.Server.Cache.csproj" />
+		<ProjectReference Include="..\Scm.Server.MQTT\Scm.Server.MQTT.csproj" />
+		<ProjectReference Include="..\Scm.Server.Quartz\Scm.Server.Quartz.csproj" />
+		<ProjectReference Include="..\Scm.Server.Scalar\Scm.Server.Scalar.csproj" />
+		<ProjectReference Include="..\Scm.Server.Service\Scm.Server.Service.csproj" />
+		<ProjectReference Include="..\Scm.Server.SignalR\Scm.Server.SignalR.csproj" />
+	</ItemGroup>
 
-  <ItemGroup>
-    <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="10.0.11" />
-    <PackageReference Include="Serilog" Version="4.4.0" />
-    <PackageReference Include="Serilog.Enrichers.Thread" Version="4.0.0" />
-    <PackageReference Include="Serilog.Extensions.Logging" Version="10.0.0" />
-    <PackageReference Include="Serilog.Settings.Configuration" Version="10.0.1" />
-    <PackageReference Include="Serilog.Sinks.Async" Version="2.1.0" />
-    <PackageReference Include="Serilog.Sinks.Console" Version="6.1.1" />
-    <PackageReference Include="Serilog.Sinks.File" Version="7.0.0" />
-    <PackageReference Include="SixLabors.Fonts" Version="2.1.3" />
-    <PackageReference Include="SixLabors.ImageSharp" Version="3.1.12" />
-    <PackageReference Include="SixLabors.ImageSharp.Drawing" Version="2.1.7" />
-  </ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="10.0.11" />
+		<PackageReference Include="Serilog" Version="4.4.0" />
+		<PackageReference Include="Serilog.Enrichers.Thread" Version="4.0.0" />
+		<PackageReference Include="Serilog.Extensions.Logging" Version="10.0.0" />
+		<PackageReference Include="Serilog.Settings.Configuration" Version="10.0.1" />
+		<PackageReference Include="Serilog.Sinks.Async" Version="2.1.0" />
+		<PackageReference Include="Serilog.Sinks.Console" Version="6.1.1" />
+		<PackageReference Include="Serilog.Sinks.File" Version="7.0.0" />
+		<PackageReference Include="SixLabors.Fonts" Version="2.1.3" />
+		<PackageReference Include="SixLabors.ImageSharp" Version="3.1.12" />
+		<PackageReference Include="SixLabors.ImageSharp.Drawing" Version="2.1.7" />
+	</ItemGroup>
 
-  <ItemGroup>
-    <Reference Include="Scm.Cache">
-      <HintPath>..\Libs\net10.0\Scm.Cache.dll</HintPath>
-    </Reference>
-    <Reference Include="Scm.Common.File">
-      <HintPath>..\Libs\netstandard2.0\Scm.Common.File.dll</HintPath>
-    </Reference>
-    <Reference Include="Scm.Common.Http">
-      <HintPath>..\Libs\netstandard2.0\Scm.Common.Http.dll</HintPath>
-    </Reference>
-    <Reference Include="Scm.Common.Otp">
-      <HintPath>..\Libs\netstandard2.0\Scm.Common.Otp.dll</HintPath>
-    </Reference>
-    <Reference Include="Scm.Common.Text">
-      <HintPath>..\Libs\netstandard2.0\Scm.Common.Text.dll</HintPath>
-    </Reference>
-    <Reference Include="Scm.Common.Time">
-      <HintPath>..\Libs\netstandard2.0\Scm.Common.Time.dll</HintPath>
-    </Reference>
-    <Reference Include="Scm.Plugin.Image">
-      <HintPath>..\Libs\net10.0\Scm.Plugin.Image.dll</HintPath>
-    </Reference>
-    <Reference Include="Scm.Plugin.Image.ImageSharp">
-      <HintPath>..\Libs\net10.0\Scm.Plugin.Image.ImageSharp.dll</HintPath>
-    </Reference>
-    <Reference Include="Scm.Uid">
-      <HintPath>..\Libs\net10.0\Scm.Uid.dll</HintPath>
-    </Reference>
-	  <Reference Include="Upgrade.Net">
-		  <HintPath>..\Libs\net10.0\Upgrade.Net.dll</HintPath>
-	  </Reference>
-  </ItemGroup>
+	<ItemGroup>
+		<Reference Include="Scm.Cache">
+			<HintPath>..\Libs\net10.0\Scm.Cache.dll</HintPath>
+		</Reference>
+		<Reference Include="Scm.Common.File">
+			<HintPath>..\Libs\netstandard2.0\Scm.Common.File.dll</HintPath>
+		</Reference>
+		<Reference Include="Scm.Common.Http">
+			<HintPath>..\Libs\netstandard2.0\Scm.Common.Http.dll</HintPath>
+		</Reference>
+		<Reference Include="Scm.Common.Otp">
+			<HintPath>..\Libs\netstandard2.0\Scm.Common.Otp.dll</HintPath>
+		</Reference>
+		<Reference Include="Scm.Common.Text">
+			<HintPath>..\Libs\netstandard2.0\Scm.Common.Text.dll</HintPath>
+		</Reference>
+		<Reference Include="Scm.Common.Time">
+			<HintPath>..\Libs\netstandard2.0\Scm.Common.Time.dll</HintPath>
+		</Reference>
+		<Reference Include="Scm.Plugin.Image">
+			<HintPath>..\Libs\net10.0\Scm.Plugin.Image.dll</HintPath>
+		</Reference>
+		<Reference Include="Scm.Plugin.Image.ImageSharp">
+			<HintPath>..\Libs\net10.0\Scm.Plugin.Image.ImageSharp.dll</HintPath>
+		</Reference>
+		<Reference Include="Scm.Uid">
+			<HintPath>..\Libs\net10.0\Scm.Uid.dll</HintPath>
+		</Reference>
+		<Reference Include="Upgrade.Net">
+			<HintPath>..\Libs\net10.0\Upgrade.Net.dll</HintPath>
+		</Reference>
+	</ItemGroup>
 
 </Project>

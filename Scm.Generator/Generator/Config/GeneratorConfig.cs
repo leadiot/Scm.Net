@@ -37,6 +37,8 @@ namespace Com.Scm.Generator.Config
         /// </summary>
         public bool Download { get; set; }
 
+        public NameCaseEnum NameCase { get; set; }
+
         public void Prepare(EnvConfig envConfig)
         {
             if (string.IsNullOrWhiteSpace(TemplatesDir))
@@ -100,5 +102,26 @@ namespace Com.Scm.Generator.Config
             var path = Path.Combine(files);
             return Path.Combine(GeneratorDir, path);
         }
+    }
+
+    public enum NameCaseEnum
+    {
+        None,
+        /// <summary>
+        /// 小写
+        /// </summary>
+        Lower,
+        /// <summary>
+        /// 大写
+        /// </summary>
+        Upper,
+        /// <summary>
+        /// 驼峰命名
+        /// </summary>
+        Pascal,
+        /// <summary>
+        /// 驼峰命名（首字母小写）
+        /// </summary>
+        Camel
     }
 }

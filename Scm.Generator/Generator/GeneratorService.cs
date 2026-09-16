@@ -94,40 +94,40 @@ namespace Com.Scm.Generator
                 summary += "    /// </summary>\r\n";
 
                 var isRequired = !item.IsNullable;
-                var required = "    [Required]\r\n";
-
                 var isString = item.DataType.ConvertModelType() == "string";
-                var length = isString ? "    [StringLength(" + item.Length + ")]\r\n" : "";
-
-                var fieldStr = "    public " + item.DataType.ConvertModelType(item.IsNullable) + " " + item.DbColumnName +
+                var fieldName = GetFieldName(item.DbColumnName);
+                var fieldStr = "    public " + item.DataType.ConvertModelType(item.IsNullable) + " " + fieldName +
                            " { get; set; }" + item.DataType.ModelDefaultValue(item.DefaultValue, item.IsNullable) +
                            "\r\n\r\n";
 
+                // DAO
                 daoAttrStr += summary;
-                if (isRequired)
-                {
-                    daoAttrStr += required;
-                }
+                daoAttrStr += "[SugarColumn(";
+                daoAttrStr += "ColumnName = \"" + item.DbColumnName + "\"";
+                daoAttrStr += ",IsNullable = " + isRequired;
                 if (isString)
                 {
-                    daoAttrStr += length;
+                    daoAttrStr += ",Length = " + item.Length;
                 }
+                daoAttrStr += ")]\r\n";
                 daoAttrStr += fieldStr;
 
+                // DTO
                 if (item.IsUpdate)
                 {
                     dtoAttrStr += summary;
                     if (isRequired)
                     {
-                        dtoAttrStr += required;
+                        dtoAttrStr += "    [Required]\r\n";
                     }
                     if (isString)
                     {
-                        dtoAttrStr += length;
+                        dtoAttrStr += isString ? "    [StringLength(" + item.Length + ")]\r\n" : "";
                     }
                     dtoAttrStr += fieldStr;
                 }
 
+                // DVO
                 if (item.IsResult)
                 {
                     dvoAttrStr += summary;
@@ -198,10 +198,12 @@ namespace Com.Scm.Generator
             }
             foreach (var item in request.TableColumnInfo)
             {
+                var fieldName = GetFieldName(item.DbColumnName);
+
                 //列
                 if (item.IsResult)
                 {
-                    dataColumnStr += "                { prop: '" + item.DbColumnName.FirstCharToLower() + "', label: '" +
+                    dataColumnStr += "                { prop: '" + fieldName + "', label: '" +
                                          item.ColumnDescription + "', width: 100 },\r\n";
                 }
 
@@ -221,17 +223,16 @@ namespace Com.Scm.Generator
                     {
                         formColumnStr += "<el-col :span=\"12\"> \r\n";
                     }
-                    formColumnStr += "<el-form-item label=\"" + item.ColumnDescription + "\" prop=\"" +
-                                     item.DbColumnName.FirstCharToLower() + "\">\r\n";
+                    formColumnStr += "<el-form-item label=\"" + item.ColumnDescription + "\" prop=\"" + fieldName + "\">\r\n";
                     formColumnStr += "	<el-switch \r\n";
-                    formColumnStr += "		v-model=\"formData." + item.DbColumnName.FirstCharToLower() + "\" \r\n";
+                    formColumnStr += "		v-model=\"formData." + fieldName + "\" \r\n";
                     formColumnStr += "	></el-switch> \r\n";
                     formColumnStr += "</el-form-item> \r\n";
                     if (request.IsGrid)
                     {
                         formColumnStr += "</el-col> \r\n";
                     }
-                    formData += item.DbColumnName.FirstCharToLower() + ":false, \r\n";
+                    formData += fieldName + ":false, \r\n";
                 }
 
                 if (item.DataType.ConvertModelType() != "bool")
@@ -240,10 +241,9 @@ namespace Com.Scm.Generator
                     {
                         formColumnStr += "<el-col :span=\"12\"> \r\n";
                     }
-                    formColumnStr += "<el-form-item label=\"" + item.ColumnDescription + "\" prop=\"" +
-                                     item.DbColumnName.FirstCharToLower() + "\"> \r\n";
+                    formColumnStr += "<el-form-item label=\"" + item.ColumnDescription + "\" prop=\"" + fieldName + "\"> \r\n";
                     formColumnStr += "	<el-input \r\n";
-                    formColumnStr += "		v-model=\"formData." + item.DbColumnName.FirstCharToLower() + "\" \r\n";
+                    formColumnStr += "		v-model=\"formData." + fieldName + "\" \r\n";
                     formColumnStr += "		placeholder=\"请输入" + item.ColumnDescription + "\" \r\n";
                     formColumnStr += "		:maxlength=\"" + item.Length + "\" \r\n";
                     formColumnStr += "		show-word-limit \r\n";
@@ -254,7 +254,7 @@ namespace Com.Scm.Generator
                     {
                         formColumnStr += "</el-col> \r\n";
                     }
-                    formData += item.DbColumnName.FirstCharToLower() + ":'', \r\n";
+                    formData += fieldName + ":'', \r\n";
                 }
             }
             if (request.IsGrid)
@@ -323,6 +323,23 @@ namespace Com.Scm.Generator
         public GenHelper Helper
         {
             get; private set;
+        }
+
+        public string GetFieldName(string name)
+        {
+            switch (_Config.NameCase)
+            {
+                case NameCaseEnum.Camel:
+                    return name.FirstCharToLower();
+                case NameCaseEnum.Pascal:
+                    return name.FirstCharToUpper();
+                case NameCaseEnum.Lower:
+                    return name.ToLower();
+                case NameCaseEnum.Upper:
+                    return name.ToUpper();
+                default:
+                    return name;
+            }
         }
     }
 }

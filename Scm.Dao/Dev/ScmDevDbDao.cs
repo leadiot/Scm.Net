@@ -47,7 +47,7 @@ namespace Com.Scm.Dev
         /// 密码
         /// </summary>
         [StringLength(256)]
-        [SugarColumn(Length = 256, IsNullable = true)]
+        [SugarColumn(Length = 256, IsNullable = true, ColumnName = "pass")]
         public string pass { get; set; }
 
         /// <summary>

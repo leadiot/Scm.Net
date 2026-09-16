@@ -357,7 +357,6 @@ UPDATE [scm_gtd_header] set [sync_time] = [update_time];
 ALTER TABLE [scm_sys_calllog] ADD COLUMN [row_delete] tinyint NOT NULL DEFAULT 0;
 ALTER TABLE [scm_sys_calllog] ADD COLUMN [modify_time] bigint NOT NULL DEFAULT 0;
 ALTER TABLE [scm_sys_calllog] ADD COLUMN [sync_time] bigint NOT NULL DEFAULT 0;
-ALTER TABLE [scm_sys_calllog_terminal] ADD COLUMN [sync_time] bigint NOT NULL DEFAULT 0;
 
 ALTER TABLE [scm_sys_contacts] ADD COLUMN [sync_time] bigint NOT NULL DEFAULT 0;
 UPDATE [scm_sys_contacts] set [sync_time] = [update_time];

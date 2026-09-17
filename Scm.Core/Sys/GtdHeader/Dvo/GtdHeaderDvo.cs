@@ -62,5 +62,10 @@ namespace Com.Scm.Sys.GtdHeader.Dvo
         /// 
         /// </summary>
         public ScmGtdHandleEnum handle { get; set; }
+
+        /// <summary>
+        /// 修改时间
+        /// </summary>
+        public long modify_time { get; set; }
     }
 }

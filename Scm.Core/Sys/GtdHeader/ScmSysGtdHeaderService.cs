@@ -58,7 +58,7 @@ namespace Com.Scm.Sys.GtdHeader
                 .WhereIF(request.handle != ScmGtdHandleEnum.None, a => a.handle == request.handle)
                 .WhereIF(!string.IsNullOrEmpty(request.key), a => a.title.Contains(request.key))
                 .OrderBy(a => a.handle, SqlSugar.OrderByType.Asc)
-                .OrderBy(a => a.id)
+                .OrderBy(a => a.modify_time, SqlSugar.OrderByType.Desc)
                 .Select<GtdHeaderDvo>()
                 .ToListAsync();
 

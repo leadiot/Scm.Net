@@ -110,7 +110,7 @@ public class ScmToken
 
         // 解析格式：terminal_id:user_id:time:digest
         var arr = token.Split(":");
-        if (arr.Length == 4)
+        if (arr.Length == 6)
         {
             // 终端ID
             var tmp = arr[0];
@@ -119,22 +119,28 @@ public class ScmToken
                 nasToken.terminal_id = long.Parse(tmp);
             }
 
+            // 终端代码
+            nasToken.terminal_codes = arr[1];
+
             // 用户ID
-            tmp = arr[1];
+            tmp = arr[2];
             if (TextUtils.IsLong(tmp))
             {
                 nasToken.user_id = long.Parse(tmp);
             }
 
+            // 用户代码
+            nasToken.user_codes = arr[3];
+
             // 时间戳
-            tmp = arr[2];
+            tmp = arr[4];
             if (TextUtils.IsLong(tmp))
             {
                 nasToken.time = long.Parse(tmp);
             }
 
             // 摘要
-            nasToken.digest = arr[3];
+            nasToken.digest = arr[5];
         }
 
         return nasToken;

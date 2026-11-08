@@ -4,28 +4,22 @@ using Com.Scm.Quartz.Jobs;
 using Com.Scm.Quartz.Service;
 using Com.Scm.Utils;
 using Quartz;
-using Quartz.Impl.Matchers;
-using Quartz.Impl.Triggers;
-using Quartz.Spi;
 
 namespace Com.Scm.Quartz
 {
     public class QuartzService : IQuartzService
     {
         private ISchedulerFactory _schedulerFactory;
-        private IJobFactory _jobFactory;
         private IQuartzJobService _quartzJobService;
         private IQuartzLogService _quartzLogService;
 
         public QuartzService(ISchedulerFactory schedulerFactory,
-            IJobFactory jobFactory,
             IQuartzJobService quartzJobService,
             IQuartzLogService quartzLogService)
         {
             _quartzJobService = quartzJobService;
             _schedulerFactory = schedulerFactory;
             _quartzLogService = quartzLogService;
-            _jobFactory = jobFactory;
         }
 
         /// <summary>
@@ -40,33 +34,29 @@ namespace Com.Scm.Quartz
             {
                 list = await _quartzJobService.GetJobs();
                 var scheduler = await _schedulerFactory.GetScheduler();
-                var groups = await scheduler.GetJobGroupNames();
-                foreach (var groupName in groups)
+                var jobs = await scheduler.QueryJobs(new JobQuery { Take = PagedQuery.All });
+                foreach (var job in jobs.Items)
                 {
-                    foreach (var jobKey in await scheduler.GetJobKeys(GroupMatcher<JobKey>.GroupEquals(groupName)))
+                    QuarzTaskJobDao taskOption = list.Where(x => x.group == job.Key.Group && x.names == job.Key.Name)
+                        .FirstOrDefault();
+                    if (taskOption == null)
                     {
-                        QuarzTaskJobDao taskOption = list.Where(x => x.group == jobKey.Group && x.names == jobKey.Name)
-                            .FirstOrDefault();
-                        if (taskOption == null)
-                        {
-                            continue;
-                        }
+                        continue;
+                    }
 
-                        var triggers = await scheduler.GetTriggersOfJob(jobKey);
-                        foreach (ITrigger trigger in triggers)
+                    var triggers = await scheduler.QueryTriggers(new TriggerQuery { Job = job.Key, Take = PagedQuery.All });
+                    foreach (var trigger in triggers.Items)
+                    {
+                        if (trigger.PreviousFireTimeUtc != null)
                         {
-                            DateTimeOffset? dateTimeOffset = trigger.GetPreviousFireTimeUtc();
-                            if (dateTimeOffset != null)
+                            taskOption.last_time = trigger.PreviousFireTimeUtc.Value.LocalDateTime;
+                        }
+                        else
+                        {
+                            var runlog = await _quartzLogService.GetLastlog(taskOption.names, taskOption.group);
+                            if (runlog != null)
                             {
-                                taskOption.last_time = Convert.ToDateTime(dateTimeOffset.ToString());
-                            }
-                            else
-                            {
-                                var runlog = await _quartzLogService.GetLastlog(taskOption.names, taskOption.group);
-                                if (runlog != null)
-                                {
-                                    taskOption.last_time = runlog.begin_time;
-                                }
+                                taskOption.last_time = runlog.begin_time;
                             }
                         }
                     }
@@ -83,9 +73,8 @@ namespace Com.Scm.Quartz
         {
             try
             {
-                CronTriggerImpl trigger = new CronTriggerImpl();
-                trigger.CronExpressionString = cronExpression;
-                DateTimeOffset? date = trigger.ComputeFirstFireTimeUtc(null);
+                var expression = CronExpression.Parse(cronExpression);
+                DateTimeOffset? date = expression.GetNextValidTimeAfter(DateTimeOffset.Now);
                 var iscron = date != null;
                 return new JobResult { status = iscron, message = date == null ? $"请确认表达式{cronExpression}是否正确!" : "" };
             }
@@ -99,11 +88,6 @@ namespace Com.Scm.Quartz
         {
             var jobs = await _quartzJobService.GetJobs();
             IScheduler scheduler = await _schedulerFactory.GetScheduler();
-
-            if (_jobFactory != null)
-            {
-                scheduler.JobFactory = _jobFactory;
-            }
 
             foreach (var item in jobs)
             {
@@ -212,11 +196,6 @@ namespace Com.Scm.Quartz
                 //    }
                 //}
 
-                if (_jobFactory != null)
-                {
-                    scheduler.JobFactory = _jobFactory;
-                }
-
                 //开启才加入Schedule中,如果加入在暂停而定时任务执行过快,会导致卡死
                 if (taskOptions.handle == JobHandleEnum.Running)
                 {
@@ -266,10 +245,7 @@ namespace Com.Scm.Quartz
                 try
                 {
                     IScheduler scheduler = await _schedulerFactory.GetScheduler();
-                    List<JobKey> jobKeys = scheduler.GetJobKeys(GroupMatcher<JobKey>.GroupEquals(taskOptions.group)).Result.ToList();
-                    JobKey jobKey = jobKeys.Where(s => scheduler.GetTriggersOfJob(s).Result.Any(x => (x as CronTriggerImpl).Name == taskOptions.names)).FirstOrDefault();
-                    var triggers = await scheduler.GetTriggersOfJob(jobKey);
-                    ITrigger trigger = triggers?.Where(x => (x as CronTriggerImpl).Name == taskOptions.names).FirstOrDefault();
+                    var trigger = await FindTrigger(scheduler, taskOptions.group, taskOptions.names);
                     await scheduler.PauseTrigger(trigger.Key);
                     await scheduler.UnscheduleJob(trigger.Key);// 移除触发器
                     await scheduler.DeleteJob(trigger.JobKey);
@@ -304,10 +280,7 @@ namespace Com.Scm.Quartz
                 try
                 {
                     IScheduler scheduler = await _schedulerFactory.GetScheduler();
-                    List<JobKey> jobKeys = scheduler.GetJobKeys(GroupMatcher<JobKey>.GroupEquals(taskOptions.group)).Result.ToList();
-                    JobKey jobKey = jobKeys.Where(s => scheduler.GetTriggersOfJob(s).Result.Any(x => (x as CronTriggerImpl).Name == taskOptions.names)).FirstOrDefault();
-                    var triggers = await scheduler.GetTriggersOfJob(jobKey);
-                    ITrigger triggerold = triggers?.Where(x => (x as CronTriggerImpl).Name == taskOptions.names).FirstOrDefault();
+                    var triggerold = await FindTrigger(scheduler, taskOptions.group, taskOptions.names);
                     await scheduler.PauseTrigger(triggerold.Key);
                     await scheduler.UnscheduleJob(triggerold.Key);// 移除触发器
                     await scheduler.DeleteJob(triggerold.JobKey);
@@ -334,10 +307,6 @@ namespace Com.Scm.Quartz
                        .WithCronSchedule(taskOptions.cron)
                        .Build();
 
-                    if (_jobFactory != null)
-                    {
-                        scheduler.JobFactory = _jobFactory;
-                    }
                     await scheduler.ScheduleJob(job, triggernew);
                     if (taskOptions.handle == JobHandleEnum.Running)
                     {
@@ -380,10 +349,7 @@ namespace Com.Scm.Quartz
                 if (isjob.status)
                 {
                     IScheduler scheduler = await _schedulerFactory.GetScheduler();
-                    List<JobKey> jobKeys = scheduler.GetJobKeys(GroupMatcher<JobKey>.GroupEquals(taskOptions.group)).Result.ToList();
-                    JobKey jobKey = jobKeys.Where(s => scheduler.GetTriggersOfJob(s).Result.Any(x => (x as CronTriggerImpl).Name == taskOptions.names)).FirstOrDefault();
-                    var triggers = await scheduler.GetTriggersOfJob(jobKey);
-                    ITrigger trigger = triggers?.Where(x => (x as CronTriggerImpl).Name == taskOptions.names).FirstOrDefault();
+                    var trigger = await FindTrigger(scheduler, taskOptions.group, taskOptions.names);
                     await scheduler.PauseTrigger(trigger.Key);
                     isjob.message += "Quartz已暂停";
                 }
@@ -442,20 +408,12 @@ namespace Com.Scm.Quartz
                         .WithCronSchedule(taskOptions.cron)
                         .Build();
 
-                    if (_jobFactory != null)
-                    {
-                        scheduler.JobFactory = _jobFactory;
-                    }
-
                     await scheduler.ScheduleJob(job, trigger);
                     await scheduler.Start();
                 }
                 else //存在则直接启动
                 {
-                    List<JobKey> jobKeys = scheduler.GetJobKeys(GroupMatcher<JobKey>.GroupEquals(taskOptions.group)).Result.ToList();
-                    JobKey jobKey = jobKeys.Where(s => scheduler.GetTriggersOfJob(s).Result.Any(x => (x as CronTriggerImpl).Name == taskOptions.names)).FirstOrDefault();
-                    var triggers = await scheduler.GetTriggersOfJob(jobKey);
-                    ITrigger trigger = triggers?.Where(x => (x as CronTriggerImpl).Name == taskOptions.names).FirstOrDefault();
+                    var trigger = await FindTrigger(scheduler, taskOptions.group, taskOptions.names);
                     await scheduler.ResumeTrigger(trigger.Key);
                 }
 
@@ -484,11 +442,8 @@ namespace Com.Scm.Quartz
                 {
                     //taskmodle.Status = (int)JobState.立即执行;
                     IScheduler scheduler = await _schedulerFactory.GetScheduler();
-                    List<JobKey> jobKeys = scheduler.GetJobKeys(GroupMatcher<JobKey>.GroupEquals(taskOptions.group)).Result.ToList();
-                    JobKey jobKey = jobKeys.Where(s => scheduler.GetTriggersOfJob(s).Result.Any(x => (x as CronTriggerImpl).Name == taskOptions.names)).FirstOrDefault();
-                    var triggers = await scheduler.GetTriggersOfJob(jobKey);
-                    ITrigger trigger = triggers?.Where(x => (x as CronTriggerImpl).Name == taskOptions.names).FirstOrDefault();
-                    await scheduler.TriggerJob(jobKey);
+                    var trigger = await FindTrigger(scheduler, taskOptions.group, taskOptions.names);
+                    await scheduler.TriggerJob(trigger.JobKey);
                     return new JobResult { status = true, message = $"{taskOptions.names}立即执行任务成功" };
                 }
                 else
@@ -516,25 +471,21 @@ namespace Com.Scm.Quartz
             {
                 string errorMsg = "";
                 IScheduler scheduler = await _schedulerFactory.GetScheduler();
-                List<JobKey> jobKeys = scheduler.GetJobKeys(GroupMatcher<JobKey>.GroupEquals(groupName)).Result.ToList();
-                if (jobKeys == null || jobKeys.Count() == 0)
+                var jobs = await scheduler.QueryJobs(new JobQuery
+                {
+                    Group = GroupMatcher<JobKey>.GroupEquals(groupName),
+                    Take = 1
+                });
+                if (jobs.Items.Count == 0)
                 {
                     errorMsg = $"未找到分组[{groupName}]";
                     return new JobResult { status = false, message = errorMsg };
                 }
 
-                JobKey jobKey = jobKeys.Where(s => scheduler.GetTriggersOfJob(s).Result.Any(x => (x as CronTriggerImpl).Name == taskName)).FirstOrDefault();
-                if (jobKey == null)
-                {
-                    errorMsg = $"未找到任务{taskName}]";
-                    return new JobResult { status = false, message = errorMsg };
-                }
-
-                var triggers = await scheduler.GetTriggersOfJob(jobKey);
-                ITrigger trigger = triggers?.Where(x => (x as CronTriggerImpl).Name == taskName).FirstOrDefault();
+                var trigger = await FindTrigger(scheduler, groupName, taskName);
                 if (trigger == null)
                 {
-                    errorMsg = $"未找到触发器[{taskName}]";
+                    errorMsg = $"未找到任务{taskName}]";
                     return new JobResult { status = false, message = errorMsg };
                 }
 
@@ -544,6 +495,20 @@ namespace Com.Scm.Quartz
             {
                 return new JobResult { status = false, message = ex.Message };
             }
+        }
+
+        /// <summary>
+        /// 查找指定分组下名称匹配的触发器
+        /// </summary>
+        private async Task<TriggerHeader> FindTrigger(IScheduler scheduler, string groupName, string triggerName)
+        {
+            var triggers = await scheduler.QueryTriggers(new TriggerQuery
+            {
+                Group = GroupMatcher<TriggerKey>.GroupEquals(groupName),
+                Name = NameMatcher<TriggerKey>.NameEquals(triggerName),
+                Take = 1
+            });
+            return triggers.Items.FirstOrDefault();
         }
     }
 }

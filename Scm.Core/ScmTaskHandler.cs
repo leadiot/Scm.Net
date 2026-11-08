@@ -1,6 +1,5 @@
 ﻿using Com.Scm.Cfg.Export;
 using CsvHelper;
-using System.Globalization;
 
 namespace Com.Scm
 {
@@ -16,10 +15,11 @@ namespace Com.Scm
         {
             using (var writer = new StreamWriter(file))
             {
-                using (var csv = new CsvWriter(writer, CultureInfo.InvariantCulture))
+                // CsvWriterOptions.Default 默认使用 InvariantCulture
+                using (var csv = CsvWriter.Create(writer, CsvWriterOptions.Default))
                 {
                     WriteHead<T>(csv);
-                    csv.NextRecord();
+                    csv.EndRecord();
 
                     WriteData(csv, list);
                 }
@@ -33,7 +33,11 @@ namespace Com.Scm
         /// <param name="csv"></param>
         protected void WriteHead<T>(CsvWriter csv)
         {
-            csv.WriteHeader<T>();
+            var fields = typeof(T).GetProperties(System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Instance);
+            foreach (var field in fields)
+            {
+                csv.WriteField(field.Name);
+            }
         }
 
         /// <summary>
@@ -44,7 +48,15 @@ namespace Com.Scm
         /// <param name="records"></param>
         protected void WriteData<T>(CsvWriter csv, IEnumerable<T> records)
         {
-            csv.WriteRecords(records);
+            var fields = typeof(T).GetProperties(System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Instance);
+            foreach (var record in records)
+            {
+                foreach (var field in fields)
+                {
+                    csv.WriteField(field.GetValue(record));
+                }
+                csv.EndRecord();
+            }
         }
 
         /// <summary>

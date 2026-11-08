@@ -3,8 +3,6 @@ using Com.Scm.Quartz.Service;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Quartz;
-using Quartz.Impl;
-using Quartz.Impl.Triggers;
 
 namespace Com.Scm.Quartz.Jobs
 {
@@ -30,27 +28,31 @@ namespace Com.Scm.Quartz.Jobs
             this._serviceProvider = serviceProvider;
         }
 
-        public async Task Execute(IJobExecutionContext context)
+        public async ValueTask Execute(IJobExecutionContext context, CancellationToken cancellationToken = default)
         {
             string httpMessage = "";
-            AbstractTrigger trigger = (context as JobExecutionContextImpl).Trigger as AbstractTrigger;
+            ITrigger trigger = context.Trigger;
+            var triggerName = trigger.Key.Name;
+            var triggerGroup = trigger.Key.Group;
+            var jobName = trigger.JobKey?.Name;
+            var jobGroup = trigger.JobKey?.Group;
 
-            QuarzTaskJobDao taskOptions = (await _quartzService.GetJobs(a => a.names == trigger.Name && a.group == trigger.Group)).FirstOrDefault();
+            QuarzTaskJobDao taskOptions = (await _quartzService.GetJobs(a => a.names == triggerName && a.group == triggerGroup)).FirstOrDefault();
             if (taskOptions == null)
             {
-                taskOptions = (await _quartzService.GetJobs(a => a.names == trigger.JobName && a.group == trigger.JobGroup)).FirstOrDefault();
+                taskOptions = (await _quartzService.GetJobs(a => a.names == jobName && a.group == jobGroup)).FirstOrDefault();
             }
 
             if (taskOptions == null)
             {
-                _logger.LogWarning("组别:{Group},名称:{Name},的作业未找到,可能已被移除", trigger.Group, trigger.Name);
+                _logger.LogWarning("组别:{Group},名称:{Name},的作业未找到,可能已被移除", triggerGroup, triggerName);
                 return;
             }
-            _logger.LogInformation("组别:{Group},名称:{Name},的作业开始执行,时间:{Time}", trigger.Group, trigger.Name, DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"));
+            _logger.LogInformation("组别:{Group},名称:{Name},的作业开始执行,时间:{Time}", triggerGroup, triggerName, DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"));
             QuarzTaskLogDao tab_Quarz_Tasklog = new QuarzTaskLogDao() { task = taskOptions.names, group = taskOptions.group, begin_time = DateTime.Now };
             if (string.IsNullOrEmpty(taskOptions.dll_uri))
             {
-                _logger.LogWarning("组别:{Group},名称:{Name},方法名为空!,时间:{Time}", trigger.Group, trigger.Name, DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"));
+                _logger.LogWarning("组别:{Group},名称:{Name},方法名为空!,时间:{Time}", triggerGroup, triggerName, DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"));
                 return;
             }
 
@@ -65,13 +67,13 @@ namespace Com.Scm.Quartz.Jobs
                 else
                 {
                     httpMessage = "未找到对应类型,请检查是否注入!";
-                    _logger.LogWarning("组别:{Group},名称:{Name},未找到对应类型:{Type}", trigger.Group, trigger.Name, taskOptions.dll_uri);
+                    _logger.LogWarning("组别:{Group},名称:{Name},未找到对应类型:{Type}", triggerGroup, triggerName, taskOptions.dll_uri);
                 }
             }
             catch (Exception ex)
             {
                 httpMessage = ex.Message;
-                _logger.LogError(ex, "组别:{Group},名称:{Name},作业执行异常", trigger.Group, trigger.Name);
+                _logger.LogError(ex, "组别:{Group},名称:{Name},作业执行异常", triggerGroup, triggerName);
             }
 
             try
@@ -82,7 +84,7 @@ namespace Com.Scm.Quartz.Jobs
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "组别:{Group},名称:{Name},日志写入失败", trigger.Group, trigger.Name);
+                _logger.LogError(ex, "组别:{Group},名称:{Name},日志写入失败", triggerGroup, triggerName);
             }
         }
 

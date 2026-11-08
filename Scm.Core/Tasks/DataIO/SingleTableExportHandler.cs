@@ -5,7 +5,6 @@ using Com.Scm.Sys.Tasks;
 using CsvHelper;
 using SqlSugar;
 using System.Data;
-using System.Globalization;
 
 namespace Com.Scm.Tasks.DataIO
 {
@@ -84,7 +83,7 @@ namespace Com.Scm.Tasks.DataIO
             //MiniExcel.SaveAs(path, table, configuration: colConfig);
             using (var writer = new StreamWriter("foo.csv"))
             {
-                using (var csv = new CsvWriter(writer, CultureInfo.InvariantCulture))
+                using (var csv = CsvWriter.Create(writer, CsvWriterOptions.Default))
                 {
                     Saveas(csv, table);
                 }

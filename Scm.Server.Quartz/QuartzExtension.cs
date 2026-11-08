@@ -6,8 +6,6 @@ using Com.Scm.Quartz.Service.Df;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using Quartz;
-using Quartz.Impl;
-using Quartz.Spi;
 using System.Reflection;
 
 namespace Com.Scm.Quartz
@@ -35,8 +33,10 @@ namespace Com.Scm.Quartz
 
             services.AddScoped<DllMethodJob>();
             services.AddScoped<ApiClientJob>();
-            services.AddSingleton<ISchedulerFactory, StdSchedulerFactory>();
-            services.AddSingleton<IJobFactory, JobFactory>();
+
+            // Quartz 4.x：AddQuartz 统一注册调度器、线程池与 DI 感知的 JobFactory
+            services.AddQuartz(q => q.UseInMemoryStore());
+
             services.AddScoped<IQuartzService, QuartzService>();
             return services;
         }

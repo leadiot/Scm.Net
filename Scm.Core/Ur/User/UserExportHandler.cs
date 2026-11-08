@@ -6,7 +6,6 @@ using Com.Scm.Ur.User.Dvo;
 using Com.Scm.Utils;
 using CsvHelper;
 using SqlSugar;
-using System.Globalization;
 
 namespace Com.Scm.Ur.User
 {
@@ -130,15 +129,15 @@ namespace Com.Scm.Ur.User
             file = env.GetTempPath(name);
             using (var writer = new StreamWriter(file))
             {
-                using (var csv = new CsvWriter(writer, CultureInfo.InvariantCulture))
+                using (var csv = CsvWriter.Create(writer, CsvWriterOptions.Default))
                 {
                     WriteHead(csv, detailListDao);
-                    csv.NextRecord();
+                    csv.EndRecord();
 
                     foreach (var item in list)
                     {
                         WriteData(csv, detailListDao, item);
-                        csv.NextRecord();
+                        csv.EndRecord();
                     }
                 }
             }

@@ -1,5 +1,6 @@
 ﻿using Com.Scm.Email;
 using Com.Scm.Email.Config;
+using MailKit;
 using MailKit.Net.Smtp;
 using MimeKit;
 using MimeKit.Text;
@@ -55,7 +56,7 @@ namespace Com.Scm.Utils
                     //登录
                     client.Authenticate(config.Username, config.Password);
                     //发送
-                    string result = client.Send(message);
+                    client.Send(new SendRequest(message));
                 }
 
                 //断开
@@ -108,7 +109,7 @@ namespace Com.Scm.Utils
                     //登录
                     await client.AuthenticateAsync(config.Username, config.Password);
                     //发送
-                    string result = await client.SendAsync(message);
+                    await client.SendAsync(new SendRequest(message));
                 }
 
                 //断开

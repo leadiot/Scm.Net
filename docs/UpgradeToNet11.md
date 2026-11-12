@@ -2,7 +2,9 @@
 
 > 升级日期：2026-11-12　｜　应用版本：10.21.50 → 11.0.0（BUILD 100）　｜　SDK：11.0.100
 
-Scm.Net 是一个基于 .NET 的企业级中后台快速开发框架，由 36 个项目、4 个解决方案文件夹（`Scm.App`、`Scm.Common`、`Scm.Module`、`Scm.Server`）以及 `Samples`、`Test`、`WinForm` 组成。本文记录这次从 .NET 10.0 整体迁移到 .NET 11.0 的过程：改了什么、踩了哪些坑、破坏性变更如何修复。
+Scm.Net 是一个基于 .NET 的企业级中后台快速开发框架，由 32 个参与构建的项目、4 个解决方案文件夹（`Scm.App`、`Scm.Common`、`Scm.Module`、`Scm.Server`）以及 `Samples`、`Test`、`WinForm` 组成。本文记录这次从 .NET 10.0 整体迁移到 .NET 11.0 的过程：改了什么、踩了哪些坑、破坏性变更如何修复。
+
+![用户登录](../screenshots/web-01-login.png)
 
 ---
 
@@ -55,19 +57,29 @@ WebApplication.CreateBuilder(args)
 
 ---
 
-## 二、预编译库如何处理
+## 二、预编译库迁移到 Libs/net11.0
 
-`Libs/` 下有一批闭源 DLL（`Scm.Cache.dll`、`Scm.Uid.dll`、`Upgrade.Net.dll` 等），按 `HintPath` 直接引用。这次**没有**把它们改名为 `Libs/net11.0`，而是继续引用 `Libs/net10.0`：
+`Libs/` 下有一批闭源 DLL（`Scm.Cache.dll`、`Scm.Uid.dll`、`Scm.Workflow.dll` 等），按 `HintPath` 直接引用。它们与框架升级同步完成了针对 .NET 11 的重编，引用路径从 `Libs/net10.0` 切到 `Libs/net11.0`：
 
 ```xml
 <Reference Include="Scm.Cache">
-  <HintPath>..\Libs\net10.0\Scm.Cache.dll</HintPath>
+  <HintPath>..\Libs\net11.0\Scm.Cache.dll</HintPath>
 </Reference>
 ```
 
-原因是这些 DLL 只用了稳定的 BCL 表面（缓存、UID、HTTP、反射），在 .NET 11 运行时上加载和运行都正常。`Libs/netstandard2.0` 下的那批（`Scm.Common.File.dll`、`Scm.Common.Http.dll`、`Scm.Common.Text.dll` 等）本来就是跨版本兼容的，更无需改动。
+调整后的目录组织：
 
-> 实践建议：目录名只代表"编译时所用的 TFM"，不代表"运行时只能跑在哪个版本"。真正需要重建的是用到了被移除 API 的库；纯工具类库不必为了目录名好看而重编。
+| 目录 | 内容 | 使用方 |
+| --- | --- | --- |
+| `Libs/net11.0/` | `Scm.Cache.*`、`Scm.Uid`、`Scm.Workflow`、`Scm.Aiml`、`Scm.Plugin*`、`Scm.View` | 所有 `net11.0` 工程 |
+| `Libs/netstandard2.0/` | `Scm.Common.*`、`Renamer.Net`、`Scm.Oidc.Client`、`Upgrade.Net` | 公共库与宿主 |
+| `Libs/net10.0/` | 上一代预编译库 | 仅保留用于回退，不再引用 |
+
+三点经验：
+
+1. **引用路径不要"顺手兼容"。** 让 `net11.0` 工程继续引用 `net10.0` 的 DLL，编译通常能过，但一旦某个库内部用到新 TFM 才有的 API，就会推迟到运行时才暴露。跟随官方重编版本更稳。
+2. **`netstandard2.0` 的目标库不必升级。** `Scm.Common.*` 系列与 `Upgrade.Net.dll` 只依赖稳定 BCL，留在 `netstandard2.0` 下可被所有 TFM 共用。
+3. **切换后保留旧目录。** 确认回归通过前先留着 `Libs/net10.0`，回滚成本几乎为零。
 
 ---
 
@@ -281,7 +293,7 @@ public const int MAJOR = 11;
 ## 五、验证
 
 ```bash
-dotnet build Scm.Net.sln          # 36 个项目全量编译
+dotnet build Scm.Net.sln          # 32 个项目全量编译
 cd Scm.Net && dotnet run          # 开发环境监听 :5000
 ```
 
@@ -303,5 +315,5 @@ cd Scm.Net && dotnet run          # 开发环境监听 :5000
 3. **优先删代码，而不是适配代码。** 自定义 `JobFactory` 之所以能删，是因为官方 DI 集成已经等价实现。升级时先问"这个扩展点还需要吗"。
 4. **注意隐含的全局行为差异。** CsvHelper 的 `FormatProvider`、MailKit 的收件人推导规则都属于"编译能过、行为可能变"的坑，要专门验一遍输出。
 5. **取消令牌要贯穿到底。** .NET 11 里 `CancellationToken` 已经是作业、HTTP、EF 查询的标配，拿到手就往下传，别再吞掉。
-6. **预编译库不必急于重编。** `net10.0` 的目标 DLL 在 .NET 11 进程里通常照常工作，先跑通再决定是否替换。
+6. **预编译库跟随重编，但保留回退路径。** 官方提供了 `net11.0` 版本就切过去；切换期间保留 `Libs/net10.0`，回归通过后再删除。
 7. **`netstandard2.0` 项目保持不动。** 它们向上兼容，改目标框架反而会扩大影响面。

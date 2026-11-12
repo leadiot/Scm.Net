@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
     <TargetFramework>net11.0</TargetFramework>
@@ -8,9 +8,12 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<PackageReference Include="Microsoft.AspNetCore.Mvc.Core" Version="2.3.14" />
-		<PackageReference Include="MiniExcel" Version="1.47.0" />
-		<PackageReference Include="SqlSugarCore" Version="5.1.4.221" />
+		<FrameworkReference Include="Microsoft.AspNetCore.App" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<PackageReference Include="MiniExcel" />
+		<PackageReference Include="SqlSugarCore" />
 	</ItemGroup>
 
 	<ItemGroup>

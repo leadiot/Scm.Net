@@ -1,6 +1,6 @@
 # AGENTS.md — Scm.Net
 
-面向 AI 助手的精简指南，用于协作开发这个 .NET 10.0 企业级中后台快速开发框架。前端代码在独立仓库（`Scm.Vue`）。
+面向 AI 助手的精简指南，用于协作开发这个 .NET 11.0 企业级中后台快速开发框架。前端代码在独立仓库（`Scm.Vue`）。
 
 ---
 
@@ -9,7 +9,7 @@
 | 命令 | 说明 |
 |---------|---------|
 | `cd Scm.Net && dotnet run` | 启动开发服务器（开发环境 Kestrel 监听 `:5000`，生产环境监听 `:9999`） |
-| `dotnet build Scm.Net.sln` | 构建整个 33 项目的解决方案 |
+| `dotnet build Scm.Net.sln` | 构建整个 32 个项目的解决方案 |
 | `cd Scm.Net && dotnet publish -c Release -o ./Publish` | 生产环境发布 |
 | `cd Test && dotnet run` | 运行测试控制台程序（非单元测试框架） |
 | `cd WinForm && dotnet run` | 启动 WinForm 测试客户端（MQTT 温度模拟器 / HTTP 测试表单） |
@@ -40,8 +40,8 @@ WebApplication.CreateBuilder(args)
 |--------|----------|------|
 | `Scm.App` | `Scm.Net`、`Scm.Core`、`Scm.Dao`、`Scm.Dto` | Web 宿主、业务逻辑、数据访问、DTO |
 | `Scm.Common` | `Scm.Common`、`Scm.Common.Dto`、`Scm.Common.Log`、`Scm.Common.Os`、`Scm.Common.Excel` | 通用工具 |
-| `Scm.Module` | `Scm.Dsa.Dba.Sugar`、`Scm.Dsa.Dfa.Json`、`Scm.Generator`、`Scm.Email`、`Scm.Phone`、`Scm.Mqtt`、`Scm.Ai` | ORM 封装、JSON 助手、代码生成、消息通知、AI 客户端 |
-| `Scm.Server` | `Scm.Server`、`Scm.Server.*` | 服务端抽象与基础设施模块（API、Aiml、Cache、DAO、DVO、MQTT、Quartz、RabbitMQ、Scalar、Service、SignalR） |
+| `Scm.Module` | `Scm.Dsa.Dba.Sugar`、`Scm.Generator`、`Scm.Email`、`Scm.Phone`、`Scm.Mqtt`、`Scm.Ai` | ORM 封装、代码生成、消息通知、AI 客户端 |
+| `Scm.Server` | `Scm.Server`、`Scm.Server.*` | 服务端抽象与基础设施模块（API、Aiml、Cache、DAO、DVO、MQTT、Quartz、Scalar、Service、SignalR） |
 | `Samples` | `Samples.Common`、`Samples.Server`、`Samples.Common.Dto`、`Samples.Server.Dao` | 示例扩展项目 |
 | `Test` | `Test` | 控制台实验台 |
 | `WinForm` | `WinForm` | 桌面测试客户端（MQTT 模拟器 + HTTP 表单） |
@@ -65,10 +65,12 @@ Scm.Net (host)
 
 ### 项目设置（通用）
 每个 `.csproj` 均使用：
-- `<TargetFramework>net10.0</TargetFramework>`
+- `<TargetFramework>net11.0</TargetFramework>`（`WinForm` 为 `net11.0-windows`；`Scm.Common`、`Scm.Common.Dto`、`Scm.Common.Log`、`Scm.Common.Os`、`Scm.Common.Excel` 五个公共库保持 `netstandard2.0`）
 - `<ImplicitUsings>enable</ImplicitUsings>`
 - `<Nullable>disable</Nullable>`
 - `<RootNamespace>Com.Scm</RootNamespace>`（`Samples.*` 使用 `Com.Scm.Samples`）
+- **包版本由根目录 `Directory.Packages.props` 中央管理**（`ManagePackageVersionsCentrally = true`）。新增或升级依赖时只改该文件，`.csproj` 中的 `<PackageReference>` 不要写 `Version`，否则报 `NU1008`。
+- 已移出解决方案的未挂载模块：`Scm.Server.Bearer`、`Scm.Server.Swagger`、`Scm.Server.RabbitMQ`、`Scm.Dsa.Dfa.Json`（目录仍保留，启用时重新加入并补充包版本）。
 
 ### 服务自动发现
 - 配置程序集中所有**名称以 `Service` 结尾**的类，会通过 [DllExtension.cs](file:///d:/workspace/Git/Scm.Net/Scm.Server/Extensions/DllExtension.cs) 自动以 `Scoped` 方式注册到 DI 容器（`Assembly.Load(name)` + `Name.EndsWith("Service")`）。
@@ -133,22 +135,26 @@ services.SetupMqtt(mqttBrokerConfig, mqttClientConfig);
 
 ## Quartz（定时任务）
 
+- 依赖 **Quartz.NET 4.7.3**（4.x 为 API 重写版，`Quartz.Spi` 命名空间已移除）。
 - 配置：`appsettings.json → Quartz`（`BaseDir`、`JobFile`、`LogsDir`、`DataDir`）。
 - 由 `QuartzConfig.Type` 选择两种存储模式之一：
   - `"file"`（默认）→ `DfQuartzJobService` + `QuartzFileHelper`（任务定义于 `quartz/settings/jobs.json`）。
   - 其他任意值 → `DbQuartzJobService`（任务持久化到数据库表）。
+- 调度器在 `QuartzSetup()` 中装配：`services.AddQuartz(q => q.UseInMemoryStore())`。**不要注册自定义 `IJobFactory`**——4.x 的 `IScheduler` 没有 `JobFactory` 属性，DI 感知的作业工厂由 `AddQuartz` 内置提供，且每次触发都会创建 Scope。
 - **自定义任务契约**：实现 `ICustomJob`（`string ExecuteService(string parameter)`）。所有加载 DLL 中的 `ICustomJob` 实现会通过 `AddQuartzClassJobs()` 自动以 Scoped 注册（扫描 `BaseDirectory` 下的 `*.dll`）。
-- 内置任务：`ApiClientJob`（HTTP 回调）、`DllMethodJob`（反射调用方法）、`VersionCheckJob`（每日版本检查，参见升级章节）。
-- `UseQuartz()` 在应用启动时初始化调度器。
+- 内置任务：`ApiClientJob`（HTTP 回调）、`DllMethodJob`（反射调用方法）。`VersionCheckJob` 当前被 `<Compile Remove>` 排除编译，待适配 Quartz 4.x 后再恢复。
+- 作业实现签名：`ValueTask Execute(IJobExecutionContext context, CancellationToken cancellationToken = default)`；名称与分组取自 `context.Trigger.Key` / `context.Trigger.JobKey`，**不要**强转 `JobExecutionContextImpl` 或 `AbstractTrigger`。
+- 列表查询使用 `QueryJobs` / `QueryTriggers`（返回 `JobHeader` / `TriggerHeader`，不反序列化 `JobDataMap`）；`GetJobKeys` / `GetTriggersOfJob` 等旧 API 已不存在。
+- `UseQuartz()` 在应用启动时调用 `IQuartzService.InitJobs()` 加载并注册任务。
 
 ---
 
 ## 升级 / 版本检测
 
 - `appsettings.json` 中的 `Env.CheckUpgradeUrl` 是版本信息源地址，返回 `ScmVerInfo`（版本号 + 下载地址）。
-- `VersionCheckJob`（Quartz 任务）每日轮询该 URL；发现新版本时将一行记录写入 `scm_sys_upgrade_info`（`ScmUpgradeInfoDao`）。
+- `VersionCheckJob`（Quartz 任务，当前被 `<Compile Remove>` 排除编译）每日轮询该 URL；发现新版本时将一行记录写入 `scm_sys_upgrade_info`（`ScmUpgradeInfoDao`）。
 - [UpgradeController](file:///d:/workspace/Git/Scm.Net/Scm.Net/Controllers/UpgradeController.cs) 对外暴露 `CheckUpdateAsync` / `HasNewVersionAsync` / `GetVersionHistoryAsync` / `DownloadUpdate`，供前端提示 + 升级流程使用。
-- 升级启动器为 `Upgrade.Net.dll`（位于 `Libs/net10.0/`）；路径可通过 `Env.UpgradeFilePath` / `Env.UpgradeJsonPath` 配置。
+- 升级启动器为 `Upgrade.Net.dll`（位于 `Libs/netstandard2.0/`）；路径可通过 `Env.UpgradeFilePath` / `Env.UpgradeJsonPath` 配置。
 - **升级过程中切勿调用 `Environment.Exit(0)`** 来终止宿主——应使用 `IHostApplicationLifetime.StopApplication()`，以保证 HostedService 与数据库连接能优雅关闭。
 
 ---
@@ -199,11 +205,12 @@ export SCM__AI__PROVIDERS__0__APIKEY="..."
 
 ## 预编译库
 
-`Libs/` 目录包含闭源 DLL，通过 HintPath 直接引用：
-- `Libs/net10.0/` —— `Scm.Cache.dll`、`Scm.Uid.dll`、`Scm.Plugin.Image.dll`、`Scm.Aiml.dll`、`Scm.Workflow.dll`、`Upgrade.Net.dll`，以及缓存 Provider（`Scm.Cache.Redis/Memory/Garnet.dll`）。
-- `Libs/netstandard2.0/` —— `Scm.Common.dll`、`Scm.Common.File.dll`、`Scm.Common.Http.dll`、`Scm.Common.Otp.dll`、`Scm.Common.Text.dll`、`Scm.Common.Time.dll`。
+`Libs/` 目录包含闭源 DLL，通过 HintPath 直接引用。目录名对应编译时所用的 TFM，引用时按工程的目标框架选择：
+- `Libs/net11.0/` —— `Scm.Aiml.dll`、`Scm.Cache.dll`、`Scm.Cache.Dictionary.dll`、缓存 Provider（`Scm.Cache.Redis/Memory/Garnet.dll`）、`Scm.Plugin.dll`、`Scm.Plugin.Image.dll`、`Scm.Plugin.Image.ImageSharp.dll`、`Scm.Plugin.Image.SkiaSharp.dll`、`Scm.Uid.dll`、`Scm.View.dll`、`Scm.Workflow.dll`。
+- `Libs/netstandard2.0/` —— `Scm.Common.File.dll`、`Scm.Common.Http.dll`、`Scm.Common.Otp.dll`、`Scm.Common.Text.dll`、`Scm.Common.Time.dll`、`Renamer.Net.dll`、`Scm.Oidc.Client.dll`、`Upgrade.Net.dll`。
+- `Libs/net10.0/` —— 上一代预编译库，仅保留用于回退，`net11.0` 工程不要引用。
 
-不要删除这些文件，也不要期望获取其源代码。新增 `Libs/` 引用时，也需要在使用的 `.csproj` 中添加 `<Reference Include="..."><HintPath>...</HintPath></Reference>`。
+`net11.0` 工程引用 `Libs/net11.0`，`netstandard2.0` 工程引用 `Libs/netstandard2.0`，不要混用。不要删除这些文件，也不要期望获取其源代码。新增 `Libs/` 引用时，也需要在使用的 `.csproj` 中添加 `<Reference Include="..."><HintPath>...</HintPath></Reference>`。
 
 ---
 
@@ -266,7 +273,7 @@ export SCM__AI__PROVIDERS__0__APIKEY="..."
 2. **Nullable 全局禁用**。不要假设可空引用类型会被编译器校验。
 3. **Test 项目不是测试套件**。它只是一个控制台实验台，没有配置 `dotnet test` 运行器。
 4. **前端代码在独立仓库**。不要在这里找 Vue/Vite 源码；前端项目在另一仓库 `Scm.Vue` 中。
-5. **新增项目引用后请重新构建**。整个解决方案共 33 个项目；陈旧的构建产物会导致运行时报找不到程序集的错误。
+5. **新增项目引用后请重新构建**。整个解决方案共 32 个项目；陈旧的构建产物会导致运行时报找不到程序集的错误。
 6. **`BrokerConfig` 中 MQTT Broker 默认为 `Enabled = false`**。仅当配置节显式启用时才会启动 Broker。客户端注册不受限制——可以指向外部 Broker。
 7. **MQTT 启动顺序**：客户端 HostedService 可能在 Broker 开始监听前就运行。应在客户端的 `StartAsync`/`ExecuteAsync` 中实现重试/退避机制。
 8. **对每请求上下文使用 `AsyncLocal`，而非 `ThreadLocal`**。`ThreadLocal<ScmToken>` 在 ASP.NET Core 中的 `await` 线程切换后会丢失状态。
@@ -274,6 +281,8 @@ export SCM__AI__PROVIDERS__0__APIKEY="..."
 10. **`Enabled` 之类的默认值往往是陷阱**。许多配置类（如 `BrokerConfig`）的 C# 默认值并非零值；总是在 `appsettings.json` 中显式设置，不要依赖 C# 默认。
 11. **后台服务没有 `HttpContext`**。Quartz 任务与 `IHostedService` 实现在使用 `SugarRepository` 之前，必须自行调用 `IJwtTokenHolder.SetToken(...)`，否则数据权限过滤会基于空令牌执行。
 12. **不要从请求处理器中调用 `Environment.Exit()`**。升级流程中应使用 `IHostApplicationLifetime.StopApplication()` 进行优雅关闭。
+13. **Quartz 4.x 不要再用 `Quartz.Spi` 或自定义 `IJobFactory`**。调度器由 `AddQuartz` 装配，列表查询用 `QueryJobs`/`QueryTriggers`，作业实现返回 `ValueTask` 并接收 `CancellationToken`。
+14. **CsvHelper 34 与 MailKit 5 的 API 已重写**。导出使用 `CsvWriter.Create(writer, CsvWriterOptions.Default)` + `EndRecord()`；邮件发送使用 `client.Send(new SendRequest(message))`。详见 [docs/UpgradeToNet11.md](file:///d:/workspace/Git/Scm.Net/docs/UpgradeToNet11.md)。
 
 ---
 
@@ -282,3 +291,4 @@ export SCM__AI__PROVIDERS__0__APIKEY="..."
 - [docs/AiIntegration.md](file:///d:/workspace/Git/Scm.Net/docs/AiIntegration.md) —— AI 服务商 + RAG 管线详情。
 - [docs/SecureConfiguration.md](file:///d:/workspace/Git/Scm.Net/docs/SecureConfiguration.md) —— User Secrets / 环境变量策略。
 - [docs/UnifiedApiResponse.md](file:///d:/workspace/Git/Scm.Net/docs/UnifiedApiResponse.md) —— 统一响应封装约定。
+- [docs/UpgradeToNet11.md](file:///d:/workspace/Git/Scm.Net/docs/UpgradeToNet11.md) —— .NET 11.0 升级实录（Quartz 4.x / CsvHelper 34 / MailKit 5 破坏性变更）。

@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>net11.0</TargetFramework>
@@ -8,14 +8,11 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Mapster" Version="10.0.14" />
-    <PackageReference Include="Mapster.DependencyInjection" Version="10.0.14" />
-    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="11.0.0" />
-    <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="11.0.0" />
-    <PackageReference Include="Serilog.Sinks.Async" Version="2.1.0" />
-    <PackageReference Include="Serilog.Sinks.Console" Version="6.1.1" />
-    <PackageReference Include="Serilog.Sinks.File" Version="7.0.0" />
-    <PackageReference Include="System.Linq.Dynamic.Core" Version="1.7.4" />
+    <PackageReference Include="Mapster" />
+    <PackageReference Include="Mapster.DependencyInjection" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" />
+    <PackageReference Include="System.Linq.Dynamic.Core" />
   </ItemGroup>
 
   <ItemGroup>

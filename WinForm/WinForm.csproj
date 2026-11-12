@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
 		<OutputType>WinExe</OutputType>
@@ -9,8 +9,8 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<PackageReference Include="MQTTnet" Version="5.2.0.1603" />
-		<PackageReference Include="Newtonsoft.Json" Version="13.0.4" />
+		<PackageReference Include="MQTTnet" />
+		<PackageReference Include="Newtonsoft.Json" />
 	</ItemGroup>
 
 	<ItemGroup>

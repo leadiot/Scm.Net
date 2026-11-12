@@ -26,10 +26,10 @@
       <HintPath>..\Libs\netstandard2.0\Scm.Common.Time.dll</HintPath>
     </Reference>
     <Reference Include="Scm.Uid">
-      <HintPath>..\Libs\net10.0\Scm.Uid.dll</HintPath>
+      <HintPath>..\Libs\net11.0\Scm.Uid.dll</HintPath>
     </Reference>
     <Reference Include="Scm.Workflow">
-      <HintPath>..\Libs\net10.0\Scm.Workflow.dll</HintPath>
+      <HintPath>..\Libs\net11.0\Scm.Workflow.dll</HintPath>
     </Reference>
   </ItemGroup>
 

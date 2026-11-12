@@ -210,7 +210,7 @@ export SCM__AI__PROVIDERS__0__APIKEY="..."
 - `Libs/netstandard2.0/` —— `Scm.Common.File.dll`、`Scm.Common.Http.dll`、`Scm.Common.Otp.dll`、`Scm.Common.Text.dll`、`Scm.Common.Time.dll`、`Renamer.Net.dll`、`Scm.Oidc.Client.dll`、`Upgrade.Net.dll`。
 - `Libs/net10.0/` —— 上一代预编译库，仅保留用于回退，`net11.0` 工程不要引用。
 
-`net11.0` 工程引用 `Libs/net11.0`，`netstandard2.0` 工程引用 `Libs/netstandard2.0`，不要混用。不要删除这些文件，也不要期望获取其源代码。新增 `Libs/` 引用时，也需要在使用的 `.csproj` 中添加 `<Reference Include="..."><HintPath>...</HintPath></Reference>`。
+`net11.0` 工程引用 `Libs/net11.0`，`netstandard2.0` 工程引用 `Libs/netstandard2.0`，不要混用。不要删除这些文件，也不要期望获取其源代码。所有 `Libs/` 引用已集中到根目录 `Directory.Build.props` 中按 `$(MSBuildProjectName)` 条件声明——新增或调整依赖时只改该文件，不要在各 `.csproj` 中重复写 `<Reference>` / `<HintPath>`。
 
 ---
 

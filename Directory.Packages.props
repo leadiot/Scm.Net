@@ -49,7 +49,7 @@
     <PackageVersion Include="Serilog.Sinks.File" Version="7.0.0" />
   </ItemGroup>
 
-  <ItemGroup Label="图像处理">
+  <ItemGroup Label="图像处理（SixLabors 为 Scm.Plugin.Image.ImageSharp 的运行时依赖，代码中无直接调用，勿按“未引用”删除）">
     <PackageVersion Include="SixLabors.Fonts" Version="2.1.3" />
     <PackageVersion Include="SixLabors.ImageSharp" Version="3.1.12" />
     <PackageVersion Include="SixLabors.ImageSharp.Drawing" Version="2.1.7" />

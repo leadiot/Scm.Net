@@ -12,7 +12,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.Extensions.Http" />
     <PackageReference Include="Quartz" />
     <PackageReference Include="Quartz.AspNetCore" />
   </ItemGroup>
@@ -23,18 +22,6 @@
     <ProjectReference Include="..\Scm.Dsa.Dba.Sugar\Scm.Dsa.Dba.Sugar.csproj" />
     <ProjectReference Include="..\Scm.Server.Dao\Scm.Server.Dao.csproj" />
     <ProjectReference Include="..\Scm.Server\Scm.Server.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Reference Include="Scm.Common.File">
-      <HintPath>..\Libs\netstandard2.0\Scm.Common.File.dll</HintPath>
-    </Reference>
-    <Reference Include="Scm.Common.Http">
-      <HintPath>..\Libs\netstandard2.0\Scm.Common.Http.dll</HintPath>
-    </Reference>
-    <Reference Include="Scm.Common.Text">
-      <HintPath>..\Libs\netstandard2.0\Scm.Common.Text.dll</HintPath>
-    </Reference>
   </ItemGroup>
 
 </Project>

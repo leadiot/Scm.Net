@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>net11.0</TargetFramework>
@@ -9,11 +9,5 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Scm.Server\Scm.Server.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Reference Include="Scm.Aiml">
-      <HintPath>..\Libs\net11.0\Scm.Aiml.dll</HintPath>
-    </Reference>
   </ItemGroup>
 </Project>

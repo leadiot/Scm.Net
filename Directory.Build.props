@@ -1,0 +1,90 @@
+<Project>
+
+  <!--
+    预编译库统一声明。
+    新增/调整项目对 Libs 下 DLL 的依赖时，只改本文件的 Condition 列表，
+    不再在各 .csproj 中重复编写 HintPath。
+  -->
+  <PropertyGroup>
+    <ScmLibsDir>$(MSBuildThisFileDirectory)Libs\</ScmLibsDir>
+  </PropertyGroup>
+
+  <ItemGroup Label="Scm.Common.File (netstandard2.0)">
+    <Reference Include="Scm.Common.File" Condition="'$(MSBuildProjectName)' == 'Scm.Common' or '$(MSBuildProjectName)' == 'Scm.Email' or '$(MSBuildProjectName)' == 'Scm.Generator' or '$(MSBuildProjectName)' == 'Scm.Server' or '$(MSBuildProjectName)' == 'Scm.Server.Quartz' or '$(MSBuildProjectName)' == 'Scm.Core' or '$(MSBuildProjectName)' == 'Scm.Net'">
+      <HintPath>$(ScmLibsDir)netstandard2.0\Scm.Common.File.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+  <ItemGroup Label="Scm.Common.Http (netstandard2.0)">
+    <Reference Include="Scm.Common.Http" Condition="'$(MSBuildProjectName)' == 'Scm.Server' or '$(MSBuildProjectName)' == 'Scm.Server.Quartz' or '$(MSBuildProjectName)' == 'Scm.Core' or '$(MSBuildProjectName)' == 'Scm.Net'">
+      <HintPath>$(ScmLibsDir)netstandard2.0\Scm.Common.Http.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+  <ItemGroup Label="Scm.Common.Text (netstandard2.0)">
+    <Reference Include="Scm.Common.Text" Condition="'$(MSBuildProjectName)' == 'Scm.Common' or '$(MSBuildProjectName)' == 'WinForm' or '$(MSBuildProjectName)' == 'Scm.Dsa.Dba.Sugar' or '$(MSBuildProjectName)' == 'Scm.Email' or '$(MSBuildProjectName)' == 'Samples.Server' or '$(MSBuildProjectName)' == 'Scm.Generator' or '$(MSBuildProjectName)' == 'Test' or '$(MSBuildProjectName)' == 'Scm.Server' or '$(MSBuildProjectName)' == 'Samples.Common' or '$(MSBuildProjectName)' == 'Samples.Common.Dto' or '$(MSBuildProjectName)' == 'Scm.Dto' or '$(MSBuildProjectName)' == 'Scm.Server.Dao' or '$(MSBuildProjectName)' == 'Scm.Server.Service' or '$(MSBuildProjectName)' == 'Scm.Server.Quartz' or '$(MSBuildProjectName)' == 'Scm.Core' or '$(MSBuildProjectName)' == 'Scm.Dao' or '$(MSBuildProjectName)' == 'Scm.Net'">
+      <HintPath>$(ScmLibsDir)netstandard2.0\Scm.Common.Text.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+  <ItemGroup Label="Scm.Common.Time (netstandard2.0)">
+    <Reference Include="Scm.Common.Time" Condition="'$(MSBuildProjectName)' == 'WinForm' or '$(MSBuildProjectName)' == 'Samples.Server.Dao' or '$(MSBuildProjectName)' == 'Samples.Server' or '$(MSBuildProjectName)' == 'Scm.Server.Dvo' or '$(MSBuildProjectName)' == 'Scm.Server.Dao' or '$(MSBuildProjectName)' == 'Scm.Server.Service' or '$(MSBuildProjectName)' == 'Scm.Core' or '$(MSBuildProjectName)' == 'Scm.Dao' or '$(MSBuildProjectName)' == 'Scm.Net'">
+      <HintPath>$(ScmLibsDir)netstandard2.0\Scm.Common.Time.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+  <ItemGroup Label="Upgrade.Net (netstandard2.0)">
+    <Reference Include="Upgrade.Net" Condition="'$(MSBuildProjectName)' == 'Scm.Net'">
+      <HintPath>$(ScmLibsDir)netstandard2.0\Upgrade.Net.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+  <ItemGroup Label="Scm.Aiml (net11.0)">
+    <Reference Include="Scm.Aiml" Condition="'$(MSBuildProjectName)' == 'Scm.Server.Aiml' or '$(MSBuildProjectName)' == 'Scm.Core'">
+      <HintPath>$(ScmLibsDir)net11.0\Scm.Aiml.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+  <ItemGroup Label="Scm.Cache (net11.0)">
+    <Reference Include="Scm.Cache" Condition="'$(MSBuildProjectName)' == 'Scm.Server' or '$(MSBuildProjectName)' == 'Scm.Server.Cache' or '$(MSBuildProjectName)' == 'Scm.Server.SignalR' or '$(MSBuildProjectName)' == 'Scm.Core' or '$(MSBuildProjectName)' == 'Scm.Net'">
+      <HintPath>$(ScmLibsDir)net11.0\Scm.Cache.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+  <ItemGroup Label="Scm.Cache.Dictionary (net11.0)">
+    <Reference Include="Scm.Cache.Dictionary" Condition="'$(MSBuildProjectName)' == 'Scm.Server.Cache'">
+      <HintPath>$(ScmLibsDir)net11.0\Scm.Cache.Dictionary.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+  <ItemGroup Label="Scm.Plugin (net11.0)">
+    <Reference Include="Scm.Plugin" Condition="'$(MSBuildProjectName)' == 'Scm.Core'">
+      <HintPath>$(ScmLibsDir)net11.0\Scm.Plugin.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+  <ItemGroup Label="Scm.Plugin.Image (net11.0)">
+    <Reference Include="Scm.Plugin.Image" Condition="'$(MSBuildProjectName)' == 'Scm.Core' or '$(MSBuildProjectName)' == 'Scm.Net'">
+      <HintPath>$(ScmLibsDir)net11.0\Scm.Plugin.Image.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+  <ItemGroup Label="Scm.Plugin.Image.ImageSharp (net11.0)">
+    <Reference Include="Scm.Plugin.Image.ImageSharp" Condition="'$(MSBuildProjectName)' == 'Scm.Core' or '$(MSBuildProjectName)' == 'Scm.Net'">
+      <HintPath>$(ScmLibsDir)net11.0\Scm.Plugin.Image.ImageSharp.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+  <ItemGroup Label="Scm.Uid (net11.0)">
+    <Reference Include="Scm.Uid" Condition="'$(MSBuildProjectName)' == 'Samples.Server.Dao' or '$(MSBuildProjectName)' == 'Scm.Server.Dao' or '$(MSBuildProjectName)' == 'Scm.Core' or '$(MSBuildProjectName)' == 'Scm.Net' or '$(MSBuildProjectName)' == 'Scm.Dao'">
+      <HintPath>$(ScmLibsDir)net11.0\Scm.Uid.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+  <ItemGroup Label="Scm.Workflow (net11.0)">
+    <Reference Include="Scm.Workflow" Condition="'$(MSBuildProjectName)' == 'Scm.Server' or '$(MSBuildProjectName)' == 'Scm.Dto' or '$(MSBuildProjectName)' == 'Scm.Server.Service' or '$(MSBuildProjectName)' == 'Scm.Core' or '$(MSBuildProjectName)' == 'Scm.Dao'">
+      <HintPath>$(ScmLibsDir)net11.0\Scm.Workflow.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+</Project>

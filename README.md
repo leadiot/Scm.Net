@@ -9,7 +9,7 @@
     <img src="https://gitee.com/leadiot/scm.net/badge/star.svg?theme=dark" alt="Gitee Stars" />
   </a>
   <a href="https://dotnet.microsoft.com">
-    <img src="https://img.shields.io/badge/.NET-10.0-512BD4?logo=dotnet" alt=".NET 10" />
+    <img src="https://img.shields.io/badge/.NET-11.0-512BD4?logo=dotnet" alt=".NET 11" />
   </a>
   <a href="https://vuejs.org/">
     <img src="https://img.shields.io/badge/Vue-3.0-4FC08D?logo=vue.js" alt="Vue 3" />
@@ -22,7 +22,7 @@
 </p>
 
 <p align="center">
-  <b>企业级中后台快速开发框架</b> — 基于 .NET 10.0 + Vue 3.0，前后端分离架构。
+  <b>企业级中后台快速开发框架</b> — 基于 .NET 11.0 + Vue 3.0，前后端分离架构。
 </p>
 
 <p align="center">
@@ -82,7 +82,7 @@
 ### 业务能力
 
 - **MQTT 通信** — 轻量级物联网通信协议，支持内置 Broker
-- **RabbitMQ 消息队列** — 发布者/消费者模式集成
+- **RabbitMQ 消息队列** — 发布者/消费者模式集成（可选模块，默认未纳入解决方案）
 - **AI 大语言模型** — 集成 DeepSeek、华为盘古、通义千问、腾讯元宝、百度文心一言、豆包、ChatGPT；开源实现支持 DeepSeek/通义千问智能问答、流式输出与 RAG 知识库问答（详见 [AI 集成文档](docs/AiIntegration.md)）
 - **图像处理** — 条码生成识别、图片水印、图形验证码、头像裁剪
 - **数据可视化** — ECharts 图表集成，Dashboard 看板布局
@@ -102,21 +102,25 @@
 
 ### 后端核心依赖
 
-| 技术                                                               | 版本      | 说明                        |
-| ---------------------------------------------------------------- | ------- | ------------------------- |
-| [.NET](https://dotnet.microsoft.com)                             | 10.0    | 跨平台运行时，兼容 .NET 6/7/8/9/10 |
-| [SqlSugarCore](https://www.donet5.com/Home/Doc)                  | -       | ORM 数据访问框架                |
-| [ImageSharp](https://github.com/SixLabors/ImageSharp)            | ^3.1.12 | 跨平台图像处理                   |
-| [MQTTnet](https://github.com/dotnet/MQTTnet)                     | -       | MQTT 通讯（客户端 + 内置 Broker）  |
-| [RabbitMQ.Client](https://www.rabbitmq.com)                      | -       | RabbitMQ 消息队列             |
-| [Quartz.NET](https://www.quartz-scheduler.net)                   | -       | 定时任务调度                    |
-| [SignalR](https://learn.microsoft.com/en-us/aspnet/core/signalr) | -       | 实时 Web 通信                 |
-| [Mapster](https://mapster.dev/)                                  | 10.0.7  | 对象映射                      |
-| [Serilog](https://serilog.net/)                                  | 4.3.1   | 结构化日志                     |
-| [Newtonsoft.Json](https://www.newtonsoft.com/json)               | -       | JSON 序列化                  |
-| [JWT Bearer](https://github.com/aspnet/AspNetCore)               | 10.0.8  | 认证授权                      |
-| [Scalar](https://github.com/leadiot/Scalar)                      | 2.16.6  | API 文档可视化工具             |
-| [Swagger UI](https://swagger.io/swagger-ui)                      | 10.2.3  | API 文档可视化工具           |
+| 技术                                                               | 版本       | 说明                          |
+| ---------------------------------------------------------------- | -------- | --------------------------- |
+| [.NET](https://dotnet.microsoft.com)                             | 11.0     | 跨平台运行时（核心公共库保持 netstandard2.0） |
+| [SqlSugarCore](https://www.donet5.com/Home/Doc)                  | 5.1.4.221 | ORM 数据访问框架                  |
+| [ImageSharp](https://github.com/SixLabors/ImageSharp)            | 3.1.12   | 跨平台图像处理                     |
+| [MQTTnet](https://github.com/dotnet/MQTTnet)                     | 5.2.0.1603 | MQTT 通讯（客户端 + 内置 Broker）     |
+| [Quartz.NET](https://www.quartz-scheduler.net)                   | 4.7.3    | 定时任务调度                      |
+| [SignalR](https://learn.microsoft.com/en-us/aspnet/core/signalr) | 11.0.0   | 实时 Web 通信                   |
+| [Mapster](https://mapster.dev/)                                  | 10.0.14  | 对象映射                        |
+| [Serilog](https://serilog.net/)                                  | 4.4.0    | 结构化日志                       |
+| [Newtonsoft.Json](https://www.newtonsoft.com/json)               | 13.0.4   | JSON 序列化                    |
+| [JWT Bearer](https://learn.microsoft.com/aspnet/core/security/authentication/) | 11.0.0   | 认证授权                        |
+| [Scalar](https://github.com/scalar/scalar)                       | 2.20.0   | API 文档可视化工具                 |
+| [CsvHelper](https://joshclose.github.io/CsvHelper/)              | 34.0.0   | CSV 导入导出                    |
+| [MiniExcel](https://github.com/mini-software/MiniExcel)          | 1.47.0   | 轻量 Excel 读写                 |
+| [MailKit](https://github.com/jstedfast/MailKit)                  | 5.0.0    | 邮件发送                        |
+| [RabbitMQ.Client](https://www.rabbitmq.com)                      | 7.2.2    | 消息队列（可选模块，默认未纳入解决方案）        |
+
+> 全部 NuGet 版本由根目录 `Directory.Packages.props` 中央管理，升级依赖只需改一处。
 
 ### 前端（Scm.Vue）
 
@@ -135,7 +139,7 @@
 
 | 工具            | 版本要求     | 下载地址                                 |
 | ------------- | -------- | ------------------------------------ |
-| .NET SDK      | ≥ 10.0   | <https://dotnet.microsoft.com>       |
+| .NET SDK      | ≥ 11.0   | <https://dotnet.microsoft.com>       |
 | Visual Studio | ≥ 2026   | <https://visualstudio.microsoft.com> |
 | Node.js       | ≥ 18.0.0 | <https://nodejs.org>                 |
 | VS Code       | ≥ 1.83.0 | <https://code.visualstudio.com/>     |
@@ -206,44 +210,52 @@ npm run dev
 | `Otp`       | 动态口令（TOTP）配置                                              |
 | `Generator` | 代码生成器配置                                                   |
 | `Serilog`   | 结构化日志配置                                                   |
-| `Scalar`    | API 文档可视化配置                                               |
-| `Swagger`   | API 文档可视化配置                                               |
+| `Scalar`    | API 文档可视化配置（开发环境启用）                                       |
+| `MqttBroker` | MQTT Broker 配置（`Enabled` 默认 false，需显式开启）                   |
+| `MqttClient` | MQTT 客户端配置                                                  |
+| `Ai`        | AI 服务商与 RAG 参数（`ApiKey` 请通过环境变量注入）                          |
+| `Project`   | 服务程序集与动态 API 配置                                           |
 
 ***
 
 ## 📁 项目结构
 
-| 项目                    | 说明                                     |
-| --------------------- | -------------------------------------- |
-| `Scm.Net`             | Web API 主入口（Program.cs、Controllers）    |
-| `Scm.Core`            | 核心业务逻辑层                                |
-| `Scm.Dao`             | 数据访问层（DAO）                             |
-| `Scm.Dto`             | 数据传输对象层（DTO）                           |
-| `Scm.Common`          | 公共枚举、工具类                               |
-| `Scm.Common.Dto`      | 公共 DTO 定义                              |
-| `Scm.Common.Excel`    | Excel 导入导出                             |
-| `Scm.Common.Log`      | 日志记录                                   |
-| `Scm.Common.Os`       | 操作系统相关工具                               |
-| `Scm.Dsa.Dba.Sugar`   | SqlSugar 仓储基类封装                        |
-| `Scm.Dsa.Dfa.Json`    | JSON 数据格式转换                            |
-| `Scm.Server`          | 服务端核心（接口定义 + 基础服务）                     |
-| `Scm.Server.Api`      | 动态 API 注册                              |
-| `Scm.Server.Bearer`   | JWT Bearer 认证扩展                        |
-| `Scm.Server.Cache`    | 缓存扩展（MemoryCache / Dictionary / Redis） |
-| `Scm.Server.Dao`      | 服务端 DAO 扩展                             |
-| `Scm.Server.Dvo`      | 服务端 DTO/VO 映射                          |
-| `Scm.Server.MQTT`     | MQTT 通讯（客户端 + 内置 Broker）               |
-| `Scm.Server.RabbitMQ` | RabbitMQ 消息队列集成                        |
-| `Scm.Server.SignalR`  | SignalR 实时通讯                           |
-| `Scm.Server.Quartz`   | Quartz 定时任务调度                          |
-| `Scm.Server.Swagger`  | Swagger 文档可视化                           |
-| `Scm.Server.Scalar`   | Scalar 文档可视化                           |
-| `Scm.Server.Aiml`     | AI 大语言模型集成                             |
-| `Scm.Server.Service`  | 业务服务扩展注册                               |
-| `Scm.Email`           | 邮件发送服务                                 |
-| `Scm.Phone`           | 短信发送服务                                 |
-| `Scm.Generator`       | 代码生成器（支持自定义模板）                         |
-| `Samples.*`           | 使用示例工程                                 |
+| 项目                    | 说明                                           |
+| --------------------- | -------------------------------------------- |
+| `Scm.Net`             | Web API 主入口（Program.cs、Controllers）          |
+| `Scm.Core`            | 核心业务逻辑层                                      |
+| `Scm.Dao`             | 数据访问层（DAO）                                   |
+| `Scm.Dto`             | 数据传输对象层（DTO）                                 |
+| `Scm.Common`          | 公共枚举、工具类                                     |
+| `Scm.Common.Dto`      | 公共 DTO 定义                                    |
+| `Scm.Common.Excel`    | Excel 导入导出                                   |
+| `Scm.Common.Log`      | 日志记录                                         |
+| `Scm.Common.Os`       | 操作系统相关工具                                     |
+| `Scm.Dsa.Dba.Sugar`   | SqlSugar 仓储基类封装                              |
+| `Scm.Server`          | 服务端核心（接口定义 + 基础服务）                           |
+| `Scm.Server.Api`      | 动态 API 注册                                    |
+| `Scm.Server.Cache`    | 缓存扩展（MemoryCache / Dictionary / Redis）       |
+| `Scm.Server.Dao`      | 服务端 DAO 扩展                                   |
+| `Scm.Server.Dvo`      | 服务端 DTO/VO 映射                                |
+| `Scm.Server.MQTT`     | MQTT 通讯（客户端 + 内置 Broker）                     |
+| `Scm.Server.SignalR`  | SignalR 实时通讯                                 |
+| `Scm.Server.Quartz`   | Quartz 定时任务调度                                |
+| `Scm.Server.Scalar`   | Scalar 文档可视化                                 |
+| `Scm.Server.Aiml`     | AI 大语言模型集成                                   |
+| `Scm.Server.Service`  | 业务服务扩展注册                                     |
+| `Scm.Mqtt`            | MQTT 客户端契约（BrokerConfig / IMqttPublisher）     |
+| `Scm.Ai`              | AI 服务商契约与 DVO（请求/响应/向量）                       |
+| `Scm.Email`           | 邮件发送服务                                       |
+| `Scm.Phone`           | 短信发送服务                                       |
+| `Scm.Generator`       | 代码生成器（支持自定义模板）                               |
+| `Samples.Common`      | 示例工程公共库                                      |
+| `Samples.Common.Dto`  | 示例工程 DTO 定义                                  |
+| `Samples.Server`      | 示例工程服务端实现                                    |
+| `Samples.Server.Dao`  | 示例工程 DAO 扩展                                  |
+| `Test`                | 控制台实验台（非单元测试项目）                              |
+| `WinForm`             | WinForm 测试客户端（MQTT 温度模拟器 / HTTP 表单）           |
+
+> 解决方案共 32 个项目。`Scm.Server.Bearer`、`Scm.Server.Swagger`、`Scm.Server.RabbitMQ`、`Scm.Dsa.Dfa.Json` 为可选模块，默认未纳入解决方案，需要时再加入并补充包版本。
 
 ### 目录结构
 
@@ -264,15 +276,17 @@ Scm.Net/
 ├── Scm.Common.Log/              # 日志记录
 ├── Scm.Common.Os/               # 操作系统工具
 ├── Scm.Dsa.Dba.Sugar/           # SqlSugar 仓储基类
-├── Scm.Dsa.Dfa.Json/            # JSON 格式处理
 ├── Scm.Server/                  # 服务端核心
 ├── Scm.Server.*/                # 服务端扩展模块
 ├── Scm.Email/                   # 邮件服务
 ├── Scm.Phone/                   # 短信服务
 ├── Scm.Generator/               # 代码生成器
+├── Scm.Ai/                      # AI 服务商契约与 DVO
+├── Scm.Mqtt/                    # MQTT 客户端契约
 ├── Samples.*/                   # 示例项目
-├── Libs/                        # 预编译库
-├── Test/                        # 测试项目
+├── Libs/                        # 预编译库（net11.0 / netstandard2.0）
+├── Test/                        # 控制台实验台
+├── WinForm/                     # WinForm 测试客户端
 ├── Scm.Net.sln                  # 解决方案文件
 └── LICENSE                      # MIT 许可协议
 ```
@@ -281,17 +295,22 @@ Scm.Net/
 
 ## 📄 API 接口
 
-| 控制器                   | 功能      |
-| --------------------- | ------- |
-| `CaptchaController`   | 图形验证码生成 |
-| `UploadController`    | 文件上传    |
-| `DownloadController`  | 文件下载    |
-| `GeneratorController` | 代码生成    |
-| `QuartzController`    | 定时任务管理  |
-| `HbController`        | 心跳检测    |
-| `OnLineController`    | 在线用户管理  |
+| 控制器                   | 功能        |
+| --------------------- | --------- |
+| `CaptchaController`   | 图形验证码生成   |
+| `ScmFileController`   | 文件上传与下载   |
+| `GeneratorController` | 代码生成      |
+| `QuartzController`    | 定时任务管理    |
+| `DbController`        | 数据库查询与维护  |
+| `OnLineController`    | 在线用户管理    |
+| `HbController`        | 心跳检测      |
+| `UpgradeController`   | 版本检查与升级   |
+| `ComputerController`  | 服务器信息与运维  |
+| `AboutController`     | 系统信息      |
+| `DemoController`      | 演示接口      |
+| `TestController`      | 测试接口      |
 
-> 启动后访问 `http://localhost:5000/scalar` 查看完整 API 文档。
+> 业务 CRUD 接口由动态 Web API 系统自动暴露，无需编写 Controller。启动后访问 `http://localhost:5000/scalar` 查看完整 API 文档。
 
 ***
 
@@ -401,6 +420,10 @@ npm run build
 - [环境搭建教程](https://gitee.com/leadiot/scm.net/wikis/%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA%E6%95%99%E7%A8%8B) — 从零开始搭建开发环境
 - [数据库配置说明](https://gitee.com/leadiot/scm.net/wikis/%E6%95%B0%E6%8D%AE%E5%BA%93%E9%85%8D%E7%BD%AE) — 多数据库引擎配置指南
 - [在线演示](http://www.c-scm.net) — 体验系统功能
+- [AI 集成说明](docs/AiIntegration.md) — 服务商配置与 RAG 管线
+- [安全配置说明](docs/SecureConfiguration.md) — User Secrets / 环境变量策略
+- [统一响应约定](docs/UnifiedApiResponse.md) — API 返回结构规范
+- [.NET 11 升级实录](docs/UpgradeToNet11.md) — 破坏性变更与迁移记录
 
 ***
 

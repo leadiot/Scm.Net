@@ -9,7 +9,7 @@
     <img src="https://gitee.com/leadiot/scm.net/badge/star.svg?theme=dark" alt="Gitee Stars" />
   </a>
   <a href="https://dotnet.microsoft.com">
-    <img src="https://img.shields.io/badge/.NET-10.0-512BD4?logo=dotnet" alt=".NET 10" />
+    <img src="https://img.shields.io/badge/.NET-11.0-512BD4?logo=dotnet" alt=".NET 11" />
   </a>
   <a href="https://vuejs.org/">
     <img src="https://img.shields.io/badge/Vue-3.0-4FC08D?logo=vue.js" alt="Vue 3" />
@@ -22,7 +22,7 @@
 </p>
 
 <p align="center">
-  <b>Enterprise-Grade Admin Rapid Development Framework</b> — Built on .NET 10.0 + Vue 3.0 with a front-end/back-end separation architecture.
+  <b>Enterprise-Grade Admin Rapid Development Framework</b> — Built on .NET 11.0 + Vue 3.0 with a front-end/back-end separation architecture.
 </p>
 
 <p align="center">
@@ -72,15 +72,17 @@ Products already built on this framework include:
 - **Multi-Database Support** — SQLite, MySQL, MariaDB, PostgreSQL, SQL Server, Oracle, Firebird, MongoDB
 - **Multi-Cache Mechanism** — MemoryCache, Dictionary, Redis
 - **Dynamic API** — Automatic service registration as Web APIs — no manual Controller coding needed
+- **API Documentation** — Scalar documentation UI with custom comments support
 - **Code Generator** — Auto-generates entities, DAOs, DTOs/VOs with custom template support
 - **Workflow Engine** — Visual process designer, node configuration, form binding, online approval
 - **Scheduled Tasks** — Quartz.NET integration with dynamic task management
 - **Real-Time Communication** — SignalR WebSocket-based real-time push and online chat
+- **Device Connectivity** — MQTT protocol support for communicating with IoT devices
 
 ### Business Capabilities
 
 - **MQTT Communication** — Lightweight IoT communication protocol with built-in Broker support
-- **RabbitMQ Message Queue** — Publisher/Consumer pattern integration
+- **RabbitMQ Message Queue** — Publisher/Consumer pattern integration (optional module, not in the solution by default)
 - **AI Large Language Models** — Integration with DeepSeek, Huawei Pangu, Tongyi Qianwen, Tencent Yuanbao, Baidu ERNIE, Doubao, ChatGPT; open-source implementation supports DeepSeek/Qwen chat, SSE streaming and RAG knowledge-base Q&A (see [AI Integration Guide](docs/AiIntegration.md))
 - **Image Processing** — Barcode generation/recognition, image watermarking, CAPTCHA, avatar cropping
 - **Data Visualization** — ECharts charting integration, dashboard layout
@@ -102,17 +104,23 @@ Products already built on this framework include:
 
 | Technology | Version | Description |
 | --- | --- | --- |
-| [.NET](https://dotnet.microsoft.com) | 10.0 | Cross-platform runtime, compatible with .NET 6/7/8/9/10 |
-| [SqlSugarCore](https://www.donet5.com/Home/Doc) | - | ORM data access framework |
-| [ImageSharp](https://github.com/SixLabors/ImageSharp) | ^3.1.12 | Cross-platform image processing |
-| [MQTTnet](https://github.com/dotnet/MQTTnet) | - | MQTT communication (client + built-in Broker) |
-| [RabbitMQ.Client](https://www.rabbitmq.com) | - | RabbitMQ message queue |
-| [Quartz.NET](https://www.quartz-scheduler.net) | - | Scheduled task scheduling |
-| [SignalR](https://learn.microsoft.com/en-us/aspnet/core/signalr) | - | Real-time Web communication |
-| [Mapster](https://mapster.dev/) | 10.0.7 | Object mapping |
-| [Serilog](https://serilog.net/) | 4.3.1 | Structured logging |
-| [Newtonsoft.Json](https://www.newtonsoft.com/json) | - | JSON serialization |
-| [JWT Bearer](https://github.com/aspnet/AspNetCore) | 10.0.8 | Authentication & authorization |
+| [.NET](https://dotnet.microsoft.com) | 11.0 | Cross-platform runtime (shared libraries stay on netstandard2.0) |
+| [SqlSugarCore](https://www.donet5.com/Home/Doc) | 5.1.4.221 | ORM data access framework |
+| [ImageSharp](https://github.com/SixLabors/ImageSharp) | 3.1.12 | Cross-platform image processing |
+| [MQTTnet](https://github.com/dotnet/MQTTnet) | 5.2.0.1603 | MQTT communication (client + built-in Broker) |
+| [Quartz.NET](https://www.quartz-scheduler.net) | 4.7.3 | Scheduled task scheduling |
+| [SignalR](https://learn.microsoft.com/en-us/aspnet/core/signalr) | 11.0.0 | Real-time Web communication |
+| [Mapster](https://mapster.dev/) | 10.0.14 | Object mapping |
+| [Serilog](https://serilog.net/) | 4.4.0 | Structured logging |
+| [Newtonsoft.Json](https://www.newtonsoft.com/json) | 13.0.4 | JSON serialization |
+| [JWT Bearer](https://learn.microsoft.com/aspnet/core/security/authentication/) | 11.0.0 | Authentication & authorization |
+| [Scalar](https://github.com/scalar/scalar) | 2.20.0 | API documentation UI |
+| [CsvHelper](https://joshclose.github.io/CsvHelper/) | 34.0.0 | CSV import/export |
+| [MiniExcel](https://github.com/mini-software/MiniExcel) | 1.47.0 | Lightweight Excel read/write |
+| [MailKit](https://github.com/jstedfast/MailKit) | 5.0.0 | Email sending |
+| [RabbitMQ.Client](https://www.rabbitmq.com) | 7.2.2 | Message queue (optional module, not in the solution by default) |
+
+> All NuGet versions are centrally managed by the root `Directory.Packages.props` — upgrade a dependency in one place only.
 
 ### Frontend (Scm.Vue)
 
@@ -131,7 +139,7 @@ Products already built on this framework include:
 
 | Tool | Minimum Version | Download |
 | --- | --- | --- |
-| .NET SDK | ≥ 10.0 | [https://dotnet.microsoft.com](https://dotnet.microsoft.com) |
+| .NET SDK | ≥ 11.0 | [https://dotnet.microsoft.com](https://dotnet.microsoft.com) |
 | Visual Studio | ≥ 2026 | [https://visualstudio.microsoft.com](https://visualstudio.microsoft.com) |
 | Node.js | ≥ 18.0.0 | [https://nodejs.org](https://nodejs.org) |
 
@@ -176,7 +184,7 @@ npm install
 npm run dev
 ```
 
-Visit `http://localhost:5000/swagger` to verify the backend APIs, and `http://localhost:2800` to access the frontend.
+Visit `http://localhost:5000/scalar` to verify the backend APIs, and `http://localhost:2800` to access the frontend.
 
 > Detailed guides: [Environment Setup](https://gitee.com/leadiot/scm.net/wikis/%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA%E6%95%99%E7%A8%8B) | [Database Configuration](https://gitee.com/leadiot/scm.net/wikis/%E6%95%B0%E6%8D%AE%E5%BA%93%E9%85%8D%E7%BD%AE)
 
@@ -200,6 +208,11 @@ Visit `http://localhost:5000/swagger` to verify the backend APIs, and `http://lo
 | `Otp` | One-time password (TOTP) configuration |
 | `Generator` | Code generator configuration |
 | `Serilog` | Structured logging configuration |
+| `Scalar` | API documentation UI (enabled in Development) |
+| `MqttBroker` | MQTT Broker configuration (`Enabled` defaults to false, must be turned on explicitly) |
+| `MqttClient` | MQTT client configuration |
+| `Ai` | AI providers and RAG parameters (`ApiKey` should be injected via environment variables) |
+| `Project` | Service assemblies and dynamic API configuration |
 
 ---
 
@@ -217,26 +230,30 @@ Visit `http://localhost:5000/swagger` to verify the backend APIs, and `http://lo
 | `Scm.Common.Log` | Logging |
 | `Scm.Common.Os` | OS-related utilities |
 | `Scm.Dsa.Dba.Sugar` | SqlSugar repository base class wrapper |
-| `Scm.Dsa.Dfa.Json` | JSON data format conversion |
 | `Scm.Server` | Server core (interface definitions + base services) |
 | `Scm.Server.Api` | Dynamic API registration |
-| `Scm.Server.Bearer` | JWT Bearer authentication extension |
 | `Scm.Server.Cache` | Cache extension (MemoryCache / Dictionary / Redis) |
 | `Scm.Server.Dao` | Server-side DAO extension |
 | `Scm.Server.Dvo` | Server-side DTO/VO mapping |
 | `Scm.Server.MQTT` | MQTT communication (client + built-in Broker) |
-| `Scm.Server.RabbitMQ` | RabbitMQ message queue integration |
 | `Scm.Server.SignalR` | SignalR real-time communication |
 | `Scm.Server.Quartz` | Quartz scheduled task scheduling |
-| `Scm.Server.Swagger` | Swagger documentation extension |
+| `Scm.Server.Scalar` | Scalar documentation UI |
 | `Scm.Server.Aiml` | AI large language model integration |
 | `Scm.Server.Service` | Business service extension registration |
+| `Scm.Mqtt` | MQTT client contracts (BrokerConfig / IMqttPublisher) |
+| `Scm.Ai` | AI provider contracts and DVOs (request/response/embedding) |
 | `Scm.Email` | Email sending service |
 | `Scm.Phone` | SMS sending service |
 | `Scm.Generator` | Code generator (supports custom templates) |
-| `Scm.Plugin.Image` | Image processing plugin (barcode, watermark, CAPTCHA) |
-| `Samples.*` | Usage example projects |
-| `Test` | Test projects |
+| `Samples.Common` | Sample shared library |
+| `Samples.Common.Dto` | Sample DTO definitions |
+| `Samples.Server` | Sample server-side implementation |
+| `Samples.Server.Dao` | Sample DAO extension |
+| `Test` | Console playground (not a unit test project) |
+| `WinForm` | WinForm test client (MQTT temperature simulator / HTTP test forms) |
+
+> The solution contains 32 projects. `Scm.Server.Bearer`, `Scm.Server.Swagger`, `Scm.Server.RabbitMQ` and `Scm.Dsa.Dfa.Json` are optional modules that are not part of the solution by default; re-add them and supply package versions when needed.
 
 ### Directory Layout
 
@@ -257,15 +274,17 @@ Scm.Net/
 ├── Scm.Common.Log/              # Logging
 ├── Scm.Common.Os/               # OS utilities
 ├── Scm.Dsa.Dba.Sugar/           # SqlSugar repository base
-├── Scm.Dsa.Dfa.Json/            # JSON format processing
 ├── Scm.Server/                  # Server core
 ├── Scm.Server.*/                # Server extension modules
 ├── Scm.Email/                   # Email service
 ├── Scm.Phone/                   # SMS service
 ├── Scm.Generator/               # Code generator
+├── Scm.Ai/                      # AI provider contracts and DVOs
+├── Scm.Mqtt/                    # MQTT client contracts
 ├── Samples.*/                   # Sample projects
-├── Libs/                        # Pre-compiled libraries
-├── Test/                        # Test projects
+├── Libs/                        # Pre-compiled libraries (net11.0 / netstandard2.0)
+├── Test/                        # Console playground
+├── WinForm/                     # WinForm test client
 ├── Scm.Net.sln                  # Solution file
 └── LICENSE                      # MIT License
 ```
@@ -276,17 +295,20 @@ Scm.Net/
 
 | Controller | Function |
 | --- | --- |
-| `DbController` | Data query operations |
 | `CaptchaController` | CAPTCHA image generation |
-| `UploadController` | File upload |
-| `DownloadController` | File download |
+| `ScmFileController` | File upload and download |
 | `GeneratorController` | Code generation |
 | `QuartzController` | Scheduled task management |
-| `HbController` | Heartbeat check |
+| `DbController` | Database queries and maintenance |
 | `OnLineController` | Online user management |
+| `HbController` | Heartbeat check |
+| `UpgradeController` | Version check and upgrade |
+| `ComputerController` | Server information and operations |
+| `AboutController` | System information |
+| `DemoController` | Demo endpoints |
 | `TestController` | Test endpoints |
 
-> Visit `http://localhost:5000/swagger` after startup for the full API documentation.
+> Business CRUD endpoints are exposed automatically by the dynamic Web API system — no controllers required. Visit `http://localhost:5000/scalar` after startup for the full API documentation.
 
 ---
 
@@ -396,6 +418,10 @@ npm run build
 - [Environment Setup Guide](https://gitee.com/leadiot/scm.net/wikis/%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA%E6%95%99%E7%A8%8B) — Set up the development environment from scratch
 - [Database Configuration Guide](https://gitee.com/leadiot/scm.net/wikis/%E6%95%B0%E6%8D%AE%E5%BA%93%E9%85%8D%E7%BD%AE) — Multi-database engine configuration guide
 - [Live Demo](http://www.c-scm.net) — Experience the system
+- [AI Integration Guide](docs/AiIntegration.md) — Provider configuration and RAG pipeline
+- [Secure Configuration](docs/SecureConfiguration.md) — User Secrets / environment variable strategy
+- [Unified API Response](docs/UnifiedApiResponse.md) — API response structure conventions
+- [.NET 11 Upgrade Notes](docs/UpgradeToNet11.md) — Breaking changes and migration record
 
 ---
 
